@@ -1,0 +1,40 @@
+<button (click)="toggleFormVisibility()" id="showbtn">Add Vehicle</button>
+<ng-container *ngIf="showForm">
+    <!-- Your form content goes here -->
+    <div class="parentFormContainer">
+        <div id="formContainer">
+      
+          <form class="container" [formGroup]="vehicleForm"  (ngSubmit)="addVehicle()">
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Vehicle Type</label>
+              <input type="text" class="form-control" formControlName="vehicleName" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Add Vehicle Image</label>
+              <input type="file" class="form-control" formControlName="vehicleImage" (change)="onFileSelected($event)"/>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary w-100" id="submitBtn">Add</button>
+            </div>  
+          </form>
+        </div>
+      
+      </div>
+
+  </ng-container>
+
+
+
+  <div class="card-container container border d-flex flex-wrap" >
+    <div class="m-4 card" *ngFor="let vehicle of vehiclesData">
+      <img class="card-img-top" src="http://localhost:4000/vehicledata/{{ vehicle.vehicleImage }}"  id="image" name="image" alt="Card image cap" />
+      <div class="card-body">
+        <h5 class="card-title">{{ vehicle.vehicleName }}</h5>
+        <button mat-button mat-stroked-button color="primary">
+          <mat-icon>edit</mat-icon>Edit
+        </button>
+      </div>
+    </div>
+  </div>
+  
+    

@@ -1,0 +1,38 @@
+<div class="parentFormContainer">
+  <div id="formContainer">
+    <h2 class="mb-3">Admin Panel</h2>
+    <table class="table w-100">
+      <thead class="bg-dark text-light">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of personDataArray">
+          <td>{{ person.adminName }}</td>
+          <td>{{ person.email }}</td>
+          <td>{{ person.cnfpassword }}</td>
+          <td>
+            <button>
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+
+
+</div>
+

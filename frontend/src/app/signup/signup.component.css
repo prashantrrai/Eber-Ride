@@ -1,0 +1,46 @@
+
+h1{
+  font-family: cursive;
+  padding: 40px;
+  color: white;
+}
+.parentFormContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 5%;
+}
+#formContainer{
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 4px 4px 16px #000000;
+  width: 40vw;
+  height: 50%;
+  padding: 20px;
+  margin: 40px;
+}
+input{
+  width: 100%;
+  padding: 5PX;
+}
+#login{
+  padding-top: 10px;
+}
+#login a{
+  color: tomato;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+  #formContainer{
+    width: 80vw;
+}
+}
+@media screen and (max-width: 780px) {
+  #formContainer{
+    width: 80vw;
+}
+}
