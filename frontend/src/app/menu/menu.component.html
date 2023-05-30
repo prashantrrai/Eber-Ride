@@ -1,0 +1,71 @@
+<mat-toolbar color="light" class="mat-elevation-z8">
+  <button (click)="drawer.toggle()" mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <div class="d-flex align-items-center justify-content-between w-100">
+    <div class="example-spacer">
+      <img src="../../assets/images/eber logo.png" alt="Logo">
+      <span>EBER</span>
+    </div>
+    <div >
+      <a routerLink="" mat-button>Home</a>
+      <a routerLink="" mat-button>About</a>
+      <a routerLink="" mat-button>Contact</a>
+      <a routerLink="" mat-button>Product</a>
+      <button [matMenuTriggerFor]="lvl1master" mat-button>Master</button>
+      <a routerLink="" mat-button>Logout</a>
+    </div>
+  </div>
+  </mat-toolbar>
+
+
+
+<mat-drawer-container autosize >
+  <mat-drawer class="bg-dark"  #drawer opened="true" mode="side" position="start" >
+  <mat-nav-list >
+      <mat-list-item >
+          <button routerLink="table" color="accent" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button [matMenuTriggerFor]="lvl1master"  color="accent" mat-button><mat-icon>local_taxi</mat-icon> Rides</button>
+        <mat-menu #lvl1master="matMenu">
+          <button  color="accent" routerLink="card"  mat-menu-item><mat-icon>calendar_month</mat-icon>Create Ride</button>
+          <button routerLink="card"  mat-menu-item><mat-icon>check_circle </mat-icon>Confirmed Rides</button>
+          <button routerLink="table"  mat-menu-item><mat-icon>history_toggle_off</mat-icon> Ride History</button>
+      </mat-menu>
+    </mat-list-item>
+
+      <mat-list-item>
+          <button routerLink="admin" color="accent"  mat-button><mat-icon>person</mat-icon>Users</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button><mat-icon>account_circle</mat-icon>Drivers</button>
+        <mat-menu #lvl2master="matMenu">
+            <button  mat-menu-item><mat-icon>format_list_bulleted</mat-icon>List</button>
+            <button  mat-menu-item><mat-icon>play_circle_outline</mat-icon>Running request</button>
+        </mat-menu>
+      </mat-list-item>
+      <mat-list-item>
+          <button routerLink="slider"  [matMenuTriggerFor]="lvl3master" color="accent"  mat-button><mat-icon>monetization_on</mat-icon> Pricing</button>
+          <mat-menu #lvl3master="matMenu">
+            <button  mat-menu-item><mat-icon>language</mat-icon>Country</button>
+            <button  mat-menu-item><mat-icon>language</mat-icon>City</button>
+            <button  routerLink="vehicletype" mat-menu-item><mat-icon> directions_car</mat-icon> Vehicle type</button>
+            <button  mat-menu-item><mat-icon> monetization_on</mat-icon>Vehicle Pricing</button>
+        </mat-menu>
+      </mat-list-item>
+      <mat-list-item>
+          <button color="accent"  mat-button><mat-icon>settings</mat-icon> Settings</button>
+      </mat-list-item>
+  </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content>
+      <div style="text-align: center;min-height: 600px;">
+
+          <router-outlet></router-outlet>
+          <app-footer></app-footer>
+      </div>
+  </mat-drawer-content>
+</mat-drawer-container>
+
+

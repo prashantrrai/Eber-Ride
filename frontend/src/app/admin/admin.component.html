@@ -1,0 +1,72 @@
+<div class="container-fluid">
+
+
+<div class="updateContainer py-4" *ngIf="showForm">
+  <div id="Container">
+    <form class="container" [formGroup]="adminUpdateForm" (ngSubmit)="adminUpdate(selectedAdmin._id)">
+      <div class="mb-3">
+        <label class="form-label d-flex justify-content-start">Name</label>
+        <input type="text" class="form-control" formControlName="adminName" [(ngModel)]="selectedAdmin.adminName"/>
+      </div>
+      <div class="mb-3">
+        <label class="form-label d-flex justify-content-start">Email</label>
+        <input type="email" class="form-control" formControlName="email" [(ngModel)]="selectedAdmin.email"/>
+      </div>
+      <div class="mb-3">
+        <label class="form-label d-flex justify-content-start">Password</label>
+        <input type="password" class="form-control" formControlName="password" [(ngModel)]="selectedAdmin.password"/>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary w-25" id="adminUpdate">
+          <i class="fa-solid fa-thumbs-up"></i>
+        </button>
+        <button type="button" class="w-25 btn btn-danger" id="updateCancel" (click)="updateCancel()">
+          <i class="fa-solid fa-thumbs-down"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+
+
+
+
+<div class="parentFormContainer">
+  <div id="formContainer">
+    <h2 class="mb-3">Admin Panel</h2>
+    <table class="table w-100">
+      <thead class="bg-dark text-light">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of personDataArray">
+          <td>{{ person.adminName }}</td>
+          <td>{{ person.email }}</td>
+          <td>{{ person.cnfpassword }}</td>
+          <td>    
+            <button id="updatebtn" (click)="updateAdminBtn(person._id)">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+          <td>
+            <button id="deletebtn"  (click)="deleteAdmin(person._id)"> 
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+</div>
