@@ -29,7 +29,8 @@ export class LoginComponent implements OnInit {
       const { email, password } = this.loginForm.value;
 
       this._api.loginUser({ email, password }).subscribe({
-       next: (res) => {
+       next: (res: any) => {
+        const token = 'your_token_value';
           localStorage.setItem("token",res.token)
           alert('Login Successful');
           this.loginForm.reset();
@@ -46,4 +47,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  
+
 }
+
+
