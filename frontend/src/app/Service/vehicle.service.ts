@@ -28,4 +28,5 @@ export class VehicleService {
     const url = `${this.updateVehicleAPI}/${vehicleId}`;
     return this.http.put<any>(url, vehicleData);
   }
+
 }

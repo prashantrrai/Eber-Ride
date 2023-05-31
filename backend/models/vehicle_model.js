@@ -4,15 +4,16 @@ const mongoose = require("mongoose");
 const vehicle_model = new mongoose.Schema({
   vehicleName: {
     type: String,
+    unique: true,
     required: true,
   },
   vehicleImage: {              
     type: String,
-    required: true
+    default: "default SUV.webp"
   }
 });
 
-const vehicle_data = mongoose.model("vehicle_data", vehicle_model);  //mapping vehicle_model data into vehicle_data
+const vehicle_schema = mongoose.model("vehicle_schema", vehicle_model);  //mapping vehicle_model data into vehicle_data
 
 
 
@@ -28,5 +29,5 @@ const vehicle_data = mongoose.model("vehicle_data", vehicle_model);  //mapping v
 // })
 
 
-module.exports = vehicle_data;
+module.exports = vehicle_schema;
 

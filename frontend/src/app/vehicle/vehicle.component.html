@@ -1,5 +1,5 @@
 <button (click)="toggleFormVisibility()" id="showbtn"> Add Vehicle</button>
-<ng-container *ngIf="showForm">
+<ng-container *ngIf="AddbuttonForm">
     <!-- Your form content goes here -->
     <div class="parentFormContainer">
         <div id="formContainer">
@@ -14,14 +14,32 @@
               <input type="file" class="form-control" formControlName="vehicleImage" name="vehicleImage" (change)="onFileSelected($event)"/>
             </div>
             <div>
-              <button type="submit" class="btn btn-primary w-100" id="submitBtn" *ngIf="Addbutton"> Add</button>
-              <button type="submit" class="btn btn-primary w-100" id="submitBtn" *ngIf="updateButton"> Update</button>
+              <button type="submit" class="btn btn-primary w-100" id="Addbutton"> Add</button>
             </div>  
           </form>
         </div>
-      
       </div>
+  </ng-container>
 
+  <ng-container *ngIf="updateButtonForm">
+    <!-- Your form content goes here -->
+    <div class="parentFormContainer">
+        <div id="formContainer">
+          <form class="container" [formGroup]="vehicleForm"  (ngSubmit)="updateVehicle()">
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Vehicle Type</label>
+              <input type="text" class="form-control" formControlName="vehicleName" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Add Vehicle Image</label>
+              <input type="file" class="form-control" formControlName="vehicleImage" name="vehicleImage" (change)="onFileSelected($event)"/>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary w-100" id="updateButton"> Update</button>
+            </div>  
+          </form>
+        </div>
+      </div>
   </ng-container>
 
 

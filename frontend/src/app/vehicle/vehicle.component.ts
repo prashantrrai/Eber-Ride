@@ -9,12 +9,11 @@ import { VehicleService } from "../Service/vehicle.service";
 })
 export class VehicleComponent implements OnInit {
   vehicleForm!: FormGroup;
-  showForm: boolean = false;
+  AddbuttonForm: boolean = false;
+  updateButtonForm: boolean = false;
   vehiclesData: any;
   file: any;
   selectedVehicle: any;
-  Addbutton: boolean = false;
-  updateButton: boolean = false;
   id: any;
   isUpdate: boolean=false
 
@@ -27,7 +26,6 @@ export class VehicleComponent implements OnInit {
   ngOnInit(): void {
     this.vehicleForm = this.formbuilder.group({
       vehicleName: ["", [Validators.required]],
-      vehicleImage: ["", [Validators.required]],
     });
 
     this._vehicle.getvehicleData().subscribe({
@@ -53,48 +51,56 @@ export class VehicleComponent implements OnInit {
     formData.append("vehicleImage", this.file);
     formData.append("vehicleName", this.vehicleForm.value.vehicleName);
     if (this.vehicleForm.valid) {
-      if (this.isUpdate) {
-        // Perform update logic here
-        const vehicleData = this.vehicleForm.value;
-
-        this._vehicle.updateVehicle(this.id, formData).subscribe((res) => {
-          let vehicle = res.vehicle
-          alert("Vehicle Updated Successfully");
-          console.log(this.vehiclesData)
-
-          
-          let findobj = this.vehiclesData.find((o: any) => {
-            console.log(o)
-            return o._id === vehicle._id;
-          });
-          console.log(findobj)
-          let key = Object.keys(findobj);
-
-          key.forEach((key: any) => {
-            findobj[key] = vehicle[key];
-          });
-
-          // this.ngOnInit()
-          // this.vehicleForm.reset();
-          // this.showForm = false;
+        this._vehicle.registerVehicle(formData).subscribe({
+          next: (res) => {
+            this.vehiclesData.push(res.vehicle);
+            alert('Vehicle Added Successfully');
+            this.vehicleForm.reset();
+            this.AddbuttonForm = false;
+          },
+          error: (error) => {
+            console.log(error);
+            alert(error.error.message);
+          }
         });
-
-        // Reset the selected vehicle
-        this.selectedVehicle = null;
-      } else {
-        // Perform add logic here
-        this._vehicle.registerVehicle(formData).subscribe((res) => {
-          // console.log(res);
-          this.vehiclesData.push(res.vehicle);
-
-          alert("Vehicle Added Successfully");
-          this.vehicleForm.reset();
-          this.showForm = false;
-        });
-      }
-    } else {
-      alert("All Fields are Required");
+    } 
+    else {
+      alert("Please Fill Valid Details");
     }
+  }
+
+  updateVehicle(){
+    const formData = new FormData();
+    formData.append("vehicleImage", this.file);
+    formData.append("vehicleName", this.vehicleForm.value.vehicleName);
+    const vehicleData = this.vehicleForm.value;
+
+    this._vehicle.updateVehicle(this.id, formData).subscribe({
+     next: (res) => {
+        let vehicle = res.vehicle
+        alert('Vehicle Updated Successfully');
+        console.log(this.vehiclesData)
+
+        
+        let findobj = this.vehiclesData.find((obj: any) => {
+          console.log(obj)
+          return obj._id === vehicle._id;
+        });
+        console.log(findobj)
+        let key = Object.keys(findobj);
+
+        key.forEach((key: any) => {
+          findobj[key] = vehicle[key];
+        });
+
+      // this.ngOnInit()
+    },
+    error: (error:any) => {
+      console.log(error);
+      alert(error.error.message);
+    }
+      });
+    this.selectedVehicle = null;
   }
 
   editVehicle(vehicle: any) {
@@ -104,16 +110,14 @@ export class VehicleComponent implements OnInit {
     this.vehicleForm.patchValue({
       vehicleName: vehicle.vehicleName,
     });
-    this.showForm = true;
-    this.updateButton = true;
-    this.Addbutton = false;
+    this.updateButtonForm = true;
+    this.AddbuttonForm = false;
   }
 
   toggleFormVisibility() {
-    this.showForm = !this.showForm;
+    this.AddbuttonForm = !this.AddbuttonForm;
     this.selectedVehicle = null;
     this.vehicleForm.reset();
-    this.Addbutton = true;
-    this.updateButton = false;
+    this.updateButtonForm = false
   }
 }
