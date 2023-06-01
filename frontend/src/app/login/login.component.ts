@@ -30,7 +30,8 @@ export class LoginComponent implements OnInit {
 
       this._api.loginUser({ email, password }).subscribe({
        next: (res: any) => {
-        const token = 'your_token_value';
+        const token = res.token;
+          sessionStorage.setItem('token', token);
           localStorage.setItem("token",res.token)
           alert('Login Successful');
           this.loginForm.reset();

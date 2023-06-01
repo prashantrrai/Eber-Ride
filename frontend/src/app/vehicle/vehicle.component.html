@@ -32,7 +32,7 @@
             </div>
             <div class="mb-3">
               <label class="form-label d-flex justify-content-start">Add Vehicle Image</label>
-              <input type="file" class="form-control" formControlName="vehicleImage" name="vehicleImage" (change)="onFileSelected($event)"/>
+              <input type="file" class="form-control" formControlName="vehicleImage" name="vehicleImage" (change)="onFileSelected($event)" ccept="image/png, image/jpg, image/gif, image/jpeg"/>
             </div>
             <div>
               <button type="submit" class="btn btn-primary w-100" id="updateButton"> Update</button>

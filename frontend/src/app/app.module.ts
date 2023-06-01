@@ -23,6 +23,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VehicleComponent } from './vehicle/vehicle.component';
+import { AuthService } from './Service/auth.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,7 @@ import { VehicleComponent } from './vehicle/vehicle.component';
     MatSidenavModule,
 
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

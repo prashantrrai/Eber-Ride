@@ -2,6 +2,14 @@ const express = require("express");
 const updateRoutes = express.Router() 
 const signup_data = require("../models/login_signup"); 
 const bcrypt = require('bcryptjs');
+const session = require('express-session');
+
+
+updateRoutes.use(session({
+  secret: 'my-session-key',
+  resave: false,
+  saveUninitialized: true
+}));
 
 
 
@@ -9,6 +17,12 @@ const bcrypt = require('bcryptjs');
 updateRoutes.put('/update/:id', async (req, res) => {
     try {
         const userId = req.params.id;
+
+        // Check if the user is authenticated using session data
+        if (!req.session.token) {
+          return res.status(401).json({ message: 'Unauthorized' });
+        }
+
         await signup_data.findByIdAndUpdate(userId, {
           adminName: req.body.adminName,
           email: req.body.email,

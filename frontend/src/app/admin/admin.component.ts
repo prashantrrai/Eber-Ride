@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../Service/api.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from '../Service/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -13,7 +14,7 @@ export class AdminComponent implements OnInit {
   personDataArray: any
   selectedAdmin: any;
     
-    constructor(private _api: ApiService, private formBuilder: FormBuilder) { }
+    constructor(private _api: ApiService, private formBuilder: FormBuilder, private authService: AuthService) { }
 
     ngOnInit(): void {
       this.fetchUserData();
@@ -35,7 +36,7 @@ export class AdminComponent implements OnInit {
             _id: admin._id,
             adminName: admin.adminName,
             email: admin.email,
-            password: admin.password,
+            cnfpassword: admin.cnfpassword,
           }));
         },
         error: (error: any) => {
@@ -87,6 +88,11 @@ export class AdminComponent implements OnInit {
           }
       });
       }
+    }
+
+
+    resetTimer() {
+      this.authService.resetInactivityTimer();
     }
 
 }
