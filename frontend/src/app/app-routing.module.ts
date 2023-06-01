@@ -7,6 +7,7 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
 import { AdminComponent } from './admin/admin.component';
 import { VehicleComponent } from './vehicle/vehicle.component';
 import { authGuard } from './Service/auth.guard';
+import { CountryComponent } from './country/country.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -15,8 +16,10 @@ const routes: Routes = [
   {path: 'forgotpassword', component: ForgotpasswordComponent},
   {path: 'admin', component: AdminComponent},
   {path: 'vehicletype', component: VehicleComponent},
+  {path: 'country', component: CountryComponent},
   {path: 'dashboard', component: MenuComponent , canActivate: [authGuard],  children :[
     {path: 'vehicletype', component: VehicleComponent} ,   
+    {path: 'country', component: CountryComponent} ,   
     {path: 'admin', component: AdminComponent}
   ]} 
 

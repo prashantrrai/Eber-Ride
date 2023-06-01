@@ -24,6 +24,7 @@ import { AuthInterceptor } from './auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VehicleComponent } from './vehicle/vehicle.component';
 import { AuthService } from './Service/auth.service';
+import { CountryComponent } from './country/country.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AuthService } from './Service/auth.service';
     SignupComponent,
     ForgotpasswordComponent,
     AdminComponent,
-    VehicleComponent
+    VehicleComponent,
+    CountryComponent
   ],
   imports: [
     BrowserModule,

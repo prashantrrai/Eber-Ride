@@ -1,0 +1,62 @@
+<button mat-button mat-stroked-button color="primary"
+        (click)="toggleFormVisibility()">
+        <mat-icon>add_circle</mat-icon> Add Country
+</button>
+    <!-- Your form content goes here -->
+    <div class="parentFormContainer">
+        <div id="formContainer" *ngIf="AddbuttonForm">
+        <h2 class="mb-3">COUNTRY</h2>
+          <form class="container" [formGroup]="countryForm"  (ngSubmit)="OnSubmit()">
+            <div class="dropdown">
+                <select name="country" #country (change)="onSelected(country.value)">
+                  <option [value]="" *ngFor="let country of countryData ">{{country.name.common}}</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-start">Country</label>
+                <input type="text" class="form-control" [value]="'countryname'" formControlName="countryname" name ="countryname" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-start">TimeZone</label>
+                <input type="text" class="form-control" [value]="'countrytimezone'" formControlName="countrytimezone"/>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-start">Code</label>
+                <input type="text" class="form-control" formControlName="countrycode" [value]="'countrycode'"
+                 />
+              </div>
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-start">Currency</label>
+                <input type="text" class="form-control" formControlName="countrycurrency" [value]="'countrycurrency'"
+                  />
+              </div>
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-start">Flag</label>
+                <img src= "{{flag}}" style ="width: 100px;">
+              </div>
+
+              <div>
+                <button type="submit" class="btn btn-primary w-40" id="submitBtn"> Add-country</button>
+                <button class="btn btn-primary w-40" style="margin-left: 20px" (click)="cancel()"> Cancel</button> 
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+   <div class="card-container container">
+    <div class="container d-flex flex-wrap align-items-center">
+      <div class="m-4 card" *ngFor="let country of countryData">
+        <img class="card-img-top" src="{{country.flag}}" alt="Card image cap"  style="width:200px; height: 300px;"/>
+        <div class="card-body">
+          <h5 class="card-title">Country Name : {{ country.countryname }}</h5>
+          <h5 class="card-title">Country Currency : {{country.countrycurrency}}</h5>
+          <h5 class="card-title">Timezone : {{country.countrytimezone}}</h5>
+          <h5 class="card-title">Country Code : {{country.countrycode}}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
