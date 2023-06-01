@@ -30,8 +30,7 @@
               </div>
               <div class="mb-3">
                 <label class="form-label d-flex justify-content-start">Currency</label>
-                <input type="text" class="form-control" formControlName="countrycurrency" [value]="'countrycurrency'"
-                  />
+                <input type="text" class="form-control" formControlName="countrycurrency" [value]="countryForm.get('countrycurrency')?.value" />
               </div>
               <div class="mb-3">
                 <label class="form-label d-flex justify-content-start">Flag</label>
@@ -47,7 +46,7 @@
       </div>
 
 
-   <div class="card-container container">
+   <!-- <div class="card-container container">
     <div class="container d-flex flex-wrap align-items-center">
       <div class="m-4 card" *ngFor="let country of countryData">
         <img class="card-img-top" src="{{country.flag}}" alt="Card image cap"  style="width:200px; height: 300px;"/>
@@ -59,4 +58,4 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
