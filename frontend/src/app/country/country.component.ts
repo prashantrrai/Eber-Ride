@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CountryService } from '../Service/country.service';
 
 @Component({
   selector: 'app-country',
@@ -8,23 +9,41 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./country.component.css']
 })
 export class CountryComponent implements OnInit {
+
   countryForm!: FormGroup;
   AddbuttonForm: boolean = false;
-  countryData: any[] = [];
+  countryData: any;
   file: any;
+  symbol: any;
+  currenciesObj: any;
+  currencyKeys: any;
+  firstCurrencyKey: any;
+  currencysymbol: any;
   flag: any;
+  addcountrydata :any = {
+          countryname: '',
+          countrycurrency : '',
+          countrytimezone: '',
+          countrycode: '',
+          flag: ''
+      }
 
-  constructor(private http: HttpClient) {
-    this.countryForm = new FormGroup({
-      countryname: new FormControl(''),
-      countrytimezone: new FormControl(''),
-      countrycode: new FormControl(''),
-      countrycurrency: new FormControl('')
-    });
+
+  constructor(private http: HttpClient, private _country: CountryService, private formbuilder: FormBuilder) {
+    
   }
 
   ngOnInit(): void {
     this.fetchCountryData();
+
+    this.countryForm = this.formbuilder.group({
+            countryname:['', Validators.required],
+            countrytimezone: ['' , Validators.required],
+            countrycode:['', Validators.required],
+            countrycurrency:['', Validators.required],
+            flag:['', Validators.required]
+      
+          });
   }
 
   fetchCountryData() {
@@ -38,36 +57,61 @@ export class CountryComponent implements OnInit {
     });
   }
 
-  // onSelected(countryValue: string) {
-  //   const selectedCountry = this.countryData.find((country) => country.name.common === countryValue);
-  //   if (selectedCountry) {
-  //     const currencyCode = selectedCountry.currencies[0];
-  //     console.log(currencyCode)
-  //     const currencyObject = this.getMatchingCurrencyObject(currencyCode);
-  //     if (currencyObject) {
-  //       const currencySymbol = currencyObject.symbol;
-  //       this.countryForm.patchValue({
-  //         countryname: selectedCountry.name.common,
-  //         countrytimezone: selectedCountry.timezones[0],
-  //         countrycode: selectedCountry.cca2,
-  //         countrycurrency: currencySymbol
-  //       });
-  //     }
-  //   }
-  // }
+  onSelected(countryValue: string) {
+      const selectedCountry = this.countryData.find((country:any) => country.name.common === countryValue);
+        // console.log(selectedCountry.currencies.INR.symbol)
+
+        this.currenciesObj = selectedCountry.currencies;
+        this.currencyKeys = Object.keys(this.currenciesObj);
+        this.firstCurrencyKey = this.currencyKeys[0];
+        this.currencysymbol = this.currenciesObj[this.firstCurrencyKey];
+        this.symbol = this.currencysymbol.symbol;
+        this.flag = selectedCountry.flags.png;
+
+        if (selectedCountry) {
+          this.countryForm.patchValue({
+            countryname: selectedCountry.name.common,
+            countrytimezone: selectedCountry.timezones,
+            countrycode: selectedCountry.cca2,
+            countrycurrency: this.symbol,
+            flag: selectedCountry.flags.png
+          });
+        }
+      }
+
+      //In this code, we first check if res is defined and has a length greater than 0. Then, we access selectedCountry.currencies to get the currencies object. We retrieve the currency keys using Object.keys(currencies) and check if there is at least one currency key. If there is, we select the first currency key (currencyKeys[0]) and retrieve the corresponding currency object from currencies. Finally, we check if the currency object and symbol property exist before assigning currency.symbol to this.countrycurrency and logging it.Please note that this code assumes you want to retrieve the currency symbol for the first currency listed in the currencies object. If you want to handle multiple currencies or a different selection logic, you may need to adjust the code accordingly.
+
+     
+
+      OnSubmit() {
+        if (this.countryForm.valid) {
   
-  // getMatchingCurrencyObject(currencyCode: string) {
-  //   const currencies = this.countryData.flatMap((country) => country.currencies);
-  //   return currencies.find((currency) => currency.code === currencyCode) || null;
-  // }
-
-  OnSubmit() {
-    alert('working');
-    console.log(this.countryForm.value);
-  }
-
+          const formvalue = this.countryForm.value
+          
+          this.addcountrydata ={
+            countryName:formvalue.countryname,
+            countryCurrency :formvalue.countrycurrency,
+            countryTimeZone:formvalue.countrytimezone[0],
+            countryCode:formvalue.countrycode,
+            flagImage:formvalue.flag
+        }
+        console.log(formvalue)
+        console.log(this.addcountrydata)
+          this._country.addCountry(this.addcountrydata).subscribe({
+          next:  (res) => {
+              // this.countryData = res.message;
+              console.log(res)
+              alert('Country Added Successfully');
+            },
+          error:  (error) => {
+              console.log(error);
+              alert(error.error.error);
+            }
+        });
+        }
+      }
   toggleFormVisibility() {
-    this.AddbuttonForm = !this.AddbuttonForm;
+    this.AddbuttonForm = !this.AddbuttonForm; 
   }
 
   cancel() {

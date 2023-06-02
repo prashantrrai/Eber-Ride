@@ -1,4 +1,4 @@
-<button mat-button mat-stroked-button color="primary"
+<button mat-button mat-stroked-button color="primary" id="showbtn"
         (click)="toggleFormVisibility()">
         <mat-icon>add_circle</mat-icon> Add Country
 </button>
@@ -15,22 +15,22 @@
 
               <div class="mb-3">
                 <label class="form-label d-flex justify-content-start">Country</label>
-                <input type="text" class="form-control" [value]="'countryname'" formControlName="countryname" name ="countryname" />
+                <input type="text" class="form-control" [readonly]="AddbuttonForm"  [value]="'countryname'" formControlName="countryname" name ="countryname" />
               </div>
 
               <div class="mb-3">
                 <label class="form-label d-flex justify-content-start">TimeZone</label>
-                <input type="text" class="form-control" [value]="'countrytimezone'" formControlName="countrytimezone"/>
+                <input type="text"  class="form-control" [readonly]="AddbuttonForm"  [value]="'countrytimezone'" formControlName="countrytimezone"/>
               </div>
 
               <div class="mb-3">
                 <label class="form-label d-flex justify-content-start">Code</label>
-                <input type="text" class="form-control" formControlName="countrycode" [value]="'countrycode'"
+                <input type="text" class="form-control" [readonly]="AddbuttonForm"  [value]="'countrycode'" formControlName="countrycode" 
                  />
               </div>
               <div class="mb-3">
                 <label class="form-label d-flex justify-content-start">Currency</label>
-                <input type="text" class="form-control" formControlName="countrycurrency" [value]="countryForm.get('countrycurrency')?.value" />
+                <input type="text" class="form-control" [readonly]="AddbuttonForm"  [value]="countryForm.get('countrycurrency')?.value" formControlName="countrycurrency"  />
               </div>
               <div class="mb-3">
                 <label class="form-label d-flex justify-content-start">Flag</label>

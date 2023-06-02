@@ -23,7 +23,8 @@ const loginRoutes = require('./routes/login-Admin')
 const registerRoutes = require('./routes/register-Admin')
 const deleteRoutes = require('./routes/delete-Admin')
 const updateRoutes = require('./routes/update-Admin')
-const VehicleRoutes = require('./routes/vehicle-API')
+const VehicleRoutes = require('./routes/vehicle')
+const countryRoutes = require('./routes/country')
 
 app.use(fetchAdmin)
 app.use(loginRoutes)
@@ -31,10 +32,11 @@ app.use(registerRoutes)
 app.use(deleteRoutes)
 app.use(updateRoutes)
 app.use(VehicleRoutes)
+app.use(countryRoutes)
 
-const Model = require('./models/login_signup');
-const vehicle_data = require("./models/vehicle_model");
-
+const signup_data = require('./models/login_signup');
+const vehicle_schema = require("./models/vehicle_model");
+const Country_schema = require('./models/country_model')
  
 
 // To show API is Working in backend on http://localhost:4000.
@@ -55,7 +57,7 @@ app.listen(PORT, () => {
 
     const formattedToday = dd + '/' + mm + '/' + yyyy;
 
-    console.log(formattedToday)
+    console.log(`Every ${formattedToday} is a Gift, So don't Waste it..NERD`)
   console.log(`Server is running on http://localhost:${PORT}`);
 });
  
