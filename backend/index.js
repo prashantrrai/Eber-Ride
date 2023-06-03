@@ -57,7 +57,7 @@ app.listen(PORT, () => {
 
     const formattedToday = dd + '/' + mm + '/' + yyyy;
 
-    console.log(`Every ${formattedToday} is a Gift, So don't Waste it..NERD`)
+    console.log(`${formattedToday} is a Gift`)
   console.log(`Server is running on http://localhost:${PORT}`);
 });
  

@@ -53,9 +53,13 @@ h1{
   }
   
   .card-container{
-    width: 70%;
-    margin-left:15%;
-    margin-top: 3%;
+    width: 100%;
+    margin-top: 5%;
+  }
+  #card-box{
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
   .card{
     border-radius: 8px;

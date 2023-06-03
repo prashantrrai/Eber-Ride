@@ -8,15 +8,6 @@ const Country_schema = require('../models/country_model')
 //  API to register country data in database.
 countryRoutes.post('/countryadd', async (req, res) => {
     try {
-        // console.log(req.body)
-        // const {
-        //     countryName,
-        //     countryTimeZone,
-        //     countryCode,
-        //     countryCurrency,
-        //     flagImage
-        // } = req.body;
-
         // Create a new instance of the Country model
         const country = new Country_schema(req.body);
 

@@ -27,7 +27,7 @@ export class CountryComponent implements OnInit {
           countrycode: '',
           flag: ''
       }
-  countryDataDB: any;
+  countryDataDB: any[] = [];
 
 
   constructor(private http: HttpClient, private _country: CountryService, private formbuilder: FormBuilder) {
@@ -36,6 +36,7 @@ export class CountryComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchCountryDataAPI();
+    this.getDatafromDB()
 
     this.countryForm = this.formbuilder.group({
             countryname:['', Validators.required],
@@ -44,16 +45,13 @@ export class CountryComponent implements OnInit {
             countrycurrency:['', Validators.required],
             flag:['', Validators.required]
           });
-
-    this.getDatafromDB()
     
   }
 
   getDatafromDB() :void{
     this._country.getcountryData().subscribe({
       next: (response: any) => {
-        this.countryDataDB = response
-        console.log(this.countryDataDB)
+        this.countryDataDB = response.countrydata
       },
       error: (err) => {
         alert(err);
@@ -62,7 +60,7 @@ export class CountryComponent implements OnInit {
   }
 
   fetchCountryDataAPI() :void{
-    this.http.get<any>('https://restcountries.com/v3.1/all').subscribe({
+    this._country.fetchCountryAPI().subscribe({
       next: (response) => {
         this.countryData = response;
       },
@@ -114,12 +112,17 @@ export class CountryComponent implements OnInit {
         // console.log(this.addcountrydata)
           this._country.addCountry(this.addcountrydata).subscribe({
           next:  (res) => {
+            this.countryDataDB.push(res.countrydata);
               console.log(res)
               alert('Country Added Successfully');
+              this.getDatafromDB()
+              this.countryForm.reset();
+              this.AddbuttonForm = false;
             },
           error:  (error) => {
               console.log(error);
-              alert(error.error.error);
+              // alert(error.error.error);
+              alert("Sorry, Cannot Add Duplicate Country")
             }
         });
         }
@@ -135,3 +138,5 @@ export class CountryComponent implements OnInit {
     this.AddbuttonForm = false;
   }
 }
+
+
