@@ -12,8 +12,13 @@ export class CountryService {
 
   constructor(private http: HttpClient) { }
 
+
   addCountry(countryData: any): Observable<any> {
     return this.http.post(`${this.serverUrl}/countryadd`, countryData);
+  }
+
+  getcountryData(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/countrydata`);
   }
 
 }

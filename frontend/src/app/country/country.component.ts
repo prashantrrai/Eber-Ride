@@ -27,6 +27,7 @@ export class CountryComponent implements OnInit {
           countrycode: '',
           flag: ''
       }
+  countryDataDB: any;
 
 
   constructor(private http: HttpClient, private _country: CountryService, private formbuilder: FormBuilder) {
@@ -34,7 +35,7 @@ export class CountryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchCountryData();
+    this.fetchCountryDataAPI();
 
     this.countryForm = this.formbuilder.group({
             countryname:['', Validators.required],
@@ -42,11 +43,25 @@ export class CountryComponent implements OnInit {
             countrycode:['', Validators.required],
             countrycurrency:['', Validators.required],
             flag:['', Validators.required]
-      
           });
+
+    this.getDatafromDB()
+    
   }
 
-  fetchCountryData() {
+  getDatafromDB() :void{
+    this._country.getcountryData().subscribe({
+      next: (response: any) => {
+        this.countryDataDB = response
+        console.log(this.countryDataDB)
+      },
+      error: (err) => {
+        alert(err);
+      },
+    });
+  }
+
+  fetchCountryDataAPI() :void{
     this.http.get<any>('https://restcountries.com/v3.1/all').subscribe({
       next: (response) => {
         this.countryData = response;
@@ -95,11 +110,10 @@ export class CountryComponent implements OnInit {
             countryCode:formvalue.countrycode,
             flagImage:formvalue.flag
         }
-        console.log(formvalue)
-        console.log(this.addcountrydata)
+        // console.log(formvalue)
+        // console.log(this.addcountrydata)
           this._country.addCountry(this.addcountrydata).subscribe({
           next:  (res) => {
-              // this.countryData = res.message;
               console.log(res)
               alert('Country Added Successfully');
             },
@@ -110,6 +124,9 @@ export class CountryComponent implements OnInit {
         });
         }
       }
+
+
+
   toggleFormVisibility() {
     this.AddbuttonForm = !this.AddbuttonForm; 
   }

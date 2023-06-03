@@ -29,6 +29,15 @@ countryRoutes.post('/countryadd', async (req, res) => {
 });
 
 
+countryRoutes.get('/countrydata', async (req,res) => {
+    try {
+        const countrydata = await Country_schema.find({});
+        res.json({ countrydata });
+      } catch (err) {
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+      }
+})
 
 
 module.exports = countryRoutes;

@@ -40,6 +40,7 @@ export class VehicleComponent implements OnInit {
         alert(err);
       },
     });
+    console.log(this.vehiclesData)
   }
 
   onFileSelected(event: any) {
