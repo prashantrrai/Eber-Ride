@@ -4,16 +4,18 @@
   </button>
   <div class="d-flex align-items-center justify-content-between w-100">
     <div class="example-spacer">
-      <img src="../../assets/images/eber logo.png" alt="Logo">
-      <span>EBER</span>
+      <!-- <span>EBER</span>
+      <img src="../../assets/images/eber logo.png" alt="Logo"> -->
     </div>
     <div >
-      <a routerLink="" mat-button>Home</a>
-      <a routerLink="" mat-button>About</a>
-      <a routerLink="" mat-button>Contact</a>
-      <a routerLink="" mat-button>Product</a>
+      <a mat-button>Home</a>
+      <a mat-button>About</a>
+      <a mat-button>Contact</a>
+      <a mat-button>Product</a>
       <button [matMenuTriggerFor]="lvl1master" mat-button>Master</button>
-      <button class="btn btn-danger" (click)="onLogout()"><i class="fa fa-lock" aria-hidden="true"></i> &nbsp; Logout</button>
+      <button class="btn btn-danger" (click)="onLogout()">
+        <i class="fa fa-lock" aria-hidden="true"></i> &nbsp; Logout
+      </button>
       
     </div>
   </div>
@@ -30,7 +32,7 @@
       <mat-list-item>
         <button [matMenuTriggerFor]="lvl1master"  color="accent" mat-button><mat-icon>local_taxi</mat-icon> Rides</button>
         <mat-menu #lvl1master="matMenu">
-          <button  color="accent" routerLink="card"  mat-menu-item><mat-icon>calendar_month</mat-icon>Create Ride</button>
+          <button  color="accent" routerLink="map"   mat-menu-item><mat-icon>calendar_month</mat-icon>Create Ride</button>
           <button routerLink="card"  mat-menu-item><mat-icon>check_circle </mat-icon>Confirmed Rides</button>
           <button routerLink="table"  mat-menu-item><mat-icon>history_toggle_off</mat-icon> Ride History</button>
       </mat-menu>
@@ -62,7 +64,6 @@
   </mat-drawer>
   <mat-drawer-content>
       <div style="text-align: center;min-height: 600px;">
-
           <router-outlet></router-outlet>
           <app-footer></app-footer>
       </div>

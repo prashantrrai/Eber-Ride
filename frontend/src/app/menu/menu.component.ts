@@ -1,6 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../Service/auth.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-menu',
@@ -9,7 +11,7 @@ import { AuthService } from '../Service/auth.service';
 })
 export class MenuComponent implements OnInit {
   
-  constructor(private router: Router,  private authService: AuthService){}
+  constructor(private router: Router,  private authService: AuthService, private toastr: ToastrService){}
 
   ngOnInit(): void {
     this.authService.startInactivityTimer();
@@ -24,7 +26,7 @@ export class MenuComponent implements OnInit {
   onLogout() {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
-    // alert('Logged out successfully');
+    this.toastr.info('Logged Out Successfully', 'Info');
     this.router.navigate(['/login']);
   }
 

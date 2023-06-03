@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('token', token);
           localStorage.setItem("token",res.token)
           this.loginForm.reset();
-          this.toastr.success(res.message);
+          this.toastr.success(res.message, 'Success');
           this._router.navigate(['/dashboard']);
         },
        error: (error) => {

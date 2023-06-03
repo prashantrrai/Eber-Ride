@@ -26,6 +26,7 @@ import { VehicleComponent } from './vehicle/vehicle.component';
 import { AuthService } from './Service/auth.service';
 import { CountryComponent } from './country/country.component';
 import { ToastrModule } from 'ngx-toastr';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ToastrModule } from 'ngx-toastr';
     ForgotpasswordComponent,
     AdminComponent,
     VehicleComponent,
-    CountryComponent
+    CountryComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,

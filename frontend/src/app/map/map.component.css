@@ -1,0 +1,12 @@
+.green-message {
+    color: green;
+  }
+  
+  .red-message {
+    color: red;
+  }
+  
+  #map {
+    height: 400px;
+    width: 100%;
+  }

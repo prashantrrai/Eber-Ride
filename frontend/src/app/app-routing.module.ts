@@ -8,22 +8,22 @@ import { AdminComponent } from './admin/admin.component';
 import { VehicleComponent } from './vehicle/vehicle.component';
 import { authGuard } from './Service/auth.guard';
 import { CountryComponent } from './country/country.component';
+import { MapComponent } from './map/map.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'forgotpassword', component: ForgotpasswordComponent},
-  {path: 'admin', component: AdminComponent},
-  {path: 'vehicletype', component: VehicleComponent},
-  {path: 'country', component: CountryComponent},
+  // {path: 'admin', component: AdminComponent},
+  // {path: 'vehicletype', component: VehicleComponent},
+  // {path: 'country', component: CountryComponent},
   {path: 'dashboard', component: MenuComponent , canActivate: [authGuard],  children :[
     {path: 'vehicletype', component: VehicleComponent} ,   
     {path: 'country', component: CountryComponent} ,   
-    {path: 'admin', component: AdminComponent}
-  ]} 
-
-
+    {path: 'admin', component: AdminComponent},
+    {path: 'map', component: MapComponent}
+  ]},
 ];
 
 @NgModule({

@@ -1,0 +1,9 @@
+<div>
+    <input type="text" [(ngModel)]="enteredLocation" placeholder="Search Location..">
+    <button (click)="checkLocation()">Check</button>
+    <div [ngClass]="{ 'green-message': isLocationInZone, 'red-message': !isLocationInZone }">
+      {{ message }}
+    </div>
+  
+    <div class="container rounded w-100" id="map" style="height: 400px;"></div>
+  </div>
