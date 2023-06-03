@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../Service/api.service';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
-  constructor(private _api: ApiService, private _router: Router, private formBuilder: FormBuilder) {}
+  constructor(private _api: ApiService, private _router: Router, private formBuilder: FormBuilder, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -33,18 +34,18 @@ export class LoginComponent implements OnInit {
         const token = res.token;
           sessionStorage.setItem('token', token);
           localStorage.setItem("token",res.token)
-          alert('Login Successful');
           this.loginForm.reset();
+          this.toastr.success(res.message);
           this._router.navigate(['/dashboard']);
         },
        error: (error) => {
-          alert('Login Failed');
-          console.log(error);
+         console.log(error);
+         this.toastr.error(error.error.message);
         }
       }
       );
     } else {
-      alert('All fields are required');
+      this.toastr.warning('All fields are required');
     }
   }
 

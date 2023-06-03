@@ -25,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VehicleComponent } from './vehicle/vehicle.component';
 import { AuthService } from './Service/auth.service';
 import { CountryComponent } from './country/country.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { CountryComponent } from './country/country.component';
     MatMenuModule,
     MatListModule,
     MatSidenavModule,
+    ToastrModule.forRoot()
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}, AuthService],

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CountryService } from '../Service/country.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-country',
@@ -30,7 +31,7 @@ export class CountryComponent implements OnInit {
   countryDataDB: any[] = [];
 
 
-  constructor(private http: HttpClient, private _country: CountryService, private formbuilder: FormBuilder) {
+  constructor(private http: HttpClient, private _country: CountryService, private formbuilder: FormBuilder, private toastr: ToastrService) {
     
   }
 
@@ -108,21 +109,19 @@ export class CountryComponent implements OnInit {
             countryCode:formvalue.countrycode,
             flagImage:formvalue.flag
         }
-        // console.log(formvalue)
-        // console.log(this.addcountrydata)
+        
           this._country.addCountry(this.addcountrydata).subscribe({
           next:  (res) => {
             this.countryDataDB.push(res.countrydata);
-              console.log(res)
-              alert('Country Added Successfully');
+              // console.log(res)
               this.getDatafromDB()
               this.countryForm.reset();
               this.AddbuttonForm = false;
+              this.toastr.success(res.message);
             },
           error:  (error) => {
               console.log(error);
-              // alert(error.error.error);
-              alert("Sorry, Cannot Add Duplicate Country")
+              this.toastr.warning(error.error.message);
             }
         });
         }

@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { VehicleService } from "../Service/vehicle.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-vehicle",
@@ -20,7 +21,8 @@ export class VehicleComponent implements OnInit {
   constructor(
     private formbuilder: FormBuilder,
     private _vehicle: VehicleService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -55,18 +57,18 @@ export class VehicleComponent implements OnInit {
         this._vehicle.registerVehicle(formData).subscribe({
           next: (res) => {
             this.vehiclesData.push(res.vehicle);
-            alert('Vehicle Added Successfully');
             this.vehicleForm.reset();
             this.AddbuttonForm = false;
+            this.toastr.success(res.message);
           },
           error: (error) => {
             console.log(error);
-            alert(error.error.message);
+            this.toastr.warning(error.error.message);
           }
         });
     } 
     else {
-      alert("Please Fill Valid Details");
+      this.toastr.warning("Please Fill Valid Details");
     }
   }
 
@@ -79,7 +81,7 @@ export class VehicleComponent implements OnInit {
     this._vehicle.updateVehicle(this.id, formData).subscribe({
      next: (res) => {
         let vehicle = res.vehicle
-        alert('Vehicle Updated Successfully');
+        this.toastr.info(res.message);
         console.log(this.vehiclesData)
 
         
@@ -98,7 +100,8 @@ export class VehicleComponent implements OnInit {
     },
     error: (error:any) => {
       console.log(error);
-      alert(error.error.message);
+      this.toastr.warning(error.error.message);
+      
     }
       });
     this.selectedVehicle = null;

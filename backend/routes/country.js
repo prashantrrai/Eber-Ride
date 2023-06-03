@@ -13,9 +13,14 @@ countryRoutes.post('/countryadd', async (req, res) => {
 
         await country.save();
         console.log(country)
-        res.status(201).json({message: 'Country Data added Successfully', country});
+        res.status(201).json({message: 'Country Added Successfully', country});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+
+        if(error.keyPattern){
+            console.log("Country Already Exists")
+            return res.status(500).json({success: false, message: "Country Already Exists"});
+          }
+        res.status(500).json({ success: false, message: error});
     }
 });
 

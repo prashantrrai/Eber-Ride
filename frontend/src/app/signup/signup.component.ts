@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {  FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ApiService } from '../Service/api.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signup',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 export class SignupComponent implements OnInit {
   myForm!: FormGroup;
 
-  constructor(private formbuilder: FormBuilder, private _api: ApiService, private _router : Router) {}
+  constructor(private formbuilder: FormBuilder, private _api: ApiService, private _router : Router, private toastr: ToastrService) {}
 
 
 
@@ -31,14 +32,20 @@ export class SignupComponent implements OnInit {
     if (this.myForm.valid) {
       const personData = this.myForm.value;
 
-      this._api.registerUser(personData).subscribe((res) => {
-        alert('Registration Successful');
+      this._api.registerUser(personData).subscribe({
+      next:  (res) => {
         this.myForm.reset();
+        this.toastr.success(res.message);
         this._router.navigate(['/login'])
-      })
+      },
+      error: (error) => {
+        console.log(error);
+        this.toastr.error(error.error.message);
+      }
+    })
     }
     else{
-      alert('All Fields are Required');
+      this.toastr.warning('All Fields are Required');
     }
   }
 
