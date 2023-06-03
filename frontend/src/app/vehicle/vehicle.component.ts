@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { VehicleService } from "../Service/vehicle.service";
 import { ToastrService } from "ngx-toastr";
+import { AuthService } from "../Service/auth.service";
 
 @Component({
   selector: "app-vehicle",
@@ -22,7 +23,8 @@ export class VehicleComponent implements OnInit {
     private formbuilder: FormBuilder,
     private _vehicle: VehicleService,
     private cdr: ChangeDetectorRef,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -81,7 +83,7 @@ export class VehicleComponent implements OnInit {
     this._vehicle.updateVehicle(this.id, formData).subscribe({
      next: (res) => {
         let vehicle = res.vehicle
-        this.toastr.info(res.message);
+        this.toastr.success(res.message);
         console.log(this.vehiclesData)
 
         
@@ -124,4 +126,9 @@ export class VehicleComponent implements OnInit {
     this.vehicleForm.reset();
     this.updateButtonForm = false
   }
+
+  resetTimer() {
+    this.authService.resetInactivityTimer();
+  }
+
 }

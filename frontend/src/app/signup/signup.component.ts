@@ -48,5 +48,6 @@ export class SignupComponent implements OnInit {
       this.toastr.warning('All Fields are Required');
     }
   }
+  
 
 }

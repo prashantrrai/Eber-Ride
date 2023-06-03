@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AuthService } from '../Service/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 declare const google: any;
 
@@ -15,7 +16,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   polygon: any;
   map: any;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private toastr: ToastrService) {}
 
   ngOnInit() {}
 
@@ -56,7 +57,12 @@ export class MapComponent implements OnInit, AfterViewInit {
   checkLocationAgainstZone(location: any, polygon: any) {
     const point = new google.maps.LatLng(location.lat(), location.lng());
     this.isLocationInZone = google.maps.geometry.poly.containsLocation(point, polygon);
-    this.message = this.isLocationInZone ? 'Yes, your entered location belongs to the drawn zone.' : 'Sorry, your entered location doesn’t belong to the drawn zone.';
+
+    if (this.isLocationInZone) {
+      this.toastr.success('Yes, your entered location belongs to the drawn zone.');
+    } else {
+      this.toastr.error('Sorry, your entered location doesn’t belong to the drawn zone.');
+    }
   }
 
   checkLocation() {
