@@ -1,12 +1,74 @@
-.green-message {
-    color: green;
-  }
-  
-  .red-message {
-    color: red;
-  }
-  
+/* 
+
   #map {
     height: 400px;
     width: 100%;
+  }
+  
+  .parentFormContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  #formContainer {
+    display: flex;
+    align-items: center;
+  }
+  
+  input[type="text"] {
+    margin-right: 10px;
+  }
+  
+  button {
+    padding: 5px 10px;
+  }
+  
+  .message {
+    margin-top: 10px;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+  }
+  
+  .green {
+    color: green;
+  }
+  
+  .red {
+    color: red;
+  } */
+
+
+
+/* Task1 */
+
+  #mapContainer {
+    height: 400px;
+    border: 1px solid rgb(165, 165, 165);
+  }
+  
+  .search-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .search-container input {
+    padding: 8px;
+    width: 300px;
+    margin-right: 10px;
+  }
+  
+  .search-container button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .search-container button:hover {
+    background-color: #45a049;
   }

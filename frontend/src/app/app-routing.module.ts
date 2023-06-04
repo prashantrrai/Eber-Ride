@@ -15,9 +15,6 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'forgotpassword', component: ForgotpasswordComponent},
-  // {path: 'admin', component: AdminComponent},
-  // {path: 'vehicletype', component: VehicleComponent},
-  // {path: 'country', component: CountryComponent},
   {path: 'dashboard', component: MenuComponent , canActivate: [authGuard],  children :[
     {path: 'vehicletype', component: VehicleComponent} ,   
     {path: 'country', component: CountryComponent} ,   
