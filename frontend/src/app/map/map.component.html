@@ -12,14 +12,20 @@
 <div class="container rounded w-50 border" id="map" style="height: 400px;"></div> -->
 
 
+
+
 <!-- Task1  -->
 <div class="p-4">
   <div class="search-container mb-2">
     <!-- <input type="text" placeholder="Search for a location" (keyup)="EnteredLocation($event.target.value)"> -->
-    <input class="form-label rounded border m-4 p-2" type="text" [(ngModel)]="enteredLocation" placeholder="Search Location..">
+    <!-- <input class="form-label rounded border m-4 p-2" type="text" [(ngModel)]="enteredLocation" placeholder="Search Location.."> -->
+    <input type="text" #searchBox id="search-box" placeholder="Search for a location..">
 
-    <button (click)="selectLocation()">Select</button>
+    <!-- <button (click)="selectLocation()">Select</button> -->
+    <button>Select</button>
   </div>
   
-  <div id="mapContainer" #mapContainer></div>
+  <!-- <div id="mapContainer" #mapContainer></div> -->
+  <div id="map"></div>
 </div>
+

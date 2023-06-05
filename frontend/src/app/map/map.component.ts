@@ -1,150 +1,36 @@
-// import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-
-// declare const google: any;
-
-// @Component({
-//   selector: 'app-map',
-//   templateUrl: './map.component.html',
-//   styleUrls: ['./map.component.css']
-// })
-// export class MapComponent implements OnInit, AfterViewInit {
-//   @ViewChild('mapContainer', { static: false })
-//   mapContainer!: ElementRef;
-
-//   map: any;
-//   marker: any;
-//   autocomplete: any;
-
-//   ngOnInit() {
-//     // this.initializeMap();
-//     // this.initializeAutocomplete();
-//   }
-
-//     ngAfterViewInit() {
-//     this.initializeMap();
-//     this.initializeAutocomplete();
-//   }
-
-//   initializeMap() {
-//     const mapOptions = {
-//       center: new google.maps.LatLng(40.7128, -74.0060), // Set the center coordinates (e.g., New York City)
-//       zoom: 12 // Set the initial zoom level
-//     };
-  
-//     this.map = new google.maps.Map(this.mapContainer.nativeElement, mapOptions);
-  
-//     // Show current location on page load
-//     if (navigator.geolocation) {
-//       navigator.geolocation.getCurrentPosition((position) => {
-//         const currentLocation = new google.maps.LatLng(
-//           position.coords.latitude,
-//           position.coords.longitude
-//         );
-//         this.map.setCenter(currentLocation);
-//         this.addMarker(currentLocation);
-//       });
-//     }
-//   }
-
-//   initializeAutocomplete() {
-//     this.autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement);
-//     this.autocomplete.addListener('place_changed', () => {
-//       const place = this.autocomplete.getPlace();
-//       if (place.geometry && place.geometry.location) {
-//         const location = place.geometry.location;
-//         this.map.setCenter(location);
-//         this.addMarker(location);
-//       }
-//     });
-//   }
-
-//   addMarker(location: any) {
-//     if (this.marker) {
-//       this.marker.setMap(null);
-//     }
-
-//     this.marker = new google.maps.Marker({
-//       position: location,
-//       map: this.map,
-//       draggable: true
-//     });
-
-//     google.maps.event.addListener(this.marker, 'dragend', () => {
-//       this.updateAddress(this.marker.getPosition());
-//     });
-//   }
-
-//   updateAddress(location: any) {
-//     const geocoder = new google.maps.Geocoder();
-//     geocoder.geocode({ location: location }, (results: any, status: any) => {
-//       if (status === 'OK' && results[0]) {
-//         console.log('Address:', results[0].formatted_address);
-//       }
-//     });
-//   }
-
-//   enteredLocation(value: string): void {
-//     const query = value;
-//     console.log(query);
-//     // Implement the logic to search for places using Google API
-//   }
-  
-//   selectLocation() {
-//     const geocoder = new google.maps.Geocoder();
-//     const location = this.enteredLocation;
-    
-//     geocoder.geocode({ address: location }, (results: any, status: any) => {
-//       if (status === 'OK') {
-//         const resultLocation = results[0].geometry.location;
-//         this.map.setCenter(resultLocation);
-//         this.addMarker(resultLocation);
-//       } else {
-//         console.log('Geocode was not successful for the following reason: ' + status);
-//       }
-//     });
-//   }
-// }
-
-
-
-
-
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-
-declare const google: any;
+import { Component, ElementRef, ViewChild } from '@angular/core';
+declare var google: any;
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit, AfterViewInit {
-  @ViewChild('mapContainer', { static: false })
-  mapContainer!: ElementRef;
+export class MapComponent {
+  @ViewChild('searchBox', { static: false }) searchBox!: ElementRef;
 
   map: any;
-  marker: any;
   autocomplete: any;
-  enteredLocation: string = '';
+  google: any;
+  marker: any;
 
   ngOnInit() {
-    // this.initializeMap();
-    // this.initializeAutocomplete();
+    this.initMap();
   }
 
-  ngAfterViewInit() {
-    this.initializeMap();
-    this.initializeAutocomplete();
-  }
+  initMap() {
+    // Initialize map
+    this.map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: 40.7128, lng: -74.0060 },
+      zoom: 8
+    });
 
-  initializeMap() {
-    const mapOptions = {
-      center: new google.maps.LatLng(40.7128, -74.0060), // Set the center coordinates (e.g., New York City)
-      zoom: 12 // Set the initial zoom level
-    };
-  
-    this.map = new google.maps.Map(this.mapContainer.nativeElement, mapOptions);
-  
+
+    // Create autocomplete search box
+    const input = document.getElementById('search-box') as HTMLInputElement;
+    this.autocomplete = new (google as any).maps.places.Autocomplete(input);
+    this.autocomplete.setFields(['geometry']);
+
     // Show current location on page load
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -153,67 +39,69 @@ export class MapComponent implements OnInit, AfterViewInit {
           position.coords.longitude
         );
         this.map.setCenter(currentLocation);
-        this.addMarker(currentLocation);
+        this.marker.setPosition(currentLocation);
+        this.marker.setVisible(true);
       });
     }
-  }
 
-  initializeAutocomplete() {
-    this.autocomplete = new google.maps.places.Autocomplete(this.enteredLocation);
-    this.autocomplete.addListener('place_changed', () => {
-      const place = this.autocomplete.getPlace();
-      if (place.geometry && place.geometry.location) {
-        const location = place.geometry.location;
-        this.map.setCenter(location);
-        this.addMarker(location);
-      }
-    });
-  }
-
-  addMarker(location: any) {
-    if (this.marker) {
-      this.marker.setMap(null);
-    }
 
     this.marker = new google.maps.Marker({
-      position: location,
       map: this.map,
-      draggable: true
+      draggable: true,
+      animation: google.maps.Animation.DROP,
+      anchorPoint: new google.maps.Point(0, -29)
     });
 
-    google.maps.event.addListener(this.marker, 'dragend', () => {
-      this.updateAddress(this.marker.getPosition());
+    this.marker.addListener('click', () => {
+      this.toggleBounce();
     });
-  }
 
-  updateAddress(location: any) {
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ location: location }, (results: any, status: any) => {
-      if (status === 'OK' && results[0]) {
-        console.log('Address:', results[0].formatted_address);
+    this.marker.addListener('dragend', () => {
+      const position = this.marker.getPosition();
+      this.geocodeLatLng(position);
+    });
+
+
+    // Handle place selection
+    this.autocomplete.addListener('place_changed', () => {
+      const place = this.autocomplete.getPlace();
+      this.marker.setVisible(false);
+
+      // Move map marker to selected location
+      if (place.geometry && place.geometry.location) {
+        this.map.setCenter(place.geometry.location);
+        this.marker.setPosition(place.geometry.location);
+        this.marker.setVisible(true);
       }
     });
   }
 
-  // EnteredLocation(value: string): void {
-  //   this.enteredLocation = value;
-  //   console.log(this.enteredLocation);
-  //   // Implement the logic to search for places using Google API
-  // }
-  
-  selectLocation() {
+  toggleBounce() {
+    if (this.marker.getAnimation() !== null) {
+      this.marker.setAnimation(null);
+    } else {
+      this.marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+  }
+
+  //update address or Location
+  geocodeLatLng(position: any) {
     const geocoder = new google.maps.Geocoder();
-    const location = this.enteredLocation;
-    console.log(location)
-    
-    geocoder.geocode({ address: location }, (results: any, status: any) => {
-      if (status === 'OK') {
-        const resultLocation = results[0].geometry.location;
-        this.map.setCenter(resultLocation);
-        this.addMarker(resultLocation);
-      } else {
-        console.log('Geocode was not successful for the following reason: ' + status);
+    geocoder.geocode({ location: position }, (results: any, status: any) => {
+      if (status === 'OK' && results[0]) {
+        const address = results[0].formatted_address;
+        const input = document.getElementById('search-box') as HTMLInputElement;
+        input.value = address;
+        console.log(address)
       }
     });
   }
 }
+
+
+
+
+
+
+
+
