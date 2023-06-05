@@ -1,15 +1,11 @@
-
-// TASK-2
 import { Component, ElementRef, ViewChild } from '@angular/core';
 declare var google: any;
-
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  selector: 'app-map2',
+  templateUrl: './map2.component.html',
+  styleUrls: ['./map2.component.css']
 })
-export class MapComponent {
-
+export class Map2Component {
 
   @ViewChild('fromSearchBox', { static: false }) fromSearchBox!: ElementRef;
   @ViewChild('toSearchBox', { static: false }) toSearchBox!: ElementRef;
