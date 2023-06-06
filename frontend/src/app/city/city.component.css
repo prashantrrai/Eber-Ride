@@ -1,6 +1,51 @@
 
+  #map {
+    height: 400px;
+    width: 100%;
+    border: 1px solid rgb(165, 165, 165);
+    margin-top: 20px;
+  }
 
-.parentFormContainer {
+  .parentFormContainer {
+    display: flex;
+    justify-content: space-around;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+
+  #formContainer {
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  #formContainer input {
+    padding: 8px;
+    width: 300px;
+    margin-right: 10px;
+  }
+
+  #formContainer select {
+    padding: 8px;
+    width: 300px;
+    margin-right: 10px;
+  }
+
+  #formContainer button {
+  margin: 10px;
+    padding: 8px 16px;
+    background-color: #00bb06;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  #formContainer button:hover {
+    background-color: #007806;
+  }
+
+
+  
+.parenttableContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,11 +53,11 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#formContainer {
+#tableContainer {
+  width: 90%;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 4px 4px 16px #000000;
-  width: 90%;
   max-width: 600px;
   padding: 20px;
   margin: 40px;
@@ -45,30 +90,6 @@
 .table-responsive {
   overflow-x: auto;
 }
-
-/* @media (max-width: 576px) {
-  .table-responsive {
-    width: 100%;
-    margin-bottom: 1rem;
-    overflow-y: hidden;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid #dee2e6;
-  }
-
-  .table-responsive > .table {
-    margin-bottom: 0;
-  }
-
-  .table-responsive > .table > thead > tr > th,
-  .table-responsive > .table > tbody > tr > th,
-  .table-responsive > .table > tfoot > tr > th,
-  .table-responsive > .table > thead > tr > td,
-  .table-responsive > .table > tbody > tr > td,
-  .table-responsive > .table > tfoot > tr > td {
-    white-space: nowrap;
-  }
-} */
-
 @media (max-width: 360px) {
   .table-responsive > .table > thead > tr > th,
   .table-responsive > .table > tbody > tr > th,

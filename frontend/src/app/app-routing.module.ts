@@ -8,8 +8,7 @@ import { AdminComponent } from './admin/admin.component';
 import { VehicleComponent } from './vehicle/vehicle.component';
 import { authGuard } from './Service/auth.guard';
 import { CountryComponent } from './country/country.component';
-import { MapComponent } from './map/map.component';
-import { Map2Component } from './map2/map2.component';
+import { CityComponent } from './city/city.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -17,10 +16,10 @@ const routes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'forgotpassword', component: ForgotpasswordComponent},
   {path: 'dashboard', component: MenuComponent , canActivate: [authGuard],  children :[
-    {path: 'map2', component: Map2Component},
-    {path: 'vehicletype', component: VehicleComponent} ,   
-    {path: 'country', component: CountryComponent} ,   
     {path: 'admin', component: AdminComponent},
+    {path: 'vehicletype', component: VehicleComponent} ,   
+    {path: 'country', component: CountryComponent},
+    {path: 'city', component: CityComponent}   
   ]},
 ];
 

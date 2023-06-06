@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-// import { MaterialModule } from './material.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,8 +24,7 @@ import { VehicleComponent } from './vehicle/vehicle.component';
 import { AuthService } from './Service/auth.service';
 import { CountryComponent } from './country/country.component';
 import { ToastrModule } from 'ngx-toastr';
-import { MapComponent } from './map/map.component';
-import { Map2Component } from './map2/map2.component';
+import { CityComponent } from './city/city.component';
 
 @NgModule({
   declarations: [
@@ -39,8 +37,7 @@ import { Map2Component } from './map2/map2.component';
     AdminComponent,
     VehicleComponent,
     CountryComponent,
-    MapComponent,
-    Map2Component
+    CityComponent,
   ],
   imports: [
     BrowserModule,

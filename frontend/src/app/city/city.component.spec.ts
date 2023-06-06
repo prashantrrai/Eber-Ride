@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Map2Component } from './map2.component';
+import { CityComponent } from './city.component';
 
-describe('Map2Component', () => {
-  let component: Map2Component;
-  let fixture: ComponentFixture<Map2Component>;
+describe('CityComponent', () => {
+  let component: CityComponent;
+  let fixture: ComponentFixture<CityComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [Map2Component]
+      declarations: [CityComponent]
     });
-    fixture = TestBed.createComponent(Map2Component);
+    fixture = TestBed.createComponent(CityComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

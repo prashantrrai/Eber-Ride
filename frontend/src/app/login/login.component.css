@@ -40,3 +40,33 @@ input{
   color: rgb(11, 161, 255);
 }
 
+
+
+/* Media Queries */
+@media (max-width: 767px) {
+  .parentFormContainer{
+    display: block;
+  }
+  #formContainer {
+    width: 80%;
+  }
+  img{
+    width: 300px;
+    height:300px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .parentFormContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #formContainer {
+    width: 80%;
+  }
+  img{
+    width: 400px;
+    height:400px;
+  }
+}
