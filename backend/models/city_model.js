@@ -15,7 +15,7 @@ const city_model = new mongoose.Schema({
         required: true
     },
     coordinates: {
-        type: object,
+        type: Object,
         required: true
     }
 });

@@ -25,6 +25,7 @@ const deleteRoutes = require('./routes/delete-Admin')
 const updateRoutes = require('./routes/update-Admin')
 const VehicleRoutes = require('./routes/vehicle')
 const countryRoutes = require('./routes/country')
+const cityRoutes = require('./routes/city')
 
 app.use(fetchAdmin)
 app.use(loginRoutes)
@@ -33,6 +34,7 @@ app.use(deleteRoutes)
 app.use(updateRoutes)
 app.use(VehicleRoutes)
 app.use(countryRoutes)
+app.use(cityRoutes)
 
 // const signup_data = require('./models/login_signup');
 // const vehicle_schema = require("./models/vehicle_model");

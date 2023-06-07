@@ -1,12 +1,13 @@
 const express = require("express");
 const cityRoutes = express.Router()
-const cityRoutes = require('../models/country_model')
+const City_Schema = require('../models/city_model')
+const Country_schema = require('../models/country_model')
 
 
 
 
-// //  API to register country data in database.
-// countryRoutes.post('/countryadd', async (req, res) => {
+//  API to register country data in database.
+// cityRoutes.post('/countryadd', async (req, res) => {
 //     try {
 //         // Create a new instance of the Country model
 //         const country = new Country_schema(req.body);
@@ -25,10 +26,10 @@ const cityRoutes = require('../models/country_model')
 // });
 
 
-// countryRoutes.get('/countrydata', async (req,res) => {
+// cityRoutes.get('/citydata', async (req,res) => {
 //     try {
-//         const countrydata = await Country_schema.find({});
-//         res.json({ countrydata });
+//         const citydata = await City_Schema.find({});
+//         res.json({ citydata });
 //       } catch (err) {
 //         console.log(err);
 //         res.status(500).send("Internal Server Error");
@@ -36,5 +37,19 @@ const cityRoutes = require('../models/country_model')
 // })
 
 
-// module.exports = countryRoutes;
+// API to find registered Country Name in Mongodb already.
+cityRoutes.get('/countrynames', async (req,res) => {
+    try {
+        const countrynames = await Country_schema.find({});
+        let result = countrynames.map(name => name.countryName);
+        res.json({ result });
+      } catch (err) {
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+      }
+})
+
+
+
+module.exports = cityRoutes;
 
