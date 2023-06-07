@@ -4,15 +4,13 @@
 <div class="parentFormContainer">
   <div id="formContainer">
 
-    <select id="country" (change)="loadCities()">
-      <option value="">Select a country</option>
-      <option *ngFor="let country of countries" [value]="country">{{country}}</option>
+  <select name="country" #country (change)="onSelected(country.value)">
+      <option value>Select country </option>
+      <option [value]="country.countryName" *ngFor="let country of countryData ">{{country.countryName}}</option>
     </select>
 
-      <input #inputField id="city" placeholder="Enter city name">
-      <span id="duplicateError" *ngIf="isDuplicateCity" style="color: red;">City already exists</span>
-      <button (click)="checkLocation()" >Check Zone</button>
-      <button (click)="addCity()" [disabled]="!isValidCity">Add City</button>
+      <input id="inputCity" placeholder="Enter city name">
+      <button (click)="checkZone_AddCity()" >Add City</button>
       </div>
     </div>
     
@@ -38,7 +36,6 @@
             <td>{{ city.countryName }}</td>
             <td>{{ city.cityName }}</td>
             <td>
-              <!-- <button id="updatebtn" (click)="updateCity(city._id)"> -->
                 <button id="updatebtn" (click)="updateCity()">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>

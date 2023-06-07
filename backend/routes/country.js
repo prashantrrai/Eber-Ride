@@ -1,7 +1,7 @@
 // https://restcountries.com/v3.1/name/india
 const express = require("express");
 const countryRoutes = express.Router()
-const Country_schema = require('../models/country_model')
+const countryModel = require('../models/country')
 
 
 
@@ -9,7 +9,7 @@ const Country_schema = require('../models/country_model')
 countryRoutes.post('/countryadd', async (req, res) => {
     try {
         // Create a new instance of the Country model
-        const country = new Country_schema(req.body);
+        const country = new countryModel(req.body);
 
         await country.save();
         console.log(country)
@@ -27,7 +27,7 @@ countryRoutes.post('/countryadd', async (req, res) => {
 
 countryRoutes.get('/countrydata', async (req,res) => {
     try {
-        const countrydata = await Country_schema.find({});
+        const countrydata = await countryModel.find({});
         res.json({ countrydata });
       } catch (err) {
         console.log(err);

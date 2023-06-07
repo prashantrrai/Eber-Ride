@@ -36,11 +36,6 @@ app.use(VehicleRoutes)
 app.use(countryRoutes)
 app.use(cityRoutes)
 
-// const signup_data = require('./models/login_signup');
-// const vehicle_schema = require("./models/vehicle_model");
-// const Country_schema = require('./models/country_model')
-// const City_Schema = require('./models/city_model')
- 
 
 // To show API is Working in backend on http://localhost:4000.
 app.get('/', async (req, res) => {

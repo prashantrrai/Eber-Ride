@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
 
-const country_model = new mongoose.Schema({
+const country_Schema = new mongoose.Schema({
   countryName: {
     type: String,
+    required:true,
     unique: true,
   },
   countryTimeZone: {
@@ -20,8 +21,8 @@ const country_model = new mongoose.Schema({
   }
 });
 
-const Country_schema = mongoose.model("Country_schema", country_model);  //mapping vehicle_model data into vehicle_data
+const countryModel = mongoose.model("countryModel", country_Schema);  //mapping vehicle_model data into vehicle_data
 
 
-module.exports = Country_schema;
+module.exports = countryModel;
 

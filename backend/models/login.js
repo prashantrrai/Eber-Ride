@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 
-const registration_data = new mongoose.Schema({
+const admin_Schema = new mongoose.Schema({
   adminName: {
     type: String,
     required: true,
@@ -21,12 +21,7 @@ const registration_data = new mongoose.Schema({
   }
 });
 
-const signup_data = mongoose.model("signup_data", registration_data);  //mapping registration data into signup data
-
-
-
-
-//to save data statically from backend only into database .
+const adminModel = mongoose.model("adminModel", admin_Schema);  //mapping registration data into signup data
 
 // const document = new signup_data({ name: 'John', email: 'john@gmail.com', password: 'abcdef'});
 
@@ -38,8 +33,4 @@ const signup_data = mongoose.model("signup_data", registration_data);  //mapping
 // })
 
 
-
-
-
-
-module.exports = signup_data;
+module.exports = adminModel;

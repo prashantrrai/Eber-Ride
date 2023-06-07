@@ -1,6 +1,6 @@
 const express = require("express");
 const deleteRoutes = express.Router()  
-const signup_data = require("../models/login_signup"); 
+const signup_data = require("../models/login"); 
 const session = require('express-session');
 
 

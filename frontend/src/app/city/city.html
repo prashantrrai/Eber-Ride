@@ -1,0 +1,73 @@
+<!-- <label class="form-label d-flex justify-content-start m" for="country">country</label> -->
+<!--
+<input type="text" style="width:200px; margin-top: 20px;" #searchBox id="search-box" placeholder="Searchcity">
+<div class="dropdown" style = "width: 20%; margin-top: 20px;margin-left: 20px;">
+  <select class="form-select" id="country" formControlName="country">
+    <option value="{{countryname}}" *ngFor="let countryname of countrydata">{{countryname}}</option>
+  </select>
+</div> -->
+<div>
+    <label for="country"> Country : </label>
+    <select id="country" #country (change)="onSelected(country.value)">
+      <option value>Select country </option>
+      <option *ngFor="let country of countrydata" [value]="country._id">{{
+        country.countryname
+        }}</option>
+    </select><br>
+    <br>
+    <label for="city">City : </label>
+    <input type="text" id="search-box" #searchBox placeholder="Search for a city" />
+    <br>
+    <br>
+    <button (click)="addcity()" class="btn btn-primary mx-5" *ngIf="isaddbutton" >Add City</button>
+    <button (click)="checkLocation()" class="btn btn-primary mx-5">Check Location</button><br><br>
+    <!-- <div *ngIf="isInZone" style="color:green" class="my-2 mx-5">Yes, Your entered location belongs to drawn zone.</div>
+    <div *ngIf="!isInZone" style="color:red" class="my-2 mx-5">Sorry! Entered location doesn’t belong to drawn zone.</div> -->
+  </div>
+  <div id="map" class="mx-auto" style="width: 1000px;"></div>
+  <br>
+  <br>
+  
+  <!-- table  -->
+  
+    <label for="pageSize">Show Data : </label>
+    <select id="pageSize" [(ngModel)]="tableSize" (change)="onPageSizeChange($event)">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+  
+  
+  
+  <div class="mx-auto" style="width: 1000px; background-color: rgb(255, 255, 255); ">
+    <br>
+    <table class="table table-hover">
+  
+      <thead class="bg-dark text-white">
+        <tr>
+          <th>CITY</th>
+          <th>COUNTRY</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+  
+        <tr *ngFor="
+          let city of citydatabasedata
+            | paginate
+              : {
+                  itemsPerPage: tableSize,
+                  currentPage: page,
+                  totalItems: count
+                };
+          let i = index
+        ">
+          <td class="font-weight-bold">{{ city.city}}</td>
+          <td class="font-weight-bold"> {{ city.countrydata.countryname }}</td>
+          <td> <button mat-raised-button (click)="updatecity(city._id, city)">
+              <mat-icon>edit</mat-icon></button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -1,6 +1,6 @@
   const express = require("express");
   const VehicleRoutes = express.Router() 
-  const vehicle_schema = require('../models/vehicle_model');
+  const vehicleModel = require('../models/vehicle');
   const multer = require('multer');
   const path = require('path')
   const img_path = path.join(__dirname, "../Public/Upload");
@@ -29,12 +29,12 @@
   // const upload = multer({ storage: storage });
 
   const fileFilter = function (req, file, cb) {
-    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
     const ext = path.extname(file.originalname).toLowerCase();
     if (allowedExtensions.includes(ext)) {
       cb(null, true);
     } else {
-      cb(new Error('Only JPG, JPEG, PNG, and GIF files are allowed.'));
+      cb(new Error('Only JPG, JPEG, PNG, WEBP and GIF files are allowed.'));
     }
   };
 
@@ -65,10 +65,10 @@
       let vehicle
       try {
         if (!req.file) {
-          vehicle = new vehicle_schema({ vehicleName: vehicleName});
+          vehicle = new vehicleModel({ vehicleName: vehicleName});
         }else{
           const vehicleImage = req.file.filename;
-          vehicle = new vehicle_schema({ vehicleName: vehicleName, vehicleImage: vehicleImage });
+          vehicle = new vehicleModel({ vehicleName: vehicleName, vehicleImage: vehicleImage });
         }
         await vehicle.save();
         res.json({ success: true, message: "Vehicle Added Successfully", vehicle });
@@ -91,7 +91,7 @@
     //to fetch data from database of registered vehicle and show in /vehicledata route of frontend.
     VehicleRoutes.get('/vehicledata', async (req, res) => {
     try {
-      const data = await vehicle_schema.find({});
+      const data = await vehicleModel.find({});
       res.json({ data });
     } catch (err) {
       console.log(err);
@@ -110,11 +110,11 @@
         let vehicle;
 
         if (!req.file) {
-          vehicle =  await vehicle_schema.findByIdAndUpdate(vehicleId, {
+          vehicle =  await vehicleModel.findByIdAndUpdate(vehicleId, {
             vehicleName: req.body.vehicleName,
         },{new:true})
      }else{
-      vehicle =  await vehicle_schema.findByIdAndUpdate(vehicleId, {
+      vehicle =  await vehicleModel.findByIdAndUpdate(vehicleId, {
         vehicleName: req.body.vehicleName,
         vehicleImage: req.file.filename
       },{new:true})

@@ -1,6 +1,6 @@
 const express = require("express");
 const registerRoutes = express.Router()
-const signup_data = require("../models/login_signup");
+const adminModel = require("../models/login");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
@@ -21,7 +21,7 @@ registerRoutes.post('/register', (req, res) => {
 
   // const { adminName, email, password, cnfpassword } = req.body;
 
-  const user = new signup_data({
+  const user = new adminModel({
     adminName: req.body.adminName,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)), // Hashing the password

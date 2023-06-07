@@ -1,6 +1,6 @@
 const express = require("express");
 const fetchAdmin = express.Router() 
-const signup_data = require("../models/login_signup");       //required signup data model or schema from model.js file
+const signup_data = require("../models/login");       //required signup data model or schema from model.js file
 const authenticateToken = require("../middleware/auth");      //required authentication middleware from auth.js file which is a custom middleware file
 
 

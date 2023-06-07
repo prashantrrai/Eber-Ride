@@ -1,6 +1,6 @@
 const express = require("express");
 const loginRoutes = express.Router()      //imported login routes  from login.js file
-const signup_data = require("../models/login_signup");     //required signup data model or schema from model.js file
+const signup_data = require("../models/login");     //required signup data model or schema from model.js file
 const bcrypt = require('bcryptjs');           //bcrypt module is used to hash the password
 const jwt = require('jsonwebtoken');
 require("dotenv").config();         

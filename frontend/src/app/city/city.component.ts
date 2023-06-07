@@ -1,20 +1,23 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { CityService } from '../Service/city.service';
 declare var google: any;
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-city',
   templateUrl: './city.component.html',
   styleUrls: ['./city.component.css']
 })
-export class CityComponent implements AfterViewInit {
-  cityData: any[] = []
-  countries: string[] = ['Country A', 'Country B', 'Country C']; // Replace with actual countries from the database
+export class CityComponent implements OnInit, AfterViewInit {
+  // cityData: any[] = []
   addedCities: string[] = [];
   newCity: string = '';
   isValidCity: boolean = false;
   isDuplicateCity: boolean = false;
 
+  //map
   map: any;
   drawingManager: any;
   polygon: any;
@@ -23,7 +26,36 @@ export class CityComponent implements AfterViewInit {
   marker: any;
   autocomplete: any;
 
-  constructor(private toastr: ToastrService){}
+  //get country data
+  countryNamesDB: any[] = [];
+  selectedCountry: string = '';
+  cityData: any;
+
+  country: any;
+  countries: any;
+  countryData: any;
+  coordinates: any;
+  inputValue: any;
+  citydatabasedata: any;
+
+  constructor(private toastr: ToastrService, private _city: CityService, private http: HttpClient){}
+
+  ngOnInit(): void {
+    this.getCountryNamefromDB()
+  }
+
+  getCountryNamefromDB() :void{
+      this._city.getcountryData().subscribe({
+        next: (response) => {
+          this.countryData = response.countrydata;
+          // console.log(response.countrydata)
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+    }
+  
 
   
   setLocation(place: any) {
@@ -34,7 +66,7 @@ export class CityComponent implements AfterViewInit {
 
     if (place.geometry && place.geometry.location) {
       this.map.setCenter(place.geometry.location);
-      this.map.setZoom(12);
+      this.map.setZoom(8);
       this.marker.setPosition(place.geometry.location);
       this.marker.setVisible(true);
     }
@@ -43,9 +75,10 @@ export class CityComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
       center: { lat: 20.5937, lng: 78.9629 },
-      zoom: 5
+      zoom: 4
     });
-    const input = document.getElementById('city') as HTMLInputElement;
+    
+    const input = document.getElementById('inputCity') as HTMLInputElement;
     this.autocomplete = new google.maps.places.Autocomplete(input);
 
     this.autocomplete.addListener('place_changed', () => {
@@ -65,18 +98,6 @@ export class CityComponent implements AfterViewInit {
       }
     });
 
-    // Show current location on page load
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const currentLocation = new google.maps.LatLng(
-          position.coords.latitude,
-          position.coords.longitude
-        );
-        this.map.setCenter(currentLocation);
-        this.marker.setPosition(currentLocation);
-        this.marker.setVisible(true);
-      });
-    }
 
     // Add Location Marker or Pin
     this.marker = new google.maps.Marker({
@@ -103,39 +124,85 @@ export class CityComponent implements AfterViewInit {
         if (this.polygon) {
           this.polygon.setMap(null);
         }
-        console.log(event);
+        // console.log(event);
 
         this.polygon = event.overlay;
-        console.log(this.polygon);
+        // console.log(this.polygon);
       }
     });
   }
 
-  checkLocation() {
+  checkZone_AddCity() {
     const geocoder = new google.maps.Geocoder();
-    const input = document.getElementById('city') as HTMLInputElement;
+    const input = document.getElementById('inputCity') as HTMLInputElement;
     console.log('.....checkLocation.......' + input.value);
+
+    const payload = {
+      coordinates: this.coordinates,
+      city: this.inputValue,
+      countryid: this.country
+    };
+
+    console.log(payload);
 
     geocoder.geocode({ address: input.value }, (results: any, status: any) => {
       if (status === 'OK') {
         const location = results[0].geometry.location;
         this.isInZone = google.maps.geometry.poly.containsLocation(location, this.polygon);
+        
         if (this.isInZone) {
-          this.toastr.success('Location inside Zone');
-        } else {
-          this.toastr.error('Location Not inside Zone');
+          this._city.addcity(payload).subscribe({
+            next: (res: any) => {
+              this.citydatabasedata.push(res.city);
+              this.toastr.success(res.message);
+            },
+            error: (error) => {
+              this.toastr.warning(error.error.message);
+            },
+          })
+        } 
+        else {
+            this.toastr.warning("please choose city and create a zone");
         }
-      } else {
-        this.toastr.error('Geocode was not successful for the following reason: ' + status, 'Error');
-      }
+      } 
     });
   }
 
 
+
+
+  onSelected(value: any) {
+    this.country = value  // country id
+    //   selected country id and api countrydata  match and when both id match then  that id  show a countryname that countryname to use in rest api
+    console.log(this.country);
+
+
+    this.countryNamesDB.map((country: any) => {
+      if (country._id === value) {
+        this.countryNamesDB = country.countryname
+      }
+    })
+
+    // Update autocomplete restrictions based on the selected country
+    this.http.get<any>(`https://restcountries.com/v3.1/name/${this.countryNamesDB}`).subscribe({
+      next: (countryRes: any) => {
+        let rcountry = countryRes.filter((obj: any) => {
+          return obj.name.common == this.countryNamesDB
+        })
+        let code = rcountry[0].cca2.toLowerCase()
+
+        this.autocomplete.setTypes(['(cities)']);
+        this.autocomplete.setComponentRestrictions({ 'country': code });
+      },
+      error: (error: any) => {
+        console.log("country select error ", error.message);
+      }
+      }
+    )
+  }
+
+  
   loadCities(): void {
-    // Fetch the cities for the selected country from the database
-    // You'll need to implement the logic to fetch cities based on the selected country
-    // and update the addedCities array accordingly
   }
 
   validateCity(): void {
@@ -153,6 +220,5 @@ export class CityComponent implements AfterViewInit {
   updateCity(){
     alert("Hii")
   }
-
 
 }
