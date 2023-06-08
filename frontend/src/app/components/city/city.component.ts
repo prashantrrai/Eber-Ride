@@ -3,7 +3,7 @@ import { CityService } from '../../Service/city.service';
 declare var google: any;
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 
 @Component({
@@ -42,14 +42,19 @@ export class CityComponent implements OnInit {
   inputValue: any;
   isaddbutton: boolean = true;
   isupdatebutton: boolean = false;
-  isDisabled: boolean = false;
+  isCountryDisabled: boolean = false;
   id: any;
   page: any;
   tableSize: any;
   count: any;
   countryName: any;
 
-  constructor(private toastr: ToastrService, private _city: CityService, private http: HttpClient, private formBuilder: FormBuilder,){}
+  constructor(private toastr: ToastrService, private _city: CityService, private http: HttpClient, private formBuilder: FormBuilder,){
+    this.cityForm = new FormGroup({
+      countryname: new FormControl({ value: null, disabled: false }),
+      cityname: new FormControl(null)
+    });
+  }
 
   ngOnInit(): void {
     this.cityForm = this.formBuilder.group({
@@ -169,6 +174,13 @@ export class CityComponent implements OnInit {
       this.selectedCountry = value  // country id not value, object id from db
       console.log(this.selectedCountry)
   
+      
+      if (this.selectedCountry !== 'Select country') {
+        this.isCountryDisabled = true;
+      } else {
+        this.isCountryDisabled = false;
+      }
+      
       this.countryData.map((country: any) => {
         if (country._id === value) {
           this.selectedCountryName = country.countryName
@@ -270,14 +282,14 @@ export class CityComponent implements OnInit {
   }
 
   updateCity(_id: string, city: any){
+  // Disable the countryname form control
+  this.cityForm.get('countryname')?.disable();
     this.cityForm.patchValue({
       countryname: city.countryDetails._id,
       cityname: city.city
     });
     
-    this.isaddbutton = false;
-    this.isupdatebutton = true;
-    this.isDisabled = true;
+    this.isCountryDisabled = true;
 
     this.id = city._id;
     this.inputValue = city.city;

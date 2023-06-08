@@ -35,7 +35,7 @@ cityRoutes.post("/cityadd", async (req, res) => {
 
 
 
-// API to find registered city Name in Mongodb.
+// API to find registered city and country Name in Mongodb............
 cityRoutes.get("/citydata", async (req, res) => {
   try {
     // const citydata = await City_Schema.find();
@@ -52,15 +52,39 @@ cityRoutes.get("/citydata", async (req, res) => {
         $unwind: '$countryDetails'
       }
     ])
+    
     // const citydata = await cityModel.find({});
     // // res.json({ citydata });
+
     // console.log(citydata);
     res.send(citydata);
+    
   } catch (error) {
-    res.send(error);
+    console.log(error);
+
+    res.status(500).json({ success: false, message: error});
   }      
 })
 
+
+
+  //  API to update data of city in database using Angular form.
+  // cityRoutes.put('/cityupdate/:id', async (req, res) => {
+  //     try {
+  //       const cityId = req.params.id;
+  //       console.log(cityId)
+  //       let city;
+  
+  //       city =  await cityModel.findByIdAndUpdate(cityId, {
+  //         city: req.body.city,
+  //       },{new:true})
+       
+  //     res.json({ success: true, message: "City Updated Successfully" ,city});
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.status(500).json({ success: false, message: "City Already Exists" });
+  //   }
+  // });
 
 
 
