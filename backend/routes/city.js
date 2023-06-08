@@ -3,37 +3,37 @@ const cityRoutes = express.Router()
 const cityModel = require('../models/city')
 
 
-
-
-//  API to register country data in database.
-cityRoutes.post("/city",async (req, res) => {
+//  API to register city data in database.
+cityRoutes.post("/cityadd", async (req, res) => {
   try {
-      citydata = await new cityModel({
+    // const citydata = new cityModel(req.body);
+
+      citydata = new cityModel({
+        country_id: req.body.country_id,
         city: req.body.city,
-       country_id:req.body.countryid,
-        coordinates:req.body.coordinates
+        coordinates: req.body.coordinates
       });
+
     await citydata.save();
     console.log(citydata);
-    res.send({
-      success: true,
-      citydata,
-      message: "city add succesfully",
-    });
+
+    res.status(201).send({success: true, citydata, message: "City Added Successfully"});
+
   } catch (error) {
     console.log(error);
+
     if(error.keyPattern){
       if (error.keyPattern.city) {
-        return res.status(500).send({
-          success: false,
-          message: "city already exist!!!!!!!!!!!!!!!!!!!!" 
-        })
+        console.log("Country Already Exists")
+            return res.status(500).json({success: false, message: "City Already Exists"});
       } 
     }
   
-    res.status(500).send(error)
+    res.status(500).json({ success: false, message: error});
   }
 });
+
+
 
 
 // API to find registered Country Name in Mongodb already.

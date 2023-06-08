@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
 
 const city_Schema = new mongoose.Schema({
     country_id:{
-        type: Schema.Types.ObjectId,
+        type: String,
         required:true
     },
     city:{
