@@ -27,7 +27,6 @@ export class CityComponent implements OnInit, AfterViewInit {
   autocomplete: any;
 
   //get country data
-  countryNamesDB: any[] = [];
   selectedCountry: string = '';
   cityData: any;
 
@@ -44,6 +43,7 @@ export class CityComponent implements OnInit, AfterViewInit {
     this.getCountryNamefromDB()
   }
 
+  // TO fetch country data from from /countrydata API in dropdown..........
   getCountryNamefromDB() :void{
       this._city.getcountryData().subscribe({
         next: (response) => {
@@ -170,32 +170,30 @@ export class CityComponent implements OnInit, AfterViewInit {
 
 
 
-
+  // To select country selected value from dropdown to use it in city input...........
   onSelected(value: any) {
-    this.country = value  // country id
     //   selected country id and api countrydata  match and when both id match then  that id  show a countryname that countryname to use in rest api
-    console.log(this.country);
-
-
-    this.countryNamesDB.map((country: any) => {
-      if (country._id === value) {
-        this.countryNamesDB = country.countryname
+    this.country = value
+    
+    this.countryData.map((country: any) => {
+      if (country.countryName === value) {
+        this.countryData = country.countryName
       }
     })
 
-    // Update autocomplete restrictions based on the selected country
-    this.http.get<any>(`https://restcountries.com/v3.1/name/${this.countryNamesDB}`).subscribe({
+    // city Autocomplete based on selected country from onSelected().............
+    this.http.get<any>(`https://restcountries.com/v3.1/name/${this.countryData}`).subscribe({
       next: (countryRes: any) => {
         let rcountry = countryRes.filter((obj: any) => {
-          return obj.name.common == this.countryNamesDB
+          return obj.name.common == this.countryData
         })
-        let code = rcountry[0].cca2.toLowerCase()
 
+        let code = rcountry[0].cca2.toLowerCase()
         this.autocomplete.setTypes(['(cities)']);
         this.autocomplete.setComponentRestrictions({ 'country': code });
       },
       error: (error: any) => {
-        console.log("country select error ", error.message);
+        console.log("Country Selection Error....... ", error.message);
       }
       }
     )
