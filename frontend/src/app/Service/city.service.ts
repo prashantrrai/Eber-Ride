@@ -25,4 +25,11 @@ export class CityService {
     return this.http.get<any>(`${this.serverUrl}/citydata`);
   }
 
+
+  updateCity(cityId: string, cityData: any): Observable<any> {
+    // console.log(cityId)
+    const url = `${this.serverUrl}/cityupdate/${cityId}`;
+    return this.http.put<any>(url, cityData);
+  }
+
 }

@@ -48,6 +48,7 @@ export class CityComponent implements OnInit {
   tableSize: any;
   count: any;
   countryName: any;
+  city: any
 
   constructor(private toastr: ToastrService, private _city: CityService, private http: HttpClient, private formBuilder: FormBuilder,){
     this.cityForm = new FormGroup({
@@ -172,7 +173,7 @@ export class CityComponent implements OnInit {
     // To SELECT country selected value from dropdown to use it in city input...........
     onSelected(value: any) {
       this.selectedCountry = value  // country id not value, object id from db
-      console.log(this.selectedCountry)
+      // console.log(this.selectedCountry)
   
       
       if (this.selectedCountry !== 'Select country') {
@@ -262,14 +263,6 @@ export class CityComponent implements OnInit {
 
 
 
-  
-
-  validateCity(): void {
-    this.isDuplicateCity = this.addedCities.includes(this.newCity);
-    this.isValidCity = !this.isDuplicateCity && this.newCity.trim() !== '';
-  }
-
-
   onPageChange(event: any): void {
     this.page = event;
     this.loadCities();
@@ -281,9 +274,11 @@ export class CityComponent implements OnInit {
     this.loadCities();
   }
 
-  updateCity(_id: string, city: any){
+
+  editbtn(_id: string, city: any){
   // Disable the countryname form control
   this.cityForm.get('countryname')?.disable();
+
     this.cityForm.patchValue({
       countryname: city.countryDetails._id,
       cityname: city.city
@@ -294,13 +289,51 @@ export class CityComponent implements OnInit {
     this.id = city._id;
     this.inputValue = city.city;
     this.selectedCountryName = city.countryDetails.countryName;
-    console.log(this.selectedCountryName)
+    // console.log(this.selectedCountryName)
+
+
+    // Enable the update button and disable the add button
+    this.isaddbutton = false;
+    this.isupdatebutton = true;
+  }
+
+
+  updateCity(city: any) {
+
+     // Update city in the backend
+    const cityValue = this.cityForm.get('cityname')?.value;
+    if (cityValue) {
+      const payload = {
+        city: cityValue
+      };
+  
+      this._city.updateCity(this.id, payload).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          alert(response.message);
+          // Reset the form and button states
+          this.cityForm.reset();
+          this.isupdatebutton = false;
+          this.isaddbutton = true;
+          this.cityForm.get('countryname')?.enable();
+        },
+        error: (error: any) => {
+          console.log(error);
+          alert(error.error.message);
+        }
+      });
+    } else {
+      alert('Please enter a city name.');
+    }
+
 
     const coordinatesdatabase = city.coordinates;
     // console.log(coordinatesdatabase);
+
+    // Update city in the frontend
     const polygonPath = coordinatesdatabase.map((coord: any) => new google.maps.LatLng(coord.lat, coord.lng));
-    this.polygon.setPaths(polygonPath); //set polygon path
-    this.polygon.setMap(null); // Remove the old polygon from the map
+    this.polygon.setPaths(polygonPath);
+    this.polygon.setMap(null);
     this.polygon = new google.maps.Polygon({
       paths: polygonPath,
       strokeColor: '#FF0000',

@@ -8,7 +8,9 @@
     
 
       <input id="inputCity" placeholder="Enter city name" formControlName="cityname">
-      <button (click)="checkZone_AddCity()" >Add City</button>
+      <!-- <button (click)="checkZone_AddCity()" >Add City</button> -->
+      <button *ngIf="isaddbutton" (click)="checkZone_AddCity()">Add City</button>
+      <button *ngIf="isupdatebutton" (click)="updateCity(city)">Update City</button>
     </form>
   </div>
 </div>
@@ -45,7 +47,7 @@
             <td>{{ city.countryDetails.countryName }}</td>
             <td>{{ city.city }}</td>
             <td>
-                <button id="updatebtn" (click)="updateCity(city._id, city)"><i class="fa-solid fa-pen-to-square" ></i>   </button>
+                <button id="updatebtn" (click)="editbtn(city._id, city)"><i class="fa-solid fa-pen-to-square" ></i>   </button>
             </td>
           </tr>
           </tbody>

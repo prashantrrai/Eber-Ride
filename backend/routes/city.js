@@ -69,22 +69,23 @@ cityRoutes.get("/citydata", async (req, res) => {
 
 
   //  API to update data of city in database using Angular form.
-  // cityRoutes.put('/cityupdate/:id', async (req, res) => {
-  //     try {
-  //       const cityId = req.params.id;
-  //       console.log(cityId)
-  //       let city;
+  cityRoutes.put('/cityupdate/:id', async (req, res) => {
+      try {
+        const cityId = req.params.id;
+        const updatedCity = {
+          city: req.body.city,
+        };
+        console.log(cityId)
+        console.log(updatedCity)
   
-  //       city =  await cityModel.findByIdAndUpdate(cityId, {
-  //         city: req.body.city,
-  //       },{new:true})
+        let cityData =  await cityModel.findByIdAndUpdate(cityId, updatedCity, {new:true});
        
-  //     res.json({ success: true, message: "City Updated Successfully" ,city});
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(500).json({ success: false, message: "City Already Exists" });
-  //   }
-  // });
+      res.json({ success: true, message: "City Updated Successfully" ,cityData});
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ success: false, message: "City Update Failed" });
+    }
+  });
 
 
 
