@@ -3,6 +3,7 @@ import { CityService } from '../../Service/city.service';
 declare var google: any;
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -11,6 +12,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./city.component.css']
 })
 export class CityComponent implements OnInit {
+  cityForm!: FormGroup;
+  citydata :any = {
+    countryname: '',
+    cityname : '',
+}
   addedCities: string[] = [];
   newCity: string = '';
   isValidCity: boolean = false;
@@ -41,6 +47,7 @@ export class CityComponent implements OnInit {
   page: any;
   tableSize: any;
   count: any;
+  countryName: any;
 
   constructor(private toastr: ToastrService, private _city: CityService, private http: HttpClient){}
 
@@ -144,7 +151,7 @@ export class CityComponent implements OnInit {
     this._city.getcity().subscribe({
     next:  (response) => {
         this.cityData = response;
-        console.log(response);
+        // console.log(response);
       },
     error:  (error) => {
         console.log(error);
@@ -247,45 +254,40 @@ export class CityComponent implements OnInit {
   }
 
 
-  fetchcitydata(): void {
-    this._city.getcity().subscribe(
-      (response) => {
-        this.cityData = response;
-        console.log(response);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
-
   onPageChange(event: any): void {
     this.page = event;
-    this.fetchcitydata();
+    this.loadCities();
   }
 
   onPageSizeChange(event: any): void {
     this.tableSize = event.target.value;
     this.page = 1;
-    this.fetchcitydata();
+    this.loadCities();
   }
 
   updateCity(_id: string, city: any){
+    console.log(this.cityData)
+    if (this.cityData) {
+      this.cityForm.patchValue({
+        countryname: city.countryDetails.countryName,
+        cityname: city.city
+      });
+    }
     this.isaddbutton = false;
     this.isupdatebutton = true;
     this.isDisabled = true;
 
     this.id = city._id;
-    // console.log(this.id);
+    console.log("Country ID:",this.id);
     this.inputValue = city.city;
-    // console.log(this.inputValue);
-    // this.countryName = city.countrydata.countryname;
-    // console.log( this.countryName);
+    console.log("City:",this.inputValue);
+    this.countryName = city.countryDetails.countryName;
+    console.log( this.countryName);
 
     const coordinatesdatabase = city.coordinates;
     console.log(coordinatesdatabase);
     const polygonPath = coordinatesdatabase.map((coord: any) => new google.maps.LatLng(coord.lat, coord.lng));
-    this.polygon.setPaths(polygonPath);
+    this.polygon.setPaths(polygonPath); //set polygon path
     this.polygon.setMap(null); // Remove the old polygon from the map
     this.polygon = new google.maps.Polygon({
       paths: polygonPath,

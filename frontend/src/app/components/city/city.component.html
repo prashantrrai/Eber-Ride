@@ -1,13 +1,14 @@
 <div class="parentFormContainer">
   <div id="formContainer">
-
-  <select name="country" #country (change)="onSelected(country.value)">
+  <form [formGroup]="cityForm"  >
+  <select name="country" #country formControlName="countryname" (change)="onSelected(country.value)">
       <option value>Select country </option>
       <option *ngFor="let country of countryData " [value]="country._id">{{country.countryName}}</option>
     </select>
 
-      <input id="inputCity" placeholder="Enter city name">
+      <input id="inputCity" placeholder="Enter city name" formControlName="cityname">
       <button (click)="checkZone_AddCity()" >Add City</button>
+    </form>
   </div>
 </div>
     
