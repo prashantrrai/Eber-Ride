@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CountryService } from '../Service/country.service';
+import { CountryService } from '../../Service/country.service';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../Service/auth.service';
+import { AuthService } from '../../Service/auth.service';
 
 @Component({
   selector: 'app-country',

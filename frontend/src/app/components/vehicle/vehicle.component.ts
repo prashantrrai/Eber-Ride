@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { VehicleService } from "../Service/vehicle.service";
+import { VehicleService } from "../../Service/vehicle.service";
 import { ToastrService } from "ngx-toastr";
-import { AuthService } from "../Service/auth.service";
+import { AuthService } from "../../Service/auth.service";
 
 @Component({
   selector: "app-vehicle",

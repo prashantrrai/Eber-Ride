@@ -12,19 +12,20 @@ import { AppRoutingModule } from './app-routing.module';
 
 
 import { AppComponent } from './app.component';
-import { FooterComponent } from './footer/footer.component';
-import { MenuComponent } from './menu/menu.component';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
-import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
-import { AdminComponent } from './admin/admin.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { MenuComponent } from './components/menu/menu.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
+import { AdminComponent } from './components/admin/admin.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { VehicleComponent } from './vehicle/vehicle.component';
+import { VehicleComponent } from './components/vehicle/vehicle.component';
 import { AuthService } from './Service/auth.service';
-import { CountryComponent } from './country/country.component';
+import { CountryComponent } from './components/country/country.component';
 import { ToastrModule } from 'ngx-toastr';
-import { CityComponent } from './city/city.component';
+import { CityComponent } from './components/city/city.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { CityComponent } from './city/city.component';
     MatMenuModule,
     MatListModule,
     MatSidenavModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgxPaginationModule
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}, AuthService],

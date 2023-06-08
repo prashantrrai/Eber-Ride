@@ -1,14 +1,14 @@
-import { MenuComponent } from './menu/menu.component';
+import { MenuComponent } from './components/menu/menu.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
-import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
-import { AdminComponent } from './admin/admin.component';
-import { VehicleComponent } from './vehicle/vehicle.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { VehicleComponent } from './components/vehicle/vehicle.component';
 import { authGuard } from './Service/auth.guard';
-import { CountryComponent } from './country/country.component';
-import { CityComponent } from './city/city.component';
+import { CountryComponent } from './components/country/country.component';
+import { CityComponent } from './components/city/city.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},

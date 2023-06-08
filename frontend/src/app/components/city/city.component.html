@@ -1,0 +1,60 @@
+<div class="parentFormContainer">
+  <div id="formContainer">
+
+  <select name="country" #country (change)="onSelected(country.value)">
+      <option value>Select country </option>
+      <option *ngFor="let country of countryData " [value]="country._id">{{country.countryName}}</option>
+    </select>
+
+      <input id="inputCity" placeholder="Enter city name">
+      <button (click)="checkZone_AddCity()" >Add City</button>
+  </div>
+</div>
+    
+    <div class="p-4">
+      <div class="rounded" id="map">
+      </div>
+    </div>
+
+
+
+    
+  <label for="pageSize">Show Data : </label>
+  <select id="pageSize" [(ngModel)]="tableSize" (change)="onPageSizeChange($event)">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+  
+  <div class="parenttableContainer">
+    <div id="tableContainer">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="bg-dark text-light">
+          <tr>
+            <th>Country</th>
+            <th>City</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let city of cityData| paginate: { itemsPerPage: tableSize, currentPage: page,totalItems: count   };let i = index">
+            <td>{{ city.countryDetails.countryName }}</td>
+            <td>{{ city.city }}</td>
+            <td>
+                <button id="updatebtn" (click)="updateCity(city._id, city)"><i class="fa-solid fa-pen-to-square"></i>   </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="d-flex justify-content-center">
+    <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true">
+    </pagination-controls>
+  </div>
+  

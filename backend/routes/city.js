@@ -28,7 +28,6 @@ cityRoutes.post("/cityadd", async (req, res) => {
             return res.status(500).json({success: false, message: "City Already Exists"});
       } 
     }
-  
     res.status(500).json({ success: false, message: error});
   }
 });
@@ -36,23 +35,25 @@ cityRoutes.post("/cityadd", async (req, res) => {
 
 
 
-// API to find registered Country Name in Mongodb already.
-cityRoutes.get("/city", async (req, res) => {
+// API to find registered city Name in Mongodb.
+cityRoutes.get("/citydata", async (req, res) => {
   try {
     // const citydata = await City_Schema.find();
     const cities = await cityModel.aggregate([
       {
         $lookup: {
-          from:'country_schemas',
+          from:'countrymodels',
           foreignField:'_id',
           localField:'country_id',
-          as:'countrydata'
+          as:'countryDetails'
         }
       },
       {
-        $unwind: '$countrydata'
+        $unwind: '$countryDetails'
       }
     ])
+    // const citydata = await cityModel.find({});
+    // // res.json({ citydata });
     console.log(cities);
     res.send(cities);
   } catch (error) {

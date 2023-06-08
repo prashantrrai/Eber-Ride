@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../Service/auth.service';
+import { AuthService } from '../../Service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../Service/api.service';
+import { ApiService } from '../../Service/api.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AuthService } from '../Service/auth.service';
+import { AuthService } from '../../Service/auth.service';
 
 @Component({
   selector: 'app-admin',
