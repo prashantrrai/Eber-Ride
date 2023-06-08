@@ -39,7 +39,7 @@ cityRoutes.post("/cityadd", async (req, res) => {
 cityRoutes.get("/citydata", async (req, res) => {
   try {
     // const citydata = await City_Schema.find();
-    const cities = await cityModel.aggregate([
+    const citydata = await cityModel.aggregate([
       {
         $lookup: {
           from:'countrymodels',
@@ -54,8 +54,8 @@ cityRoutes.get("/citydata", async (req, res) => {
     ])
     // const citydata = await cityModel.find({});
     // // res.json({ citydata });
-    console.log(cities);
-    res.send(cities);
+    // console.log(citydata);
+    res.send(citydata);
   } catch (error) {
     res.send(error);
   }      

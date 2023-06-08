@@ -5,6 +5,7 @@
       <option value>Select country </option>
       <option *ngFor="let country of countryData " [value]="country._id">{{country.countryName}}</option>
     </select>
+    
 
       <input id="inputCity" placeholder="Enter city name" formControlName="cityname">
       <button (click)="checkZone_AddCity()" >Add City</button>
@@ -14,7 +15,7 @@
     
     <div class="p-4">
       <div class="rounded" id="map">
-      </div>
+    </div>
     </div>
 
 

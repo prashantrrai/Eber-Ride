@@ -39,12 +39,12 @@ export class VehicleComponent implements OnInit {
           vehicleName: vehicle.vehicleName,
           vehicleImage: vehicle.vehicleImage,
         }));
+        console.log(this.vehiclesData)
       },
       error: (err) => {
         alert(err);
       },
     });
-    console.log(this.vehiclesData)
   }
 
   onFileSelected(event: any) {
@@ -113,6 +113,8 @@ export class VehicleComponent implements OnInit {
     this.id = vehicle._id;
     this.isUpdate= true
     this.selectedVehicle = vehicle;
+    console.log(this.vehicleForm)
+    console.log(vehicle.vehicleName)
     this.vehicleForm.patchValue({
       vehicleName: vehicle.vehicleName,
     });

@@ -3,7 +3,7 @@ import { CityService } from '../../Service/city.service';
 declare var google: any;
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 
 @Component({
@@ -33,10 +33,10 @@ export class CityComponent implements OnInit {
 
   //get country data
   selectedCountry: string = '';
+  selectedCountryName!: string;
   countryData: any[] = [];
   cityData: any[] = [];
 
-  country: any;
   countries: any;
   coordinates: any;
   inputValue: any;
@@ -49,9 +49,13 @@ export class CityComponent implements OnInit {
   count: any;
   countryName: any;
 
-  constructor(private toastr: ToastrService, private _city: CityService, private http: HttpClient){}
+  constructor(private toastr: ToastrService, private _city: CityService, private http: HttpClient, private formBuilder: FormBuilder,){}
 
   ngOnInit(): void {
+    this.cityForm = this.formBuilder.group({
+      countryname: '',
+      cityname: ''
+    });
     this.loadCities()
     this.getCountryNamefromDB()
     this.initMap();
@@ -162,12 +166,12 @@ export class CityComponent implements OnInit {
 
     // To SELECT country selected value from dropdown to use it in city input...........
     onSelected(value: any) {
-      this.country = value  // country id not value, object id from db
-      console.log(this.country)
+      this.selectedCountry = value  // country id not value, object id from db
+      console.log(this.selectedCountry)
   
       this.countryData.map((country: any) => {
         if (country._id === value) {
-          this.countryData = country.countryName
+          this.selectedCountryName = country.countryName
         }
       })
   
@@ -213,7 +217,7 @@ export class CityComponent implements OnInit {
           console.log('Coordinates:', this.coordinates);
           
             const payload = {
-              country_id: this.country,
+              country_id: this.selectedCountry,
               city: input.value,
               coordinates: this.coordinates
             };
@@ -266,26 +270,22 @@ export class CityComponent implements OnInit {
   }
 
   updateCity(_id: string, city: any){
-    console.log(this.cityData)
-    if (this.cityData) {
-      this.cityForm.patchValue({
-        countryname: city.countryDetails.countryName,
-        cityname: city.city
-      });
-    }
+    this.cityForm.patchValue({
+      countryname: city.countryDetails._id,
+      cityname: city.city
+    });
+    
     this.isaddbutton = false;
     this.isupdatebutton = true;
     this.isDisabled = true;
 
     this.id = city._id;
-    console.log("Country ID:",this.id);
     this.inputValue = city.city;
-    console.log("City:",this.inputValue);
-    this.countryName = city.countryDetails.countryName;
-    console.log( this.countryName);
+    this.selectedCountryName = city.countryDetails.countryName;
+    console.log(this.selectedCountryName)
 
     const coordinatesdatabase = city.coordinates;
-    console.log(coordinatesdatabase);
+    // console.log(coordinatesdatabase);
     const polygonPath = coordinatesdatabase.map((coord: any) => new google.maps.LatLng(coord.lat, coord.lng));
     this.polygon.setPaths(polygonPath); //set polygon path
     this.polygon.setMap(null); // Remove the old polygon from the map
