@@ -135,7 +135,7 @@ export class CityComponent implements OnInit, AfterViewInit {
   checkZone_AddCity() {
     const geocoder = new google.maps.Geocoder();
     const input = document.getElementById('inputCity') as HTMLInputElement;
-    console.log('.....checkLocation.......' + input.value);
+    // console.log('.....checkLocation.......' + input.value);
 
     const payload = {
       coordinates: this.coordinates,

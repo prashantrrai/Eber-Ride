@@ -17,7 +17,7 @@ loginRoutes.use(session({
 
 // API to login user using the credentials used in signup.
 loginRoutes.post('/login', async (req,res) => {   
-    console.log(req.body);
+    // console.log(req.body);
     
     const { email, password } = req.body;       //object destructuring 
   
@@ -41,7 +41,7 @@ loginRoutes.post('/login', async (req,res) => {
           // Store token in session
           req.session.token = token;
 
-          console.log("Login jwt Token :",token)
+          // console.log("Login jwt Token :",token)
 
           res.json({ success: true, message: "Authentication successful", token });
 

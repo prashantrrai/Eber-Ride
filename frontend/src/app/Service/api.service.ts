@@ -9,11 +9,6 @@ export class ApiService {
 
   private serverUrl = 'http://localhost:4000';
 
-  // signupAPI = 'http://localhost:4000/register';
-  // loginAPI = 'http://localhost:4000/login';
-  // getUserAPI = 'http://localhost:4000/logindata';
-  // deleteUserAPI = 'http://localhost:4000/logindata';
-  // updateUserAPI = 'http://localhost:4000/update';
 
   constructor(private http: HttpClient) { }
 
@@ -29,7 +24,7 @@ export class ApiService {
 
 
   registerUser(userData: any): Observable<any> {
-    console.log(userData);
+    // console.log(userData);
     return this.http.post<any>(`${this.serverUrl}/register`, userData);
   }
   
@@ -39,7 +34,7 @@ export class ApiService {
   }
 
   loginUser(loginData: any): Observable<any> {
-    console.log(loginData);
+    // console.log(loginData);
     return this.http.post<any>(`${this.serverUrl}/login`, loginData);
   }
 

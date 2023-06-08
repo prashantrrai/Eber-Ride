@@ -21,17 +21,17 @@
   #formContainer input {
     padding: 8px;
     width: 300px;
-    margin-right: 10px;
+    margin: 10px;
   }
 
   #formContainer select {
     padding: 8px;
     width: 300px;
-    margin-right: 10px;
+    margin: 10px;
   }
 
   #formContainer button {
-  margin: 10px;
+    margin: 10px;
     padding: 8px 16px;
     background-color: #00bb06;
     color: white;
@@ -43,7 +43,22 @@
     background-color: #007806;
   }
 
-
+    
+  @media screen and (max-width: 650px) {
+    #parentFormContainer{
+      display: block;
+    }
+    #formContainer{
+      display: block;
+    }
+    #formContainer select{
+      margin: 10px;
+    }
+    #formContainer input{
+      margin: 10px;
+    }
+  }
+  
   
 .parenttableContainer {
   display: flex;
