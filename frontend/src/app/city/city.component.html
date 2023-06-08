@@ -3,7 +3,7 @@
 
   <select name="country" #country (change)="onSelected(country.value)">
       <option value>Select country </option>
-      <option [value]="country.countryName" *ngFor="let country of countryData ">{{country.countryName}}</option>
+      <option *ngFor="let country of countryData ">{{country.countryName}}</option>
     </select>
 
       <input id="inputCity" placeholder="Enter city name">

@@ -10,7 +10,7 @@ countryRoutes.post('/countryadd', async (req, res) => {
     try {
         // Create a new instance of the Country model
         const country = new countryModel(req.body);
-
+        
         await country.save();
         console.log(country)
         res.status(201).json({message: 'Country Added Successfully', country});

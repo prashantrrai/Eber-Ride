@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { CityService } from '../Service/city.service';
 declare var google: any;
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -139,7 +139,8 @@ export class CityComponent implements OnInit {
         const location = results[0].geometry.location;
         // console.log(location)
         this.isInZone = google.maps.geometry.poly.containsLocation(location, this.polygon);
-
+        // alert("Inside Zone")
+        // this.toastr.success("Inside zone","Success")
         if (this.isInZone == true) {
           const polygonPath = this.polygon.getPath();
           this.coordinates = polygonPath.getArray().map((results: { lat: () => any; lng: () => any; }) => ({
@@ -147,9 +148,11 @@ export class CityComponent implements OnInit {
             lng: results.lng(),
           }));
           console.log('Coordinates:', this.coordinates);
+          // this.toastr.success("coordinates fetched inside zone", "Success")
+          alert("City is Inside the Drawn Zone")
           
-        this.toastr.success("City Added");
-        alert("coordinates fetched of zone")
+          
+          // To add city in Database...............
           // this._city.addcity(payload).subscribe({
           //   next: (response: any) => {
           //     this.citydatabasedata.push(response.city);
@@ -159,6 +162,7 @@ export class CityComponent implements OnInit {
           //     this.toastr.warning(error.error.message);
           //   },
           // })
+          // this.toastr.success("City Added Successfully");
         } 
         else {
             this.toastr.warning("please choose city and create a zone");
@@ -172,6 +176,7 @@ export class CityComponent implements OnInit {
   // To select country selected value from dropdown to use it in city input...........
   onSelected(value: any) {
     this.country = value
+    
     this.countryData.map((country: any) => {
       if (country.countryName === value) {
         this.countryData = country.countryName
@@ -180,12 +185,15 @@ export class CityComponent implements OnInit {
 
     // city Autocomplete based on selected country from onSelected().............
     this.http.get<any>(`https://restcountries.com/v3.1/name/${this.countryData}`).subscribe({
+
       next: (countryRes: any) => {
         let rcountry = countryRes.filter((obj: any) => {
           return obj.name.common == this.countryData
         })
+
         //getting country code like IN..............
         let code = rcountry[0].cca2.toLowerCase()
+
         this.autocomplete.setTypes(['(cities)']);
         this.autocomplete.setComponentRestrictions({ 'country': code });
       },
