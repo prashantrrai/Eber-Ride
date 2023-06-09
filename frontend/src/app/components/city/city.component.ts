@@ -183,42 +183,59 @@ export class CityComponent implements OnInit {
 
     // To SELECT country selected value from dropdown to use it in city input...........
     onSelected(value: any) {
-      this.selectedCountry = value  // country id not value, object id from db
-      // console.log(this.selectedCountry)
-  
-      
-      if (this.selectedCountry !== 'Select country') {
-        this.isCountryDisabled = true;
-      } else {
-        this.isCountryDisabled = false;
-      }
+      this.selectedCountry = value;
 
-      this.countryData.map((country: any) => {
-        if (country._id === value) {
-        }
-      })
-      console.log(this.countryData)
+      const selectedCountryObj = this.countryData.find((country: any) => country._id === value);
+      if (selectedCountryObj) {
+        this.selectedCountryName = selectedCountryObj.countryName;
+        console.log(this.selectedCountryName); // Check if the country name is logged correctly
+    
+        // city Autocomplete based on selected country from onSelected().............
+        this.http.get<any>(`https://restcountries.com/v3.1/name/${this.selectedCountryName}`).subscribe({
+          next: (countryRes: any) => {
+            let rcountry = countryRes.filter((obj: any) => {
+              return obj.name.common == this.selectedCountryName;
+            });
+    
+              //getting country code like IN..............
+              let code = rcountry[0].cca2.toLowerCase();
+              
+              this.autocomplete.setTypes(['(cities)']);
+              this.autocomplete.setComponentRestrictions({ 'country': [code] });
+          },
+          error: (error: any) => {
+            console.log("Country Selection Error: ", error.message);
+            this.toastr.error(error.message);
+          }
+          });
+  }
+
+      // this.countryData.map((country: any) => {
+      //   if (country._id === value) {
+      //   }
+      // })
+      // console.log(this.countryData)
   
-      // city Autocomplete based on selected country from onSelected().............
-      this.http.get<any>(`https://restcountries.com/v3.1/name/${this.countryData}`).subscribe({
+      // // city Autocomplete based on selected country from onSelected().............
+      // this.http.get<any>(`https://restcountries.com/v3.1/name/${this.countryData}`).subscribe({
   
-        next: (countryRes: any) => {
-          let rcountry = countryRes.filter((obj: any) => {
-            return obj.name.common == this.countryData
-          })
+      //   next: (countryRes: any) => {
+      //     let rcountry = countryRes.filter((obj: any) => {
+      //       return obj.name.common == this.countryData
+      //     })
   
-          //getting country code like IN..............
-          let code = rcountry[0].cca2.toLowerCase()
+      //     //getting country code like IN..............
+      //     let code = rcountry[0].cca2.toLowerCase()
   
-          this.autocomplete.setTypes(['(cities)']);
-          this.autocomplete.setComponentRestrictions({ 'country': code });
-        },
-        error: (error: any) => {
-          console.log("Country Selection Error....... ", error.message);
-          this.toastr.error(error.message)
-        }
-        }
-      )
+      //     this.autocomplete.setTypes(['(cities)']);
+      //     this.autocomplete.setComponentRestrictions({ 'country': code });
+      //   },
+      //   error: (error: any) => {
+      //     console.log("Country Selection Error....... ", error.message);
+      //     this.toastr.error(error.message)
+      //   }
+      //   }
+      // )
     }
 
 // To check the drawn Zone inside coordinates or not and add city in database.............
