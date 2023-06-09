@@ -74,6 +74,7 @@ cityRoutes.get("/citydata", async (req, res) => {
         const cityId = req.params.id;
         const updatedCity = {
           city: req.body.city,
+          coordinates: req.body.coordinates
         };
         console.log(cityId)
         console.log(updatedCity)

@@ -30,12 +30,12 @@
         <mat-menu #lvl1master="matMenu">
           <button  color="accent" routerLink="map2"   mat-menu-item><mat-icon>calendar_month</mat-icon>Create Ride</button>
           <button routerLink="card"  mat-menu-item><mat-icon>check_circle </mat-icon>Confirmed Rides</button>
-          <button routerLink="table"  mat-menu-item><mat-icon>history_toggle_off</mat-icon> Ride History</button>
+          <button routerLink="admin"  mat-menu-item><mat-icon>history_toggle_off</mat-icon> Ride History</button>
       </mat-menu>
     </mat-list-item>
 
       <mat-list-item>
-          <button routerLink="admin" color="accent"  mat-button><mat-icon>person</mat-icon>Users</button>
+          <button routerLink="users" color="accent"  mat-button><mat-icon>person</mat-icon>Users</button>
       </mat-list-item>
       <mat-list-item>
         <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button><mat-icon>account_circle</mat-icon>Drivers</button>

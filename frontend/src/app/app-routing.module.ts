@@ -9,6 +9,7 @@ import { VehicleComponent } from './components/vehicle/vehicle.component';
 import { authGuard } from './Service/auth.guard';
 import { CountryComponent } from './components/country/country.component';
 import { CityComponent } from './components/city/city.component';
+import { UsersComponent } from './components/users/users.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -19,7 +20,8 @@ const routes: Routes = [
     {path: 'admin', component: AdminComponent},
     {path: 'vehicletype', component: VehicleComponent} ,   
     {path: 'country', component: CountryComponent},
-    {path: 'city', component: CityComponent}   
+    {path: 'city', component: CityComponent}   ,
+    {path: 'users', component: UsersComponent}
   ]},
 ];
 

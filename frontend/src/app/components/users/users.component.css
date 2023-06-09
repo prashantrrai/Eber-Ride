@@ -1,0 +1,70 @@
+
+
+.parentFormContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  #formContainer {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 4px 4px 16px #000000;
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
+    margin: 40px;
+  }
+  
+  .updateContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 5%;
+  }
+  
+  .container {
+    border-radius: 5px;
+    box-shadow: 2px 2px 6px #000000;
+    padding: 20px;
+    transition: all linear 300ms;
+  }
+  
+  .container:hover {
+    transform: scale(1);
+    transition: all linear 300ms;
+    z-index: 1;
+    box-shadow: 4px 4px 16px #00b3ff;
+  }
+  
+  /* Responsive Table */
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  
+  @media (max-width: 360px) {
+    .table-responsive > .table > thead > tr > th,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tfoot > tr > td {
+      font-size: 12px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .table-responsive > .table > thead > tr > th,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tfoot > tr > td {
+      font-size: 14px;
+    }
+  }

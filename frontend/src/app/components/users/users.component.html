@@ -1,0 +1,99 @@
+<button mat-button mat-stroked-button color="primary" id="showbtn"
+        (click)="toggleFormVisibility()">
+        <mat-icon>add_circle</mat-icon> Add Users
+</button>
+    <!-- Your form content goes here -->
+    <div class="parentFormContainer">
+        <div id="formContainer" *ngIf="AddbuttonForm">
+        <h2 class="mb-3">Client Registration</h2>
+            <form class="container" [formGroup]="myForm" (ngSubmit)="submitForm()">
+                <div class="mb-3">
+                  <label class="form-label d-flex justify-content-start">Upload Profile</label>
+                    <input type="file" class="form-control" formControlName="adminName"/>
+                  </div>
+                <div class="mb-3">
+                  <!-- <label class="form-label d-flex justify-content-start">Name</label> -->
+                  <input type="text" class="form-control" formControlName="adminName" placeholder="Enter Username"/>
+                </div>
+                <div class="mb-3">
+                  <!-- <label class="form-label d-flex justify-content-start">Email</label> -->
+                  <input type="email" class="form-control" formControlName="email" placeholder="Enter Email"/>
+                </div>
+                <div class="mb-3">
+                  <!-- <label class="form-label d-flex justify-content-start">Password</label> -->
+                  <input type="password" class="form-control" formControlName="password"placeholder="Enter Phone"/>
+                </div>
+                <div>
+                  <button type="submit" class="btn btn-primary w-100" id="submitBtn">
+                    Submit
+                  </button>
+                </div>
+          </form>
+        </div>
+      </div>
+
+
+<div class="container-fluid" (mousemove)="resetTimer()">
+    <div class="updateContainer py-4" *ngIf="showForm">
+      <div id="Container">
+        <form class="container" [formGroup]="adminUpdateForm" (ngSubmit)="adminUpdate(selectedAdmin._id)">
+          <div class="mb-3">
+            <label class="form-label d-flex justify-content-start">Name</label>
+            <input type="text" class="form-control" formControlName="adminName" [(ngModel)]="selectedAdmin.adminName" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label d-flex justify-content-start">Email</label>
+            <input type="email" class="form-control" formControlName="email" [(ngModel)]="selectedAdmin.email" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label d-flex justify-content-start">Password</label>
+            <input type="password" class="form-control" formControlName="password" [(ngModel)]="selectedAdmin.password" />
+          </div>
+          <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary w-25" id="adminUpdate">
+              <i class="fa-solid fa-thumbs-up"></i>
+            </button>
+            <button type="button" class="w-25 btn btn-danger" id="updateCancel" (click)="updateCancel()">
+              <i class="fa-solid fa-thumbs-down"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <div class="parentFormContainer">
+      <div id="formContainer">
+        <h2 class="mb-3">User Panel</h2>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="bg-dark text-light">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let person of personDataArray">
+              <td>{{ person.adminName }}</td>
+              <td>{{ person.email }}</td>
+              <td>{{ person.cnfpassword }}</td>
+              <td>
+                <button id="updatebtn" (click)="updateAdminBtn(person._id)">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </td>
+              <td>
+                <button id="deletebtn" (click)="deleteAdmin(person._id)">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -143,7 +143,18 @@ export class CityComponent implements OnInit {
         this.polygon = event.overlay;
       }
     });
-  }
+
+  // Add event listener for polygon drag end
+  google.maps.event.addListener(this.polygon, 'dragend', (event: any) => {
+    const newCoordinates = this.polygon.getPath().getArray().map((results: { lat: () => any; lng: () => any; }) => ({
+      lat: results.lat(),
+      lng: results.lng(),
+    }));
+    // Do something with the updated coordinates
+    console.log('Updated Coordinates:', newCoordinates);
+  });
+
+}
   
   // To fetch country data from from /countrydata API in dropdown..........
   getCountryNamefromDB() :void{
@@ -181,12 +192,12 @@ export class CityComponent implements OnInit {
       } else {
         this.isCountryDisabled = false;
       }
-      
+
       this.countryData.map((country: any) => {
         if (country._id === value) {
-          this.selectedCountryName = country.countryName
         }
       })
+      console.log(this.countryData)
   
       // city Autocomplete based on selected country from onSelected().............
       this.http.get<any>(`https://restcountries.com/v3.1/name/${this.countryData}`).subscribe({
@@ -242,6 +253,13 @@ export class CityComponent implements OnInit {
                 this.cityData.push(response.city);
                 // this.toastr.success(response.message);
                 alert(response.message)
+                this.loadCities()
+                this.getCountryNamefromDB()
+                this.marker.setVisible(false); // Hide the marker
+                this.marker.setPosition(null); // Clear the marker position
+                this.polygon.setMap(null)      // clear the polygon
+                this.cityForm.reset();        // clear the form
+
               },
               error: (error) => {
                 console.log(error.error.message)
@@ -276,66 +294,45 @@ export class CityComponent implements OnInit {
 
 
   editbtn(_id: string, city: any){
-  // Disable the countryname form control
-  this.cityForm.get('countryname')?.disable();
+    console.log(city)
+    this.id = _id;
+    this.inputValue = city.city;
+    this.selectedCountryName = city.countryDetails.countryName;
+
+
+    this.cityForm.get('countryname')?.disable();
+    this.cityForm.get('cityname')?.disable();
 
     this.cityForm.patchValue({
       countryname: city.countryDetails._id,
-      cityname: city.city
+      cityname: city.city,
     });
-    
-    this.isCountryDisabled = true;
-
-    this.id = city._id;
-    this.inputValue = city.city;
-    this.selectedCountryName = city.countryDetails.countryName;
-    // console.log(this.selectedCountryName)
-
 
     // Enable the update button and disable the add button
     this.isaddbutton = false;
     this.isupdatebutton = true;
+    
+    const coordinatesdatabase = city.coordinates;
+    console.log(coordinatesdatabase);
+
+    this.displayPolygon(city.coordinates); 
+
   }
 
 
-  updateCity(city: any) {
-
-     // Update city in the backend
-    const cityValue = this.cityForm.get('cityname')?.value;
-    if (cityValue) {
-      const payload = {
-        city: cityValue
-      };
+  displayPolygon(coordinates: any[]) {
+    const polygonPath = coordinates.map((coord: any) => new google.maps.LatLng(coord.lat, coord.lng));
   
-      this._city.updateCity(this.id, payload).subscribe({
-        next: (response: any) => {
-          console.log(response);
-          alert(response.message);
-          // Reset the form and button states
-          this.cityForm.reset();
-          this.isupdatebutton = false;
-          this.isaddbutton = true;
-          this.cityForm.get('countryname')?.enable();
-        },
-        error: (error: any) => {
-          console.log(error);
-          alert(error.error.message);
-        }
-      });
-    } else {
-      alert('Please enter a city name.');
+    // Remove previous polygon if exists
+    if (this.polygon) {
+      this.polygon.setMap(null);
     }
 
-
-    const coordinatesdatabase = city.coordinates;
-    // console.log(coordinatesdatabase);
-
-    // Update city in the frontend
-    const polygonPath = coordinatesdatabase.map((coord: any) => new google.maps.LatLng(coord.lat, coord.lng));
-    this.polygon.setPaths(polygonPath);
-    this.polygon.setMap(null);
+    // Create and display the polygon
     this.polygon = new google.maps.Polygon({
       paths: polygonPath,
+      editable: true,
+      draggable: true,
       strokeColor: '#FF0000',
       strokeOpacity: 0.8,
       strokeWeight: 2,
@@ -343,6 +340,55 @@ export class CityComponent implements OnInit {
       fillOpacity: 0.35
     });
     this.polygon.setMap(this.map);
+
+  //to Zoom the selected location inside zone.............
+  const bounds = new google.maps.LatLngBounds();
+  coordinates.forEach((coord: any) => {
+    bounds.extend(new google.maps.LatLng(coord.lat, coord.lng));
+  });
+  this.map.fitBounds(bounds);
+}
+
+
+
+updateCity() {
+
+
+  if (this.inputValue) {
+    // Get the updated coordinates
+    const newCoordinates = this.polygon.getPath().getArray().map((results: { lat: () => any; lng: () => any; }) => ({
+      lat: results.lat(),
+      lng: results.lng(),
+    }));
+    console.log(newCoordinates)
+    const payload = {
+      city: this.inputValue,
+      coordinates: newCoordinates // Updated coordinates
+    };
+    
+    this._city.updateCity(this.id, payload).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        alert(response.message);
+        // Reset the form and button states
+        this.isupdatebutton = false;
+        this.isaddbutton = true;
+        this.cityForm.get('countryname')?.enable();
+        this.cityForm.get('cityname')?.enable();
+        this.loadCities()
+        this.getCountryNamefromDB()
+        this.polygon.setMap(null)      // clear the polygon
+        this.cityForm.reset();        // clear the form
+      },
+      error: (error: any) => {
+        console.log(error);
+        alert(error.error.message);
+      }
+    });
+  } else {
+    alert('Please enter a city name.');
   }
+
+}
 
 }

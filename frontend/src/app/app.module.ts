@@ -26,6 +26,7 @@ import { CountryComponent } from './components/country/country.component';
 import { ToastrModule } from 'ngx-toastr';
 import { CityComponent } from './components/city/city.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     VehicleComponent,
     CountryComponent,
     CityComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,
