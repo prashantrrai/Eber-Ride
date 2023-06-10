@@ -27,14 +27,14 @@ const VehicleRoutes = require('./routes/vehicle')
 const countryRoutes = require('./routes/country')
 const cityRoutes = require('./routes/city')
 
-app.use(fetchAdmin)
-app.use(loginRoutes)
-app.use(registerRoutes)
-app.use(deleteRoutes)
-app.use(updateRoutes)
-app.use(VehicleRoutes)
-app.use(countryRoutes)
-app.use(cityRoutes)
+app.use('/logindata', fetchAdmin)
+app.use('/logindata', loginRoutes)
+app.use('/logindata', registerRoutes)
+app.use('/logindata', deleteRoutes)
+app.use('/logindata', updateRoutes)
+app.use('/vehicledata', VehicleRoutes)
+app.use('/countrydata', countryRoutes)
+app.use('/citydata', cityRoutes)
 
 
 // To show API is Working in backend on http://localhost:4000.
