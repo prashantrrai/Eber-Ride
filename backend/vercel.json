@@ -1,0 +1,16 @@
+{
+   "version": 2,
+   "builds": [
+     {
+       "src": "./index.js",
+       "use": "@vercel/node"
+     }
+   ],
+   "routes": [
+    { "src": "/logindata/(.*)", "dest": "/logindata/$1" },
+    { "src": "/vehicledata/(.*)", "dest": "/vehicledata/$1" },
+    { "src": "/countrydata/(.*)", "dest": "/countrydata/$1" },
+    { "src": "/citydata/(.*)", "dest": "/citydata/$1" },
+    { "src": "/(.*)", "dest": "/" }
+   ]
+ }

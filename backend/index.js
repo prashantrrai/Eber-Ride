@@ -27,14 +27,14 @@ const VehicleRoutes = require('./routes/vehicle')
 const countryRoutes = require('./routes/country')
 const cityRoutes = require('./routes/city')
 
-app.use(fetchAdmin)
-app.use(loginRoutes)
-app.use(registerRoutes)
-app.use(deleteRoutes)
-app.use(updateRoutes)
-app.use(VehicleRoutes)
-app.use(countryRoutes)
-app.use(cityRoutes)
+app.use("/logindata", fetchAdmin);
+app.use("/logindata", loginRoutes);
+app.use("/logindata", registerRoutes);
+app.use("/logindata", deleteRoutes);
+app.use("/logindata", updateRoutes);
+app.use("/vehicledata", VehicleRoutes);
+app.use("/countrydata", countryRoutes);
+app.use("/citydata", cityRoutes);
 
 
 // To show API is Working in backend on http://localhost:4000.
@@ -45,17 +45,17 @@ app.get('/', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  const today = new Date();
-    const yyyy = today.getFullYear();
-    let mm = today.getMonth() + 1; // Months start at 0!
-    let dd = today.getDate();
+  // const today = new Date();
+  //   const yyyy = today.getFullYear();
+  //   let mm = today.getMonth() + 1; // Months start at 0!
+  //   let dd = today.getDate();
 
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
+  //   if (dd < 10) dd = '0' + dd;
+  //   if (mm < 10) mm = '0' + mm;
 
-    const formattedToday = dd + '/' + mm + '/' + yyyy;
+  //   const formattedToday = dd + '/' + mm + '/' + yyyy;
 
-    console.log(`${formattedToday} is a Gift`)
+  //   console.log(`${formattedToday} is a Gift`)
   console.log(`Server is running on http://localhost:${PORT}`);
 });
  

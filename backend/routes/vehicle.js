@@ -89,7 +89,7 @@
 
 
     //to fetch data from database of registered vehicle and show in /vehicledata route of frontend.
-    VehicleRoutes.get('/vehicledata', async (req, res) => {
+    VehicleRoutes.get('https://eberapidemo.vercel.app/vehicledata', async (req, res) => {
     try {
       const data = await vehicleModel.find({});
       res.json({ data });
