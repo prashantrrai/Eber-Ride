@@ -23,7 +23,7 @@ export class UsersService {
   
   addUser(userData: any): Observable<any> {
     // console.log(userData);
-    return this.http.post<any>(`${this.serverUrl}/register`, userData);
+    return this.http.post<any>(`${this.serverUrl}/adduser`, userData);
   }
   
   getuserData(): Observable<any> {

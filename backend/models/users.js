@@ -25,7 +25,7 @@ const user_Schema = new mongoose.Schema({
   }
 });
 
-const userModel = mongoose.model("userModel", user_Schema);  //mapping registration data into signup data
+const userModel = mongoose.model("userModel", user_Schema);
 
 
 
