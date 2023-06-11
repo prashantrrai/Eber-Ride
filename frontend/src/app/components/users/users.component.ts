@@ -1,8 +1,8 @@
+import { AuthService } from './../../Service/auth.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { ApiService } from 'src/app/Service/api.service';
-import { AuthService } from 'src/app/Service/auth.service';
+import { UsersService } from 'src/app/Service/users.service';
 
 @Component({
   selector: 'app-users',
@@ -10,23 +10,27 @@ import { AuthService } from 'src/app/Service/auth.service';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent {
+
+  
   adminUpdateForm!: FormGroup;
-  myForm!: FormGroup;
-  showForm: boolean = false;
-  personDataArray: any
-  selectedAdmin: any;
+  AddForm!: FormGroup;
   AddbuttonForm: boolean = false;
+  updateForm: boolean = false;
+  selectedUSER: any;
+  usersArray: any[] = [];
 
     
-    constructor(private _api: ApiService, private formBuilder: FormBuilder, private authService: AuthService, private toastr: ToastrService) { }
+    constructor(private _users: UsersService, private formBuilder: FormBuilder,private toastr: ToastrService, private authService: AuthService) { }
 
     ngOnInit(): void {
       this.fetchUserData();
 
       this.adminUpdateForm = this.formBuilder.group({
-        adminName: '',
-        email: '',
-        password: ''
+        profile: '',
+        username: '',
+        useremail: '',
+        countrycode: '',
+        userphone: ''
         // Add other form controls based on your requirements
       });
     }
@@ -34,74 +38,90 @@ export class UsersComponent {
 
 
     fetchUserData(): void {
-      this._api.getuserData().subscribe({
+      this._users.getuserData().subscribe({
         next: (users: any) => {
-          this.personDataArray = users.data.map((admin: any) => ({
-            _id: admin._id,
-            adminName: admin.adminName,
-            email: admin.email,
-            cnfpassword: admin.cnfpassword,
+          this.usersArray = users.data.map((user: any) => ({
+
+            _id: user._id,
+            profile: user.profile,
+            username: user.username,
+            useremail: user.useremail,
+            countrycode: user.countrycode,
+            userphone: user.phone,
           }));
+
         },
         error: (error: any) => {
-          alert(error);
+          console.log(error.error.message)
+          alert(error.error.message)
         }
     });
     }
 
 
-    updateAdminBtn(person: any): void{
-      this.selectedAdmin = person;
-      this.showForm = true;
+    updateBtnClick(user: any): void{
+      this.selectedUSER = user;
+      this.updateForm = true;
+
       this.adminUpdateForm.patchValue({
-        adminName: this.selectedAdmin.adminName,
-        email: this.selectedAdmin.email,
-        password: this.selectedAdmin.password,
-        // Update other form controls based on your requirements
+        profile: this.selectedUSER.profile,
+        username: this.selectedUSER.username,
+        useremail: this.selectedUSER.useremail, 
+        countrycode: this.selectedUSER.countrycode,
+        userphone: this.selectedUSER.userphone,
       });
     }
 
     adminUpdate(userId: string): void{
       const updatedData = this.adminUpdateForm.value;
-      this._api.updateUser(userId, updatedData).subscribe({
+
+      this._users.updateUser(userId, updatedData).subscribe({
         next: (response: any) => {
-          alert(response.message)
+          // alert(response.message)
           this.fetchUserData();
-          this.showForm = !this.showForm;
+          this.updateForm = !this.updateForm;
+          this.toastr.success(response.message);
+
         },
         error: (error: any) => {
-          alert('Failed to update admin');
+          console.log(error.error.message)
+          this.toastr.error(error.error.message);
         }
       })
     }
 
     updateCancel(){
-      this.showForm = !this.showForm;
+      this.updateForm = !this.updateForm;
     }
 
     deleteAdmin(userId: string): void {
       const confirmation = confirm('Are you sure you want to delete this admin?');
+
       if (confirmation) {
-        this._api.deleteUser(userId).subscribe({
+        this._users.deleteUser(userId).subscribe({
           next: (response: any) => {
-            alert('Admin Deleted Successfully');
+            // alert('Admin Deleted Successfully');
             this.fetchUserData(); // Fetch updated user data after deletion
+            this.toastr.success(response.message);
+
           },
           error: (error: any) => {
             alert('Failed to delete admin');
+            console.log(error.error.message)
+            this.toastr.error(error.error.message);
           }
       });
       }
     }
 
     
-  submitForm() {
-    if (this.myForm.valid) {
-      const personData = this.myForm.value;
+    AddUser() {
+    if (this.AddForm.valid) {
+      const userdata = this.AddForm.value;
 
-      this._api.registerUser(personData).subscribe({
+      this._users.addUser(userdata).subscribe({
       next:  (res) => {
-        this.myForm.reset();
+        this.AddForm.reset();
         this.toastr.success(res.message);
       },
       error: (error) => {
