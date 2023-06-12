@@ -9,6 +9,9 @@ const path = require('path')
 const img_path = path.join(__dirname, "/Public/Upload");
 app.use(express.static(img_path))
 
+const profile_path = path.join(__dirname, "/Public/Upload");
+app.use(express.static(profile_path))
+
 require('./database/db');
 const bodyParser = require('body-parser')
 
@@ -26,6 +29,7 @@ const updateRoutes = require('./routes/update-Admin')
 const VehicleRoutes = require('./routes/vehicle')
 const countryRoutes = require('./routes/country')
 const cityRoutes = require('./routes/city')
+const userRoutes = require('./routes/users')
 
 app.use(fetchAdmin)
 app.use(loginRoutes)
@@ -35,6 +39,7 @@ app.use(updateRoutes)
 app.use(VehicleRoutes)
 app.use(countryRoutes)
 app.use(cityRoutes)
+app.use(userRoutes)
 
 
 // To show API is Working in backend on http://localhost:4000.

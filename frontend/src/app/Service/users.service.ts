@@ -7,7 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class UsersService {
 
-  private serverUrl = 'http://localhost:4000/user';
+  private serverUrl = 'http://localhost:4000';
+  private countryAPI = 'https://restcountries.com/v3.1/all'
+
 
   constructor(private http: HttpClient) { }
 
@@ -20,14 +22,19 @@ export class UsersService {
       'Authorization': `Bearer ${sessionToken}`,
     });
   }
+
+  fetchCountryAPI(): Observable<any> {
+    return this.http.get(`${this.countryAPI}`);
+  }
   
   addUser(userData: any): Observable<any> {
-    // console.log(userData);
+    console.log(userData);
     return this.http.post<any>(`${this.serverUrl}/adduser`, userData);
   }
   
   getuserData(): Observable<any> {
     const headers = this.getSessionHeaders();
+    console.log(headers)
     return this.http.get<any>(`${this.serverUrl}/userdata`, { headers });
   }
 
@@ -39,7 +46,7 @@ export class UsersService {
   }
 
   updateUser(userId: string, userData: any): Observable<any> {
-    const url = `${this.serverUrl}/update/${userId}`;
+    const url = `${this.serverUrl}/updateuser/${userId}`;
     const headers = this.getSessionHeaders();
     return this.http.put<any>(url, userData, { headers });
   }

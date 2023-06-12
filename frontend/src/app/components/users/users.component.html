@@ -10,25 +10,30 @@
         <div id="formContainer" *ngIf="AddbuttonForm">
         <h2 class="mb-3">Client Registration</h2>
             <form class="container" [formGroup]="AddForm" (ngSubmit)="AddUser()">
+                
+                <div class="mb-3">
+                  <label class="form-label d-flex justify-content-start">Name</label>
+                  <input type="text" class="form-control" formControlName="username" placeholder="Enter Username" required/>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label d-flex justify-content-start">Email</label>
+                  <input type="email" class="form-control" formControlName="useremail" placeholder="Enter Email" required/>
+                </div>
+                <div class="dropdown mb-3">
+                  <label class="form-label d-flex justify-content-start">Country Code</label>
+                  <select class="form-label d-flex justify-content-start form-control" name="code" #code>
+                    <option value="">Select country code</option>
+                    <option  [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label d-flex justify-content-start">Phone</label>
+                  <input type="tel" class="form-control" formControlName="userphone" placeholder="Enter Phone" required/>
+                </div>
                 <div class="mb-3">
                   <label class="form-label d-flex justify-content-start">Upload Profile</label>
                     <input type="file" class="form-control" formControlName="profile" required/>
                   </div>
-                <div class="mb-3">
-                  <!-- <label class="form-label d-flex justify-content-start">Name</label> -->
-                  <input type="text" class="form-control" formControlName="username" placeholder="Enter Username" required/>
-                </div>
-                <div class="mb-3">
-                  <!-- <label class="form-label d-flex justify-content-start">Email</label> -->
-                  <input type="email" class="form-control" formControlName="useremail" placeholder="Enter Email" required/>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label d-flex justify-content-start">Country Code</label>
-                  <input type="number" class="form-control" formControlName="countrycode" required/>
-                </div>
-                <div class="mb-3">
-                  <input type="tel" class="form-control" formControlName="userphone" placeholder="Enter Phone" required/>
-                </div>
                 <div>
                   <button type="submit" class="btn btn-primary w-100" id="submitBtn">
                     Submit
@@ -42,7 +47,7 @@
 <div class="container-fluid" (mousemove)="resetTimer()">
     <div class="updateContainer py-4" *ngIf="updateForm">
       <div id="Container">
-        <form class="container" [formGroup]="adminUpdateForm" (ngSubmit)="adminUpdate(selectedUSER._id)">
+        <form class="container" [formGroup]="userupdateForm" (ngSubmit)="adminUpdate(selectedUSER._id)">
           <div class="mb-3">
             <label class="form-label d-flex justify-content-start">Profile</label>
             <input type="file" class="form-control" formControlName="profile" [(ngModel)]="selectedUSER.profile" />

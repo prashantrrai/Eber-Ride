@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const user_Schema = new mongoose.Schema({
   profile: {
     type: String,
-    required: true,
+    default: "default profile.png"
   },
   username: {
     type: String,
@@ -22,6 +22,7 @@ const user_Schema = new mongoose.Schema({
   userphone: {
     type: String,
     required: true,
+    unique: true,
   }
 });
 

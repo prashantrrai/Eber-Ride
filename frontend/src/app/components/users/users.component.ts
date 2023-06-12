@@ -1,6 +1,6 @@
 import { AuthService } from './../../Service/auth.service';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UsersService } from 'src/app/Service/users.service';
 
@@ -12,25 +12,28 @@ import { UsersService } from 'src/app/Service/users.service';
 export class UsersComponent {
 
   
-  adminUpdateForm!: FormGroup;
+  userupdateForm!: FormGroup;
   AddForm!: FormGroup;
   AddbuttonForm: boolean = false;
   updateForm: boolean = false;
   selectedUSER: any;
   usersArray: any[] = [];
+  countrycode: any[] = [];
+
 
     
     constructor(private _users: UsersService, private formBuilder: FormBuilder,private toastr: ToastrService, private authService: AuthService) { }
 
     ngOnInit(): void {
       this.fetchUserData();
-
-      this.adminUpdateForm = this.formBuilder.group({
-        profile: '',
-        username: '',
-        useremail: '',
-        countrycode: '',
-        userphone: ''
+      this.fetchCountryDataAPI()
+      
+      this.userupdateForm = this.formBuilder.group({
+        profile: [''],
+        username: ['', Validators.required],
+        useremail: ['', Validators.required],
+        countrycode: ['', Validators.required],
+        userphone: ['', Validators.required],
         // Add other form controls based on your requirements
       });
     }
@@ -58,12 +61,30 @@ export class UsersComponent {
     });
     }
 
+    fetchCountryDataAPI() :void{
+      this._users.fetchCountryAPI().subscribe({
+        next: (countries) => {
+            countries.forEach((code: any) => {
+              if (code.idd.suffixes) {
+                let cc = code.idd.root + code.idd.suffixes[0];
+                this.countrycode.push(cc);
+              }
+            });
+            this.countrycode.sort();
+            },
+            error: (error: any) => {
+              console.log(error);
+            },
+          });
+    }
+  
+
 
     updateBtnClick(user: any): void{
       this.selectedUSER = user;
       this.updateForm = true;
 
-      this.adminUpdateForm.patchValue({
+      this.userupdateForm.patchValue({
         profile: this.selectedUSER.profile,
         username: this.selectedUSER.username,
         useremail: this.selectedUSER.useremail, 
@@ -73,7 +94,7 @@ export class UsersComponent {
     }
 
     adminUpdate(userId: string): void{
-      const updatedData = this.adminUpdateForm.value;
+      const updatedData = this.userupdateForm.value;
 
       this._users.updateUser(userId, updatedData).subscribe({
         next: (response: any) => {
@@ -114,6 +135,11 @@ export class UsersComponent {
       }
     }
 
+
+    onSelected(code: string) {
+      console.log(code)
+
+      }
     
     AddUser() {
     if (this.AddForm.valid) {
@@ -144,6 +170,10 @@ export class UsersComponent {
 
     resetTimer() {
       this.authService.resetInactivityTimer();
+    }
+
+    clickuser(){
+      alert("working")
     }
 
 }
