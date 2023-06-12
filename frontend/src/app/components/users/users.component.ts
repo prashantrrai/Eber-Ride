@@ -19,46 +19,51 @@ export class UsersComponent {
   selectedUSER: any;
   usersArray: any[] = [];
   countrycode: any[] = [];
+  file: any;
+  selectedCC: any;
 
 
     
     constructor(private _users: UsersService, private formBuilder: FormBuilder,private toastr: ToastrService, private authService: AuthService) { }
 
     ngOnInit(): void {
-      this.fetchUserData();
+      this.getUserData();
       this.fetchCountryDataAPI()
-      
-      this.userupdateForm = this.formBuilder.group({
-        profile: [''],
-        username: ['', Validators.required],
-        useremail: ['', Validators.required],
-        countrycode: ['', Validators.required],
-        userphone: ['', Validators.required],
-        // Add other form controls based on your requirements
+
+
+      this.AddForm = this.formBuilder.group({
+        username: ['', [Validators.required]],
+        useremail: ['', [Validators.required, Validators.email]],
+        userphone: ['', [Validators.required, Validators.minLength(10)]],
       });
+
+      // this.userupdateForm = this.formBuilder.group({
+      //   profile: [''],
+      //   username: ['', [Validators.required]],
+      //   useremail: ['', [Validators.required, Validators.email]],
+      //   countrycode: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      //   userphone: ['', [Validators.required]],
+      // });
     }
 
 
 
-    fetchUserData(): void {
+    getUserData(): void {
       this._users.getuserData().subscribe({
         next: (users: any) => {
-          this.usersArray = users.data.map((user: any) => ({
-
-            _id: user._id,
-            profile: user.profile,
-            username: user.username,
-            useremail: user.useremail,
-            countrycode: user.countrycode,
-            userphone: user.phone,
-          }));
-
+          // console.log(users);
+          
+          if (users) {
+            this.usersArray = users;
+          } else {
+            console.warn('No user data found');
+          }
         },
         error: (error: any) => {
-          console.log(error.error.message)
-          alert(error.error.message)
+          console.log(error.error.message);
+          // alert(error.error.message);
         }
-    });
+      });
     }
 
     fetchCountryDataAPI() :void{
@@ -80,6 +85,45 @@ export class UsersComponent {
   
 
 
+    onSelected(value: any) {
+      this.selectedCC = value
+      // console.log(value)
+    }
+
+    onFileSelected(event: any) {
+      this.file = event.target.files[0];
+      // console.log(this.file)
+    }
+    
+
+    AddUser() {
+      var formData = new FormData();
+      formData.append("profile", this.file);
+      formData.append("username", this.AddForm.value.username);
+      formData.append("useremail", this.AddForm.value.useremail);
+      formData.append("countrycode", this.selectedCC);
+      formData.append("userphone", this.AddForm.value.userphone);
+     
+      if (this.AddForm.valid) {
+        this._users.addUser(formData).subscribe({
+        next: (resp: any) => {
+          this.usersArray.push(resp.newUser)
+          this.getUserData();
+          this.toastr.success(resp.message);
+          // alert("Addded")
+        },
+        error: (error: any) => {
+          console.log(error.error.message);
+          this.toastr.error(error.message);
+        }
+      })
+      }
+      else{
+        this.toastr.warning('All Fields are Required');
+      }
+    }
+  
+
     updateBtnClick(user: any): void{
       this.selectedUSER = user;
       this.updateForm = true;
@@ -99,7 +143,7 @@ export class UsersComponent {
       this._users.updateUser(userId, updatedData).subscribe({
         next: (response: any) => {
           // alert(response.message)
-          this.fetchUserData();
+          this.getUserData();
           this.updateForm = !this.updateForm;
           this.toastr.success(response.message);
 
@@ -121,9 +165,8 @@ export class UsersComponent {
       if (confirmation) {
         this._users.deleteUser(userId).subscribe({
           next: (response: any) => {
-            // alert('Admin Deleted Successfully');
-            this.fetchUserData(); // Fetch updated user data after deletion
             this.toastr.success(response.message);
+            this.getUserData(); // Fetch updated user data after deletion
 
           },
           error: (error: any) => {
@@ -134,33 +177,6 @@ export class UsersComponent {
       });
       }
     }
-
-
-    onSelected(code: string) {
-      console.log(code)
-
-      }
-    
-    AddUser() {
-    if (this.AddForm.valid) {
-      const userdata = this.AddForm.value;
-
-      this._users.addUser(userdata).subscribe({
-      next:  (res) => {
-        this.AddForm.reset();
-        this.toastr.success(res.message);
-      },
-      error: (error) => {
-        console.log(error);
-        this.toastr.error(error.error.message);
-      }
-    })
-    }
-    else{
-      this.toastr.warning('All Fields are Required');
-    }
-  }
-  
 
 
     

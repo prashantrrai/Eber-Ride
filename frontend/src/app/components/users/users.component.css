@@ -45,6 +45,9 @@
   .table-responsive {
     overflow-x: auto;
   }
+  img{
+    height: 40px;
+  }
   
   
   @media (max-width: 360px) {

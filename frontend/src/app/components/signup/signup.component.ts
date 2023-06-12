@@ -25,13 +25,11 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  // personDataArray: any[] = [{ name: 'Prashant Rai', email: 'prashant@gmail.com', password: 'sdkadhdif' }];
-
 
   submitForm() {
     if (this.myForm.valid) {
       const personData = this.myForm.value;
-
+      console.log(personData)
       this._api.registerUser(personData).subscribe({
       next:  (res) => {
         this.myForm.reset();

@@ -2,7 +2,7 @@ const express = require("express");
 const userRoutes = express.Router()
 const userModel = require("../models/users");
 const multer = require('multer');
-const path = require('path')
+const path = require('path');
 const profile_path = path.join(__dirname, "../Public/Upload");
 
 
@@ -10,7 +10,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       console.log(file)
-      cb(null, img_path);
+      cb(null, profile_path);
     },
     
     filename: function (req, file, cb) {
@@ -65,6 +65,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
         newUser = new userModel({ username: username, useremail: useremail, countrycode: countrycode, userphone: userphone });
       }else{
         const profile = req.file.filename;
+        console.log(profile);
         newUser = new userModel({ profile: profile, username: username, useremail: useremail, countrycode: countrycode, userphone: userphone });
       }
 
