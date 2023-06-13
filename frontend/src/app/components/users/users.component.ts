@@ -23,6 +23,8 @@ export class UsersComponent {
   tableSize: any | null = null;
   count: any;
 
+  searchValue: string = '';
+
   constructor(
     private _users: UsersService,
     private formBuilder: FormBuilder,
@@ -178,9 +180,22 @@ export class UsersComponent {
     });
   }
 
+  searchUsers() {
+    // console.log(this.searchValue)
+    this._users.searchUsers(this.searchValue).subscribe({
+      next: (response: any) => {
+        this.usersArray = response.userdata;
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+  });
+  }
+  
   updateCancel() {
     this.updateForm = !this.updateForm;
   }
+  
 
   toggleFormVisibility() {
     this.AddbuttonForm = !this.AddbuttonForm;

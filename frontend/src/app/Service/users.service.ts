@@ -38,4 +38,9 @@ export class UsersService {
     const url = `${this.serverUrl}/updateuser/${userId}`;
     return this.http.put<any>(url, userData);
   }
+
+  searchUsers(query: string): Observable<any> {
+    console.log(query)
+    return this.http.get(`${this.serverUrl}/usersearch?query=${query}`);
+  }
 }

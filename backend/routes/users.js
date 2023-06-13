@@ -141,6 +141,26 @@ userRoutes.get('/userdata', async (req, res) => {
     }
   });
 
+  // Search users
+  userRoutes.get('/usersearch', async (req, res) => {
+    try {
+      const query = req.query;
+      console.log(query)
+      const userdata = await userModel.find({
+        $or: [
+          { username: { $regex: query.query, $options: 'i' } },
+          { userphone: { $regex: query.query, $options: 'i' } },
+          { useremail: { $regex: query.query, $options: 'i' } }
+        ]
+      });
+      console.log(userdata)
+      res.json({ success: true, message: 'Data Found', userdata });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error });
+    }
+  });
+
 
 
 module.exports = userRoutes;

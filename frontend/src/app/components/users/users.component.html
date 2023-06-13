@@ -81,14 +81,15 @@
 
   <div class="mt-5">
     <div class="d-flex justify-content-center align-items-center">
-    <label for="pageSize">Show Data : &nbsp;</label>
-    <select class="form-control w-25" id="pageSize" [(ngModel)]="tableSize" (change)="onPageSizeChange($event)">
+    <label for="pageSize">Show Data :</label>
+    <select class="form-control w-25 m-2" id="pageSize" [(ngModel)]="tableSize" (change)="onPageSizeChange($event)">
       <option [ngValue]="null">Select Page</option>
       <option value="1">1</option>
       <option value="2">2</option>
       <option value="3">3</option>
       <option value="4">4</option>
     </select>
+    <input type="text" class="form-control w-25 m-3" placeholder="Search by Name, Email, Phone..." [(ngModel)]="searchValue" (input)="searchUsers()">
     </div>
   </div>
 

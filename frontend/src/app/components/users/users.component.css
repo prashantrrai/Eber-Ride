@@ -70,6 +70,7 @@
   
   
   @media (max-width: 780px) {
+
     .table-responsive > .table > thead > tr > th,
     .table-responsive > .table > tbody > tr > th,
     .table-responsive > .table > tfoot > tr > th,
@@ -79,6 +80,7 @@
       font-size: 12px;
       color: white;
     }
+  
     #tableContainer{
       background-color: #5100ad;
       border-radius: 10px;
@@ -98,15 +100,6 @@
     .table-responsive > .table > tbody > tr > td,
     .table-responsive > .table > tfoot > tr > td {
       font-size: 14px;
-      color: white;
     }
-    #tableContainer{
-      background-color: #0052d7;
-      border-radius: 10px;
-      box-shadow: 4px 4px 16px #000000;
-      width: 90%;
-      max-width: 600px;
-      padding: 20px;
-      margin: 40px;
-    }
+
   }

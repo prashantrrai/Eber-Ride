@@ -80,12 +80,15 @@ export class VehicleComponent implements OnInit {
     formData.append("vehicleImage", this.file);
     formData.append("vehicleName", this.vehicleForm.value.vehicleName);
     const vehicleData = this.vehicleForm.value;
+    console.log(vehicleData)
 
     this._vehicle.updateVehicle(this.id, formData).subscribe({
      next: (res) => {
         let vehicle = res.vehicle
-        this.toastr.success(res.message);
+        this.vehicleForm.reset()
+        this.updateButtonForm = false
         console.log(this.vehiclesData)
+        this.toastr.success(res.message);
 
         
         let findobj = this.vehiclesData.find((obj: any) => {
