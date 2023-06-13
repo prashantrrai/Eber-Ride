@@ -39,7 +39,7 @@ export class VehicleComponent implements OnInit {
           vehicleName: vehicle.vehicleName,
           vehicleImage: vehicle.vehicleImage,
         }));
-        console.log(this.vehiclesData)
+        // console.log(this.vehiclesData)
       },
       error: (err) => {
         alert(err);
@@ -55,7 +55,7 @@ export class VehicleComponent implements OnInit {
     const formData = new FormData();
     formData.append("vehicleImage", this.file);
     formData.append("vehicleName", this.vehicleForm.value.vehicleName);
-    console.log(formData)
+    // console.log(formData)
     if (this.vehicleForm.valid) {
         this._vehicle.registerVehicle(formData).subscribe({
           next: (res) => {

@@ -1,7 +1,4 @@
-<button mat-button mat-stroked-button color="primary" id="showbtn"
-        (click)="toggleFormVisibility()">
-        <mat-icon>add_circle</mat-icon> Add Users
-</button>
+<button class="mt-4 btn btn-success" id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>Add Users</button>
 
 
 
@@ -13,11 +10,11 @@
                 
                 <div class="mb-3">
                   <label class="form-label d-flex justify-content-start">Name</label>
-                  <input type="text" class="form-control" formControlName="username" placeholder="Enter Username" required/>
+                  <input type="text" class="form-control" formControlName="username" placeholder="Enter Username"/>
                 </div>
                 <div class="mb-3">
                   <label class="form-label d-flex justify-content-start">Email</label>
-                  <input type="email" class="form-control" formControlName="useremail" placeholder="Enter Email" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" required/>
+                  <input type="email" class="form-control" formControlName="useremail" placeholder="Enter Email"/>
                 </div>
                 <div class="dropdown mb-3">
                   <label class="form-label d-flex justify-content-start">Country Code</label>
@@ -28,11 +25,11 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label d-flex justify-content-start">Phone</label>
-                  <input type="tel" class="form-control" formControlName="userphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required/>
+                  <input type="tel" class="form-control" formControlName="userphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
                 </div>
                 <div class="mb-3">
                   <label class="form-label d-flex justify-content-start">Upload Profile</label>
-                    <input type="file" class="form-control" formControlName="profile"  name="profile" (change)="onFileSelected($event)" required/>
+                    <input type="file" class="form-control" formControlName="profile"  name="profile" (change)="onFileSelected($event)"/>
                   </div>
                 <div>
                   <button type="submit" class="btn btn-primary w-100" id="submitBtn"> Submit</button>
@@ -42,47 +39,64 @@
       </div>
 
 
-<div class="container-fluid" (mousemove)="resetTimer()">
-    <div class="updateContainer py-4" *ngIf="updateForm">
-      <div id="Container">
-        <form class="container" [formGroup]="userupdateForm" (ngSubmit)="adminUpdate(selectedUSER._id)">
-          <div class="mb-3">
-            <label class="form-label d-flex justify-content-start">Profile</label>
-            <input type="file" class="form-control" formControlName="profile" [(ngModel)]="selectedUSER.profile" />
+      <div class="container-fluid" (mousemove)="resetTimer()">
+        <div class="updateContainer py-4" *ngIf="updateForm">
+          <div id="Container">
+            <form class="container" [formGroup]="userupdateForm" (ngSubmit)="updateUSER()">
+
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-start">Name</label>
+                <input type="text" class="form-control" formControlName="updateusername" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-start">Email</label>
+                <input type="email" class="form-control" formControlName="updateuseremail" />
+              </div>
+              <div class="dropdown mb-3">
+                <label class="form-label d-flex justify-content-start">Country Code</label>
+                <select class="form-label d-flex justify-content-start form-control" name="code" #code (change)="onSelected(code.value)"  formControlName="updatecountrycode">
+                  <option  [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-start">Phone</label>
+                <input type="tel" class="form-control" formControlName="updateuserphone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              </div>
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-start">Profile</label>
+                <input type="file" class="form-control" (change)="onFileSelected($event)" />
+              </div>
+              <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success w-50 m-2 " id="userupdate"><i class="fa-solid fa-thumbs-up"></i>&nbsp; Update
+                </button>
+                <button type="button" class="w-50 m-2 btn btn-danger" id="updateCancel" (click)="updateCancel()"> Cancel &nbsp;<i class="fa fa-user-times" aria-hidden="true"></i>
+                </button>
+              </div>
+            </form>
           </div>
-          <div class="mb-3">
-            <label class="form-label d-flex justify-content-start">Name</label>
-            <input type="text" class="form-control" formControlName="username" [(ngModel)]="selectedUSER.username" />
-          </div>
-          <div class="mb-3">
-            <label class="form-label d-flex justify-content-start">Email</label>
-            <input type="email" class="form-control" formControlName="useremail" [(ngModel)]="selectedUSER.useremail" />
-          </div>
-          <div class="mb-3">
-            <label class="form-label d-flex justify-content-start">Country Code</label>
-            <input type="tel" class="form-control" formControlName="countrycode" [(ngModel)]="selectedUSER.countrycode" />
-          </div>
-          <div class="mb-3">
-            <label class="form-label d-flex justify-content-start">Phone</label>
-            <input type="tel" class="form-control" formControlName="userphone" [(ngModel)]="selectedUSER.userphone" />
-          </div>
-          <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary w-25" id="userupdate">
-              <i class="fa-solid fa-thumbs-up"></i>
-            </button>
-            <button type="button" class="w-25 btn btn-danger" id="updateCancel" (click)="updateCancel()">
-              <i class="fa-solid fa-thumbs-down"></i>
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
   
+
+
+  <div class="mt-5">
+    <div class="d-flex justify-content-center align-items-center">
+    <label for="pageSize">Show Data : &nbsp;</label>
+    <select class="form-control w-25" id="pageSize" [(ngModel)]="tableSize" (change)="onPageSizeChange($event)">
+      <option [ngValue]="null">Select Page</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+    </div>
+  </div>
+
     <div class="parentFormContainer">
-      <div id="formContainer">
+      <div id="tableContainer">
         <div class="table-responsive">
           <table class="table">
-            <thead class="bg-dark text-light">
+            <thead class="bg-light text-dark">
             <tr>
               <th>Profile</th>
               <th>Name</th>
@@ -94,14 +108,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let user of usersArray">
+            <tr *ngFor="let user of usersArray | paginate: { itemsPerPage: tableSize, currentPage: page,totalItems: count };let i = index">
               <td><img src="http://localhost:4000/{{ user.profile}}" alt=""></td>
               <td>{{ user.username }}</td>
               <td>{{ user.useremail }}</td>
               <td>{{ user.countrycode }}</td>
               <td>{{ user.userphone }}</td>
               <td>
-                <button id="updatebtn" (click)="updateBtnClick(user._id)">
+                <button id="updatebtn" (click)="updateBtnClick(user)">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>
               </td>
@@ -116,62 +130,10 @@
         </div>
       </div>
     </div>
-  </div>
 
 
-
-  <!-- <div>
-    <h2>User Component</h2>
-    <form (submit)="addUser()">
-      <label for="profile">Profile:</label>
-      <input type="text" id="profile" [(ngModel)]="newUser.profile" required>
-  
-      <label for="name">Name:</label>
-      <input type="text" id="name" [(ngModel)]="newUser.name" required>
-  
-      <label for="email">Email:</label>
-      <input type="email" id="email" [(ngModel)]="newUser.email" required>
-  
-      <label for="phone">Phone:</label>
-      <input type="text" id="phone" [(ngModel)]="newUser.phone" required>
-  
-      <label for="countryCode">Country Code:</label>
-      <input type="text" id="countryCode" [(ngModel)]="newUser.countryCode" required>
-  
-      <button type="submit">Add User</button>
-    </form>
-  
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  
-    <table>
-      <thead>
-        <tr>
-          <th>Profile</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Country Code</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users">
-          <td>{{ user.profile }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.phone }}</td>
-          <td>{{ user.countryCode }}</td>
-          <td>
-            <div class="dropdown">
-              <button class="dropbtn">Actions</button>
-              <div class="dropdown-content">
-                <a (click)="editUser(user)">Edit</a>
-                <a (click)="deleteUser(user)">Delete</a>
-                <a (click)="openCardsModal(user)">Cards</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center">
+      <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true">
+      </pagination-controls>
+    </div>

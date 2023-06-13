@@ -34,6 +34,7 @@ export class UsersService {
   }
 
   updateUser(userId: string, userData: any): Observable<any> {
+    console.log(userData)
     const url = `${this.serverUrl}/updateuser/${userId}`;
     return this.http.put<any>(url, userData);
   }

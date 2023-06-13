@@ -95,20 +95,52 @@ userRoutes.get('/userdata', async (req, res) => {
   });
   
 
-  
-  // // Delete a user
-  // userRoutes.delete('/userdata/:id', (req, res) => {
-  //   userModel.findByIdAndDelete(req.params.id)
-  //     .then(() => res.sendStatus(204))
-  //     .catch(err => res.status(500).json({ error: err.message }));
-  // });
+  userRoutes.delete('/userdata/:id', async (req, res) => {
+    try {
+      const userId = req.params.id;
+      
+      const deletedUser = await userModel.findByIdAndDelete(userId);
+      if (!deletedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      return res.json({ success: true, message: 'User Deleted Successfully' });
+      
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ success: false, message: error});
+    }
+  });
 
-  // // Update a user
-  // userRoutes.put('/updateuser/:id', (req, res) => {
-  //     userModel.findByIdAndUpdate(req.params.id, req.body)
-  //         .then(() => res.sendStatus(204))
-  //         .catch(err => res.status(500).json({ error: err.message }));
-  // });
+
+
+  // Update a user
+  userRoutes.put('/updateuser/:id',upload.single('profile'), async (req, res) => {
+    // console.log(req.body)
+    // console.log(req.file)
+    const { updateusername, updateuseremail, updatecountrycode, updateuserphone } = req.body;
+
+    try {
+      const userId = req.params.id;
+      console.log(userId)
+      let updatedUser;
+
+      if (!req.file) {
+        const user = {username: updateusername, useremail: updateuseremail,countrycode: updatecountrycode, userphone: updateuserphone}
+        updatedUser =  await userModel.findByIdAndUpdate(userId, user, {new:true})
+      }
+      else{
+        console.log(req.file.filename)
+        const user = {profile: req.file.filename ,username: updateusername, useremail: updateuseremail,countrycode: updatecountrycode, userphone: updateuserphone}
+        updatedUser =  await userModel.findByIdAndUpdate(userId, user, {new:true})
+      }
+
+      res.json({ success: true, message: "User Updated Successfully" ,updatedUser});
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ success: false, message: "User Already Exists" });
+    }
+  });
+
 
 
 module.exports = userRoutes;
