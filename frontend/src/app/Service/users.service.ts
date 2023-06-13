@@ -43,4 +43,9 @@ export class UsersService {
     console.log(query)
     return this.http.get(`${this.serverUrl}/usersearch?query=${query}`);
   }
+
+  // getUsers(page: number, limit: number) {
+  //   const url = `${this.apiUrl}/userdata?page=${page}&limit=${limit}`;
+  //   return this.http.get(url);
+  // }
 }

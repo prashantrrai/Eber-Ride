@@ -138,3 +138,9 @@
       <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true">
       </pagination-controls>
     </div>
+
+    <!-- <div class="pagination">
+      <button class="page-link" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">Previous</button>
+      <span class="page-link">{{ currentPage }}</span>
+      <button class="page-link" [disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">Next</button>
+    </div> -->

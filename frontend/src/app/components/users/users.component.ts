@@ -24,6 +24,9 @@ export class UsersComponent {
   count: any;
 
   searchValue: string = '';
+  currentPage: number = 1;
+  totalPages: number = 0;
+  limit: number = 10;
 
   constructor(
     private _users: UsersService,
@@ -68,6 +71,19 @@ export class UsersComponent {
       },
     });
   }
+
+  // getUsers() {
+  //   this._users.getUsers(this.currentPage, this.limit)
+  //     .subscribe((data: any) => {
+  //       this.users = data.users;
+  //       this.totalPages = data.totalPages;
+  //     });
+  // }
+
+  // onPageChange(pageNumber: number) {
+  //   this.currentPage = pageNumber;
+  //   this.getUsers();
+  // }
 
   fetchCountryDataAPI(): void {
     this._users.fetchCountryAPI().subscribe({

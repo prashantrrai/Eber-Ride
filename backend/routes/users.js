@@ -162,6 +162,33 @@ userRoutes.get('/userdata', async (req, res) => {
   });
 
 
+  // Get all users with pagination
+  userRoutes.get('/userdata', async (req, res) => {
+    try {
+      const { page, limit } = req.query;
+      const pageNumber = parseInt(page) || 1;
+      const limitNumber = parseInt(limit) || 5;
+
+      const totalUsers = await userModel.countDocuments({});
+      const totalPages = Math.ceil(totalUsers / limitNumber);
+
+      const users = await userModel
+        .find({})
+        .skip((pageNumber - 1) * limitNumber)
+        .limit(limitNumber);
+
+      res.json({
+        success: true,
+        message: 'Users Retrieved Successfully',
+        page: pageNumber,
+        totalPages: totalPages,
+        users: users
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error });
+    }
+  });
 
 module.exports = userRoutes;
 
