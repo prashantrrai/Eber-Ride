@@ -4,6 +4,7 @@ const driverModel = require("../models/driver");
 const multer = require('multer');
 const path = require('path');
 const profile_path = path.join(__dirname, "../Public/Upload");
+const mongoose = require("mongoose");
 
 
   // Multer Code
@@ -82,7 +83,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
   });
 
 
-  // Delete a USER
+  // Delete a Driver
   driverRoutes.delete('/driverdata/:id', async (req, res) => {
     try {
       const driverId = req.params.id;
@@ -113,12 +114,12 @@ const profile_path = path.join(__dirname, "../Public/Upload");
       let updatedDriver;
 
       if (!req.file) {
-        const driver = {username: updatedrivername, useremail: updatedriveremail,countrycode: updatecountrycode, userphone: updatedriverphone}
+        const driver = {drivername: updatedrivername, driveremail: updatedriveremail,countrycode: updatecountrycode, driverphone: updatedriverphone}
         updatedDriver =  await driverModel.findByIdAndUpdate(driverId, driver, {new:true})
       }
       else{
         console.log(req.file.filename)
-        const driver = {profile: req.file.filename ,username: updatedrivername, useremail: updatedriveremail,countrycode: updatecountrycode, userphone: updatedriverphone}
+        const driver = {profile: req.file.filename ,drivername: updatedrivername, driveremail: updatedriveremail,countrycode: updatecountrycode, driverphone: updatedriverphone}
         updatedDriver =  await driverModel.findByIdAndUpdate(driverId, driver, {new:true})
       }
 
@@ -135,14 +136,23 @@ const profile_path = path.join(__dirname, "../Public/Upload");
     try {
       const query = req.query;
       console.log(query)
-      const driverdata = await driverModel.find({
+
+      const searchData = {
         $or: [
           { drivername: { $regex: query.query, $options: 'i' } },
           { driverphone: { $regex: query.query, $options: 'i' } },
-          { driveremail: { $regex: query.query, $options: 'i' } }
-        ]
-      });
-      console.log(driverdata)
+          { driveremail: { $regex: query.query, $options: 'i' } },
+        ],
+      };
+
+        // Check if the query is a valid ObjectId
+        if (mongoose.Types.ObjectId.isValid(query.query)) {
+          searchData.$or.push({ _id: query.query });
+        }
+
+        const driverdata = await driverModel.find(searchData);
+
+      // console.log(driverdata)
       res.json({ success: true, message: 'Data Found', driverdata });
     } catch (error) {
       console.log(error);
@@ -151,7 +161,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
   });
 
 
-  // Get User Data with (pagination)
+  // Get Driver Data with (pagination)
   driverRoutes.get('/driverdata', async (req, res) => {
     try {
       const { page, limit } = req.query;
@@ -166,7 +176,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
         .skip((pageNumber - 1) * limitNumber)
         .limit(limitNumber);
         
-        console.log(driverdata)
+        // console.log(driverdata)
         res.json({
           success: true,
         message: 'Driver Retrieved Successfully',

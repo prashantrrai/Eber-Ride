@@ -174,7 +174,7 @@ export class DriverComponent {
   }
 
   deleteDriver(driverId: string): void {
-    const confirmation = confirm("Are you sure you want to delete this user?");
+    const confirmation = confirm("Are you sure you want to delete this Driver?");
 
     if (confirmation) {
       this._driver.deleteDriver(driverId).subscribe({
@@ -236,15 +236,15 @@ export class DriverComponent {
 
 
   searchDriver() {
-    // console.log(this.searchValue)
+    console.log(this.searchValue)
     this._driver.searchDriver(this.searchValue, this.currentPage, this.limit).subscribe({
       next: (response: any) => {
+        console.log(response)
         this.driverArray = response.driverdata;
         this.totalPages = response.totalPages;
       },
       error: (error: any) => {
         console.log(error.error.message);
-        alert(error.error.message);
       }
   });
   }

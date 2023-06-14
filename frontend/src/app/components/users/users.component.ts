@@ -241,12 +241,12 @@ export class UsersComponent {
     // console.log(this.searchValue)
     this._users.searchUsers(this.searchValue, this.currentPage, this.limit).subscribe({
       next: (response: any) => {
+        console.log(response.userdata)
         this.usersArray = response.userdata;
         this.totalPages = response.totalPages;
       },
       error: (error: any) => {
         console.log(error.error.message);
-        alert(error.error.message);
       }
   });
   }

@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const userRoutes = express.Router()
 const userModel = require("../models/users");
 const multer = require('multer');
@@ -148,14 +149,23 @@ const profile_path = path.join(__dirname, "../Public/Upload");
     try {
       const query = req.query;
       console.log(query)
-      const userdata = await userModel.find({
+
+      const searchData = {
         $or: [
           { username: { $regex: query.query, $options: 'i' } },
           { userphone: { $regex: query.query, $options: 'i' } },
-          { useremail: { $regex: query.query, $options: 'i' } }
-        ]
-      });
-      console.log(userdata)
+          { useremail: { $regex: query.query, $options: 'i' } },
+        ],
+      };
+
+      // Check if the query is a valid ObjectId
+      if (mongoose.Types.ObjectId.isValid(query.query)) {
+        searchData.$or.push({ _id: query.query });
+      }
+
+      const userdata = await userModel.find(searchData);
+      // console.log(userdata)
+ 
       res.json({ success: true, message: 'Data Found', userdata });
     } catch (error) {
       console.log(error);
