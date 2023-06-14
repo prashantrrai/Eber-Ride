@@ -241,7 +241,7 @@ export class UsersComponent {
     // console.log(this.searchValue)
     this._users.searchUsers(this.searchValue, this.currentPage, this.limit).subscribe({
       next: (response: any) => {
-        console.log(response.userdata)
+        console.log(response)
         this.usersArray = response.userdata;
         this.totalPages = response.totalPages;
       },

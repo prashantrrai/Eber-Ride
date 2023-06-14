@@ -204,6 +204,79 @@ const profile_path = path.join(__dirname, "../Public/Upload");
     }
   });
 
+
+
+
+
+//   // Search users with sorting
+// userRoutes.get('/usersearch', async (req, res) => {
+//   try {
+//     const query = req.query;
+//     const { sortColumn, sortOrder } = req.query;
+//     console.log(query);
+
+//     const searchData = {
+//       $or: [
+//         { username: { $regex: query.query, $options: 'i' } },
+//         { userphone: { $regex: query.query, $options: 'i' } },
+//         { useremail: { $regex: query.query, $options: 'i' } },
+//       ],
+//     };
+
+//     // Check if the query is a valid ObjectId
+//     if (mongoose.Types.ObjectId.isValid(query.query)) {
+//       searchData.$or.push({ _id: query.query });
+//     }
+
+//     const sortObject = {};
+//     sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
+
+//     const userdata = await userModel
+//       .find(searchData)
+//       .sort(sortObject);
+
+//     res.json({ success: true, message: 'Data Found', userdata });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ success: false, message: error });
+//   }
+// });
+
+// // Get User Data with pagination and sorting
+// userRoutes.get('/userdata', async (req, res) => {
+//   try {
+//     const { page, limit, sortColumn, sortOrder } = req.query;
+//     const pageNumber = parseInt(page) || 1;
+//     const limitNumber = parseInt(limit) || 5;
+
+//     const totalUsers = await userModel.countDocuments({});
+//     const totalPages = Math.ceil(totalUsers / limitNumber);
+
+//     const sortObject = {};
+//     sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
+
+//     const userdata = await userModel
+//       .find({})
+//       .sort(sortObject)
+//       .skip((pageNumber - 1) * limitNumber)
+//       .limit(limitNumber);
+
+//     console.log(userdata);
+//     res.json({
+//       success: true,
+//       message: 'Users Retrieved Successfully',
+//       page: pageNumber,
+//       limit: limitNumber,
+//       totalPages: totalPages,
+//       userdata: userdata,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ success: false, message: error });
+//   }
+// });
+
+
 module.exports = userRoutes;
 
 
