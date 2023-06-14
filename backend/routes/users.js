@@ -186,7 +186,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
         page: pageNumber,
         limit: limitNumber,
         totalPages: totalPages,
-        users: userdata
+        userdata: userdata
       });
     } catch (error) {
       console.log(error);

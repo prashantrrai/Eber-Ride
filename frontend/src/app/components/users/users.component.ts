@@ -77,7 +77,8 @@ export class UsersComponent {
   getUserData() {
     this._users.getUsers(this.currentPage, this.limit).subscribe({
       next: (data: any) => {
-        this.usersArray = data.users;
+        console.log(data)
+        this.usersArray = data.userdata;
         this.totalPages = data.totalPages;
       },
       error: (error: any) => {
@@ -236,14 +237,18 @@ export class UsersComponent {
     });
   }
 
+
+
   searchUsers() {
     // console.log(this.searchValue)
-    this._users.searchUsers(this.searchValue).subscribe({
+    this._users.searchUsers(this.searchValue, this.currentPage, this.limit).subscribe({
       next: (response: any) => {
         this.usersArray = response.userdata;
+        this.totalPages = response.totalPages;
       },
       error: (error: any) => {
-        console.log(error);
+        console.log(error.error.message);
+        alert(error.error.message);
       }
   });
   }
