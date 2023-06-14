@@ -23,9 +23,9 @@ export class UsersService {
     return this.http.post<any>(`${this.serverUrl}/adduser`, userData);
   }
   
-  getuserData(): Observable<any> {
-    return this.http.get<any>(`${this.serverUrl}/userdata`);
-  }
+  // getuserData(): Observable<any> {
+  //   return this.http.get<any>(`${this.serverUrl}/userdata`);
+  // }
 
 
   deleteUser(userId: string): Observable<any> {
@@ -44,8 +44,8 @@ export class UsersService {
     return this.http.get(`${this.serverUrl}/usersearch?query=${query}`);
   }
 
-  // getUsers(page: number, limit: number) {
-  //   const url = `${this.apiUrl}/userdata?page=${page}&limit=${limit}`;
-  //   return this.http.get(url);
-  // }
+  getUsers(page: number, limit: number) {
+    const url = `${this.serverUrl}/userdata?page=${page}&limit=${limit}`;
+    return this.http.get(url);
+  }
 }

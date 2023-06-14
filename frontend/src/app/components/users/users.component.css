@@ -48,6 +48,7 @@
     font-size: large;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   }
+
   #tableContainer{
     background-color: #000000;
     border-radius: 10px;
@@ -82,13 +83,17 @@
     }
   
     #tableContainer{
-      background-color: #5100ad;
+      background-color: #000000;
       border-radius: 10px;
-      box-shadow: 4px 4px 16px #000000;
+      box-shadow: 4px 4px 16px #17b009;
       width: 90%;
       max-width: 600px;
       padding: 20px;
       margin: 40px;
+    }
+
+    .table-responsive > .table > thead > tr > th {
+      color: black;
     }
   }
   

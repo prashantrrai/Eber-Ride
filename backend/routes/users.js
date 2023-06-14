@@ -82,19 +82,20 @@ const profile_path = path.join(__dirname, "../Public/Upload");
   });
 
 
-// Get all users
-userRoutes.get('/userdata', async (req, res) => {
-  try {
-    const userdata = await userModel.find({});
-    // res.json({ userdata });
-    res.send(userdata)
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error});
-  }
-  });
+// // Get all users
+// userRoutes.get('/userdata', async (req, res) => {
+//   try {
+//     const userdata = await userModel.find({});
+//     // res.json({ userdata });
+//     res.send(userdata)
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ success: false, message: error});
+//   }
+//   });
   
 
+  // Delete a USER
   userRoutes.delete('/userdata/:id', async (req, res) => {
     try {
       const userId = req.params.id;
@@ -141,6 +142,7 @@ userRoutes.get('/userdata', async (req, res) => {
     }
   });
 
+
   // Search users
   userRoutes.get('/usersearch', async (req, res) => {
     try {
@@ -162,7 +164,7 @@ userRoutes.get('/userdata', async (req, res) => {
   });
 
 
-  // Get all users with pagination
+  // Get User Data with (pagination)
   userRoutes.get('/userdata', async (req, res) => {
     try {
       const { page, limit } = req.query;
@@ -172,17 +174,19 @@ userRoutes.get('/userdata', async (req, res) => {
       const totalUsers = await userModel.countDocuments({});
       const totalPages = Math.ceil(totalUsers / limitNumber);
 
-      const users = await userModel
+      const userdata = await userModel
         .find({})
         .skip((pageNumber - 1) * limitNumber)
         .limit(limitNumber);
-
-      res.json({
-        success: true,
+        
+        console.log(userdata)
+        res.json({
+          success: true,
         message: 'Users Retrieved Successfully',
         page: pageNumber,
+        limit: limitNumber,
         totalPages: totalPages,
-        users: users
+        users: userdata
       });
     } catch (error) {
       console.log(error);

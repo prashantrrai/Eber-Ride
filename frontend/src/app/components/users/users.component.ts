@@ -19,14 +19,16 @@ export class UsersComponent {
   file: any;
   selectedCC: any;
   id: any;
-  page: any;
-  tableSize: any | null = null;
+  // page: any;
+  // tableSize: any | null = null;
   count: any;
 
   searchValue: string = '';
+
+  limit: number = 5;
   currentPage: number = 1;
   totalPages: number = 0;
-  limit: number = 10;
+  paginatedUsers: any[] = [];
 
   constructor(
     private _users: UsersService,
@@ -54,36 +56,74 @@ export class UsersComponent {
     });
   }
 
-  getUserData(): void {
-    this._users.getuserData().subscribe({
-      next: (users: any) => {
-        // console.log(users);
+  // getUserData(): void {
+  //   this._users.getuserData().subscribe({
+  //     next: (users: any) => {
+  //       // console.log(users);
 
-        if (users) {
-          this.usersArray = users;
-        } else {
-          console.warn("No user data found");
-        }
+  //       if (users) {
+  //         this.usersArray = users;
+  //       } else {
+  //         console.warn("No user data found");
+  //       }
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error.error.message);
+  //       // alert(error.error.message);
+  //     },
+  //   });
+  // }
+
+  getUserData() {
+    this._users.getUsers(this.currentPage, this.limit).subscribe({
+      next: (data: any) => {
+        this.usersArray = data.users;
+        this.totalPages = data.totalPages;
       },
       error: (error: any) => {
         console.log(error.error.message);
-        // alert(error.error.message);
+        alert(error.error.message);
       },
     });
   }
 
-  // getUsers() {
-  //   this._users.getUsers(this.currentPage, this.limit)
-  //     .subscribe((data: any) => {
-  //       this.users = data.users;
-  //       this.totalPages = data.totalPages;
-  //     });
-  // }
 
-  // onPageChange(pageNumber: number) {
-  //   this.currentPage = pageNumber;
-  //   this.getUsers();
-  // }
+
+  onPageSizeChange(event: any): void {
+    this.limit = parseInt(event.target.value); // Parse the limit value as an integer
+
+    // Reset the current page to 1 when the limit changes
+    this.currentPage = 1;
+
+    // Update the paginatedUsers array based on the new limit and current page
+    this.updatePaginatedUsers();
+
+    this.getUserData();
+  }
+
+  onPageChange(pageNumber: number) {
+    // Validate the new page number
+    if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+      this.currentPage = pageNumber;
+
+    // Update the paginatedUsers array based on the new page
+    this.updatePaginatedUsers();
+
+    this.getUserData();
+    }
+  }
+
+  updatePaginatedUsers() {
+    const startIndex = (this.currentPage - 1) * this.limit;
+    const endIndex = startIndex + this.limit;
+
+    this.paginatedUsers = this.usersArray.slice(startIndex, endIndex);
+  }
+
+  getPagesArray(): number[] {
+    return Array(this.totalPages).fill(0).map((_, index) => index + 1);
+  }
+
 
   fetchCountryDataAPI(): void {
     this._users.fetchCountryAPI().subscribe({
@@ -217,16 +257,16 @@ export class UsersComponent {
     this.AddbuttonForm = !this.AddbuttonForm;
   }
 
-  onPageChange(event: any): void {
-    this.page = event;
-    this.getUserData();
-  }
+  // onPageChange(event: any): void {
+  //   this.page = event;
+  //   this.getUserData();
+  // }
 
-  onPageSizeChange(event: any): void {
-    this.tableSize = event.target.value;
-    this.page = 1;
-    this.getUserData();
-  }
+  // onPageSizeChange(event: any): void {
+  //   this.tableSize = event.target.value;
+  //   this.page = 1;
+  //   this.getUserData();
+  // }
 
   resetTimer() {
     this.authService.resetInactivityTimer();
