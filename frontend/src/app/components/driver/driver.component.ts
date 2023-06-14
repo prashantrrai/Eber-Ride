@@ -1,20 +1,30 @@
-import { AuthService } from "./../../Service/auth.service";
-import { Component } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
-import { UsersService } from "src/app/Service/users.service";
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/Service/auth.service';
+import { DriverService } from 'src/app/Service/driver.service';
 
 @Component({
-  selector: "app-users",
-  templateUrl: "./users.component.html",
-  styleUrls: ["./users.component.css"],
+  selector: 'app-driver',
+  templateUrl: './driver.component.html',
+  styleUrls: ['./driver.component.css']
 })
-export class UsersComponent {
-  userupdateForm!: FormGroup;
+export class DriverComponent {
+  // selectedCountryCode: string = "+1";
+  // phoneNumber: string = "";
+  
+  // // Access the selected country code and phone number in your code as needed
+  // // For example, you can combine the country code and phone number using a computed property
+  // getFormattedPhoneNumber(): string {
+  //   return this.selectedCountryCode + this.phoneNumber;
+  // }
+
+
+  driverUpdateForm!: FormGroup;
   AddForm!: FormGroup;
   AddbuttonForm: boolean = false;
   updateForm: boolean = false;
-  usersArray: any[] = [];
+  driverArray: any[] = [];
   countrycode: any[] = [];
   file: any;
   selectedCC: any;
@@ -26,58 +36,42 @@ export class UsersComponent {
   limit: number = 5;
   currentPage: number = 1;
   totalPages: number = 0;
-  paginatedUsers: any[] = [];
+  paginatedDrivers: any[] = [];
 
   constructor(
-    private _users: UsersService,
+    private _driver: DriverService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.getUserData();
+    this.getDriverData();
     this.fetchCountryDataAPI();
 
     this.AddForm = this.formBuilder.group({
       profile: [""],
-      username: ["", [Validators.required]],
-      useremail: ["", [Validators.required, Validators.email]],
-      userphone: ["", [Validators.required, Validators.minLength(10)]],
+      drivername: ["", [Validators.required]],
+      driveremail: ["", [Validators.required, Validators.email]],
+      driverphone: ["", [Validators.required, Validators.minLength(10)]],
     });
 
-    this.userupdateForm = this.formBuilder.group({
-      updateusername: ["", [Validators.required]],
-      updateuseremail: ["", [Validators.required, Validators.email]],
+    this.driverUpdateForm = this.formBuilder.group({
+      updatedrivername: ["", [Validators.required]],
+      updatedriveremail: ["", [Validators.required, Validators.email]],
       updatecountrycode: [""],
-      updateuserphone: ["", [Validators.required, Validators.minLength(10)]],
+      updatedriverphone: ["", [Validators.required, Validators.minLength(10)]],
     });
   }
 
-  // getUserData(): void {
-  //   this._users.getuserData().subscribe({
-  //     next: (users: any) => {
-  //       // console.log(users);
 
-  //       if (users) {
-  //         this.usersArray = users;
-  //       } else {
-  //         console.warn("No user data found");
-  //       }
-  //     },
-  //     error: (error: any) => {
-  //       console.log(error.error.message);
-  //       // alert(error.error.message);
-  //     },
-  //   });
-  // }
-
-  getUserData() {
-    this._users.getUsers(this.currentPage, this.limit).subscribe({
-      next: (data: any) => {
-        console.log(data)
-        this.usersArray = data.userdata;
-        this.totalPages = data.totalPages;
+  getDriverData() {
+    this._driver.getDriver(this.currentPage, this.limit).subscribe({
+      next: (response: any) => {
+        // console.log(response)
+        this.driverArray = response.driverdata;
+        // console.log(response.driverdata)
+        this.totalPages = response.totalPages;
       },
       error: (error: any) => {
         console.log(error.error.message);
@@ -94,10 +88,10 @@ export class UsersComponent {
     // Reset the current page to 1 when the limit changes
     this.currentPage = 1;
 
-    // Update the paginatedUsers array based on the new limit and current page
-    this.updatePaginatedUsers();
+    // Update the paginatedDrivers array based on the new limit and current page
+    this.updatePaginatedDrivers();
 
-    this.getUserData();
+    this.getDriverData();
   }
 
   onPageChange(pageNumber: number) {
@@ -105,18 +99,18 @@ export class UsersComponent {
     if (pageNumber >= 1 && pageNumber <= this.totalPages) {
       this.currentPage = pageNumber;
 
-    // Update the paginatedUsers array based on the new page
-    this.updatePaginatedUsers();
+    // Update the paginatedDrivers array based on the new page
+    this.updatePaginatedDrivers();
 
-    this.getUserData();
+    this.getDriverData();
     }
   }
 
-  updatePaginatedUsers() {
+  updatePaginatedDrivers() {
     const startIndex = (this.currentPage - 1) * this.limit;
     const endIndex = startIndex + this.limit;
 
-    this.paginatedUsers = this.usersArray.slice(startIndex, endIndex);
+    this.paginatedDrivers = this.driverArray.slice(startIndex, endIndex);
   }
 
   getPagesArray(): number[] {
@@ -125,7 +119,7 @@ export class UsersComponent {
 
 
   fetchCountryDataAPI(): void {
-    this._users.fetchCountryAPI().subscribe({
+    this._driver.fetchCountryAPI().subscribe({
       next: (countries) => {
         countries.forEach((code: any) => {
           if (code.idd.suffixes) {
@@ -148,24 +142,25 @@ export class UsersComponent {
 
   onFileSelected(event: any) {
     this.file = event.target.files[0];
-    console.log(this.file);
+    // console.log(this.file);
   }
 
-  AddUser() {
+  AddDriver() {
     var formData = new FormData();
     formData.append("profile", this.file);
-    formData.append("username", this.AddForm.value.username);
-    formData.append("useremail", this.AddForm.value.useremail);
+    formData.append("drivername", this.AddForm.value.drivername);
+    formData.append("driveremail", this.AddForm.value.driveremail);
     formData.append("countrycode", this.selectedCC);
-    formData.append("userphone", this.AddForm.value.userphone);
+    formData.append("driverphone", this.AddForm.value.driverphone);
 
     if (this.AddForm.valid) {
-      this._users.addUser(formData).subscribe({
+      this._driver.addDriver(formData).subscribe({
         next: (resp: any) => {
-          this.usersArray.push(resp.newUser);
+          // console.log(resp)
+          this.driverArray.push(resp.newDriver);
           this.AddForm.reset();
           this.AddbuttonForm = false;
-          this.getUserData();
+          this.getDriverData();
           this.toastr.success(resp.message);
         },
         error: (error: any) => {
@@ -178,14 +173,15 @@ export class UsersComponent {
     }
   }
 
-  deleteAdmin(userId: string): void {
+  deleteDriver(driverId: string): void {
     const confirmation = confirm("Are you sure you want to delete this user?");
 
     if (confirmation) {
-      this._users.deleteUser(userId).subscribe({
+      this._driver.deleteDriver(driverId).subscribe({
         next: (response: any) => {
-          this.usersArray.push(response.newUser);
-          this.getUserData();
+          console.log(response)
+          this.driverArray.push(response.newDriver);
+          this.getDriverData();
           this.toastr.success(response.message);
         },
         error: (error: any) => {
@@ -196,35 +192,37 @@ export class UsersComponent {
     }
   }
 
-  updateBtnClick(user: any): void {
-    this.id = user._id;
+  updateBtnClick(driver: any): void {
+    this.id = driver._id;
     this.updateForm = true;
-    // console.log(user._id)
-    // console.log(user)
-    this.userupdateForm.patchValue({
-      updateusername: user.username,
-      updateuseremail: user.useremail,
-      updatecountrycode: user.countrycode,
-      updateuserphone: user.userphone,
+    // console.log(driver._id)
+    // console.log(driver)
+    this.driverUpdateForm.patchValue({
+      updatedrivername: driver.drivername,
+      updatedriveremail: driver.driveremail,
+      updatecountrycode: driver.countrycode,
+      updatedriverphone: driver.driverphone,
     });
-    // console.log(this.userupdateForm.value)
+    // console.log(this.driverUpdateForm.value)
   }
 
-  updateUSER(): void {
-    const updatedData = this.userupdateForm.value;
+  updateDriver(): void {
+    const updatedData = this.driverUpdateForm.value;
     var formdata = new FormData();
     formdata.append("profile", this.file);
-    formdata.append("updateusername", updatedData.updateusername);
-    formdata.append("updateuseremail", updatedData.updateuseremail);
+    formdata.append("updatedrivername", updatedData.updatedrivername);
+    formdata.append("updatedriveremail", updatedData.updatedriveremail);
     formdata.append("updatecountrycode", updatedData.updatecountrycode);
-    formdata.append("updateuserphone", updatedData.updateuserphone);
+    formdata.append("updatedriverphone", updatedData.updatedriverphone);
     console.log(formdata);
-    this._users.updateUser(this.id, formdata).subscribe({
+
+
+    this._driver.updateDriver(this.id, formdata).subscribe({
       next: (response: any) => {
         console.log(response);
-        this.usersArray.push(response.updatedUser);
-        this.getUserData();
-        this.userupdateForm.reset();
+        this.driverArray.push(response.updatedDriver);
+        this.getDriverData();
+        this.driverUpdateForm.reset();
         this.updateForm = !this.updateForm;
         this.toastr.success(response.message);
       },
@@ -237,11 +235,11 @@ export class UsersComponent {
 
 
 
-  searchUsers() {
+  searchDriver() {
     // console.log(this.searchValue)
-    this._users.searchUsers(this.searchValue, this.currentPage, this.limit).subscribe({
+    this._driver.searchDriver(this.searchValue, this.currentPage, this.limit).subscribe({
       next: (response: any) => {
-        this.usersArray = response.userdata;
+        this.driverArray = response.driverdata;
         this.totalPages = response.totalPages;
       },
       error: (error: any) => {
@@ -259,17 +257,6 @@ export class UsersComponent {
   toggleFormVisibility() {
     this.AddbuttonForm = !this.AddbuttonForm;
   }
-
-  // onPageChange(event: any): void {
-  //   this.page = event;
-  //   this.getUserData();
-  // }
-
-  // onPageSizeChange(event: any): void {
-  //   this.tableSize = event.target.value;
-  //   this.page = 1;
-  //   this.getUserData();
-  // }
 
   resetTimer() {
     this.authService.resetInactivityTimer();

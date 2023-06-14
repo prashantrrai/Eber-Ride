@@ -10,6 +10,7 @@ import { authGuard } from './Service/auth.guard';
 import { CountryComponent } from './components/country/country.component';
 import { CityComponent } from './components/city/city.component';
 import { UsersComponent } from './components/users/users.component';
+import { DriverComponent } from './components/driver/driver.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -21,7 +22,8 @@ const routes: Routes = [
     {path: 'vehicletype', component: VehicleComponent} ,   
     {path: 'country', component: CountryComponent},
     {path: 'city', component: CityComponent}   ,
-    {path: 'users', component: UsersComponent}
+    {path: 'users', component: UsersComponent},
+    {path: 'driver', component: DriverComponent}
   ]},
 ];
 

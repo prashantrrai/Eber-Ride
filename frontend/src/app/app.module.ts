@@ -27,6 +27,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { CityComponent } from './components/city/city.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { UsersComponent } from './components/users/users.component';
+import { DriverComponent } from './components/driver/driver.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { UsersComponent } from './components/users/users.component';
     CountryComponent,
     CityComponent,
     UsersComponent,
+    DriverComponent,
   ],
   imports: [
     BrowserModule,

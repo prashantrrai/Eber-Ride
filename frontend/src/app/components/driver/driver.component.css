@@ -1,0 +1,130 @@
+/* .parent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.phone-input {
+    width: 40%;
+    background-color: #fff;
+  }
+  
+  .phone-input select {
+    padding: 10px;
+    margin-right: 10px;
+  }
+  
+  .phone-input input {
+    padding: 7px;
+  } */
+
+
+  
+
+.parentFormContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  #formContainer {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 4px 4px 16px #000000;
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
+    margin: 40px;
+  }
+  
+  .updateContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 5%;
+  }
+  
+  .container {
+    border-radius: 5px;
+    /* box-shadow: 2px 2px 6px #000000; */
+    padding: 20px;
+    transition: all linear 300ms;
+  }
+  
+  .container:hover {
+    transform: scale(1);
+    transition: all linear 300ms;
+    z-index: 1;
+    box-shadow: 4px 4px 16px #00b3ff;
+  }
+  
+  #pageSize{
+    justify-content: center;
+  }
+  label{
+    font-size: large;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+
+  #tableContainer{
+    background-color: #000000;
+    border-radius: 10px;
+    box-shadow: 4px 4px 16px #17b009;
+    width: 90%;
+    max-width: 800px;
+    padding: 20px;
+    margin: 40px;
+  }
+  /* Responsive Table */
+  .table-responsive {
+    overflow-x: auto;
+  }
+  tbody{
+    color: white;
+  }
+  img{
+    height: 40px;
+  }
+  
+  
+  @media (max-width: 780px) {
+
+    .table-responsive > .table > thead > tr > th,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tfoot > tr > td {
+      font-size: 12px;
+      color: white;
+    }
+  
+    #tableContainer{
+      background-color: #000000;
+      border-radius: 10px;
+      box-shadow: 4px 4px 16px #17b009;
+      width: 90%;
+      max-width: 600px;
+      padding: 20px;
+      margin: 40px;
+    }
+
+    .table-responsive > .table > thead > tr > th {
+      color: black;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .table-responsive > .table > thead > tr > th,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tfoot > tr > td {
+      font-size: 14px;
+    }
+
+  }

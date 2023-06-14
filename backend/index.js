@@ -30,6 +30,7 @@ const VehicleRoutes = require('./routes/vehicle')
 const countryRoutes = require('./routes/country')
 const cityRoutes = require('./routes/city')
 const userRoutes = require('./routes/users')
+const driverRoutes = require('./routes/driver')
 
 app.use(fetchAdmin)
 app.use(loginRoutes)
@@ -40,6 +41,7 @@ app.use(VehicleRoutes)
 app.use(countryRoutes)
 app.use(cityRoutes)
 app.use(userRoutes)
+app.use(driverRoutes)
 
 
 // To show API is Working in backend on http://localhost:4000.
