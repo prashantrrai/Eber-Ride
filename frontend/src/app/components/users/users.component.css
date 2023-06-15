@@ -68,6 +68,31 @@
   img{
     height: 40px;
   }
+
+  
+  .custom-select {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .custom-select select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .dropdown-icon {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
   
   
   @media (max-width: 780px) {

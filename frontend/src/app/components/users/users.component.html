@@ -82,16 +82,19 @@
   <div class="mt-5">
     <div class="d-flex justify-content-center align-items-center">
     <label for="pageSize">Show Data :</label>
-    <select class="form-control w-25 m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
-      <option [ngValue]="null">Select Page</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="10">10</option>
-    </select>
-    <input type="text" class="form-control w-25 m-3" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="searchValue" (input)="searchUsers()">
+    <div class="custom-select">
+      <select class="form-control m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
+        <option [ngValue]="null">Select Page</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+      </select>
+      <i class="fas fa-chevron-down dropdown-icon"></i>
+    </div>
+    <input type="text" class="form-control w-25 m-4 p-2" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="searchValue" (input)="searchUsers()">
     </div>
   </div>
 

@@ -151,6 +151,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
       const currentPage = parseInt(query.currentPage) || 1;
       const limit = parseInt(query.limit) || 5;
       const skip = (currentPage - 1) * limit;
+      const { sortColumn, sortOrder } = req.query;
 
       console.log(query)
 
@@ -170,9 +171,13 @@ const profile_path = path.join(__dirname, "../Public/Upload");
       const count = await userModel.countDocuments(searchData);
       const totalPages = Math.ceil(count / limit);
 
-      const userdata = await userModel.find(searchData).skip(skip).limit(limit);
+      const sortObject = {};
+      // sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
+      sortObject['username'] = 1;
 
-      console.log(userdata)
+      const userdata = await userModel.find(searchData).skip(skip).limit(limit).sort(sortObject);
+
+      // console.log(userdata)
  
       res.json({ success: true, message: 'User Data found from Search', userdata, totalPages });
     } catch (error) {
@@ -216,40 +221,6 @@ const profile_path = path.join(__dirname, "../Public/Upload");
 
 
 
-//   // Search users with sorting
-// userRoutes.get('/usersearch', async (req, res) => {
-//   try {
-//     const query = req.query;
-//     const { sortColumn, sortOrder } = req.query;
-//     console.log(query);
-
-//     const searchData = {
-//       $or: [
-//         { username: { $regex: query.query, $options: 'i' } },
-//         { userphone: { $regex: query.query, $options: 'i' } },
-//         { useremail: { $regex: query.query, $options: 'i' } },
-//       ],
-//     };
-
-//     // Check if the query is a valid ObjectId
-//     if (mongoose.Types.ObjectId.isValid(query.query)) {
-//       searchData.$or.push({ _id: query.query });
-//     }
-
-//     const sortObject = {};
-//     sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
-
-//     const userdata = await userModel
-//       .find(searchData)
-//       .sort(sortObject);
-
-//     res.json({ success: true, message: 'Data Found', userdata });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ success: false, message: error });
-//   }
-// });
-
 // // Get User Data with pagination and sorting
 // userRoutes.get('/userdata', async (req, res) => {
 //   try {
@@ -262,7 +233,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
 
 //     const sortObject = {};
 //     sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
-
+//     sortObject['username'] = 1;
 //     const userdata = await userModel
 //       .find({})
 //       .sort(sortObject)
