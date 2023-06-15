@@ -245,9 +245,10 @@ export class UsersComponent {
     // console.log(this.searchValue)
     this._users.searchUsers(this.searchValue, this.currentPage, this.limit).subscribe({
       next: (response: any) => {
-        console.log(response)
+        // console.log(response)
         this.usersArray = response.userdata;
         this.totalPages = response.totalPages;
+        this.updatePaginatedUsers(); // Update paginatedUsers array based on search results
       },
       error: (error: any) => {
         console.log(error.error.message);

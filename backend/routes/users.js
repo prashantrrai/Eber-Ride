@@ -148,6 +148,10 @@ const profile_path = path.join(__dirname, "../Public/Upload");
   userRoutes.get('/usersearch', async (req, res) => {
     try {
       const query = req.query;
+      const currentPage = parseInt(query.currentPage) || 1;
+      const limit = parseInt(query.limit) || 5;
+      const skip = (currentPage - 1) * limit;
+
       console.log(query)
 
       const searchData = {
@@ -163,10 +167,14 @@ const profile_path = path.join(__dirname, "../Public/Upload");
         searchData.$or.push({ _id: query.query });
       }
 
-      const userdata = await userModel.find(searchData);
-      // console.log(userdata)
+      const count = await userModel.countDocuments(searchData);
+      const totalPages = Math.ceil(count / limit);
+
+      const userdata = await userModel.find(searchData).skip(skip).limit(limit);
+
+      console.log(userdata)
  
-      res.json({ success: true, message: 'User Data found from Search', userdata });
+      res.json({ success: true, message: 'User Data found from Search', userdata, totalPages });
     } catch (error) {
       console.log(error);
       res.status(500).json({ success: false, message: error });
