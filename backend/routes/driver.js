@@ -131,10 +131,15 @@ const mongoose = require("mongoose");
   });
 
 
+
   // Search Driver
   driverRoutes.get('/driversearch', async (req, res) => {
     try {
       const query = req.query;
+      const currentPage = parseInt(query.currentPage) || 1;
+      const limit = parseInt(query.limit) || 5;
+      const skip = (currentPage - 1) * limit;
+      const { sortColumn, sortOrder } = req.query;
       console.log(query)
 
       const searchData = {
@@ -150,10 +155,17 @@ const mongoose = require("mongoose");
           searchData.$or.push({ _id: query.query });
         }
 
-        const driverdata = await driverModel.find(searchData);
+        const count = await driverModel.countDocuments(searchData);
+        const totalPages = Math.ceil(count / limit);
+  
+        const sortObject = {};
+        // sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
+        sortObject['username'] = 1;
+
+        const driverdata = await driverModel.find(searchData).skip(skip).limit(limit).sort(sortObject);
 
       // console.log(driverdata)
-      res.json({ success: true, message: 'Data Found', driverdata });
+      res.json({ success: true, message: 'Data Found', driverdata, totalPages });
     } catch (error) {
       console.log(error);
       res.status(500).json({ success: false, message: error });
@@ -179,11 +191,11 @@ const mongoose = require("mongoose");
         // console.log(driverdata)
         res.json({
           success: true,
-        message: 'Driver Retrieved Successfully',
-        page: pageNumber,
-        limit: limitNumber,
-        totalPages: totalPages,
-        driverdata: driverdata
+          message: 'Driver Retrieved Successfully',
+          page: pageNumber,
+          limit: limitNumber,
+          totalPages: totalPages,
+          driverdata: driverdata
       });
     } catch (error) {
       console.log(error);

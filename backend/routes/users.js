@@ -205,11 +205,11 @@ const profile_path = path.join(__dirname, "../Public/Upload");
         console.log(userdata)
         res.json({
           success: true,
-        message: 'Users Retrieved Successfully',
-        page: pageNumber,
-        limit: limitNumber,
-        totalPages: totalPages,
-        userdata: userdata
+          message: 'Users Retrieved Successfully',
+          page: pageNumber,
+          limit: limitNumber,
+          totalPages: totalPages,
+          userdata: userdata
       });
     } catch (error) {
       console.log(error);
