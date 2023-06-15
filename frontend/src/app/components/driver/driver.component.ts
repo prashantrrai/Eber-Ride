@@ -16,8 +16,10 @@ export class DriverComponent {
   AddbuttonForm: boolean = false;
   updateForm: boolean = false;
   countrycode: any[] = [];
+  citiesname: any[] = [];
   file: any;
   selectedCC: any;
+  selectedCity: any;
   id: any;
   count: any;
   
@@ -39,6 +41,7 @@ export class DriverComponent {
   ngOnInit(): void {
     this.getDriverData();
     this.fetchCountryDataAPI();
+    this.getCityNamefromDB()
 
     this.AddForm = this.formBuilder.group({
       profile: [""],
@@ -51,6 +54,7 @@ export class DriverComponent {
       updatedrivername: ["", [Validators.required]],
       updatedriveremail: ["", [Validators.required, Validators.email]],
       updatecountrycode: [""],
+      updatecitiesname: [""],
       updatedriverphone: ["", [Validators.required, Validators.minLength(10)]],
     });
   }
@@ -123,11 +127,49 @@ export class DriverComponent {
       },
     });
   }
-
-  onSelected(value: any) {
+  
+  onSelectedCode(value: any) {
     this.selectedCC = value;
-    // console.log(value)
+    console.log(value)
   }
+  
+  // citiesname
+  // fetchCityDataAPI(): void {
+  //   this._driver.fetchCityAPI().subscribe({
+  //     next: (cities) => {
+  //       cities.forEach((city: any) => {
+  //         if (city.idd.suffixes) {
+  //           let CN = city.idd.root + city.idd.suffixes[0];
+  //           this.citiesname.push(CN);
+  //         }
+  //       });
+  //       this.citiesname.sort();
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error);
+  //     },
+  //   });
+  // }
+
+    // To fetch country data from from /countrydata API in dropdown..........
+    getCityNamefromDB() :void{
+      this._driver.getCityData().subscribe({
+        next: (response) => {
+          console.log(response)
+          this.citiesname = response.citydata;
+          // this.citiesname.push(response.citydata);
+        },
+        error: (error) => {
+          console.log(error.error.message);
+        }
+      });
+    }
+
+  onSelectedCity(value: any) {
+    this.selectedCity = value;
+    console.log(value)
+  }
+
 
   onFileSelected(event: any) {
     this.file = event.target.files[0];
@@ -140,6 +182,7 @@ export class DriverComponent {
     formData.append("drivername", this.AddForm.value.drivername);
     formData.append("driveremail", this.AddForm.value.driveremail);
     formData.append("countrycode", this.selectedCC);
+    formData.append("citiesname", this.selectedCity);
     formData.append("driverphone", this.AddForm.value.driverphone);
 
     if (this.AddForm.valid) {
@@ -191,6 +234,7 @@ export class DriverComponent {
       updatedrivername: driver.drivername,
       updatedriveremail: driver.driveremail,
       updatecountrycode: driver.countrycode,
+      updatecitiesname: driver.citiesname,
       updatedriverphone: driver.driverphone,
     });
     // console.log(this.driverUpdateForm.value)
@@ -203,6 +247,7 @@ export class DriverComponent {
     formdata.append("updatedrivername", updatedData.updatedrivername);
     formdata.append("updatedriveremail", updatedData.updatedriveremail);
     formdata.append("updatecountrycode", updatedData.updatecountrycode);
+    formdata.append("updatecitiesname", updatedData.updatecitiesname);
     formdata.append("updatedriverphone", updatedData.updatedriverphone);
     console.log(formdata);
 

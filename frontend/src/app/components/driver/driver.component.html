@@ -9,46 +9,39 @@
     <div class="parentFormContainer">
         <div id="formContainer" *ngIf="AddbuttonForm">
         <h2 class="mb-3">Driver Registration</h2>
-            <form class="container" [formGroup]="AddForm" (ngSubmit)="AddDriver()">
-                
-                <div class="mb-3">
-                  <label class="form-label d-flex justify-content-start">Driver Name</label>
-                  <input type="text" class="form-control" formControlName="drivername" placeholder="Enter Username"/>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label d-flex justify-content-start">Driver Email</label>
-                  <input type="email" class="form-control" formControlName="driveremail" placeholder="Enter Email"/>
-                </div>
-                <!-- <div class="dropdown mb-3">
-                  <label class="form-label d-flex justify-content-start">Country Code</label>
-                  <select class="form-label d-flex justify-content-start form-control" name="code" #code (change)="onSelected(code.value)">
-                    <option value="">Select country code</option>
-                    <option  [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
+          <form class="container" [formGroup]="AddForm" (ngSubmit)="AddDriver()">
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Driver Name</label>
+              <input type="text" class="form-control" formControlName="drivername" placeholder="Enter Username"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Driver Email</label>
+              <input type="email" class="form-control" formControlName="driveremail" placeholder="Enter Email"/>
+            </div>
+            <div class="parent mb-3">
+              <label class="form-label d-flex justify-content-start">Phone Number</label>
+              <div class="phone-input w-100">
+                  <select class="form-control w-25" id="country-code" name="code" #code (change)="onSelectedCode(code.value)">
+                    <option value="+1">+1</option>
+                    <option [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
                   </select>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label d-flex justify-content-start">Phone</label>
-                  <input type="tel" class="form-control" formControlName="driverphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
-                </div> -->
-
-                <div class="parent mb-3">
-                  <label class="form-label d-flex justify-content-start">Phone Number</label>
-                  <div class="phone-input w-100">
-                      <select class="form-control w-25" id="country-code" name="code" #code (change)="onSelected(code.value)">
-                        <option value="+1">+1</option>
-                        <option [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
-                      </select>
-                      <input type="tel" class="form-control"  id="phone-number" formControlName="driverphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                  </div>
-                </div>
-              
-                <div class="mb-3">
-                  <label class="form-label d-flex justify-content-start">Upload Profile</label>
-                    <input type="file" class="form-control" formControlName="profile"  name="profile" (change)="onFileSelected($event)"/>
-                  </div>
-                <div>
-                  <button type="submit" class="btn btn-primary w-100" id="submitBtn"> Submit</button>
-                </div>
+                  <input type="tel" class="form-control"  id="phone-number" formControlName="driverphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Choose City</label>
+              <select class="form-control w-100" id="city-name" name="city" #city (change)="onSelectedCity(city.value)">
+                <option value="null">Select City</option>
+                <option [value]="city" *ngFor="let city of citiesname ">{{city}}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Upload Profile</label>
+                <input type="file" class="form-control" formControlName="profile"  name="profile" (change)="onFileSelected($event)"/>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary w-100" id="submitBtn"> Submit</button>
+            </div>
           </form>
         </div>
       </div>
@@ -67,15 +60,23 @@
                 <label class="form-label d-flex justify-content-start">Email</label>
                 <input type="email" class="form-control" formControlName="updatedriveremail" />
               </div>
-              <div class="dropdown mb-3">
-                <label class="form-label d-flex justify-content-start">Country Code</label>
-                <select class="form-label d-flex justify-content-start form-control" name="code" #code (change)="onSelected(code.value)"  formControlName="updatecountrycode">
-                  <option  [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
-                </select>
+              <div class="parent mb-3">
+                <label class="form-label d-flex justify-content-start">Phone Number</label>
+                <div class="phone-input w-100">
+                    <select class="form-control w-25" id="country-code" name="code" #code (change)="onSelectedCode(code.value)" formControlName="updatecountrycode">
+                      <option value="+1">+1</option>
+                      <option [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
+                    </select>
+                    <input type="tel" class="form-control"  id="phone-number" formControlName="updatedriverphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                </div>
               </div>
               <div class="mb-3">
-                <label class="form-label d-flex justify-content-start">Phone</label>
-                <input type="tel" class="form-control" formControlName="updatedriverphone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                <label class="form-label d-flex justify-content-start">Choose City</label>
+                <select class="form-control w-100" id="city-name" name="city" #city (change)="onSelectedCity(city.value)" formControlName="updatecitiesname">
+                  <option value="null">Select City</option>
+                  <option [value]="city" *ngFor="let city of citiesname ">{{city}}</option>
+                </select>
+                
               </div>
               <div class="mb-3">
                 <label class="form-label d-flex justify-content-start">Profile</label>

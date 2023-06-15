@@ -18,6 +18,11 @@ export class DriverService {
   fetchCountryAPI(): Observable<any> {
     return this.http.get(`${this.countryAPI}`);
   }
+
+  
+  getCityData(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/citydata`);
+  }
   
   addDriver(driverData: any): Observable<any> {
     // console.log(driverData);
