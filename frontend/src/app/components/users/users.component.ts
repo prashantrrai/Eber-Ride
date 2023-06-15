@@ -242,6 +242,7 @@ export class UsersComponent {
 
 
   searchUsers() {
+    this.currentPage = 1; // Reset the current page to 1 when searching
     // console.log(this.searchValue)
     this._users.searchUsers(this.searchValue, this.currentPage, this.limit).subscribe({
       next: (response: any) => {
