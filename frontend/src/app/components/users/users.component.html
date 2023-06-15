@@ -111,8 +111,26 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let user of usersArray | paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: totalPages };let i = index">
+            <!-- <tr *ngFor="let user of usersArray | paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: totalPages };let i = index">
               <td><img src="http://localhost:4000/{{ user.profile}}" alt=""></td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.useremail }}</td>
+              <td>{{ user.countrycode }}</td>
+              <td>{{ user.userphone }}</td>
+              <td>
+                <button id="updatebtn" (click)="updateBtnClick(user)">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </td>
+              <td>
+                <button id="deletebtn" (click)="deleteAdmin(user._id)">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            </tr> -->
+
+            <tr *ngFor="let user of usersArray" >
+              <td><img src="http://localhost:4000/{{ user.profile}}" alt="user-profile"></td>
               <td>{{ user.username }}</td>
               <td>{{ user.useremail }}</td>
               <td>{{ user.countrycode }}</td>

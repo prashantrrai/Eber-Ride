@@ -14,19 +14,19 @@ export class UsersComponent {
   AddForm!: FormGroup;
   AddbuttonForm: boolean = false;
   updateForm: boolean = false;
-  usersArray: any[] = [];
   countrycode: any[] = [];
   file: any;
   selectedCC: any;
   id: any;
   count: any;
-
+  
   searchValue: string = '';
-
-  limit: number = 5;
-  currentPage: number = 1;
-  totalPages: number = 0;
-  paginatedUsers: any[] = [];
+  
+  usersArray: any[] = []; // Array to store all users
+  paginatedUsers: any[] = []; // Array to store the currently displayed users
+  currentPage = 1; // Current page number
+  limit = 5; // Number of users per page
+  totalPages = 0; // Total number of pages
 
   constructor(
     private _users: UsersService,
@@ -74,10 +74,12 @@ export class UsersComponent {
 
   getUserData() {
     this._users.getUsers(this.currentPage, this.limit).subscribe({
-      next: (data: any) => {
-        console.log(data)
-        this.usersArray = data.userdata;
-        this.totalPages = data.totalPages;
+      next: (response: any) => {
+        console.log(response)
+        this.usersArray = response.userdata;
+        this.totalPages = response.totalPages;
+        // this.totalPages = Math.ceil(this.usersArray.length / this.limit);
+        this.updatePaginatedUsers();
       },
       error: (error: any) => {
         console.log(error.error.message);
@@ -86,6 +88,12 @@ export class UsersComponent {
     });
   }
 
+
+  updatePaginatedUsers() {
+    const startIndex = (this.currentPage - 1) * this.limit;
+    const endIndex = startIndex + this.limit;
+    this.paginatedUsers = this.usersArray.slice(startIndex, endIndex);
+  }
 
 
   onPageSizeChange(event: any): void {
@@ -108,16 +116,12 @@ export class UsersComponent {
     // Update the paginatedUsers array based on the new page
     this.updatePaginatedUsers();
 
-    this.getUserData();
+    this.getUserData();   //The purpose of calling this.getUserData() is to fetch the updated user data from the backend API based on the new page number. It ensures that the user data displayed on the current page reflects the updated page number.
+    // If you comment out this.getUserData(), the user data displayed on the current page may not be updated according to the new page number. The paginatedUsers array will be updated correctly, but the actual data retrieved from the backend will remain the same as the previous page.
+    // In summary, this.getUserData() fetches the user data from the backend API, while this.updatePaginatedUsers() updates the paginatedUsers array to display the appropriate subset of users on the current page. Both functions work together to ensure the correct user data is displayed when the page changes.
     }
   }
 
-  updatePaginatedUsers() {
-    const startIndex = (this.currentPage - 1) * this.limit;
-    const endIndex = startIndex + this.limit;
-
-    this.paginatedUsers = this.usersArray.slice(startIndex, endIndex);
-  }
 
   getPagesArray(): number[] {
     return Array(this.totalPages).fill(0).map((_, index) => index + 1);

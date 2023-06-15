@@ -166,7 +166,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
       const userdata = await userModel.find(searchData);
       // console.log(userdata)
  
-      res.json({ success: true, message: 'Data Found', userdata });
+      res.json({ success: true, message: 'User Data found from Search', userdata });
     } catch (error) {
       console.log(error);
       res.status(500).json({ success: false, message: error });
