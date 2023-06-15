@@ -75,7 +75,7 @@ export class UsersComponent {
   getUserData() {
     this._users.getUsers(this.currentPage, this.limit).subscribe({
       next: (response: any) => {
-        console.log(response)
+        // console.log(response)
         this.usersArray = response.userdata;
         this.totalPages = response.totalPages;
         // this.totalPages = Math.ceil(this.usersArray.length / this.limit);
@@ -182,7 +182,7 @@ export class UsersComponent {
     }
   }
 
-  deleteAdmin(userId: string): void {
+  deleteUser(userId: string): void {
     const confirmation = confirm("Are you sure you want to delete this user?");
 
     if (confirmation) {

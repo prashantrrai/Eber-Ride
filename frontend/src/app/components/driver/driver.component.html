@@ -129,7 +129,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let driver of driverArray | paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: totalPages };let i = index">
+            <tr *ngFor="let driver of driverArray">
               <td><img src="http://localhost:4000/{{ driver.profile}}" alt=""></td>
               <td>{{ driver.drivername }}</td>
               <td>{{ driver.driveremail }}</td>
@@ -168,8 +168,33 @@
             </button>
           </div>
         </div>
+        
     
     
       </div>
     </div>
 
+
+  <!-- <div class="card-container container d-flex flex-wrap" >
+    <div class="m-4 card" *ngFor="let driver of driverArray">
+      <img class="card-img-top" src="http://localhost:4000/{{ driver.profile}}" id="vehicle_image" name="image" alt="vehicle-image" />
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="left">
+            <h3 class="card-title">{{ driver.drivername }}</h3>
+            <div class="d-flex">
+              <h3 class="card-title">{{ driver.countrycode }}</h3> &nbsp;
+              <h3 class="card-title">{{ driver.driverphone }}</h3>
+            </div>
+            <h5 class="card-title">{{ driver.driveremail }}</h5>
+        </div>
+        <div class="right">
+          <h5 class="card-title">{{ driver.countrycode }}</h5>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div> -->

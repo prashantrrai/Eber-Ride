@@ -159,3 +159,50 @@
     }
 
   }
+
+  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 3%;
+  }
+  
+  .card {
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 300px;
+    margin: 10px;
+    transition: all linear 200ms;
+  }
+  .card-img-top{
+    height: 50px;
+    width: 50px;
+  }
+
+    
+  @media screen and (max-width: 480px) {
+    #formContainer {
+      width: 90%;
+      margin: 20px;
+    }
+  }
+  
+  @media screen and (max-width: 780px) {
+    #formContainer {
+      width: 80%;
+      margin: 20px;
+    }
+  }
+
+  
+  @media screen and (max-width: 480px) {
+    .card {
+      width: 90%;
+      height: auto;
+    }
+  }

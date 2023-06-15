@@ -10,33 +10,24 @@ import { DriverService } from 'src/app/Service/driver.service';
   styleUrls: ['./driver.component.css']
 })
 export class DriverComponent {
-  // selectedCountryCode: string = "+1";
-  // phoneNumber: string = "";
-  
-  // // Access the selected country code and phone number in your code as needed
-  // // For example, you can combine the country code and phone number using a computed property
-  // getFormattedPhoneNumber(): string {
-  //   return this.selectedCountryCode + this.phoneNumber;
-  // }
-
 
   driverUpdateForm!: FormGroup;
   AddForm!: FormGroup;
   AddbuttonForm: boolean = false;
   updateForm: boolean = false;
-  driverArray: any[] = [];
   countrycode: any[] = [];
   file: any;
   selectedCC: any;
   id: any;
   count: any;
-
+  
   searchValue: string = '';
-
+  
+  driverArray: any[] = [];
+  paginatedDrivers: any[] = [];
   limit: number = 5;
   currentPage: number = 1;
   totalPages: number = 0;
-  paginatedDrivers: any[] = [];
 
   constructor(
     private _driver: DriverService,
@@ -72,6 +63,7 @@ export class DriverComponent {
         this.driverArray = response.driverdata;
         // console.log(response.driverdata)
         this.totalPages = response.totalPages;
+        this.updatePaginatedDrivers();
       },
       error: (error: any) => {
         console.log(error.error.message);
@@ -80,6 +72,11 @@ export class DriverComponent {
     });
   }
 
+  updatePaginatedDrivers() {
+    const startIndex = (this.currentPage - 1) * this.limit;
+    const endIndex = startIndex + this.limit;
+    this.paginatedDrivers = this.driverArray.slice(startIndex, endIndex);
+  }
 
 
   onPageSizeChange(event: any): void {
@@ -90,7 +87,6 @@ export class DriverComponent {
 
     // Update the paginatedDrivers array based on the new limit and current page
     this.updatePaginatedDrivers();
-
     this.getDriverData();
   }
 
@@ -101,17 +97,10 @@ export class DriverComponent {
 
     // Update the paginatedDrivers array based on the new page
     this.updatePaginatedDrivers();
-
     this.getDriverData();
     }
   }
 
-  updatePaginatedDrivers() {
-    const startIndex = (this.currentPage - 1) * this.limit;
-    const endIndex = startIndex + this.limit;
-
-    this.paginatedDrivers = this.driverArray.slice(startIndex, endIndex);
-  }
 
   getPagesArray(): number[] {
     return Array(this.totalPages).fill(0).map((_, index) => index + 1);
@@ -237,12 +226,14 @@ export class DriverComponent {
 
 
   searchDriver() {
+    this.currentPage = 1; // Reset the current page to 1 when searching
     console.log(this.searchValue)
     this._driver.searchDriver(this.searchValue, this.currentPage, this.limit).subscribe({
       next: (response: any) => {
         console.log(response)
         this.driverArray = response.driverdata;
         this.totalPages = response.totalPages;
+        this.updatePaginatedDrivers(); // Update paginatedUsers array based on search results
       },
       error: (error: any) => {
         console.log(error.error.message);
