@@ -203,6 +203,7 @@ export class UsersComponent {
   updateBtnClick(user: any): void {
     this.id = user._id;
     this.updateForm = true;
+    this.AddbuttonForm = false
     // console.log(user._id)
     // console.log(user)
     this.userupdateForm.patchValue({
@@ -264,6 +265,7 @@ export class UsersComponent {
 
   toggleFormVisibility() {
     this.AddbuttonForm = !this.AddbuttonForm;
+    this.updateForm = false
   }
 
   // onPageChange(event: any): void {

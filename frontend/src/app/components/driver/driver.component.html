@@ -1,16 +1,7 @@
-<!-- <div class="parent">
-    <div class="phone-input">
-        <select id="country-code" [(ngModel)]="selectedCountryCode">
-          <option value="+1">+1</option>
-          <option value="+91">+91</option>
-        </select>
-        <input type="tel" id="phone-number" [(ngModel)]="phoneNumber" placeholder="Enter phone number">
-    </div>
-</div> -->
 
 
 
-<button class="mt-4 btn btn-success" id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>Add Driver</button>
+<button class="mt-4 btn btn-primary" id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp; Add Driver</button>
 
 
 
@@ -21,14 +12,14 @@
             <form class="container" [formGroup]="AddForm" (ngSubmit)="AddDriver()">
                 
                 <div class="mb-3">
-                  <label class="form-label d-flex justify-content-start">Name</label>
+                  <label class="form-label d-flex justify-content-start">Driver Name</label>
                   <input type="text" class="form-control" formControlName="drivername" placeholder="Enter Username"/>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label d-flex justify-content-start">Email</label>
+                  <label class="form-label d-flex justify-content-start">Driver Email</label>
                   <input type="email" class="form-control" formControlName="driveremail" placeholder="Enter Email"/>
                 </div>
-                <div class="dropdown mb-3">
+                <!-- <div class="dropdown mb-3">
                   <label class="form-label d-flex justify-content-start">Country Code</label>
                   <select class="form-label d-flex justify-content-start form-control" name="code" #code (change)="onSelected(code.value)">
                     <option value="">Select country code</option>
@@ -38,7 +29,19 @@
                 <div class="mb-3">
                   <label class="form-label d-flex justify-content-start">Phone</label>
                   <input type="tel" class="form-control" formControlName="driverphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                </div> -->
+
+                <div class="parent mb-3">
+                  <label class="form-label d-flex justify-content-start">Phone Number</label>
+                  <div class="phone-input w-100">
+                      <select class="form-control w-25" id="country-code" name="code" #code (change)="onSelected(code.value)">
+                        <option value="+1">+1</option>
+                        <option [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
+                      </select>
+                      <input type="tel" class="form-control"  id="phone-number" formControlName="driverphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                  </div>
                 </div>
+              
                 <div class="mb-3">
                   <label class="form-label d-flex justify-content-start">Upload Profile</label>
                     <input type="file" class="form-control" formControlName="profile"  name="profile" (change)="onFileSelected($event)"/>
@@ -91,21 +94,24 @@
   
 
 
-  <div class="mt-5">
-    <div class="d-flex justify-content-center align-items-center">
-    <label for="pageSize">Show Data :</label>
-    <select class="form-control w-25 m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
-      <option [ngValue]="null">Select Page</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="10">10</option>
-    </select>
-    <input type="text" class="form-control w-25 m-3" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="searchValue" (input)="searchDriver()">
-    </div>
-  </div>
+      <div class="mt-5">
+        <div class="d-flex justify-content-center align-items-center">
+        <label for="pageSize">Show Data :</label>
+        <div class="custom-select">
+          <select class="form-control m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
+            <option [ngValue]="null">Select Page</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
+          <i class="fas fa-chevron-down dropdown-icon"></i>
+        </div>
+        <input type="text" class="form-control w-25 m-4 p-2" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="searchValue" (input)="searchDriver()">
+        </div>
+      </div>
 
     <div class="parentFormContainer">
       <div id="tableContainer">

@@ -195,6 +195,7 @@ export class DriverComponent {
   updateBtnClick(driver: any): void {
     this.id = driver._id;
     this.updateForm = true;
+    this.AddbuttonForm = false
     // console.log(driver._id)
     // console.log(driver)
     this.driverUpdateForm.patchValue({
@@ -256,6 +257,7 @@ export class DriverComponent {
 
   toggleFormVisibility() {
     this.AddbuttonForm = !this.AddbuttonForm;
+    this.updateForm = false
   }
 
   resetTimer() {

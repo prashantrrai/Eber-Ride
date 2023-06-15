@@ -11,11 +11,26 @@
   #formContainer {
     background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 4px 4px 16px #000000;
-    width: 90%;
+    box-shadow: 4px 4px 16px #cccccc;
+    width: 40%;
     max-width: 600px;
     padding: 20px;
     margin: 40px;
+  }
+
+  .parent{
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+}
+.phone-input {
+    width: 40%;
+    background-color: #fff;
+    display: flex;
+  }
+  
+  .phone-input select {
+    margin-right: 10px;
   }
   
   .updateContainer {
@@ -38,7 +53,7 @@
     transform: scale(1);
     transition: all linear 300ms;
     z-index: 1;
-    box-shadow: 4px 4px 16px #00b3ff;
+    /* box-shadow: 4px 4px 16px #00b3ff; */
   }
   
   #pageSize{
@@ -50,7 +65,7 @@
   }
 
   #tableContainer{
-    background-color: #000000;
+    background-color: #333333;
     border-radius: 10px;
     box-shadow: 4px 4px 16px #17b009;
     width: 90%;
@@ -108,7 +123,7 @@
     }
   
     #tableContainer{
-      background-color: #000000;
+      background-color: #333333;
       border-radius: 10px;
       box-shadow: 4px 4px 16px #17b009;
       width: 90%;
@@ -120,6 +135,16 @@
     .table-responsive > .table > thead > tr > th {
       color: black;
     }
+    #formContainer {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 4px 4px 16px #000000;
+      width: 90%;
+      max-width: 600px;
+      padding: 20px;
+      margin: 40px;
+    }
+    
   }
   
   @media (max-width: 480px) {

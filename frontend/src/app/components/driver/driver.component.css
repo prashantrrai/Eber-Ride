@@ -1,22 +1,18 @@
-/* .parent{
-    display: flex;
+.parent{
+    /* display: flex; */
     align-items: center;
     justify-content: center;
 }
 .phone-input {
     width: 40%;
     background-color: #fff;
+    display: flex;
   }
   
   .phone-input select {
-    padding: 10px;
     margin-right: 10px;
   }
   
-  .phone-input input {
-    padding: 7px;
-  } */
-
 
   
 
@@ -31,8 +27,8 @@
   #formContainer {
     background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 4px 4px 16px #000000;
-    width: 90%;
+    box-shadow: 4px 4px 16px #d0d0d0;
+    width: 40%;
     max-width: 600px;
     padding: 20px;
     margin: 40px;
@@ -58,7 +54,7 @@
     transform: scale(1);
     transition: all linear 300ms;
     z-index: 1;
-    box-shadow: 4px 4px 16px #00b3ff;
+    /* box-shadow: 4px 4px 16px #00b3ff; */
   }
   
   #pageSize{
@@ -69,8 +65,32 @@
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   }
 
+
+  .custom-select {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .custom-select select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .dropdown-icon {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
   #tableContainer{
-    background-color: #000000;
+    background-color: #333333;
     border-radius: 10px;
     box-shadow: 4px 4px 16px #17b009;
     width: 90%;
@@ -78,6 +98,7 @@
     padding: 20px;
     margin: 40px;
   }
+  
   /* Responsive Table */
   .table-responsive {
     overflow-x: auto;
@@ -88,7 +109,7 @@
   img{
     height: 40px;
   }
-  
+
   
   @media (max-width: 780px) {
 
@@ -103,7 +124,7 @@
     }
   
     #tableContainer{
-      background-color: #000000;
+      background-color: #333333;
       border-radius: 10px;
       box-shadow: 4px 4px 16px #17b009;
       width: 90%;
@@ -114,6 +135,16 @@
 
     .table-responsive > .table > thead > tr > th {
       color: black;
+    }
+
+    #formContainer {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 4px 4px 16px #d0d0d0;
+      width: 90%;
+      max-width: 600px;
+      padding: 20px;
+      margin: 40px;
     }
   }
   
