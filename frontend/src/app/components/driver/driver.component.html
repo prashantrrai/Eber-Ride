@@ -122,8 +122,8 @@
               <th>Profile</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Country Code</th>
               <th>Phone</th>
+              <th>Active</th>
               <th>Update</th>
               <th>Delete</th>
             </tr>
@@ -133,8 +133,12 @@
               <td><img src="http://localhost:4000/{{ driver.profile}}" alt=""></td>
               <td>{{ driver.drivername }}</td>
               <td>{{ driver.driveremail }}</td>
-              <td>{{ driver.countrycode }}</td>
-              <td>{{ driver.driverphone }}</td>
+              <td>{{driver.countrycode + " " + driver.driverphone}}</td>
+              <td>
+                <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                </div>
+              </td>
               <td>
                 <button id="updatebtn" (click)="updateBtnClick(driver)">
                   <i class="fa-solid fa-pen-to-square"></i>
