@@ -53,8 +53,8 @@ export class DriverComponent {
     this.driverUpdateForm = this.formBuilder.group({
       updatedrivername: ["", [Validators.required]],
       updatedriveremail: ["", [Validators.required, Validators.email]],
-      updatecountrycode: [""],
-      updatecitiesname: [""],
+      updatedcountrycode: [""],
+      updatedcitiesname: [""],
       updatedriverphone: ["", [Validators.required, Validators.minLength(10)]],
     });
   }
@@ -133,23 +133,6 @@ export class DriverComponent {
     console.log(value)
   }
   
-  // citiesname
-  // fetchCityDataAPI(): void {
-  //   this._driver.fetchCityAPI().subscribe({
-  //     next: (cities) => {
-  //       cities.forEach((city: any) => {
-  //         if (city.idd.suffixes) {
-  //           let CN = city.idd.root + city.idd.suffixes[0];
-  //           this.citiesname.push(CN);
-  //         }
-  //       });
-  //       this.citiesname.sort();
-  //     },
-  //     error: (error: any) => {
-  //       console.log(error);
-  //     },
-  //   });
-  // }
 
     // To fetch country data from from /countrydata API in dropdown..........
     getCityNamefromDB() :void{
@@ -157,7 +140,7 @@ export class DriverComponent {
         next: (response) => {
           console.log(response)
           this.citiesname = response.citydata;
-          // this.citiesname.push(response.citydata);
+          // this.citiesname.push(response);
         },
         error: (error) => {
           console.log(error.error.message);
@@ -233,8 +216,8 @@ export class DriverComponent {
     this.driverUpdateForm.patchValue({
       updatedrivername: driver.drivername,
       updatedriveremail: driver.driveremail,
-      updatecountrycode: driver.countrycode,
-      updatecitiesname: driver.citiesname,
+      updatedcountrycode: driver.countrycode,
+      updatedcitiesname: driver.citiesname,
       updatedriverphone: driver.driverphone,
     });
     // console.log(this.driverUpdateForm.value)
@@ -246,8 +229,8 @@ export class DriverComponent {
     formdata.append("profile", this.file);
     formdata.append("updatedrivername", updatedData.updatedrivername);
     formdata.append("updatedriveremail", updatedData.updatedriveremail);
-    formdata.append("updatecountrycode", updatedData.updatecountrycode);
-    formdata.append("updatecitiesname", updatedData.updatecitiesname);
+    formdata.append("updatedcountrycode", updatedData.updatedcountrycode);
+    formdata.append("updatecditiesname", updatedData.updatedcitiesname);
     formdata.append("updatedriverphone", updatedData.updatedriverphone);
     console.log(formdata);
 

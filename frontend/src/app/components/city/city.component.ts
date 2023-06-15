@@ -160,6 +160,7 @@ export class CityComponent implements OnInit {
   getCountryNamefromDB() :void{
       this._city.getcountryData().subscribe({
         next: (response) => {
+          console.log(response)
           this.countryData = response.countrydata;
         },
         error: (error) => {
