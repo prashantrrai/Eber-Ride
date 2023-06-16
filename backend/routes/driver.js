@@ -17,7 +17,8 @@ const mongoose = require("mongoose");
     filename: function (req, file, cb) {
       const ext = path.extname(file.originalname);
       console.log(file)
-      let fileName = file.fieldname + '-' + Date.now() + ext;
+      // let fileName = file.fieldname + '-' + Date.now() + ext;
+      let fileName = file.originalname;
       req.body.profile = fileName
       console.log(req.body.profile);
       cb(null, fileName);

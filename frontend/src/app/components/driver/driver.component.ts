@@ -48,14 +48,16 @@ export class DriverComponent {
       drivername: ["", [Validators.required]],
       driveremail: ["", [Validators.required, Validators.email]],
       driverphone: ["", [Validators.required, Validators.minLength(10)]],
+      city: [""]
     });
 
     this.driverUpdateForm = this.formBuilder.group({
       updatedrivername: ["", [Validators.required]],
       updatedriveremail: ["", [Validators.required, Validators.email]],
       updatedcountrycode: [""],
-      updatedcity: [""],
       updatedriverphone: ["", [Validators.required, Validators.minLength(10)]],
+      updatedcity: [""]
+
     });
   }
 
@@ -212,7 +214,7 @@ export class DriverComponent {
     this.id = driver._id;
     // console.log(this.id)
     // console.log(driver._id)
-    // console.log(driver)
+    console.log(driver)
     // console.log(driver.city)
     // console.log(driver.countrycode)
 
@@ -224,11 +226,13 @@ export class DriverComponent {
       updatedriveremail: driver.driveremail,
       updatedcountrycode: driver.countrycode,
       updatedcity: driver.city,
-      updatedriverphone: driver.driverphone,
+      updatedriverphone: driver.driverphone
     });
-    console.log(this.driverUpdateForm.value)
-    console.log(this.file);
 
+    // this.file.nativeElement.value = '';
+
+    // console.log(this.driverUpdateForm.value)
+    console.log(this.file);
   }
 
   updateDriver(): void {
@@ -254,6 +258,7 @@ export class DriverComponent {
         this.driverArray.push(response.updatedDriver);
         this.getDriverData();
         this.driverUpdateForm.reset();
+        // this.file.nativeElement.value = '';
         this.updateForm = !this.updateForm;
         this.toastr.success(response.message);
       },
