@@ -15,6 +15,8 @@ export class DriverComponent {
   AddForm!: FormGroup;
   AddbuttonForm: boolean = false;
   updateForm: boolean = false;
+  activeTable: boolean = true;
+  deactiveTable: boolean = false;
   countrycode: any[] = [];
   citiesname: any[] = [];
   file: any;
@@ -30,6 +32,7 @@ export class DriverComponent {
   limit: number = 5;
   currentPage: number = 1;
   totalPages: number = 0;
+  lvl2master: any
 
   constructor(
     private _driver: DriverService,
@@ -214,7 +217,7 @@ export class DriverComponent {
     this.id = driver._id;
     // console.log(this.id)
     // console.log(driver._id)
-    console.log(driver)
+    // console.log(driver)
     // console.log(driver.city)
     // console.log(driver.countrycode)
 
@@ -232,7 +235,7 @@ export class DriverComponent {
     // this.file.nativeElement.value = '';
 
     // console.log(this.driverUpdateForm.value)
-    console.log(this.file);
+    // console.log(this.file);
   }
 
   updateDriver(): void {
@@ -295,6 +298,16 @@ export class DriverComponent {
   toggleFormVisibility() {
     this.AddbuttonForm = !this.AddbuttonForm;
     this.updateForm = false
+  }
+
+  activeDriver() {
+    this.activeTable = true
+    this.deactiveTable = false
+  }
+
+  deactiveDriver() {
+    this.activeTable = false
+    this.deactiveTable = true
   }
 
   resetTimer() {
