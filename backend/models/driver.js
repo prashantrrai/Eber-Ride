@@ -23,6 +23,10 @@ const driver_Schema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  city: {
+    type: String,
+    required: true,
   }
 });
 

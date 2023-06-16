@@ -54,10 +54,10 @@ cityRoutes.get("/citydata", async (req, res) => {
     ])
     
     // const citydata = await cityModel.find({});
-    res.json({ citydata });
+    // // res.json({ citydata });
 
     // console.log(citydata);
-    // res.send(citydata);
+    res.send(citydata);
     
   } catch (error) {
     console.log(error);

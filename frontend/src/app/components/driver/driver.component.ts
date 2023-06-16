@@ -54,7 +54,7 @@ export class DriverComponent {
       updatedrivername: ["", [Validators.required]],
       updatedriveremail: ["", [Validators.required, Validators.email]],
       updatedcountrycode: [""],
-      updatedcitiesname: [""],
+      updatedcity: [""],
       updatedriverphone: ["", [Validators.required, Validators.minLength(10)]],
     });
   }
@@ -65,7 +65,6 @@ export class DriverComponent {
       next: (response: any) => {
         // console.log(response)
         this.driverArray = response.driverdata;
-        // console.log(response.driverdata)
         this.totalPages = response.totalPages;
         this.updatePaginatedDrivers();
       },
@@ -121,6 +120,7 @@ export class DriverComponent {
           }
         });
         this.countrycode.sort();
+        // console.log(this.countrycode)
       },
       error: (error: any) => {
         console.log(error);
@@ -135,12 +135,13 @@ export class DriverComponent {
   
 
     // To fetch country data from from /countrydata API in dropdown..........
-    getCityNamefromDB() :void{
+    getCityNamefromDB(): void {
       this._driver.getCityData().subscribe({
         next: (response) => {
-          console.log(response)
-          this.citiesname = response.citydata;
-          // this.citiesname.push(response);
+          // console.log(response);
+          const cityNames = response.map((obj: any) => obj.city);
+          // console.log(cityNames);
+          this.citiesname = cityNames; // Assigning the city names to the `citiesname` property
         },
         error: (error) => {
           console.log(error.error.message);
@@ -165,7 +166,7 @@ export class DriverComponent {
     formData.append("drivername", this.AddForm.value.drivername);
     formData.append("driveremail", this.AddForm.value.driveremail);
     formData.append("countrycode", this.selectedCC);
-    formData.append("citiesname", this.selectedCity);
+    formData.append("city", this.selectedCity);
     formData.append("driverphone", this.AddForm.value.driverphone);
 
     if (this.AddForm.valid) {
@@ -207,37 +208,49 @@ export class DriverComponent {
     }
   }
 
-  updateBtnClick(driver: any): void {
+  editbtn(driver: any): void {
     this.id = driver._id;
-    this.updateForm = true;
-    this.AddbuttonForm = false
+    // console.log(this.id)
     // console.log(driver._id)
     // console.log(driver)
+    // console.log(driver.city)
+    // console.log(driver.countrycode)
+
+    this.updateForm = true;
+    this.AddbuttonForm = false
+
     this.driverUpdateForm.patchValue({
       updatedrivername: driver.drivername,
       updatedriveremail: driver.driveremail,
       updatedcountrycode: driver.countrycode,
-      updatedcitiesname: driver.citiesname,
+      updatedcity: driver.city,
       updatedriverphone: driver.driverphone,
     });
-    // console.log(this.driverUpdateForm.value)
+    console.log(this.driverUpdateForm.value)
+    console.log(this.file);
+
   }
 
   updateDriver(): void {
     const updatedData = this.driverUpdateForm.value;
+    console.log(updatedData);
+    console.log(this.file);
+    
     var formdata = new FormData();
     formdata.append("profile", this.file);
     formdata.append("updatedrivername", updatedData.updatedrivername);
     formdata.append("updatedriveremail", updatedData.updatedriveremail);
     formdata.append("updatedcountrycode", updatedData.updatedcountrycode);
-    formdata.append("updatecditiesname", updatedData.updatedcitiesname);
+    formdata.append("updatedcity", updatedData.updatedcity);
     formdata.append("updatedriverphone", updatedData.updatedriverphone);
-    console.log(formdata);
-
+    // console.log(formdata);
+    // console.log(updatedData.updatedcountrycode)
+    // console.log(updatedData.updatedcity);
+    
 
     this._driver.updateDriver(this.id, formdata).subscribe({
       next: (response: any) => {
-        console.log(response);
+        console.log(response.updatedDriver);
         this.driverArray.push(response.updatedDriver);
         this.getDriverData();
         this.driverUpdateForm.reset();

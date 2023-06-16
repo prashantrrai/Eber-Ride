@@ -59,15 +59,15 @@ const mongoose = require("mongoose");
       next();
     });
   }, async (req, res) => {
-    const { drivername, driveremail, countrycode, driverphone } = req.body;
+    const { drivername, driveremail, countrycode, driverphone, city } = req.body;
     let newDriver;
     try {
       if (!req.file) {
-        newDriver = new driverModel({ drivername: drivername, driveremail: driveremail, countrycode: countrycode, driverphone: driverphone });
+        newDriver = new driverModel({ drivername: drivername, driveremail: driveremail, countrycode: countrycode, driverphone: driverphone, city: city });
       }else{
         const profile = req.file.filename;
         console.log(profile);
-        newDriver = new driverModel({ profile: profile, drivername: drivername, driveremail: driveremail, countrycode: countrycode, driverphone: driverphone });
+        newDriver = new driverModel({ profile: profile, drivername: drivername, driveremail: driveremail, countrycode: countrycode, driverphone: driverphone, city: city });
       }
 
       await newDriver.save()
@@ -106,7 +106,7 @@ const mongoose = require("mongoose");
   driverRoutes.put('/updatedriver/:id',upload.single('profile'), async (req, res) => {
     // console.log(req.body)
     // console.log(req.file)
-    const { updatedrivername, updatedriveremail, updatecountrycode, updatedriverphone } = req.body;
+    const { updatedrivername, updatedriveremail, updatedcountrycode, updatedriverphone, updatedcity } = req.body;
 
     try {
       const driverId = req.params.id;
@@ -114,12 +114,12 @@ const mongoose = require("mongoose");
       let updatedDriver;
 
       if (!req.file) {
-        const driver = {drivername: updatedrivername, driveremail: updatedriveremail,countrycode: updatecountrycode, driverphone: updatedriverphone}
+        const driver = {drivername: updatedrivername, driveremail: updatedriveremail,countrycode: updatedcountrycode, driverphone: updatedriverphone, city: updatedcity}
         updatedDriver =  await driverModel.findByIdAndUpdate(driverId, driver, {new:true})
       }
       else{
         console.log(req.file.filename)
-        const driver = {profile: req.file.filename ,drivername: updatedrivername, driveremail: updatedriveremail,countrycode: updatecountrycode, driverphone: updatedriverphone}
+        const driver = {profile: req.file.filename ,drivername: updatedrivername, driveremail: updatedriveremail,countrycode: updatedcountrycode, driverphone: updatedriverphone, city: updatedcity}
         updatedDriver =  await driverModel.findByIdAndUpdate(driverId, driver, {new:true})
       }
 

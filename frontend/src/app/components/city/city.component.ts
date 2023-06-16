@@ -185,7 +185,7 @@ export class CityComponent implements OnInit {
     // To SELECT country selected value from dropdown to use it in city input...........
     onSelected(value: any) {
       this.selectedCountry = value;
-
+      console.log(value)
       const selectedCountryObj = this.countryData.find((country: any) => country._id === value);
       if (selectedCountryObj) {
         this.selectedCountryName = selectedCountryObj.countryName;

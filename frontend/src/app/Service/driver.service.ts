@@ -40,7 +40,7 @@ export class DriverService {
   }
 
   updateDriver(userId: string, userData: any): Observable<any> {
-    console.log(userData)
+    // console.log(userData)
     const url = `${this.serverUrl}/updatedriver/${userId}`;
     return this.http.put<any>(url, userData);
   }
