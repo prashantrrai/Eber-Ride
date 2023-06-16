@@ -33,6 +33,8 @@ export class DriverComponent {
   currentPage: number = 1;
   totalPages: number = 0;
   lvl2master: any
+  serviceModal: boolean = false;
+  servicename: any[] = []
 
   constructor(
     private _driver: DriverService,
@@ -308,6 +310,13 @@ export class DriverComponent {
   deactiveDriver() {
     this.activeTable = false
     this.deactiveTable = true
+  }
+
+  onserviveType(){
+    this.serviceModal = true;
+  }
+  closeModal(): void {
+    this.serviceModal = false;
   }
 
   resetTimer() {

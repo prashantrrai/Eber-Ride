@@ -95,6 +95,22 @@
   
 
 
+      <!-- Service Modal -->
+      <div class="modal-body" *ngIf="serviceModal">
+        <h5>Select Service Type</h5>
+        <select class="w-50" name="service" #service (change)="onSelectedCity(service.value)" formControlName="updatedservice">
+          <option >Select Servive</option>
+          <option [value]="service" *ngFor="let service of servicename ">{{service}}</option>
+        </select>
+        <div class="p-2">
+        <button class="btn btn-success m-2">Select</button>
+        <button class="btn btn-danger">Close</button>
+        </div>
+      </div>
+
+
+
+
       <div class="mt-5">
         <div class="d-flex justify-content-center align-items-center">
         <label for="pageSize">Show Data :</label>
@@ -162,7 +178,7 @@
                   <mat-menu #lvl2master="matMenu">
                       <button mat-menu-item id="updatebtn" (click)="editbtn(driver)"><mat-icon>update</mat-icon>Update</button>
                       <button mat-menu-item id="deletebtn" (click)="deleteDriver(driver._id)"><mat-icon>delete_forever</mat-icon>Delete</button>
-                      <button mat-menu-item><mat-icon>drive_eta</mat-icon>Service Type</button>
+                      <button mat-menu-item  (click)="onserviveType()"><mat-icon>drive_eta</mat-icon>Service Type</button>
                   </mat-menu>
               </td>
             </tr>

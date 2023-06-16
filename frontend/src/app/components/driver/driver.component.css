@@ -206,3 +206,47 @@
       height: auto;
     }
   }
+
+
+
+  /* CSS for the modal */
+.modal {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  width: 300px;
+  border-radius: 5px;
+  position: relative;
+}
+
+/* Close button style */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: black;
+}
+
+.modal-body{
+  background-color: #fff;
+  width: 30%;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px rgb(102, 102, 102);
+}
