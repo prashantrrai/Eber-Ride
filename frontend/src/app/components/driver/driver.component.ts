@@ -39,6 +39,7 @@ export class DriverComponent {
   lvl2master: any
   serviceModal: boolean = true;
   vehiclesData: any
+  deactivatedDrivers: any[] = [];
 
   constructor(
     private _driver: DriverService,
@@ -371,7 +372,19 @@ export class DriverComponent {
     this.deactiveTable = true
   }
 
-
+  toggleDriverActivation(driver: any) {
+    driver.active = !driver.active; // Toggle the value
+    if (!driver.active) {
+      this.deactivatedDrivers.push(driver); // Add to the deactivated drivers array
+    } else {
+      // Remove from the deactivated drivers array if it exists
+      const index = this.deactivatedDrivers.findIndex((d: any) => d.id === driver.id);
+      if (index !== -1) {
+        this.deactivatedDrivers.splice(index, 1);
+      }
+      this.driverArray.push(driver);
+    }
+  }
 
   resetTimer() {
     this.authService.resetInactivityTimer();
