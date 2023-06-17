@@ -13,15 +13,19 @@ export class DriverComponent {
 
   driverUpdateForm!: FormGroup;
   AddForm!: FormGroup;
+  serviceForm!: FormGroup;
   AddbuttonForm: boolean = false;
   updateForm: boolean = false;
   activeTable: boolean = true;
   deactiveTable: boolean = false;
   countrycode: any[] = [];
   citiesname: any[] = [];
+  vehiclesname: any[] = []
+  vehiclesimage: any;
   file: any;
   selectedCC: any;
   selectedCity: any;
+  selectedVehicle: any;
   id: any;
   count: any;
   
@@ -33,8 +37,8 @@ export class DriverComponent {
   currentPage: number = 1;
   totalPages: number = 0;
   lvl2master: any
-  serviceModal: boolean = false;
-  servicename: any[] = []
+  serviceModal: boolean = true;
+  vehiclesData: any
 
   constructor(
     private _driver: DriverService,
@@ -47,6 +51,7 @@ export class DriverComponent {
     this.getDriverData();
     this.fetchCountryDataAPI();
     this.getCityNamefromDB()
+    this.getVehicleNamefromDB()
 
     this.AddForm = this.formBuilder.group({
       profile: [""],
@@ -62,8 +67,13 @@ export class DriverComponent {
       updatedcountrycode: [""],
       updatedriverphone: ["", [Validators.required, Validators.minLength(10)]],
       updatedcity: [""]
-
     });
+
+    this.serviceForm = this.formBuilder.group({
+      servicename: [""], // Set the default value to an empty string
+      serviceimage: [""]
+    });
+
   }
 
 
@@ -161,6 +171,35 @@ export class DriverComponent {
     console.log(value)
   }
 
+  
+    // To fetch country data from from /countrydata API in dropdown..........
+    getVehicleNamefromDB(): void {
+      this._driver.getVehicleData().subscribe({
+        next: (response) => {
+          console.log(response);
+          const vehicleName = response.data.map((obj: any) => obj.vehicleName);
+          const vehicleImage = response.data.map((obj: any) => obj.vehicleImage);
+          this.vehiclesData = response.data.map((vehicle: any) => ({
+            _id: vehicle._id,
+            vehicleName: vehicle.vehicleName,
+            vehicleImage: vehicle.vehicleImage,
+          }));
+          console.log(this.vehiclesData);
+          
+          // this.vehiclesname = vehicleName;
+          // this.vehiclesimage = vehicleImage
+          // console.log(vehicleName, vehicleImage);
+        },
+        error: (error) => {
+          console.log(error.error.message);
+        }
+      });
+    }
+
+  onSelectedVehicle(value: any) {
+    this.selectedVehicle = value;
+    console.log(value)
+  }
 
   onFileSelected(event: any) {
     this.file = event.target.files[0];
@@ -295,6 +334,26 @@ export class DriverComponent {
   updateCancel() {
     this.updateForm = !this.updateForm;
   }
+
+  
+  onserviceType(){
+    this.updateForm = false;
+    this.AddbuttonForm = false
+    this.serviceModal = true;
+  }
+
+  updateService(){
+    this.toastr.success("Service Updated Successfully")
+    this.serviceModal = false;
+
+    var formData = new FormData();
+    formData.append("servicename", this.selectedVehicle);
+    formData.append("serviceimage", this.file);
+  }
+  
+  closeModal(): void {
+    this.serviceModal = false;
+  }
   
 
   toggleFormVisibility() {
@@ -312,12 +371,7 @@ export class DriverComponent {
     this.deactiveTable = true
   }
 
-  onserviveType(){
-    this.serviceModal = true;
-  }
-  closeModal(): void {
-    this.serviceModal = false;
-  }
+
 
   resetTimer() {
     this.authService.resetInactivityTimer();

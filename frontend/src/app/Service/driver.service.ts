@@ -23,6 +23,10 @@ export class DriverService {
   getCityData(): Observable<any> {
     return this.http.get(`${this.serverUrl}/citydata`);
   }
+
+  getVehicleData(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/vehicledata`);
+  }
   
   addDriver(driverData: any): Observable<any> {
     // console.log(driverData);
