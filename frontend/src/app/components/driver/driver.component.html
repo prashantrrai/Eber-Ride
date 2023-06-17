@@ -99,12 +99,12 @@
       <div class="modal-body" *ngIf="serviceModal">
         <h5>Select Service Type</h5>
         <select class="w-50" name="service" #service (change)="onSelectedCity(service.value)" formControlName="updatedservice">
-          <option >Select Servive</option>
+          <option >Select Service</option>
           <option [value]="service" *ngFor="let service of servicename ">{{service}}</option>
         </select>
         <div class="p-2">
         <button class="btn btn-success m-2">Select</button>
-        <button class="btn btn-danger">Close</button>
+        <button class="btn btn-danger" (click)="closeModal()">Close</button>
         </div>
       </div>
 
