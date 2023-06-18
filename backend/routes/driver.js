@@ -115,7 +115,7 @@ const mongoose = require("mongoose");
       let updatedDriver;
 
       if (!req.file) {
-        const driver = {drivername: updatedrivername, driveremail: updatedriveremail,countrycode: updatedcountrycode, driverphone: updatedriverphone, city: updatedcity}
+        const driver = {drivername: updatedrivername, driveremail: updatedriveremail, countrycode: updatedcountrycode, driverphone: updatedriverphone, city: updatedcity}
         updatedDriver =  await driverModel.findByIdAndUpdate(driverId, driver, {new:true})
       }
       else{
@@ -222,24 +222,21 @@ const mongoose = require("mongoose");
 
 
   // Add or Update Service
-  driverRoutes.post('/service', async (req, res) => {
+  driverRoutes.post('/service/:id', async (req, res) => {
+    const { servicename } = req.body;
+    console.log(req.body);
     try {
-      const { servicename } = req.body;
-  
+      const driverId = req.params.id;
+      console.log(driverId)
+      
       // Check if service already exists
-      const existingService = await driverModel.findOne({});
+      const existingService = await driverModel.findByIdAndUpdate(driverId, {servicetype: servicename}, {new:true});
       console.log(existingService)
-      if (existingService) {
-        // Update the existing service
-        existingService.servicetype = servicename;
-        await existingService.save();
-        res.json({ success: true, message: 'Service updated successfully', service: existingService });
-      } else {
-        // Create a new service
-        const newService = new Service({ servicetype: servicename });
-        await newService.save();
-        res.json({ success: true, message: 'Service added successfully', service: newService });
-      }
+      
+        // existingService.servicetype = servicename;
+        // await existingService.save();
+        res.json({ success: true, message: 'Service Updated Successfully', service: existingService });
+
     } catch (error) {
       console.log(error.message);
       res.status(500).json({ success: false, message: 'Failed to add or update service' });

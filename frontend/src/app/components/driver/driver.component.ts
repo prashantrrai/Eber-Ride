@@ -355,12 +355,14 @@ export class DriverComponent {
     this.AddbuttonForm = false
     this.serviceModal = true;
 
+    this.id = driver._id
+
     console.log(driver.servicetype)
 
     this.serviceForm.patchValue({
       servicename: driver.servicetype
     });
-    console.log(driver.servicename)
+    console.log(this.id)
   }
 
 
@@ -372,10 +374,13 @@ export class DriverComponent {
   
   updateService(): void {
     if (this.serviceForm.valid) {
-      const servicename = this.serviceForm.value.servicename;
-      console.log(this.serviceForm.value.servicename)
+      // const servicename = this.serviceForm.value.servicename;
+      // console.log(this.serviceForm.value.servicename)
 
-      this._driver.updateService(servicename).subscribe({
+      const data = {servicename:this.serviceForm.value.servicename}
+      console.log(data)
+
+      this._driver.updateService(this.id, data).subscribe({
         next: (response: any) => {
           console.log(response);
           this.driverArray.push(response);

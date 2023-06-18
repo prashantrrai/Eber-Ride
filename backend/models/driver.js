@@ -34,7 +34,7 @@ const driver_Schema = new mongoose.Schema({
   },
   servicetype: {
     type: String,
-    default: "SUV"
+    default: "None"
   }
 });
 
