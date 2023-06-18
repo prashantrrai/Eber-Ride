@@ -11,6 +11,7 @@ import { DriverService } from 'src/app/Service/driver.service';
 })
 export class DriverComponent {
 
+  showButton: boolean = true;
   driverUpdateForm!: FormGroup;
   AddForm!: FormGroup;
   AddbuttonForm: boolean = false;
@@ -69,8 +70,9 @@ export class DriverComponent {
     });
 
     this.serviceForm = this.formBuilder.group({
-      servicename: ['', Validators.required]
+      servicename: [''] // Set the default value here
     });
+
 
   }
 
@@ -411,6 +413,11 @@ export class DriverComponent {
   toggleFormVisibility() {
     this.AddbuttonForm = !this.AddbuttonForm;
     this.updateForm = false
+    this.showButton = false;
+  }
+  CancelForm(){
+    this.AddbuttonForm = false;
+    this.showButton = true;
   }
 
   resetTimer() {

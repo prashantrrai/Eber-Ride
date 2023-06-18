@@ -1,38 +1,106 @@
-<button class="mt-4 btn btn-primary" id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp; Add Driver</button>
+<button class="mt-4 btn btn-primary" id="showbtn" [hidden]="!showButton" (click)="toggleFormVisibility()">
+  <i class="fa fa-inr" aria-hidden="true"></i>
+  &nbsp; Vehicle Pricing
+</button>
 
 
-
-    <div class="parentFormContainer">
-        <div id="formContainer" *ngIf="AddbuttonForm">
-        <h2 class="mb-3">Driver Registration</h2>
+      <!-- -----------------------------------------VEHICLE PRICING---------------------------------------------------- -->
+      <div class="parentFormContainer">
+        <div id="formContainer" *ngIf="addForm">
+          <h2 class="mb-3">Driver Registration</h2>
           <form class="container" [formGroup]="pricingForm" (ngSubmit)="AddPricing()">
-            <div class="mb-3">
-              <label class="form-label d-flex justify-content-start">Driver Name</label>
-              <input type="text" class="form-control" formControlName="drivername" placeholder="Enter Username"/>
+
+            <div class="form-group row align-items-center mb-2">
+              <label class="col-sm-3 col-form-label text-end">Country</label>
+              <div class="col-sm-9 ">
+                <select class="form-control" id="country-name" name="country" #country (change)="onSelectedCountry(country.value)" formControlName="country">
+                  <option value="">Select Country</option>
+                  <option [value]="country" *ngFor="let country of countriesname">{{country}}</option>
+                </select>
+              </div>
             </div>
-            <div class="mb-3">
-              <label class="form-label d-flex justify-content-start">Driver Email</label>
-              <input type="email" class="form-control" formControlName="driveremail" placeholder="Enter Email"/>
+      
+            <div class="form-group row align-items-center mb-2">
+              <label class="col-sm-3 col-form-label text-end">City</label>
+              <div class="col-sm-9">
+                <select class="form-control" id="city-name" name="city" #city (change)="onSelectedCity(city.value)" formControlName="city">
+                  <option value="">Select City</option>
+                  <option [value]="city" *ngFor="let city of citiesname">{{city}}</option>
+                </select>
+              </div>
             </div>
-   
-            <div class="mb-3">
-              <label class="form-label d-flex justify-content-start">Choose City</label>
-              <select class="form-control w-100" id="city-name" name="city" #city (change)="onSelectedCity(city.value)">
-                <option value="null">Select City</option>
-                <option [value]="city" *ngFor="let city of citiesname ">{{city}}</option>
-              </select>
+      
+            <div class="form-group row align-items-center mb-2">
+              <label class="col-sm-3 col-form-label text-end">Type</label>
+              <div class="col-sm-9">
+                <select class="form-control" name="service" #service (change)="onSelectedVehicle(service.value)" formControlName="service">
+                  <option value="">Select Service</option>
+                  <option [value]="service" *ngFor="let service of serviceData">{{service}}</option>
+                </select>
+              </div>
+            </div>
+      
+            <div class="form-group row align-items-center mb-2">
+              <label class="col-sm-3 col-form-label text-end">Driver's Profit</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" formControlName="driverprofit" placeholder="Driver Profit" />
+              </div>
             </div>
 
-            <div>
-              <button type="submit" class="btn btn-primary w-100" id="submitBtn"> Submit</button>
+            <div class="form-group row align-items-center">
+              <label class="col-sm-3 col-form-label text-end">Min. Fare</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" formControlName="minfare" placeholder="Driver Profit" />
+              </div>
+            </div>
+
+            <div class="form-group row align-items-center">
+              <label class="col-sm-3 col-form-label text-end">Distance For Base Price</label>
+              <div class="col-sm-9">
+                <select class="form-control" name="distancebaseprice" #distancebaseprice (change)="onSelectedVehicle(distancebaseprice.value)" formControlName="distancebaseprice">
+                  <option value="">Select Distance</option>
+                  <option [value]="distvalue" *ngFor="let distvalue of distbasePriceArray">{{distvalue}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row align-items-center">
+              <label class="col-sm-3 col-form-label text-end">Base Price</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" formControlName="baseprice" placeholder="Base Price" />
+              </div>
+            </div>
+
+            <div class="form-group row align-items-center">
+              <label class="col-sm-3 col-form-label text-end">Price Per Unit Distance</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" formControlName="ppudist" placeholder="Price Per Unit Distance" />
+              </div>
+            </div>
+
+            <div class="form-group row align-items-center">
+              <label class="col-sm-3 col-form-label text-end">Price Per Unit Time(min)</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" formControlName="pputime" placeholder="Price Per Unit Time(min)" />
+              </div>
+            </div>
+
+            <div class="form-group row align-items-center">
+              <label class="col-sm-3 col-form-label text-end">Max Space</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" formControlName="maxspace" placeholder="Max Space" />
+              </div>
+            </div>
+      
+            <div class="form-group row mt-3">
+              <div class="col-sm-9 offset-sm-3 d-flex justify-content-between">
+                <button type="submit" class="btn btn-success"> Submit</button>
+                <button type="button" class="btn btn-secondary" (click)="CancelForm()"> Cancel</button>
+              </div>
             </div>
           </form>
         </div>
       </div>
-
-
-
-
 
 
       <!-- -----------------------------------------SHOW DATA---------AND-------------SEARCH--------------------------------- -->

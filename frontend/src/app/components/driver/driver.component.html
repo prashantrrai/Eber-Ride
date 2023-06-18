@@ -1,7 +1,9 @@
 
 
 
-<button class="mt-4 btn btn-primary" id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp; Add Driver</button>
+<button class="mt-4 btn btn-primary" id="showbtn" [hidden]="!showButton" (click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true">
+
+</i>&nbsp; Add Driver</button>
 
 
 
@@ -39,8 +41,12 @@
               <label class="form-label d-flex justify-content-start">Upload Profile</label>
                 <input type="file" class="form-control" formControlName="profile"  name="profile" (change)="onFileSelected($event)"/>
             </div>
-            <div>
-              <button type="submit" class="btn btn-primary w-100" id="submitBtn"> Submit</button>
+      
+            <div class="form-group row mt-3">
+              <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success"> Submit</button>
+                <button type="button" class="btn btn-secondary" (click)="CancelForm()"> Cancel</button>
+              </div>
             </div>
           </form>
         </div>
@@ -220,7 +226,7 @@
         <form class="container" [formGroup]="serviceForm" (ngSubmit)="updateService()">
         <h1>Select Service Type</h1>
         <select class="form-control w-100" name="vehicle" #vehicle (change)="onSelectedVehicle(vehicle.value)" formControlName="servicename">
-          <option  value="">Select Service</option>
+          <option  value="" disabled selected>Select Service</option>
           <option [value]="vehicle.vehicleName" *ngFor="let vehicle of vehiclesData ">{{vehicle.vehicleName}}</option>
         </select>
 
