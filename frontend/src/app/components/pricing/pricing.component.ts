@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/Service/auth.service';
 import { PricingService } from 'src/app/Service/pricing.service';
@@ -12,7 +12,7 @@ import { PricingService } from 'src/app/Service/pricing.service';
 export class PricingComponent {
 
   showButton: boolean = true;
-  addForm: boolean = false;
+  addForm: boolean = true;
   pricingForm!: FormGroup
   selectedCity: any
   selectedCountry: any;
@@ -37,15 +37,15 @@ export class PricingComponent {
 
     this.pricingForm = this.formBuilder.group({
       country: [''],
-      city: [''],
-      service: [''],
-      driverprofit: [''],
-      minfare: [''],
+      city: ['',],
+      service: ['',],
+      driverprofit: ['', [Validators.required]],
+      minfare: ['', [Validators.required]],
       distancebaseprice: [''],
-      baseprice: [''],
-      ppudist: [''],
-      pputime: [''],
-      maxspace: [''],
+      baseprice: ['', [Validators.required]],
+      ppudist: ['', [Validators.required]],
+      pputime: ['', [Validators.required]],
+      maxspace: ['', [Validators.required]],
 
     });
 
@@ -108,7 +108,27 @@ export class PricingComponent {
   // --------------------------------------------ADD VEHICLE PRICING FXN---------------------------------------------
   AddPricing(){
     const formValues = this.pricingForm.value;
-    console.log(formValues);
+    // console.log(formValues);
+
+    if (this.pricingForm.valid) {
+      this._pricing.addPricing(formValues).subscribe({
+        next: (response: any) => {
+          console.log(response)
+          // this.driverArray.push(resp.newDriver);
+          // this.AddForm.reset();
+          // this.AddbuttonForm = false;
+          // this.getDriverData();
+          this.toastr.success(response.message)
+
+        },
+        error: (error: any) => {
+          console.log(error.error.message);
+          this.toastr.error(error.error.message);
+        },
+      });
+    } else {
+      this.toastr.warning("All Fields are Required");
+    }
   }
 
   
@@ -117,7 +137,7 @@ export class PricingComponent {
 
 
 
-  
+
   toggleFormVisibility() {
     this.addForm = !this.addForm;
     this.showButton = false;

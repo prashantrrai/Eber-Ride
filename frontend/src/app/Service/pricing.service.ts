@@ -22,4 +22,10 @@ export class PricingService {
   getServiceData(): Observable<any> {
     return this.http.get(`${this.serverUrl}/vehicledata`);
   }
+
+  addPricing(pricingdata: any): Observable<any> {
+    // console.log(pricingdata)
+    return this.http.post<any>(`${this.serverUrl}/addpricing`, pricingdata);
+  }
+  
 }
