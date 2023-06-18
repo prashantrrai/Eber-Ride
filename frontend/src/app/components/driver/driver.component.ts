@@ -154,7 +154,7 @@ export class DriverComponent {
       this._driver.getCityData().subscribe({
         next: (response) => {
           // console.log(response);
-          const cityNames = response.map((obj: any) => obj);
+          const cityNames = response.map((obj: any) => obj.city);
           // console.log(cityNames);
           this.citiesname = cityNames; // Assigning the city names to the `citiesname` property
         },
@@ -212,7 +212,7 @@ export class DriverComponent {
     if (this.AddForm.valid) {
       this._driver.addDriver(formData).subscribe({
         next: (resp: any) => {
-          // console.log(resp)
+          console.log(resp)
           this.driverArray.push(resp.newDriver);
           this.AddForm.reset();
           this.AddbuttonForm = false;
@@ -230,6 +230,7 @@ export class DriverComponent {
   }
 
   deleteDriver(driverId: string): void {
+    console.log(driverId)
     const confirmation = confirm("Are you sure you want to delete this Driver?");
 
     if (confirmation) {
@@ -335,6 +336,8 @@ export class DriverComponent {
     this._driver.updateStatus(this.id, status).subscribe({
       next: (response: any) => {
         console.log(response);
+        this.driverArray.push(response.status)
+        this.getDriverData();
         this.toastr.success(response.message,  'Success')
       },
       error: (error: any) => {
@@ -347,10 +350,17 @@ export class DriverComponent {
 
 
   
-  onserviceType(){
+  onserviceType(driver: any){
     this.updateForm = false;
     this.AddbuttonForm = false
     this.serviceModal = true;
+
+    console.log(driver.servicetype)
+
+    this.serviceForm.patchValue({
+      servicename: driver.servicetype
+    });
+    console.log(driver.servicename)
   }
 
 
@@ -369,6 +379,7 @@ export class DriverComponent {
         next: (response: any) => {
           console.log(response);
           this.driverArray.push(response);
+          this.getDriverData()
           this.serviceModal = false;
           this.serviceForm.reset();
           this.toastr.success(response.message)
