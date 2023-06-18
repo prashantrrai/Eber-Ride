@@ -104,7 +104,7 @@ const mongoose = require("mongoose");
 
 
   // Update a Driver
-  driverRoutes.put('/updatedriver/:id',upload.single('profile'), async (req, res) => {
+  driverRoutes.put('/updatedriver/:id', upload.single('profile'), async (req, res) => {
     // console.log(req.body)
     // console.log(req.file)
     const { updatedrivername, updatedriveremail, updatedcountrycode, updatedriverphone, updatedcity } = req.body;
@@ -203,6 +203,25 @@ const mongoose = require("mongoose");
       res.status(500).json({ success: false, message: error });
     }
   });
+
+
+  driverRoutes.put('/drivers/:id/status', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      console.log(id)
+      console.log(status)
+  
+      await driverModel.findByIdAndUpdate(id, { status });
+  
+      res.status(200).json({ message: 'Driver Status Updated Successfully.' });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to update driver status.' });
+    }
+  });
+
+
+
 
 module.exports = driverRoutes;
 

@@ -38,15 +38,22 @@ export class DriverService {
     return this.http.get(url);
   }
 
-  deleteDriver(userId: string): Observable<any> {
-    const url = `${this.serverUrl}/driverdata/${userId}`;
+  deleteDriver(driverId: string): Observable<any> {
+    const url = `${this.serverUrl}/driverdata/${driverId}`;
     return this.http.delete<any>(url);
   }
 
-  updateDriver(userId: string, userData: any): Observable<any> {
+  updateDriver(driverId: string, userData: any): Observable<any> {
     // console.log(userData)
-    const url = `${this.serverUrl}/updatedriver/${userId}`;
+    const url = `${this.serverUrl}/updatedriver/${driverId}`;   
     return this.http.put<any>(url, userData);
+  }
+
+  updateStatus(driverId: string, status: boolean): Observable<any> {
+    // console.log(userData)
+    const url = `${this.serverUrl}/drivers/${driverId}/status`;   
+    const body = { status }; 
+    return this.http.put<any>(url, body);
   }
 
   searchDriver(query: string, page: number, limit: number): Observable<any> {

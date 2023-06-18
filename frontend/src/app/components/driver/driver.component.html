@@ -95,7 +95,7 @@
   
 
 
-      <!-- Service Modal -->
+      <!------------------------------------------- Service Modal--------------------------------------------------- -->
       <div class="modal-body" *ngIf="serviceModal">
         <form class="container" [formGroup]="serviceForm" (ngSubmit)="updateService()">
         <h3>Select Service Type</h3>
@@ -120,7 +120,7 @@
 
 
 
-
+      <!-- -----------------------------------------SHOW DATA---------AND-------------SEARCH--------------------------------- -->
       <div class="mt-5">
         <div class="d-flex justify-content-center align-items-center">
         <label for="pageSize">Show Data :</label>
@@ -140,13 +140,10 @@
         </div>
       </div>
       
-      
-      <button class="btn btn-info m-2" id="showbtn"(click)="activeDriver()"> Actived Driver</button>
-      <button class="btn btn-info m-2" id="showbtn"(click)="deactiveDriver()"> Deactived Driver</button>
       <div class="parentFormContainer">
         <div id="tableContainer">
-        <!-- activated driver table -->
-        <div class="table-responsive"  *ngIf="activeTable">
+        <!-- --------------------------------------------------Aeactivated driver table------------------------------------------------ -->
+        <div class="table-responsive">
           <table class="table">
             <thead class="bg-light text-dark">
             <tr>
@@ -154,10 +151,8 @@
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
-              <th>Active</th>
               <th>City</th>
-              <!-- <th>Update</th>
-              <th>Delete</th> -->
+              <th>Status</th>
               <th>Action</th>
             </tr>
             </thead>
@@ -167,22 +162,12 @@
               <td>{{ driver.drivername }}</td>
               <td>{{ driver.driveremail }}</td>
               <td>{{driver.countrycode + " " + driver.driverphone}}</td>
+              <td>{{driver.city}}</td>
               <td>
                 <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked [checked]="driver.active" (click)="toggleDriverActivation(driver)">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"  [checked]="driver.status" (click)="toggleDriverActivation(driver)">
                 </div>
               </td>
-              <td>{{driver.city}}</td>
-              <!-- <td>
-                <button id="updatebtn" (click)="editbtn(driver)">
-                  <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-              </td>
-              <td>
-                <button id="deletebtn" (click)="deleteDriver(driver._id)">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </td> -->
               <td> 
                   <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button>Action</button>
                   <mat-menu #lvl2master="matMenu">
@@ -194,49 +179,10 @@
             </tr>
             </tbody>
           </table>
-        </div>  
-
-        <!-- deactivated driver table -->
-        <div class="table-responsive"  *ngIf="deactiveTable">
-          <table class="table">
-            <thead class="bg-light text-dark">
-            <tr>
-              <th>Profile</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Active</th>
-              <th>City</th>
-              <!-- <th>Update</th>
-              <th>Delete</th> -->
-              <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let driver of deactivatedDrivers">
-              <td><img src="http://localhost:4000/{{ driver.profile}}" alt=""></td>
-              <td>{{ driver.drivername }}</td>
-              <td>{{ driver.driveremail }}</td>
-              <td>{{driver.countrycode + " " + driver.driverphone}}</td>
-              <td>
-                <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" [checked]="driver.active" (click)="toggleDriverActivation(driver)">
-                </div>
-              </td>
-              <td>{{driver.city}}</td>
-              <td> 
-                  <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button>Action</button>
-                  <mat-menu #lvl2master="matMenu">
-                      <button mat-menu-item id="updatebtn" (click)="editbtn(driver)"><mat-icon>update</mat-icon>Update</button>
-                      <button mat-menu-item id="deletebtn" (click)="deleteDriver(driver._id)"><mat-icon>delete_forever</mat-icon>Delete</button>
-                      <button mat-menu-item><mat-icon>drive_eta</mat-icon>Service Type</button>
-                  </mat-menu>
-              </td>
-            </tr>
-            </tbody>
-          </table>
         </div>
 
+
+        <!-- -----------------------------------PAGINATION-------------------------------------------------- -->
         <div class="pagination d-flex justify-content-center" id="parentpagination">
           <!-- pagination buttons -->
           <div class="pagination table-responsive rounded">

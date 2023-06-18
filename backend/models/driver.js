@@ -27,6 +27,14 @@ const driver_Schema = new mongoose.Schema({
   city: {
     type: String,
     required: true,
+  },
+  status: {
+    type: Boolean,
+    default: false
+  },
+  servicetype: {
+    type: String,
+    default: "SUV"
   }
 });
 

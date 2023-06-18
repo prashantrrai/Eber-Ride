@@ -16,8 +16,6 @@ export class DriverComponent {
   serviceForm!: FormGroup;
   AddbuttonForm: boolean = false;
   updateForm: boolean = false;
-  activeTable: boolean = true;
-  deactiveTable: boolean = false;
   countrycode: any[] = [];
   citiesname: any[] = [];
   vehiclesname: any[] = []
@@ -37,9 +35,8 @@ export class DriverComponent {
   currentPage: number = 1;
   totalPages: number = 0;
   lvl2master: any
-  serviceModal: boolean = true;
+  serviceModal: boolean = false;
   vehiclesData: any
-  deactivatedDrivers: any[] = [];
 
   constructor(
     private _driver: DriverService,
@@ -59,7 +56,7 @@ export class DriverComponent {
       drivername: ["", [Validators.required]],
       driveremail: ["", [Validators.required, Validators.email]],
       driverphone: ["", [Validators.required, Validators.minLength(10)]],
-      city: [""]
+      city: [""],
     });
 
     this.driverUpdateForm = this.formBuilder.group({
@@ -67,7 +64,8 @@ export class DriverComponent {
       updatedriveremail: ["", [Validators.required, Validators.email]],
       updatedcountrycode: [""],
       updatedriverphone: ["", [Validators.required, Validators.minLength(10)]],
-      updatedcity: [""]
+      updatedcity: [""],
+      updatedriverstatus: [""]
     });
 
     this.serviceForm = this.formBuilder.group({
@@ -157,7 +155,7 @@ export class DriverComponent {
       this._driver.getCityData().subscribe({
         next: (response) => {
           // console.log(response);
-          const cityNames = response.map((obj: any) => obj.city);
+          const cityNames = response.map((obj: any) => obj);
           // console.log(cityNames);
           this.citiesname = cityNames; // Assigning the city names to the `citiesname` property
         },
@@ -177,7 +175,7 @@ export class DriverComponent {
     getVehicleNamefromDB(): void {
       this._driver.getVehicleData().subscribe({
         next: (response) => {
-          console.log(response);
+          // console.log(response);
           const vehicleName = response.data.map((obj: any) => obj.vehicleName);
           const vehicleImage = response.data.map((obj: any) => obj.vehicleImage);
           this.vehiclesData = response.data.map((vehicle: any) => ({
@@ -185,7 +183,7 @@ export class DriverComponent {
             vehicleName: vehicle.vehicleName,
             vehicleImage: vehicle.vehicleImage,
           }));
-          console.log(this.vehiclesData);
+          // console.log(this.vehiclesData);
           
           // this.vehiclesname = vehicleName;
           // this.vehiclesimage = vehicleImage
@@ -255,6 +253,7 @@ export class DriverComponent {
     }
   }
 
+  //---------------------------------------EDIT BUTTON-------------------------------------------------------
   editbtn(driver: any): void {
     this.id = driver._id;
     // console.log(this.id)
@@ -262,7 +261,6 @@ export class DriverComponent {
     // console.log(driver)
     // console.log(driver.city)
     // console.log(driver.countrycode)
-
     this.updateForm = true;
     this.AddbuttonForm = false
 
@@ -271,30 +269,25 @@ export class DriverComponent {
       updatedriveremail: driver.driveremail,
       updatedcountrycode: driver.countrycode,
       updatedcity: driver.city,
-      updatedriverphone: driver.driverphone
+      updatedriverphone: driver.driverphone,
+      updatedriverstatus: driver.status
     });
-
-    // this.file.nativeElement.value = '';
-
     // console.log(this.driverUpdateForm.value)
     // console.log(this.file);
   }
 
+  //----------------------------------UPDATE DRIVER FXN---------------------------------------------
   updateDriver(): void {
     const updatedData = this.driverUpdateForm.value;
     console.log(updatedData);
-    console.log(this.file);
-    
-    var formdata = new FormData();
+
+    const formdata = new FormData();
     formdata.append("profile", this.file);
     formdata.append("updatedrivername", updatedData.updatedrivername);
     formdata.append("updatedriveremail", updatedData.updatedriveremail);
     formdata.append("updatedcountrycode", updatedData.updatedcountrycode);
     formdata.append("updatedcity", updatedData.updatedcity);
     formdata.append("updatedriverphone", updatedData.updatedriverphone);
-    // console.log(formdata);
-    // console.log(updatedData.updatedcountrycode)
-    // console.log(updatedData.updatedcity);
     
 
     this._driver.updateDriver(this.id, formdata).subscribe({
@@ -303,7 +296,7 @@ export class DriverComponent {
         this.driverArray.push(response.updatedDriver);
         this.getDriverData();
         this.driverUpdateForm.reset();
-        // this.file.nativeElement.value = '';
+        this.file = null
         this.updateForm = !this.updateForm;
         this.toastr.success(response.message);
       },
@@ -344,7 +337,7 @@ export class DriverComponent {
   }
 
   updateService(){
-    this.toastr.success("Service Updated Successfully")
+    // this.toastr.success("Service Updated Successfully")
     this.serviceModal = false;
 
     var formData = new FormData();
@@ -362,28 +355,26 @@ export class DriverComponent {
     this.updateForm = false
   }
 
-  activeDriver() {
-    this.activeTable = true
-    this.deactiveTable = false
-  }
-
-  deactiveDriver() {
-    this.activeTable = false
-    this.deactiveTable = true
-  }
 
   toggleDriverActivation(driver: any) {
-    driver.active = !driver.active; // Toggle the value
-    if (!driver.active) {
-      this.deactivatedDrivers.push(driver); // Add to the deactivated drivers array
-    } else {
-      // Remove from the deactivated drivers array if it exists
-      const index = this.deactivatedDrivers.findIndex((d: any) => d.id === driver.id);
-      if (index !== -1) {
-        this.deactivatedDrivers.splice(index, 1);
+    this.id = driver._id;
+    const status = !driver.status;
+    console.log(status)
+  
+    const formdata = new FormData();
+    formdata.append("updatedriverstatus", String(status));
+  
+    this._driver.updateStatus(this.id, status).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.toastr.success(response.message,  'Success')
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.toastr.error(error.error.message)
       }
-      this.driverArray.push(driver);
-    }
+    });
+    driver.status = status; // Update the driver's status in the UI
   }
 
   resetTimer() {
