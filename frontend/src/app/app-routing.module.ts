@@ -11,6 +11,7 @@ import { CountryComponent } from './components/country/country.component';
 import { CityComponent } from './components/city/city.component';
 import { UsersComponent } from './components/users/users.component';
 import { DriverComponent } from './components/driver/driver.component';
+import { PricingComponent } from './components/pricing/pricing.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -23,7 +24,8 @@ const routes: Routes = [
     {path: 'country', component: CountryComponent},
     {path: 'city', component: CityComponent}   ,
     {path: 'users', component: UsersComponent},
-    {path: 'driver', component: DriverComponent}
+    {path: 'driver', component: DriverComponent},
+    {path: 'vehiclepricing', component: PricingComponent}
   ]},
 ];
 

@@ -28,6 +28,7 @@ import { CityComponent } from './components/city/city.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { UsersComponent } from './components/users/users.component';
 import { DriverComponent } from './components/driver/driver.component';
+import { PricingComponent } from './components/pricing/pricing.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { DriverComponent } from './components/driver/driver.component';
     CityComponent,
     UsersComponent,
     DriverComponent,
+    PricingComponent,
   ],
   imports: [
     BrowserModule,

@@ -330,8 +330,11 @@ export class DriverComponent {
     const status = !driver.status;
     console.log(status)
   
-    const formdata = new FormData();
-    formdata.append("updatedriverstatus", String(status));
+    // const data = {updatedriverstatus: driver.status}
+    // console.log(data)
+
+    // const formdata = new FormData();
+    // formdata.append("updatedriverstatus", String(status));
   
     this._driver.updateStatus(this.id, status).subscribe({
       next: (response: any) => {
@@ -383,8 +386,8 @@ export class DriverComponent {
       this._driver.updateService(this.id, data).subscribe({
         next: (response: any) => {
           console.log(response);
-          this.driverArray.push(response);
-          this.getDriverData()
+          // this.driverArray.push(response);
+          // this.getDriverData()
           this.serviceModal = false;
           this.serviceForm.reset();
           this.toastr.success(response.message)

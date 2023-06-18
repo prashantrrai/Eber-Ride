@@ -1,0 +1,123 @@
+<button class="mt-4 btn btn-primary" id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp; Add Driver</button>
+
+
+
+    <div class="parentFormContainer">
+        <div id="formContainer" *ngIf="AddbuttonForm">
+        <h2 class="mb-3">Driver Registration</h2>
+          <form class="container" [formGroup]="pricingForm" (ngSubmit)="AddPricing()">
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Driver Name</label>
+              <input type="text" class="form-control" formControlName="drivername" placeholder="Enter Username"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Driver Email</label>
+              <input type="email" class="form-control" formControlName="driveremail" placeholder="Enter Email"/>
+            </div>
+   
+            <div class="mb-3">
+              <label class="form-label d-flex justify-content-start">Choose City</label>
+              <select class="form-control w-100" id="city-name" name="city" #city (change)="onSelectedCity(city.value)">
+                <option value="null">Select City</option>
+                <option [value]="city" *ngFor="let city of citiesname ">{{city}}</option>
+              </select>
+            </div>
+
+            <div>
+              <button type="submit" class="btn btn-primary w-100" id="submitBtn"> Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+
+
+
+
+      <!-- -----------------------------------------SHOW DATA---------AND-------------SEARCH--------------------------------- -->
+      <!-- <div class="mt-5">
+        <div class="d-flex justify-content-center align-items-center">
+        <label for="pageSize">Show Data :</label>
+        <div class="custom-select">
+          <select class="form-control m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
+            <option [ngValue]="null">Select Page</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
+          <i class="fas fa-chevron-down dropdown-icon"></i>
+        </div>
+        <input type="text" class="form-control w-25 m-4 p-2" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="searchValue" (input)="searchDriver()">
+        </div>
+      </div>
+      
+      <div class="parentFormContainer">
+        <div id="tableContainer"> -->
+
+        <!-- -------------------------------------------------- Driver table------------------------------------------------ -->
+        <!-- <div class="table-responsive">
+          <table class="table">
+            <thead class="bg-light text-dark">
+            <tr>
+              <th>Profile</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>City</th>
+              <th>Status</th>
+              <th>Service</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let driver of driverArray">
+              <td><img src="http://localhost:4000/{{ driver.profile}}" alt="driver-profile"></td>
+              <td>{{ driver.drivername }}</td>
+              <td>{{ driver.driveremail }}</td>
+              <td>{{driver.countrycode + " " + driver.driverphone}}</td>
+              <td>{{driver.city}}</td>
+              <td>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"  [checked]="driver.status" (click)="driverStatus(driver)"   [ngClass]="{'approved': driver.status, 'declined': !driver.status}">
+                </div>
+                {{driver.status == true ? 'Approved': "Declined"}}
+              </td>
+              <td>{{driver.servicetype}}</td>
+              <td> 
+                  <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button><mat-icon>edit</mat-icon></button>
+                  <mat-menu #lvl2master="matMenu">
+                      <button mat-menu-item id="updatebtn" (click)="editbtn(driver)"><mat-icon>update</mat-icon>Update</button>
+                      <button mat-menu-item id="deletebtn" (click)="deleteDriver(driver._id)"><mat-icon>delete_forever</mat-icon>Delete</button>
+                      <button mat-menu-item  (click)="onserviceType(driver)"><mat-icon>drive_eta</mat-icon>Service Type</button>
+                  </mat-menu>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div> -->
+
+
+        <!-- -----------------------------------PAGINATION-------------------------------------------------- -->
+        <!-- <div class="pagination d-flex justify-content-center" id="parentpagination">
+          <div class="pagination table-responsive rounded">
+            <button class="page-link" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
+              <i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous
+            </button>
+            <ng-container *ngFor="let page of getPagesArray()">
+              <button class="page-link"
+                      [class.active]="page === currentPage"
+                      (click)="onPageChange(page)">
+                {{ page }}
+              </button>
+            </ng-container>
+            <button class="page-link" [disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">
+              Next <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+         -->
+    
