@@ -1,17 +1,4 @@
-.parent{
-    /* display: flex; */
-    align-items: center;
-    justify-content: center;
-}
-.phone-input {
-    width: 40%;
-    background-color: #fff;
-    display: flex;
-  }
-  
-  .phone-input select {
-    margin-right: 10px;
-  }
+
   
 
   
@@ -55,6 +42,21 @@
     transition: all linear 300ms;
     z-index: 1;
     /* box-shadow: 4px 4px 16px #00b3ff; */
+  }
+
+  .parent{
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+}
+.phone-input {
+    width: 40%;
+    background-color: #fff;
+    display: flex;
+  }
+  
+  .phone-input select {
+    margin-right: 10px;
   }
   
   #pageSize{
@@ -252,4 +254,10 @@
   border-radius: 3px;
   width: 80%;
 }
+.approved {
+  background-color: green;
+}
 
+.declined {
+  background-color: red;
+}

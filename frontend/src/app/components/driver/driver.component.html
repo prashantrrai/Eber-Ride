@@ -129,7 +129,7 @@
               <th>Phone</th>
               <th>City</th>
               <th>Status</th>
-              <th>Service Type</th>
+              <th>Service</th>
               <th>Action</th>
             </tr>
             </thead>
@@ -142,15 +142,13 @@
               <td>{{driver.city}}</td>
               <td>
                 <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"  [checked]="driver.status" (click)="driverStatus(driver)">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"  [checked]="driver.status" (click)="driverStatus(driver)"   [ngClass]="{'approved': driver.status, 'declined': !driver.status}">
                 </div>
-                <div class="form-check form-switch">
-                  <mat-checkbox [(ngModel)]="driver.status" (change)="driverStatus(driver)" color="primary"></mat-checkbox>
-                </div>
+                {{driver.status == true ? 'Approved': "Declined"}}
               </td>
               <td>{{driver.servicetype}}</td>
               <td> 
-                  <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button>Action</button>
+                  <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button><mat-icon>edit</mat-icon></button>
                   <mat-menu #lvl2master="matMenu">
                       <button mat-menu-item id="updatebtn" (click)="editbtn(driver)"><mat-icon>update</mat-icon>Update</button>
                       <button mat-menu-item id="deletebtn" (click)="deleteDriver(driver._id)"><mat-icon>delete_forever</mat-icon>Delete</button>
