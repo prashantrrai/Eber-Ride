@@ -56,6 +56,11 @@ export class DriverService {
     return this.http.put<any>(url, body);
   }
 
+  updateService(servicename: string): Observable<any> {
+    const url = `${this.serverUrl}/service`;
+    return this.http.post<any>(url, { servicename });
+  }
+
   searchDriver(query: string, page: number, limit: number): Observable<any> {
     // console.log(query, page, limit)
     return this.http.get(`${this.serverUrl}/driversearch?query=${query}&page=${page}&limit=${limit}`);

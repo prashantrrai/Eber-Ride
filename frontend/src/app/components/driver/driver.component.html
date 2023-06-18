@@ -95,30 +95,6 @@
   
 
 
-      <!------------------------------------------- Service Modal--------------------------------------------------- -->
-      <div class="modal-body" *ngIf="serviceModal">
-        <form class="container" [formGroup]="serviceForm" (ngSubmit)="updateService()">
-        <h3>Select Service Type</h3>
-        <!-- <select class="form-control w-100" name="vehicle" #vehicle (change)="onSelectedVehicle(vehicle.value)" formControlName="servicename">
-          <option  value="">Select Service</option>
-          <option [value]="vehicle" *ngFor="let vehicle of vehiclesname ">{{vehicle}}</option>
-        </select> -->
-
-        <div class="card-container d-flex ">
-          <div class="card" *ngFor="let vehicle of vehiclesData">
-            <img class="card-img-top" src="http://localhost:4000/{{ vehicle.vehicleImage }}" alt="vehicle-image" >
-            <span>{{vehicle.vehicleName}}</span>
-            <button class="button" (click)="onSelectedVehicle(vehicle.value)">Select</button>
-          </div>
-        </div>
-        <div class="p-2">
-        <button class="btn btn-success m-2">Add</button>
-        <button class="btn btn-danger" (click)="closeModal()">Close</button>
-        </div>
-        </form>
-      </div>
-
-
 
       <!-- -----------------------------------------SHOW DATA---------AND-------------SEARCH--------------------------------- -->
       <div class="mt-5">
@@ -153,6 +129,7 @@
               <th>Phone</th>
               <th>City</th>
               <th>Status</th>
+              <th>Service Type</th>
               <th>Action</th>
             </tr>
             </thead>
@@ -165,9 +142,13 @@
               <td>{{driver.city}}</td>
               <td>
                 <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"  [checked]="driver.status" (click)="toggleDriverActivation(driver)">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"  [checked]="driver.status" (click)="driverStatus(driver)">
+                </div>
+                <div class="form-check form-switch">
+                  <mat-checkbox [(ngModel)]="driver.status" (change)="driverStatus(driver)" color="primary"></mat-checkbox>
                 </div>
               </td>
+              <td>{{driver.servicetype}}</td>
               <td> 
                   <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button>Action</button>
                   <mat-menu #lvl2master="matMenu">
@@ -231,3 +212,33 @@
       </div>
     </div>
   </div> -->
+
+
+
+
+
+  
+      <!------------------------------------------- Service Modal--------------------------------------------------- -->
+      <div class="modal-body" *ngIf="serviceModal">
+        <form class="container" [formGroup]="serviceForm" (ngSubmit)="updateService()">
+        <h1>Select Service Type</h1>
+        <select class="form-control w-100" name="vehicle" #vehicle (change)="onSelectedVehicle(vehicle.value)" formControlName="servicename">
+          <option  value="">Select Service</option>
+          <option [value]="vehicle.vehicleName" *ngFor="let vehicle of vehiclesData ">{{vehicle.vehicleName}}</option>
+        </select>
+
+        <!-- <div class="card-container d-flex ">
+          <div class="card" *ngFor="let vehicle of vehiclesData">
+            <img class="card-img-top" src="http://localhost:4000/{{ vehicle.vehicleImage }}" alt="vehicle-image" >
+            <span>{{vehicle.vehicleName}}</span>
+            <button class="button" (click)="onSelectedVehicle(vehicle.value)">Select</button>
+          </div>
+        </div> -->
+
+        <div class="p-2">
+        <button class="btn btn-success m-2">Add</button>
+        <button class="btn btn-danger" (click)="closeModal()">Close</button>
+        </div>
+        </form>
+      </div>
+

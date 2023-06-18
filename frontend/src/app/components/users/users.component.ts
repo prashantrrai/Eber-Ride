@@ -230,6 +230,7 @@ export class UsersComponent {
         this.usersArray.push(response.updatedUser);
         this.getUserData();
         this.userupdateForm.reset();
+        this.file = null
         this.updateForm = !this.updateForm;
         this.toastr.success(response.message);
       },

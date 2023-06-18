@@ -13,7 +13,6 @@ export class DriverComponent {
 
   driverUpdateForm!: FormGroup;
   AddForm!: FormGroup;
-  serviceForm!: FormGroup;
   AddbuttonForm: boolean = false;
   updateForm: boolean = false;
   countrycode: any[] = [];
@@ -35,6 +34,7 @@ export class DriverComponent {
   currentPage: number = 1;
   totalPages: number = 0;
   lvl2master: any
+  serviceForm!: FormGroup;
   serviceModal: boolean = false;
   vehiclesData: any
 
@@ -69,8 +69,7 @@ export class DriverComponent {
     });
 
     this.serviceForm = this.formBuilder.group({
-      servicename: [""], // Set the default value to an empty string
-      serviceimage: [""]
+      servicename: ['', Validators.required]
     });
 
   }
@@ -176,15 +175,15 @@ export class DriverComponent {
       this._driver.getVehicleData().subscribe({
         next: (response) => {
           // console.log(response);
-          const vehicleName = response.data.map((obj: any) => obj.vehicleName);
-          const vehicleImage = response.data.map((obj: any) => obj.vehicleImage);
+          // const vehicleName = response.data.map((obj: any) => obj.vehicleName);
+          // const vehicleImage = response.data.map((obj: any) => obj.vehicleImage);
           this.vehiclesData = response.data.map((vehicle: any) => ({
             _id: vehicle._id,
             vehicleName: vehicle.vehicleName,
-            vehicleImage: vehicle.vehicleImage,
+            // vehicleImage: vehicle.vehicleImage,
           }));
           // console.log(this.vehiclesData);
-          
+
           // this.vehiclesname = vehicleName;
           // this.vehiclesimage = vehicleImage
           // console.log(vehicleName, vehicleImage);
@@ -195,10 +194,6 @@ export class DriverComponent {
       });
     }
 
-  onSelectedVehicle(value: any) {
-    this.selectedVehicle = value;
-    console.log(value)
-  }
 
   onFileSelected(event: any) {
     this.file = event.target.files[0];
@@ -329,34 +324,7 @@ export class DriverComponent {
     this.updateForm = !this.updateForm;
   }
 
-  
-  onserviceType(){
-    this.updateForm = false;
-    this.AddbuttonForm = false
-    this.serviceModal = true;
-  }
-
-  updateService(){
-    // this.toastr.success("Service Updated Successfully")
-    this.serviceModal = false;
-
-    var formData = new FormData();
-    formData.append("servicename", this.selectedVehicle);
-    formData.append("serviceimage", this.file);
-  }
-  
-  closeModal(): void {
-    this.serviceModal = false;
-  }
-  
-
-  toggleFormVisibility() {
-    this.AddbuttonForm = !this.AddbuttonForm;
-    this.updateForm = false
-  }
-
-
-  toggleDriverActivation(driver: any) {
+  driverStatus(driver: any) {
     this.id = driver._id;
     const status = !driver.status;
     console.log(status)
@@ -375,6 +343,54 @@ export class DriverComponent {
       }
     });
     driver.status = status; // Update the driver's status in the UI
+  }
+
+
+  
+  onserviceType(){
+    this.updateForm = false;
+    this.AddbuttonForm = false
+    this.serviceModal = true;
+  }
+
+
+  onSelectedVehicle(vehicle: string): void {
+    this.selectedVehicle = vehicle
+    // console.log(this.selectedVehicle)
+    // console.log(this.serviceForm.value.servicename)
+  }
+  
+  updateService(): void {
+    if (this.serviceForm.valid) {
+      const servicename = this.serviceForm.value.servicename;
+      console.log(this.serviceForm.value.servicename)
+
+      this._driver.updateService(servicename).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.serviceModal = false;
+          this.serviceForm.reset();
+          this.toastr.success(response.message)
+
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.toastr.error(error.error.message)
+
+        }
+      });
+    }
+  }
+  
+  closeModal(): void {
+    this.serviceModal = false;
+    this.serviceForm.reset();
+  }
+  
+
+  toggleFormVisibility() {
+    this.AddbuttonForm = !this.AddbuttonForm;
+    this.updateForm = false
   }
 
   resetTimer() {

@@ -221,6 +221,31 @@ const mongoose = require("mongoose");
   });
 
 
+  // Add or Update Service
+  driverRoutes.post('/service', async (req, res) => {
+    try {
+      const { servicename } = req.body;
+  
+      // Check if service already exists
+      const existingService = await driverModel.findOne({});
+      console.log(existingService)
+      if (existingService) {
+        // Update the existing service
+        existingService.servicetype = servicename;
+        await existingService.save();
+        res.json({ success: true, message: 'Service updated successfully', service: existingService });
+      } else {
+        // Create a new service
+        const newService = new Service({ servicetype: servicename });
+        await newService.save();
+        res.json({ success: true, message: 'Service added successfully', service: newService });
+      }
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ success: false, message: 'Failed to add or update service' });
+    }
+  });
+
 
 
 module.exports = driverRoutes;
