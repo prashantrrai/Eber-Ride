@@ -25,6 +25,11 @@ export class PricingComponent {
   selectedDistance!: number;
   valueArray: any[] = [];
   id: any;
+  limit: number = 3;
+  currentPage: number = 1;
+  totalPages: number = 0;
+  paginatedData: any[] = [];
+  searchValue: string = '';
 
   constructor(
     private toastr: ToastrService,
@@ -94,11 +99,11 @@ export class PricingComponent {
   }
   onSelectedCity(city: any) {
     this.selectedCity = city;
-    var newArray= this.serviceData.filter((obj: any) => {
-      return(
-        this.pricingForm.value.city === obj.city
-      )
-    });
+    // var newArray= this.serviceData.filter((obj: any) => {
+    //   return(
+    //     this.pricingForm.value.city === obj.city
+    //   )
+    // });
     console.log(city);
   }
 
@@ -137,7 +142,7 @@ export class PricingComponent {
     // console.log(service);
   }
 
-  // --------------------------------------------NG SUBMIT FXN---------------------------------------------
+  // --------------------------------------------NG SUBMIT FXN-----------------------------------------------------
   onSubmit() {
     if (this.isEditMode) {
       this.UpdatePricing();
@@ -173,16 +178,63 @@ export class PricingComponent {
 
   // --------------------------------------------GET VEHICLE PRICING DATA FXN---------------------------------------------
   getPricingData() {
-    this._pricing.getPricingData().subscribe({
+    this._pricing.getPricingData(this.currentPage, this.limit).subscribe({
       next: (response: any) => {
         console.log(response);
         const data = response.pricingData.map((obj: any) => obj);
         this.valueArray = data;
+        this.totalPages = response.totalPages;
+        this.updatePaginatedPrices();
       },
       error: (error: any) => {
         console.log(error.error.message);
       },
     });
+  }
+
+  onPageSizeChange(event: any): void {
+    this.limit = parseInt(event.target.value); // Parse the limit value as an integer
+
+    // Reset the current page to 1 when the limit changes
+    this.currentPage = 1;
+
+    // Update the paginatedDrivers array based on the new limit and current page
+    this.updatePaginatedPrices();
+    this.getPricingData();
+  }
+  onPageChange(pageNumber: number) {
+    // Validate the new page number
+    if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+      this.currentPage = pageNumber;
+
+    // Update the paginatedDrivers array based on the new page
+    this.updatePaginatedPrices();
+    this.getPricingData();
+    }
+  }
+  getPagesArray(): number[] {
+    return Array(this.totalPages).fill(0).map((_, index) => index + 1);
+  }
+  updatePaginatedPrices() {
+    const startIndex = (this.currentPage - 1) * this.limit;
+    const endIndex = startIndex + this.limit;
+    this.paginatedData = this.valueArray.slice(startIndex, endIndex);
+  }
+
+  searchDriver() {
+    this.currentPage = 1; // Reset the current page to 1 when searching
+    // console.log(this.searchValue)
+    this._pricing.searchPrice(this.searchValue, this.currentPage, this.limit).subscribe({
+      next: (response: any) => {
+        console.log(response)
+        this.valueArray = response.pricingdata;
+        this.totalPages = response.totalPages;
+        this.updatePaginatedPrices(); // Update paginatedUsers array based on search results
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+  });
   }
 
   // --------------------------------------------DELETE VEHICLE PRICING FXN---------------------------------------------
@@ -246,6 +298,7 @@ export class PricingComponent {
       },
     });
   }
+
 
   // ----------------------------------------BUTTONS CONTROL PANEL---------------------------------------------
   toggleFormVisibility() {

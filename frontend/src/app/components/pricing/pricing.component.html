@@ -104,8 +104,8 @@
       </div>
 
 
-      <!-- -----------------------------------------SHOW DATA---------AND-------------SEARCH--------------------------------- -->
-      <!-- <div class="mt-5">
+      <!-- ------------------------------------------------SHOW DATA--AND--SEARCH------------------------------------------------>
+      <div class="mt-5">
         <div class="d-flex justify-content-center align-items-center">
         <label for="pageSize">Show Data :</label>
         <div class="custom-select">
@@ -120,15 +120,15 @@
           </select>
           <i class="fas fa-chevron-down dropdown-icon"></i>
         </div>
-        <input type="text" class="form-control w-25 m-4 p-2" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="searchValue" (input)="searchDriver()">
+        <input type="text" class="form-control w-25 m-4 p-2" placeholder="Search.." [(ngModel)]="searchValue" (input)="searchDriver()">
         </div>
       </div>
       
       <div class="parentFormContainer">
-        <div id="tableContainer"> -->
+        <div id="tableContainer">
 
-        <!-- -------------------------------------------------- Driver table------------------------------------------------ -->
-        <div class="table-responsive">
+        <!-- --------------------------------------------------PRICING DATA TABLE------------------------------------------------ -->
+        <div class="table-responsive bg-light">
           <table class="table">
             <thead class="bg-dark text-light">
             <tr>
@@ -171,7 +171,7 @@
 
 
         <!-- -----------------------------------PAGINATION-------------------------------------------------- -->
-        <!-- <div class="pagination d-flex justify-content-center" id="parentpagination">
+        <div class="pagination d-flex justify-content-center" id="parentpagination">
           <div class="pagination table-responsive rounded">
             <button class="page-link" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
               <i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous
@@ -188,5 +188,5 @@
             </button>
           </div>
         </div>
-         -->
+        
     
