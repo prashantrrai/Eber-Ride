@@ -181,8 +181,8 @@ export class PricingComponent {
     this._pricing.getPricingData(this.currentPage, this.limit).subscribe({
       next: (response: any) => {
         console.log(response);
-        const data = response.pricingData.map((obj: any) => obj);
-        this.valueArray = data;
+        // const data = response.pricingData.map((obj: any) => obj);
+        this.valueArray = response.pricingData;
         this.totalPages = response.totalPages;
         this.updatePaginatedPrices();
       },
@@ -209,7 +209,7 @@ export class PricingComponent {
 
     // Update the paginatedDrivers array based on the new page
     this.updatePaginatedPrices();
-    this.getPricingData();
+    // this.getPricingData();
     }
   }
   getPagesArray(): number[] {
@@ -221,7 +221,7 @@ export class PricingComponent {
     this.paginatedData = this.valueArray.slice(startIndex, endIndex);
   }
 
-  searchDriver() {
+  searchPrice() {
     this.currentPage = 1; // Reset the current page to 1 when searching
     // console.log(this.searchValue)
     this._pricing.searchPrice(this.searchValue, this.currentPage, this.limit).subscribe({
@@ -229,6 +229,7 @@ export class PricingComponent {
         console.log(response)
         this.valueArray = response.pricingdata;
         this.totalPages = response.totalPages;
+        console.log(this.totalPages)
         this.updatePaginatedPrices(); // Update paginatedUsers array based on search results
       },
       error: (error: any) => {
