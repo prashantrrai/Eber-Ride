@@ -1,6 +1,7 @@
 const express = require('express')
 const pricingRoutes = express.Router()
 const pricingModel = require('../models/pricing')
+const mongoose = require("mongoose");
 
 
 // --------------------------------------------POST PRICING DATA API---------------------------------------------
@@ -102,7 +103,7 @@ pricingRoutes.put("/updatepricing/:id", async (req, res) => {
 })
 
 // ---------------------------------SEARCH PRICING DATA API With SORTING AND PAGINATION-------------------------------------
-pricingRoutes.get("/searchpricing/:id", async (req, res) => {
+pricingRoutes.get("/searchpricing", async (req, res) => {
     try {
         const query = req.query;
         const currentPage = parseInt(query.currentPage) || 1;
@@ -129,16 +130,20 @@ pricingRoutes.get("/searchpricing/:id", async (req, res) => {
         const totalPages = Math.ceil(count / limit);
 
         const sortObject = {};
+        // if (sortColumn) {
+        //     sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
+        //   }
         // sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
-        sortObject['username'] = 1;
+        sortObject['city'] = 1;
 
-        const pricingdata = await driverModel.find(searchData).skip(skip).limit(limit).sort(sortObject);
+        const pricingdata = await pricingModel.find(searchData).skip(skip).limit(limit).sort(sortObject);
 
         //   console.log(pricingdata)
         res.json({ success: true, message: 'Data Found', pricingdata, totalPages });
 
     } catch (error) {
-
+        console.log(error)
+        res.status(500).json({ success: false, message: error });
     }
 })
 
