@@ -15,7 +15,7 @@ export class CityComponent implements OnInit {
   cityForm!: FormGroup;
   citydata :any = {
     countryname: '',
-    cityname : '',
+    cityname: '',
 }
   addedCities: string[] = [];
   newCity: string = '';

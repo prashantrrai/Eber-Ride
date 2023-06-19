@@ -19,6 +19,7 @@ export class PricingComponent {
   selectedCountry: any;
   citiesname: any[] = [];
   countriesname: any[] = [];
+  country_id: any
   serviceData: any[] = [];
   selectedVehicle: any;
   distbasePriceArray: number[] = [1, 2, 3, 4];
@@ -58,6 +59,9 @@ export class PricingComponent {
     getCountry(): void {
       this._pricing.getCountryData().subscribe({
         next: (response) => {
+          // console.log(response)
+          // const country_id = response.countrydata.map((obj: any) => obj._id);
+          // this.country_id = country_id
           const country = response.countrydata.map((obj: any) => obj.countryName);
           this.countriesname = country;
         },
@@ -69,14 +73,20 @@ export class PricingComponent {
     onSelectedCountry(value: any) {
       this.selectedCountry = value;
       // console.log(value)
+      this.getCity();
     }
 
     // -----------------GET CITY DATA---------------
     getCity(): void {
       this._pricing.getCityData().subscribe({
         next: (response) => {
-          const city = response.map((obj: any) => obj.city);
+          // const city = response.map((obj: any) => obj.city);
+          const countrywaladata = response.filter((obj: any) => obj.countryDetails.countryName === this.selectedCountry);
+          const city = countrywaladata.map((obj: any) => obj.city);
           this.citiesname = city;
+          // const countrywaladata = response.map((obj: any) => obj.countryDetails.countryName);
+          // console.log(countrywaladata)
+
         },
         error: (error) => {
           console.log(error.error.message);
@@ -85,7 +95,7 @@ export class PricingComponent {
     }
     onSelectedCity(city: any) {
       this.selectedCity = city;
-      // console.log(city)
+      console.log(city)
     }
 
     // -----------------GET SERVICE DATA---------------
@@ -227,8 +237,7 @@ export class PricingComponent {
   }
 
 
-
-
+  // ----------------------------------------BUTTONS CONTROL PANEL---------------------------------------------
   toggleFormVisibility() {
     // this.addForm = !this.addForm;
     this.addForm = true;
@@ -238,6 +247,8 @@ export class PricingComponent {
   CancelForm(){
     this.addForm = false;
     this.showButton = true;
+    this.isEditMode = false;
+    this.pricingForm.reset();
   }
 
   resetTimer() {
