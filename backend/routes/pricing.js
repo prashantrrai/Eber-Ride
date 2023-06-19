@@ -31,5 +31,27 @@ pricingRoutes.post("/addpricing", async (req, res) => {
     }
 })
 
+// --------------------------------------------GET PRICING DATA API---------------------------------------------
+pricingRoutes.get("/pricingdata", async (req, res) => {
+    try {
+        const pricingData = await pricingModel.find()
+        res.status(200).json({success: true, message: "Pricing Data Fetched Successfully", pricingData})
+    } catch (error) {
+        res.status(500).json({ success: false, message: error});
+    }
+})
+
+// --------------------------------------------DELETE PRICING DATA API---------------------------------------------
+pricingRoutes.delete("/deletepricing/:id", async (req, res) => {
+    try {
+        const id = req.params.id
+        const pricingData = await pricingModel.findByIdAndDelete(id)
+        res.status(200).json({success: true, message: "Pricing Deleted Successfully", pricingData})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success: false, message: error});
+    }
+})
+
 
 module.exports = pricingRoutes;

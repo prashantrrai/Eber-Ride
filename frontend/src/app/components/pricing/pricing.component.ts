@@ -20,7 +20,10 @@ export class PricingComponent {
   countriesname: any[] = [];
   serviceData: any[] = [];
   selectedVehicle: any;
-  distbasePriceArray: any[] = [];
+  distbasePriceArray: number[] = [1, 2, 3, 4];
+  selectedDistance!: number;
+  valueArray: any[] = []
+  id: any;
 
   constructor(
     private toastr: ToastrService,
@@ -33,7 +36,7 @@ export class PricingComponent {
     this.getCountry()
     this.getCity()
     this.getService()
-
+    this.getPricingData()
 
     this.pricingForm = this.formBuilder.group({
       country: [''],
@@ -103,6 +106,12 @@ export class PricingComponent {
       
     }
 
+    // -----------------Disatnce Base Price DATA---------------
+    onSelectDistance(distance: number) {
+      this.selectedDistance = distance
+      // console.log(service);
+    }
+
 
 
   // --------------------------------------------ADD VEHICLE PRICING FXN---------------------------------------------
@@ -114,10 +123,8 @@ export class PricingComponent {
       this._pricing.addPricing(formValues).subscribe({
         next: (response: any) => {
           console.log(response)
-          // this.driverArray.push(resp.newDriver);
-          // this.AddForm.reset();
-          // this.AddbuttonForm = false;
-          // this.getDriverData();
+          this.valueArray.push(response.pricingData);
+          this.getPricingData();
           this.toastr.success(response.message)
 
         },
@@ -131,9 +138,65 @@ export class PricingComponent {
     }
   }
 
-  
+
+  // --------------------------------------------GET VEHICLE PRICING DATA FXN---------------------------------------------
+  getPricingData(){
+    this._pricing.getPricingData().subscribe({
+      next: (response: any) => {
+        const data = response.pricingData.map((obj: any) => obj);
+        this.valueArray = data;
+      },
+      error: (error: any) => {
+        console.log(error.error.message);
+      }
+    })
+  }
+
+  // --------------------------------------------DELETE VEHICLE PRICING FXN---------------------------------------------
+  deleteValues(id: any){
+    console.log(id)
+    const confirmation = confirm("Are you sure you want to Delete?");
+
+    if (confirmation) {
+      this._pricing.deleteValues(id).subscribe({
+        next: (response: any) => {
+          console.log(response)
+          this.getPricingData();
+          this.toastr.success(response.message);
+        },
+        error: (error: any) => {
+          console.log(error.error.message);
+          this.toastr.error(error.error.message);
+        },
+      });
+    }
+    
+  }
 
 
+  // --------------------------------------------UPDATE VEHICLE PRICING FXN---------------------------------------------
+  editbtn(values: any){
+    this.id = values._id;
+    console.log("price id:",this.id)
+
+    this.pricingForm.patchValue({
+      country: values.country,
+      city: values.city,
+      service: values.service,
+      driverprofit: values.driverprofit,
+      minfare: values.minfare,
+      distancebaseprice: values.distancebaseprice,
+      baseprice: values.baseprice,
+      ppudist: values.ppudist,
+      pputime: values.pputime,
+      maxspace: values.maxspace,
+    });
+    console.log(this.pricingForm.value)
+  }
+
+  UpdatePricing(){
+    alert("ndjsdnsknkndnskndkn")
+  }
 
 
 

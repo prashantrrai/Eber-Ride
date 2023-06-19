@@ -27,5 +27,13 @@ export class PricingService {
     // console.log(pricingdata)
     return this.http.post<any>(`${this.serverUrl}/addpricing`, pricingdata);
   }
+
+  getPricingData(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/pricingdata`);
+  }
+
+  deleteValues(id: any): Observable<any> {
+    return this.http.delete(`${this.serverUrl}/deletepricing/${id}`);
+  }
   
 }
