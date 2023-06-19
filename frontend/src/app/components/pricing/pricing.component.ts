@@ -12,8 +12,9 @@ import { PricingService } from 'src/app/Service/pricing.service';
 export class PricingComponent {
 
   showButton: boolean = true;
-  addForm: boolean = true;
+  addForm: boolean = false;
   pricingForm!: FormGroup
+  isEditMode: boolean = false;
   selectedCity: any
   selectedCountry: any;
   citiesname: any[] = [];
@@ -49,7 +50,6 @@ export class PricingComponent {
       ppudist: ['', [Validators.required]],
       pputime: ['', [Validators.required]],
       maxspace: ['', [Validators.required]],
-
     });
 
   }
@@ -113,6 +113,14 @@ export class PricingComponent {
     }
 
 
+  // --------------------------------------------NG SUBMIT FXN---------------------------------------------
+  onSubmit() {
+    if (this.isEditMode) {
+      this.UpdatePricing();
+    } else {
+      this.AddPricing();
+    }
+  }
 
   // --------------------------------------------ADD VEHICLE PRICING FXN---------------------------------------------
   AddPricing(){
@@ -125,6 +133,8 @@ export class PricingComponent {
           console.log(response)
           this.valueArray.push(response.pricingData);
           this.getPricingData();
+          this.pricingForm.reset();
+          this.addForm = false;
           this.toastr.success(response.message)
 
         },
@@ -176,8 +186,11 @@ export class PricingComponent {
 
   // --------------------------------------------UPDATE VEHICLE PRICING FXN---------------------------------------------
   editbtn(values: any){
+    this.isEditMode = true;
+    this.addForm = true;
+
     this.id = values._id;
-    console.log("price id:",this.id)
+    // console.log("price id:",this.id)
 
     this.pricingForm.patchValue({
       country: values.country,
@@ -191,19 +204,36 @@ export class PricingComponent {
       pputime: values.pputime,
       maxspace: values.maxspace,
     });
-    console.log(this.pricingForm.value)
+    // console.log(this.pricingForm.value)
   }
 
   UpdatePricing(){
-    alert("ndjsdnsknkndnskndkn")
+    const data = this.pricingForm.value;
+    
+    this._pricing.UpdatePricing(this.id, data).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.valueArray.push(response.pricingData);
+        this.getPricingData();
+        this.pricingForm.reset();
+        this.addForm = false;
+        this.toastr.success(response.message);
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.toastr.error(error.error.message);
+      },
+    });
   }
 
 
 
 
   toggleFormVisibility() {
-    this.addForm = !this.addForm;
+    // this.addForm = !this.addForm;
+    this.addForm = true;
     this.showButton = false;
+    this.isEditMode = false;
   }
   CancelForm(){
     this.addForm = false;

@@ -23,7 +23,7 @@ pricingRoutes.post("/addpricing", async (req, res) => {
     
         await pricingData.save()
         console.log(pricingData)
-        res.status(200).json({success: true, message: "Pricing Added Successfully", pricingData})
+        res.status(200).json({success: true, message: "Pricing Data Added Successfully", pricingData})
 
     } catch (error) {
         console.log(error)
@@ -46,7 +46,36 @@ pricingRoutes.delete("/deletepricing/:id", async (req, res) => {
     try {
         const id = req.params.id
         const pricingData = await pricingModel.findByIdAndDelete(id)
-        res.status(200).json({success: true, message: "Pricing Deleted Successfully", pricingData})
+        res.status(200).json({success: true, message: "Pricing Data Deleted Successfully", pricingData})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success: false, message: error});
+    }
+})
+
+// --------------------------------------------UPDATE PRICING DATA API---------------------------------------------
+pricingRoutes.put("/updatepricing/:id", async (req, res) => {
+    try {
+        
+    const id = req.params.id;
+    const {country, city, service, driverprofit, minfare, distancebaseprice, baseprice, ppudist, pputime, maxspace} = req.body
+    
+    const data = {
+        country: country, 
+        city: city, 
+        service: service, 
+        driverprofit: driverprofit, 
+        minfare: minfare, 
+        distancebaseprice: distancebaseprice, 
+        baseprice: baseprice,
+        ppudist: ppudist,
+        pputime: pputime,
+        maxspace: maxspace
+    }
+
+    await pricingModel.findByIdAndUpdate(id, data, {new:true})
+    res.status(200).json({success: true, message: "Pricing Data Updated Successfully", data})
+
     } catch (error) {
         console.log(error)
         res.status(500).json({ success: false, message: error});

@@ -35,5 +35,9 @@ export class PricingService {
   deleteValues(id: any): Observable<any> {
     return this.http.delete(`${this.serverUrl}/deletepricing/${id}`);
   }
+
+  UpdatePricing(id: any, data: any): Observable<any> {
+    return this.http.put(`${this.serverUrl}/updatepricing/${id}`, data);
+  }
   
 }

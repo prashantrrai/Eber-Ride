@@ -1,4 +1,4 @@
-<button class="mt-4 btn btn-primary" id="showbtn" [hidden]="!showButton" (click)="toggleFormVisibility()">
+<button class="m-4 btn btn-primary" id="showbtn" [hidden]="!showButton" (click)="toggleFormVisibility()">
   <i class="fa fa-inr" aria-hidden="true"></i>
   &nbsp; Vehicle Pricing
 </button>
@@ -8,11 +8,11 @@
       <div class="parentFormContainer">
         <div id="formContainer" *ngIf="addForm">
           <h2 class="mb-3">Add Vehicle Pricing</h2>
-          <form class="container" [formGroup]="pricingForm" (ngSubmit)="AddPricing()">
+          <form class="container" [formGroup]="pricingForm" (ngSubmit)="onSubmit()">
 
             <div class="form-group row align-items-center mb-2">
               <label class="col-sm-3 col-form-label text-end">Country</label>
-              <div class="col-sm-9 ">
+              <div class="col-sm-9">
                 <select class="form-control" id="country-name" name="country" #country (change)="onSelectedCountry(country.value)" formControlName="country">
                   <option value="">Select Country</option>
                   <option [value]="country" *ngFor="let country of countriesname">{{country}}</option>
@@ -94,7 +94,8 @@
       
             <div class="form-group row mt-3">
               <div class="col-sm-9 offset-sm-3 d-flex justify-content-between">
-                <button type="submit" class="btn btn-success"> Submit</button>
+                <button type="submit" class="btn btn-success" [hidden]="isEditMode"> Submit</button>
+                <button type="submit" class="btn btn-info" [hidden]="!isEditMode"> Update</button>
                 <button type="button" class="btn btn-secondary" (click)="CancelForm()"> Cancel</button>
               </div>
             </div>
