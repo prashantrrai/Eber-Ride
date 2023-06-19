@@ -1,30 +1,29 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/Service/auth.service';
-import { PricingService } from 'src/app/Service/pricing.service';
+import { Component } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
+import { AuthService } from "src/app/Service/auth.service";
+import { PricingService } from "src/app/Service/pricing.service";
 
 @Component({
-  selector: 'app-pricing',
-  templateUrl: './pricing.component.html',
-  styleUrls: ['./pricing.component.css']
+  selector: "app-pricing",
+  templateUrl: "./pricing.component.html",
+  styleUrls: ["./pricing.component.css"],
 })
 export class PricingComponent {
-
   showButton: boolean = true;
   addForm: boolean = false;
-  pricingForm!: FormGroup
+  pricingForm!: FormGroup;
   isEditMode: boolean = false;
-  selectedCity: any
+  selectedCity: any;
   selectedCountry: any;
   citiesname: any[] = [];
   countriesname: any[] = [];
-  country_id: any
+  country_id: any;
   serviceData: any[] = [];
   selectedVehicle: any;
   distbasePriceArray: number[] = [1, 2, 3, 4];
   selectedDistance!: number;
-  valueArray: any[] = []
+  valueArray: any[] = [];
   id: any;
 
   constructor(
@@ -35,93 +34,108 @@ export class PricingComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getCountry()
-    this.getCity()
-    this.getService()
-    this.getPricingData()
+    this.getCountry();
+    this.getCity();
+    this.getService();
+    this.getPricingData();
 
     this.pricingForm = this.formBuilder.group({
-      country: [''],
-      city: ['',],
-      service: ['',],
-      driverprofit: ['', [Validators.required]],
-      minfare: ['', [Validators.required]],
-      distancebaseprice: [''],
-      baseprice: ['', [Validators.required]],
-      ppudist: ['', [Validators.required]],
-      pputime: ['', [Validators.required]],
-      maxspace: ['', [Validators.required]],
+      country: [""],
+      city: [""],
+      service: [""],
+      driverprofit: ["", [Validators.required]],
+      minfare: ["", [Validators.required]],
+      distancebaseprice: [""],
+      baseprice: ["", [Validators.required]],
+      ppudist: ["", [Validators.required]],
+      pputime: ["", [Validators.required]],
+      maxspace: ["", [Validators.required]],
     });
-
   }
 
-    // ----------------GET COUNTRY DATA---------------
-    getCountry(): void {
-      this._pricing.getCountryData().subscribe({
-        next: (response) => {
-          // console.log(response)
-          // const country_id = response.countrydata.map((obj: any) => obj._id);
-          // this.country_id = country_id
-          const country = response.countrydata.map((obj: any) => obj.countryName);
-          this.countriesname = country;
-        },
-        error: (error) => {
-          console.log(error.error.message);
-        }
-      });
-    }
-    onSelectedCountry(value: any) {
-      this.selectedCountry = value;
-      // console.log(value)
-      this.getCity();
-    }
+  // ----------------GET COUNTRY DATA---------------
+  getCountry(): void {
+    this._pricing.getCountryData().subscribe({
+      next: (response) => {
+        // console.log(response)
+        // const country_id = response.countrydata.map((obj: any) => obj._id);
+        // this.country_id = country_id
+        const country = response.countrydata.map((obj: any) => obj.countryName);
+        this.countriesname = country;
+      },
+      error: (error) => {
+        console.log(error.error.message);
+      },
+    });
+  }
+  onSelectedCountry(value: any) {
+    this.selectedCountry = value;
+    // console.log(value)
+    this.getCity();
+  }
 
-    // -----------------GET CITY DATA---------------
-    getCity(): void {
-      this._pricing.getCityData().subscribe({
-        next: (response) => {
-          // const city = response.map((obj: any) => obj.city);
-          const countrywaladata = response.filter((obj: any) => obj.countryDetails.countryName === this.selectedCountry);
-          const city = countrywaladata.map((obj: any) => obj.city);
-          this.citiesname = city;
-          // const countrywaladata = response.map((obj: any) => obj.countryDetails.countryName);
-          // console.log(countrywaladata)
+  // -----------------GET CITY DATA---------------
+  getCity(): void {
+    this._pricing.getCityData().subscribe({
+      next: (response) => {
+        // const city = response.map((obj: any) => obj.city);
+        // const countrywaladata = response.map((obj: any) => obj.countryDetails.countryName);
+        // console.log(countrywaladata)
+        const countrywaladata = response.filter(
+          (obj: any) => obj.countryDetails.countryName === this.selectedCountry
+        );
+        const city = countrywaladata.map((obj: any) => obj.city);
+        this.citiesname = city;
+      },
+      error: (error) => {
+        console.log(error.error.message);
+      },
+    });
+  }
+  onSelectedCity(city: any) {
+    this.selectedCity = city;
+    var newArray= this.serviceData.filter((obj: any) => {
+      return(
+        this.pricingForm.value.city === obj.city
+      )
+    });
+    console.log(city);
+  }
 
-        },
-        error: (error) => {
-          console.log(error.error.message);
-        }
-      });
+  // -----------------GET SERVICE DATA---------------
+  getService(): void {
+    this._pricing.getServiceData().subscribe({
+      next: (response) => {
+        console.log(this.valueArray);
+        const service = response.data.map((obj: any) => obj.vehicleName);
+        this.serviceData = service;
+      },
+      error: (error) => {
+        console.log(error.error.message);
+      },
+    });
+  }
+  onSelectedVehicle(service: any): void {
+    this.selectedVehicle = service;
+    const value = this.valueArray.filter((obj: any) => {
+      return (
+        this.pricingForm.value.country === obj.country &&
+        this.pricingForm.value.city === obj.city &&
+        this.pricingForm.value.service === obj.service
+      )
+    });
+    console.log(value);
+    if(value.length > 0){
+      this.toastr.warning("This CarService Already Exist in This CIty");
     }
-    onSelectedCity(city: any) {
-      this.selectedCity = city;
-      console.log(city)
-    }
+    // console.log(service);
+  }
 
-    // -----------------GET SERVICE DATA---------------
-    getService(): void {
-      this._pricing.getServiceData().subscribe({
-        next: (response) => {
-          const service = response.data.map((obj: any) => obj.vehicleName);
-          this.serviceData = service;
-        },
-        error: (error) => {
-          console.log(error.error.message);
-        }
-      });
-    }
-    onSelectedVehicle(service: any): void {
-      this.selectedVehicle = service
-      // console.log(service);
-      
-    }
-
-    // -----------------Disatnce Base Price DATA---------------
-    onSelectDistance(distance: number) {
-      this.selectedDistance = distance
-      // console.log(service);
-    }
-
+  // -----------------Disatnce Base Price DATA---------------
+  onSelectDistance(distance: number) {
+    this.selectedDistance = distance;
+    // console.log(service);
+  }
 
   // --------------------------------------------NG SUBMIT FXN---------------------------------------------
   onSubmit() {
@@ -133,20 +147,19 @@ export class PricingComponent {
   }
 
   // --------------------------------------------ADD VEHICLE PRICING FXN---------------------------------------------
-  AddPricing(){
+  AddPricing() {
     const formValues = this.pricingForm.value;
     // console.log(formValues);
 
     if (this.pricingForm.valid) {
       this._pricing.addPricing(formValues).subscribe({
         next: (response: any) => {
-          console.log(response)
+          console.log(response);
           this.valueArray.push(response.pricingData);
           this.getPricingData();
           this.pricingForm.reset();
           this.addForm = false;
-          this.toastr.success(response.message)
-
+          this.toastr.success(response.message);
         },
         error: (error: any) => {
           console.log(error.error.message);
@@ -158,29 +171,29 @@ export class PricingComponent {
     }
   }
 
-
   // --------------------------------------------GET VEHICLE PRICING DATA FXN---------------------------------------------
-  getPricingData(){
+  getPricingData() {
     this._pricing.getPricingData().subscribe({
       next: (response: any) => {
+        console.log(response);
         const data = response.pricingData.map((obj: any) => obj);
         this.valueArray = data;
       },
       error: (error: any) => {
         console.log(error.error.message);
-      }
-    })
+      },
+    });
   }
 
   // --------------------------------------------DELETE VEHICLE PRICING FXN---------------------------------------------
-  deleteValues(id: any){
-    console.log(id)
+  deleteValues(id: any) {
+    console.log(id);
     const confirmation = confirm("Are you sure you want to Delete?");
 
     if (confirmation) {
       this._pricing.deleteValues(id).subscribe({
         next: (response: any) => {
-          console.log(response)
+          console.log(response);
           this.getPricingData();
           this.toastr.success(response.message);
         },
@@ -190,12 +203,10 @@ export class PricingComponent {
         },
       });
     }
-    
   }
 
-
   // --------------------------------------------UPDATE VEHICLE PRICING FXN---------------------------------------------
-  editbtn(values: any){
+  editbtn(values: any) {
     this.isEditMode = true;
     this.addForm = true;
 
@@ -217,9 +228,9 @@ export class PricingComponent {
     // console.log(this.pricingForm.value)
   }
 
-  UpdatePricing(){
+  UpdatePricing() {
     const data = this.pricingForm.value;
-    
+
     this._pricing.UpdatePricing(this.id, data).subscribe({
       next: (response: any) => {
         console.log(response);
@@ -236,7 +247,6 @@ export class PricingComponent {
     });
   }
 
-
   // ----------------------------------------BUTTONS CONTROL PANEL---------------------------------------------
   toggleFormVisibility() {
     // this.addForm = !this.addForm;
@@ -244,7 +254,7 @@ export class PricingComponent {
     this.showButton = false;
     this.isEditMode = false;
   }
-  CancelForm(){
+  CancelForm() {
     this.addForm = false;
     this.showButton = true;
     this.isEditMode = false;
@@ -254,5 +264,4 @@ export class PricingComponent {
   resetTimer() {
     this.authService.resetInactivityTimer();
   }
-
 }
