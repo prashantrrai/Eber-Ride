@@ -47,34 +47,6 @@ pricingRoutes.post("/addpricing", async (req, res) => {
   }
 });
 
-// ----------------------------------GET PRICING DATA API & PAGINATION---------------------------------------------
-pricingRoutes.get("/pricingdata", async (req, res) => {
-  try {
-    const { page, limit } = req.query;
-    const pageNumber = parseInt(page) || 1;
-    const limitNumber = parseInt(limit) || 5;
-
-    const totalPricesdata = await pricingModel.countDocuments({});
-    const totalPages = Math.ceil(totalPricesdata / limitNumber);
-
-    const pricingData = await pricingModel
-      .find({})
-      .skip((pageNumber - 1) * limitNumber)
-      .limit(limitNumber);
-
-    console.log(pricingData);
-    res.status(200).json({
-      success: true,
-      message: "Pricing Data Fetched Successfully",
-      page: pageNumber,
-      limit: limitNumber,
-      totalPages: totalPages,
-      pricingData: pricingData,
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error });
-  }
-});
 
 // --------------------------------------------DELETE PRICING DATA API---------------------------------------------
 pricingRoutes.delete("/deletepricing/:id", async (req, res) => {
@@ -138,50 +110,48 @@ pricingRoutes.put("/updatepricing/:id", async (req, res) => {
   }
 });
 
-// ---------------------------------SEARCH PRICING DATA API With SORTING AND PAGINATION-------------------------------------
-pricingRoutes.get("/searchpricing", async (req, res) => {
+
+// ---------------------------GET DATA, SEARCH, PAGINATION, SORT--------------------------------------------------------------------
+pricingRoutes.get("/pricingdata", async (req, res) => {
+  
+  // let page = parseInt(req.query.page) || 1;
+  let page = +req.query.page || 1;
+  let limit = +req.query.limit || 5;
+  let search = req.query.search;
+  let skip = (page - 1) * limit;
+
+
   try {
-    const query = req.query;
-    const currentPage = parseInt(query.currentPage) || 1;
-    const limit = parseInt(query.limit) || 5;
-    // const skip = (currentPage - 1) * limit;
-    const skip = parseInt(query.skip) || (currentPage - 1) * limit;
-    const { sortColumn, sortOrder } = req.query;
-    console.log(query);
+    let query = {};
 
-    const searchData = {
-      $or: [
-        { country: { $regex: query.query, $options: "i" } },
-        { city: { $regex: query.query, $options: "i" } },
-        { service: { $regex: query.query, $options: "i" } },
-      ],
-    };
-
-    // Check if the query is a valid ObjectId
-    if (mongoose.Types.ObjectId.isValid(query.query)) {
-      searchData.$or.push({ _id: query.query });
+    if (search) {
+      query = {
+        $or: [
+          { country: { $regex: search, $options: "i" } },
+          { city: { $regex: search, $options: "i" } },
+          { service: { $regex: search, $options: "i" } },
+        ],
+      };
     }
 
-    const count = await pricingModel.countDocuments(searchData);
-    const totalPages = Math.ceil(count / limit);
+    let pricingdata = await pricingModel.find(query).limit(limit).skip(skip).sort({ city : -1, _id: 1 })
 
-    const sortObject = {};
-    if (sortColumn) {
-        sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
-      }
-    // sortObject["city"] = 1;
+    const count = await pricingModel.find(query).count();
 
-    const pricingdata = await pricingModel.find(searchData)
-      .sort(sortObject)
-      .skip(skip)
-      .limit(limit);
+    let totalPage = Math.ceil(count / limit);
 
-    //   console.log(pricingdata)
-    res.json({ success: true, message: "Data Found", pricingdata, totalPages });
+    // If page is greater than totalPage, set it to the last page
+    if (page > totalPage) {
+      page = totalPage;
+      skip = (page - 1) * limit;
+    }
+
+    res.json({ success: true, message: "Data Found", pricingdata, page, limit, totalPage, count })
   } catch (error) {
+    res.status(500).send(error);
     console.log(error);
-    res.status(500).json({ success: false, message: error });
   }
 });
+
 
 module.exports = pricingRoutes;

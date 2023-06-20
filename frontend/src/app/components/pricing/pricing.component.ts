@@ -42,7 +42,7 @@ export class PricingComponent {
     this.getCountry();
     this.getCity();
     this.getService();
-    this.getPricingData();
+    this.searchPrice();
 
     this.pricingForm = this.formBuilder.group({
       country: [""],
@@ -111,7 +111,7 @@ export class PricingComponent {
   getService(): void {
     this._pricing.getServiceData().subscribe({
       next: (response) => {
-        console.log(this.valueArray);
+        // console.log(this.valueArray);
         const service = response.data.map((obj: any) => obj.vehicleName);
         this.serviceData = service;
       },
@@ -161,7 +161,7 @@ export class PricingComponent {
         next: (response: any) => {
           console.log(response);
           this.valueArray.push(response.pricingData);
-          this.getPricingData();
+          this.searchPrice();
           this.pricingForm.reset();
           this.addForm = false;
           this.toastr.success(response.message);
@@ -177,20 +177,21 @@ export class PricingComponent {
   }
 
   // --------------------------------------------GET VEHICLE PRICING DATA FXN---------------------------------------------
-  getPricingData() {
-    this._pricing.getPricingData(this.currentPage, this.limit).subscribe({
-      next: (response: any) => {
-        console.log(response);
-        // const data = response.pricingData.map((obj: any) => obj);
-        this.valueArray = response.pricingData;
-        this.totalPages = response.totalPages;
-        this.updatePaginatedPrices();
-      },
-      error: (error: any) => {
-        console.log(error.error.message);
-      },
-    });
-  }
+  // getPricingData() {
+  //   this._pricing.getPricingData(this.searchValue, this.currentPage, this.limit).subscribe({
+  //     next: (response: any) => {
+  //       console.log(response);
+  //       // const data = response.pricingData.map((obj: any) => obj);
+  //       this.valueArray = response.pricingData;
+  //       this.totalPages = response.totalPages;
+  //       this.updatePaginatedPrices();
+  //       this.searchPrice()
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error.error.message);
+  //     },
+  //   });
+  // }
 
   onPageSizeChange(event: any): void {
     this.limit = parseInt(event.target.value); // Parse the limit value as an integer
@@ -200,16 +201,16 @@ export class PricingComponent {
 
     // Update the paginatedDrivers array based on the new limit and current page
     this.updatePaginatedPrices();
-    this.getPricingData();
+    this.searchPrice();
   }
   onPageChange(pageNumber: number) {
     // Validate the new page number
     if (pageNumber >= 1 && pageNumber <= this.totalPages) {
       this.currentPage = pageNumber;
-
+      console.log(pageNumber)
     // Update the paginatedDrivers array based on the new page
-    this.updatePaginatedPrices();
-    // this.getPricingData();
+    // this.updatePaginatedPrices();
+    this.searchPrice();
     }
   }
   getPagesArray(): number[] {
@@ -222,14 +223,14 @@ export class PricingComponent {
   }
 
   searchPrice() {
-    this.currentPage = 1; // Reset the current page to 1 when searching
+    // this.currentPage = 1; // Reset the current page to 1 when searching
     // console.log(this.searchValue)
-    this._pricing.searchPrice(this.searchValue, this.currentPage, this.limit).subscribe({
+    this._pricing.getPricingData(this.searchValue, this.currentPage, this.limit).subscribe({
       next: (response: any) => {
-        console.log(response)
+        // console.log(response)
+        
         this.valueArray = response.pricingdata;
-        this.totalPages = response.totalPages;
-        console.log(this.totalPages)
+        this.totalPages = response.totalPage;
         this.updatePaginatedPrices(); // Update paginatedUsers array based on search results
       },
       error: (error: any) => {
@@ -247,7 +248,7 @@ export class PricingComponent {
       this._pricing.deleteValues(id).subscribe({
         next: (response: any) => {
           console.log(response);
-          this.getPricingData();
+          this.searchPrice();
           this.toastr.success(response.message);
         },
         error: (error: any) => {
@@ -288,7 +289,7 @@ export class PricingComponent {
       next: (response: any) => {
         console.log(response);
         this.valueArray.push(response.pricingData);
-        this.getPricingData();
+        this.searchPrice();
         this.pricingForm.reset();
         this.addForm = false;
         this.toastr.success(response.message);
