@@ -19,6 +19,28 @@
   #formContainer label{
     font-weight: 700;
   }
+  .form-custom-select {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .form-custom-select select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .form-dropdown-icon {
+    position: absolute;
+    top: 50%;
+    right: 2rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
 
 
   #pageSize{

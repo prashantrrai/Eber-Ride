@@ -1,0 +1,38 @@
+
+      <!-- -----------------------------------------SETTING FORM---------------------------------------------------- -->
+      <div class="parentFormContainer">
+        <div id="formContainer">
+          <h2 class="mb-3">Add Timer and Stop</h2>
+          <form class="container" [formGroup]="settingForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-group row align-items-center mb-2">
+              <label class="col-sm-3 col-form-label text-end">Ride Timeout</label>
+              <div class="col-sm-9 form-custom-select">
+                <select class="form-control" id="timeout" name="timeout" #timeout (change)="onSelectedRideTimeout(timeout.value)" formControlName="ridetimeout">
+                  <option value="">Select Ride Timeout</option>
+                  <option [value]="timeout" *ngFor="let timeout of timeoutArray">{{timeout}}</option>
+                </select>
+                <i class="fas fa-chevron-down form-dropdown-icon"></i>
+              </div>
+            </div>
+      
+            <div class="form-group row align-items-center mb-2">
+                <label class="col-sm-3 col-form-label text-end">Stop</label>
+                <div class="col-sm-9 form-custom-select">
+                  <select class="form-control" id="timeout" name="stop" #stop (change)="onSelectedStop(stop.value)" formControlName="stop">
+                    <option value="">Select Stop</option>
+                    <option [value]="stop" *ngFor="let stop of stopArray">{{stop}}</option>
+                  </select>
+                <i class="fas fa-chevron-down form-dropdown-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group row mt-3">
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success"> Submit</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>

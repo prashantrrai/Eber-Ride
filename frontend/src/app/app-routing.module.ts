@@ -12,6 +12,7 @@ import { CityComponent } from './components/city/city.component';
 import { UsersComponent } from './components/users/users.component';
 import { DriverComponent } from './components/driver/driver.component';
 import { PricingComponent } from './components/pricing/pricing.component';
+import { SettingComponent } from './components/setting/setting.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -25,7 +26,8 @@ const routes: Routes = [
     {path: 'city', component: CityComponent}   ,
     {path: 'users', component: UsersComponent},
     {path: 'driver', component: DriverComponent},
-    {path: 'vehiclepricing', component: PricingComponent}
+    {path: 'vehiclepricing', component: PricingComponent},
+    {path: "setting", component: SettingComponent}
   ]},
 ];
 

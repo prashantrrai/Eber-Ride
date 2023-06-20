@@ -1,0 +1,65 @@
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/Service/auth.service';
+import { SettingService } from 'src/app/Service/setting.service';
+
+@Component({
+  selector: 'app-setting',
+  templateUrl: './setting.component.html',
+  styleUrls: ['./setting.component.css']
+})
+export class SettingComponent {
+  settingForm!: FormGroup
+  timeoutArray: any[] = [10, 20, 30, 45, 60, 90, 120];
+  stopArray: any[] = [1, 2, 3, 4, 5];
+  selectedTimeout: any;
+  selectedStop: any;
+
+  constructor(private _setting: SettingService, private toastr: ToastrService, private authService: AuthService, private formBuilder: FormBuilder,) { }
+
+  ngOnInit(): void {
+    this.settingForm = this.formBuilder.group({
+      ridetimeout: ["", [Validators.required]],
+      stop: ["", [Validators.required]],
+    });
+  }
+
+  onSelectedRideTimeout(timeout: any){
+    this.selectedTimeout = timeout;
+    console.log(timeout);
+  }
+
+  onSelectedStop(stop: any){
+    this.selectedStop = stop;
+    console.log(stop);
+    console.log(this.settingForm)
+  }
+
+
+  // --------------------------------------------ADD TIMEOUT FXN---------------------------------------------
+  onSubmit(){
+    const formValues = this.settingForm.value;
+    console.log(formValues);
+
+    if (this.settingForm.valid) {
+      this._setting.addSetting(formValues).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.settingForm.reset();
+          this.toastr.success(response.message);
+        },
+        error: (error: any) => {
+          console.log(error.error.message);
+          this.toastr.error(error.error.message);
+        },
+      });
+    } else {
+      this.toastr.warning("All Fields are Required");
+    }
+  }
+
+  resetTimer() {
+    this.authService.resetInactivityTimer();
+  }
+}

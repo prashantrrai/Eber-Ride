@@ -29,6 +29,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { UsersComponent } from './components/users/users.component';
 import { DriverComponent } from './components/driver/driver.component';
 import { PricingComponent } from './components/pricing/pricing.component';
+import { SettingComponent } from './components/setting/setting.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { PricingComponent } from './components/pricing/pricing.component';
     UsersComponent,
     DriverComponent,
     PricingComponent,
+    SettingComponent,
   ],
   imports: [
     BrowserModule,

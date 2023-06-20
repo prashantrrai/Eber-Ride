@@ -31,6 +31,7 @@ const cityRoutes = require("./routes/city");
 const userRoutes = require("./routes/users");
 const driverRoutes = require("./routes/driver");
 const pricingRoutes = require("./routes/pricing");
+const settingRouter = require("./routes/setting");
 
 app.use(fetchAdmin);
 app.use(loginRoutes);
@@ -43,6 +44,7 @@ app.use(cityRoutes);
 app.use(userRoutes);
 app.use(driverRoutes);
 app.use(pricingRoutes);
+app.use(settingRouter)
 
 app.get("/", async (req, res) => {
   res.json({
