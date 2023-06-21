@@ -11,7 +11,7 @@
     <label for="pageSize">Show Data :</label>
     <div class="custom-select">
       <select class="form-control m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
-        <option [ngValue]="null">Select Page</option>
+        <option [ngValue]="">Select Page</option>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>

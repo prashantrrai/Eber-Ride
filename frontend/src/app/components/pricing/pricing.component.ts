@@ -225,7 +225,8 @@ export class PricingComponent {
     this.addForm = true;
     console.log(this.valueArray)
     this.id = values._id;
-
+    console.log(values);
+    this.onSelectedCountry(values.country)
     this.pricingForm.patchValue({
       country: values.country,
       city: values.city,
@@ -238,6 +239,7 @@ export class PricingComponent {
       pputime: values.pputime,
       maxspace: values.maxspace,
     });
+
   }
 
   UpdatePricing() {
