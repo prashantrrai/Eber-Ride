@@ -20,11 +20,11 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
-const fetchAdmin = require("./routes/fetch-Admin");
-const loginRoutes = require("./routes/login-Admin");
-const registerRoutes = require("./routes/register-Admin");
-const deleteRoutes = require("./routes/delete-Admin");
-const updateRoutes = require("./routes/update-Admin");
+const fetchAdmin = require("./routes/adminfetch");
+const loginRoutes = require("./routes/adminlogin");
+const registerRoutes = require("./routes/adminsignup");
+const deleteRoutes = require("./routes/admindelete");
+const updateRoutes = require("./routes/adminupdate");
 const VehicleRoutes = require("./routes/vehicle");
 const countryRoutes = require("./routes/country");
 const cityRoutes = require("./routes/city");

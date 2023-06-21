@@ -388,8 +388,8 @@ export class DriverComponent {
       this._driver.updateService(this.id, data).subscribe({
         next: (response: any) => {
           console.log(response);
-          // this.driverArray.push(response);
-          // this.getDriverData()
+          this.driverArray.push(response);
+          this.getDriverData()
           this.serviceModal = false;
           this.serviceForm.reset();
           this.toastr.success(response.message)
