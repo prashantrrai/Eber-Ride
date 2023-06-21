@@ -96,6 +96,7 @@ const priceSchema = new mongoose.Schema({
     },
 })
 
+priceSchema.index({ city: 1, service: 1 }, { unique: true });
 const pricingModel = mongoose.model("pricingModel", priceSchema)
 
 

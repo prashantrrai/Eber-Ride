@@ -11,24 +11,25 @@ import { PricingService } from "src/app/Service/pricing.service";
 })
 export class PricingComponent {
   showButton: boolean = true;
-  addForm: boolean = true;
+  addForm: boolean = false;
   pricingForm!: FormGroup;
   isEditMode: boolean = false;
-  countriesname: any[] = [];
+  selectedCity: any;
+  selectedCountry: any;
   citiesname: any[] = [];
+  countriesname: any[] = [];
+  country_id: any;
   serviceData: any[] = [];
+  selectedVehicle: any;
   distbasePriceArray: number[] = [1, 2, 3, 4];
   selectedDistance!: number;
-  selectedCountry: any;
-  selectedCity: any;
-  selectedVehicle: any;
   valueArray: any[] = [];
-  searchValue: string = '';
-  limit: number = 10;
+  id: any;
+  limit: number = 3;
   currentPage: number = 1;
   totalPages: number = 0;
   paginatedData: any[] = [];
-  id: any;
+  searchValue: string = '';
 
   constructor(
     private toastr: ToastrService,
@@ -38,8 +39,9 @@ export class PricingComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getCountry()
-    this.getService()
+    this.getCountry();
+    this.getCity();
+    this.getService();
     this.searchPrice();
 
     this.pricingForm = this.formBuilder.group({
@@ -56,11 +58,15 @@ export class PricingComponent {
     });
   }
 
-
+  // ----------------GET COUNTRY DATA---------------
   getCountry(): void {
     this._pricing.getCountryData().subscribe({
       next: (response) => {
-        this.countriesname = response.countrydata;
+        // console.log(response)
+        // const country_id = response.countrydata.map((obj: any) => obj._id);
+        // this.country_id = country_id
+        const country = response.countrydata.map((obj: any) => obj.countryName);
+        this.countriesname = country;
       },
       error: (error) => {
         console.log(error.error.message);
@@ -69,18 +75,22 @@ export class PricingComponent {
   }
   onSelectedCountry(value: any) {
     this.selectedCountry = value;
-    this.getCity();
     // console.log(value)
+    this.getCity();
   }
 
   // -----------------GET CITY DATA---------------
   getCity(): void {
     this._pricing.getCityData().subscribe({
       next: (response) => {
-        console.log(response)
-        const filteredCities = response.filter((city: any) => city.countryDetails._id === this.selectedCountry);
-        console.log(filteredCities)
-        this.citiesname = filteredCities;
+        // const city = response.map((obj: any) => obj.city);
+        // const countrywaladata = response.map((obj: any) => obj.countryDetails.countryName);
+        // console.log(countrywaladata)
+        const countrywaladata = response.filter(
+          (obj: any) => obj.countryDetails.countryName === this.selectedCountry
+        );
+        const city = countrywaladata.map((obj: any) => obj.city);
+        this.citiesname = city;
       },
       error: (error) => {
         console.log(error.error.message);
@@ -89,6 +99,11 @@ export class PricingComponent {
   }
   onSelectedCity(city: any) {
     this.selectedCity = city;
+    // var newArray= this.serviceData.filter((obj: any) => {
+    //   return(
+    //     this.pricingForm.value.city === obj.city
+    //   )
+    // });
     console.log(city);
   }
 
@@ -96,7 +111,9 @@ export class PricingComponent {
   getService(): void {
     this._pricing.getServiceData().subscribe({
       next: (response) => {
-        this.serviceData = response.data;
+        // console.log(this.valueArray);
+        const service = response.data.map((obj: any) => obj.vehicleName);
+        this.serviceData = service;
       },
       error: (error) => {
         console.log(error.error.message);
@@ -110,10 +127,8 @@ export class PricingComponent {
         this.pricingForm.value.country === obj.country &&
         this.pricingForm.value.city === obj.city &&
         this.pricingForm.value.service === obj.service
-        )
-      });
-    console.log(this.valueArray)
-    console.log(this.pricingForm.value.country)
+      )
+    });
     console.log(value);
     if(value.length > 0){
       this.toastr.warning("This CarService Already Exist in This CIty");
@@ -121,13 +136,13 @@ export class PricingComponent {
     // console.log(service);
   }
 
-  // -----------------Distance Base Price DATA---------------
+  // -----------------Disatnce Base Price DATA---------------
   onSelectDistance(distance: number) {
     this.selectedDistance = distance;
-    console.log(distance);
+    // console.log(service);
   }
-  
-  // -------------------------------------------------NG SUBMIT FXN---------------------------------------------------------
+
+  // --------------------------------------------NG SUBMIT FXN-----------------------------------------------------
   onSubmit() {
     if (this.isEditMode) {
       this.UpdatePricing();
@@ -161,28 +176,35 @@ export class PricingComponent {
     }
   }
 
-  //--------------------------------------------GET VEHICLE PRICING DATA FXN---------------------------------------------
-  searchPrice() {
-    this._pricing.getPricingData(this.currentPage, this.limit).subscribe({
-      next: (response: any) => {
-        console.log(response)
-        this.valueArray = response.pricingdata;
-        this.totalPages = response.totalPage;
-        this.updatePaginatedPrices();
-      },
-      error: (error: any) => {
-        console.log(error.message);
-      }
-  });
-  }
+  // --------------------------------------------GET VEHICLE PRICING DATA FXN---------------------------------------------
+  // getPricingData() {
+  //   this._pricing.getPricingData(this.searchValue, this.currentPage, this.limit).subscribe({
+  //     next: (response: any) => {
+  //       console.log(response);
+  //       // const data = response.pricingData.map((obj: any) => obj);
+  //       this.valueArray = response.pricingData;
+  //       this.totalPages = response.totalPages;
+  //       this.updatePaginatedPrices();
+  //       this.searchPrice()
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error.error.message);
+  //     },
+  //   });
+  // }
+
   onPageSizeChange(event: any): void {
-    this.limit = parseInt(event.target.value);
+    this.limit = parseInt(event.target.value); // Parse the limit value as an integer
+
+    // Reset the current page to 1 when the limit changes
     this.currentPage = 1;
+
     // Update the paginatedDrivers array based on the new limit and current page
     this.updatePaginatedPrices();
     this.searchPrice();
   }
   onPageChange(pageNumber: number) {
+    // Validate the new page number
     if (pageNumber >= 1 && pageNumber <= this.totalPages) {
       this.currentPage = pageNumber;
       console.log(pageNumber)
@@ -199,6 +221,24 @@ export class PricingComponent {
     const endIndex = startIndex + this.limit;
     this.paginatedData = this.valueArray.slice(startIndex, endIndex);
   }
+
+  searchPrice() {
+    // this.currentPage = 1; // Reset the current page to 1 when searching
+    // console.log(this.searchValue)
+    this._pricing.getPricingData(this.searchValue, this.currentPage, this.limit).subscribe({
+      next: (response: any) => {
+        // console.log(response)
+        
+        this.valueArray = response.pricingdata;
+        this.totalPages = response.totalPage;
+        this.updatePaginatedPrices(); // Update paginatedUsers array based on search results
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+  });
+  }
+
   // --------------------------------------------DELETE VEHICLE PRICING FXN---------------------------------------------
   deleteValues(id: any) {
     console.log(id);
@@ -223,8 +263,9 @@ export class PricingComponent {
   editbtn(values: any) {
     this.isEditMode = true;
     this.addForm = true;
-    console.log(this.valueArray)
+
     this.id = values._id;
+    // console.log("price id:",this.id)
 
     this.pricingForm.patchValue({
       country: values.country,
@@ -238,6 +279,7 @@ export class PricingComponent {
       pputime: values.pputime,
       maxspace: values.maxspace,
     });
+    // console.log(this.pricingForm.value)
   }
 
   UpdatePricing() {

@@ -28,8 +28,8 @@ export class PricingService {
     return this.http.post<any>(`${this.serverUrl}/addpricing`, pricingdata);
   }
 
-  getPricingData(search: string, page: number, limit: number): Observable<any> {
-    return this.http.get(`${this.serverUrl}/pricingdata?search=${search}&page=${page}&limit=${limit}`);
+  getPricingData(page: number, limit: number): Observable<any> {
+    return this.http.get(`${this.serverUrl}/pricingdata?page=${page}&limit=${limit}`);
   }
 
   deleteValues(id: any): Observable<any> {
@@ -38,12 +38,5 @@ export class PricingService {
 
   UpdatePricing(id: any, data: any): Observable<any> {
     return this.http.put(`${this.serverUrl}/updatepricing/${id}`, data);
-  }
-
-  // searchPrice(query: string, page: number, limit: number): Observable<any> {
-  //   // console.log(query, page, limit)
-  //   return this.http.get(`${this.serverUrl}/searchpricing?query=${query}&page=${page}&limit=${limit}`);
-  // }
-
-  
+  }  
 }

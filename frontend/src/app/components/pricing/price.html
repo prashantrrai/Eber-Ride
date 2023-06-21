@@ -21,21 +21,22 @@
       </select>
       <i class="fas fa-chevron-down dropdown-icon"></i>
     </div>
-    <!-- <input type="text" class="form-control w-25 m-4" placeholder="Search.." [(ngModel)]="searchValue" (input)="searchPrice()"> -->
+    <input type="text" class="form-control w-25 m-4" placeholder="Search.." [(ngModel)]="searchValue" (input)="searchPrice()">
   </div>
 </div>
-
+  
     <!-- -----------------------------------------VEHICLE PRICING---------------------------------------------------- -->
     <div class="parentFormContainer">
       <div id="formContainer" *ngIf="addForm">
         <h2 class="mb-3">Add Vehicle Pricing</h2>
-        <form class="container" [formGroup]="pricingForm"  (ngSubmit)="onSubmit()">
+        <form class="container" [formGroup]="pricingForm" (ngSubmit)="onSubmit()">
+  
           <div class="form-group row align-items-center mb-2">
             <label class="col-sm-3 col-form-label text-end">Country</label>
             <div class="col-sm-9 form-custom-select">
               <select class="form-control" id="country-name" name="country" #country (change)="onSelectedCountry(country.value)" formControlName="country">
                 <option value="">Select Country</option>
-                <option [value]="country._id" *ngFor="let country of countriesname">{{country.countryName}}</option>
+                <option [value]="country" *ngFor="let country of countriesname">{{country}}</option>
               </select>
               <i class="fas fa-chevron-down form-dropdown-icon"></i>
             </div>
@@ -46,7 +47,7 @@
             <div class="col-sm-9 form-custom-select">
               <select class="form-control" id="city-name" name="city" #city (change)="onSelectedCity(city.value)" formControlName="city">
                 <option value="">Select City</option>
-                <option [value]="city._id" *ngFor="let city of citiesname">{{city.city}}</option>
+                <option [value]="city" *ngFor="let city of citiesname">{{city}}</option>
               </select>
               <i class="fas fa-chevron-down form-dropdown-icon"></i>
             </div>
@@ -57,7 +58,7 @@
             <div class="col-sm-9 form-custom-select">
               <select class="form-control" name="service" #service (change)="onSelectedVehicle(service.value)" formControlName="service">
                 <option value="">Select Service</option>
-                <option [value]="service._id" *ngFor="let service of serviceData">{{service.vehicleName}}</option>
+                <option [value]="service" *ngFor="let service of serviceData">{{service}}</option>
               </select>
               <i class="fas fa-chevron-down form-dropdown-icon"></i>
             </div>
@@ -66,21 +67,21 @@
           <div class="form-group row align-items-center mb-2">
             <label class="col-sm-3 col-form-label text-end">Driver's Profit</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="driverprofit" placeholder="Driver Profit" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="driverprofit" placeholder="Driver Profit" />
             </div>
           </div>
   
           <div class="form-group row align-items-center">
             <label class="col-sm-3 col-form-label text-end">Min. Fare</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="minfare" placeholder="Minimum Fare" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="minfare" placeholder="Driver Profit" />
             </div>
           </div>
   
           <div class="form-group row align-items-center">
             <label class="col-sm-3 col-form-label text-end">Distance For Base Price</label>
             <div class="col-sm-9 form-custom-select">
-              <select class="form-control" name="distancebaseprice" #distancebaseprice (change)="onSelectDistance(+distancebaseprice.value)" formControlName="distancebaseprice" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+              <select class="form-control" name="distancebaseprice" #distancebaseprice (change)="onSelectDistance(+distancebaseprice.value)" formControlName="distancebaseprice">
                 <option value="">Select Distance</option>
                 <option [value]="distvalue" *ngFor="let distvalue of distbasePriceArray">{{distvalue}} Km</option>
               </select>
@@ -91,28 +92,28 @@
           <div class="form-group row align-items-center">
             <label class="col-sm-3 col-form-label text-end">Base Price</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="baseprice" placeholder="Base Price" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="baseprice" placeholder="Base Price" />
             </div>
           </div>
   
           <div class="form-group row align-items-center">
             <label class="col-sm-3 col-form-label text-end">Price Per Unit Distance</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="ppudist" placeholder="Price Per Unit Distance" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="ppudist" placeholder="Price Per Unit Distance" />
             </div>
           </div>
   
           <div class="form-group row align-items-center">
             <label class="col-sm-3 col-form-label text-end">Price Per Unit Time(min)</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="pputime" placeholder="Price Per Unit Time(min)" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="pputime" placeholder="Price Per Unit Time(min)" />
             </div>
           </div>
   
           <div class="form-group row align-items-center">
             <label class="col-sm-3 col-form-label text-end">Max Space</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="maxspace" placeholder="Max Space" maxlength="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="maxspace" placeholder="Max Space" />
             </div>
           </div>
     
@@ -126,10 +127,12 @@
         </form>
       </div>
     </div>
-
-    <!-- --------------------------------------------------PRICING DATA TABLE------------------------------------------------ -->
+  
+    
     <div class="parentFormContainer">
       <div id="tableContainer">
+  
+      <!-- --------------------------------------------------PRICING DATA TABLE------------------------------------------------ -->
       <div class="table-responsive bg-light">
         <table class="table">
           <thead class="bg-dark text-light">
@@ -149,9 +152,9 @@
           </thead>
           <tbody>
           <tr *ngFor="let values of valueArray">
-            <td>{{ values.countryDetails.countryName }}</td>
-            <td>{{ values.cityDetails.city }}</td>
-            <td>{{ values.serviceDetails.vehicleName }}</td>
+            <td>{{ values.country }}</td>
+            <td>{{ values.city }}</td>
+            <td>{{ values.service }}</td>
             <td>{{ values.driverprofit }}</td>
             <td>{{ values.minfare }}</td>
             <td>{{ values.distancebaseprice }}</td>
@@ -160,18 +163,19 @@
             <td>{{ values.pputime }}</td>
             <td>{{ values.maxspace }}</td>
             <td> 
-              <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button><mat-icon>edit</mat-icon></button>
-              <mat-menu #lvl2master="matMenu">
-                  <button mat-menu-item id="updatebtn" (click)="editbtn(values)"><mat-icon>update</mat-icon>Edit</button>
-                  <button mat-menu-item id="deletebtn" (click)="deleteValues(values._id)"><mat-icon>delete_forever</mat-icon>Delete</button>
-              </mat-menu>
-          </td>
+                <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button><mat-icon>edit</mat-icon></button>
+                <mat-menu #lvl2master="matMenu">
+                    <button mat-menu-item id="updatebtn" (click)="editbtn(values)"><mat-icon>update</mat-icon>Edit</button>
+                    <button mat-menu-item id="deletebtn" (click)="deleteValues(values._id)"><mat-icon>delete_forever</mat-icon>Delete</button>
+                </mat-menu>
+            </td>
           </tr>
           </tbody>
         </table>
       </div>
-
-          <!-- ---------------------------------------------PAGINATION------------------------------------------------------- -->
+  
+  
+      <!-- ---------------------------------------------PAGINATION------------------------------------------------------- -->
       <div class="pagination d-flex justify-content-center" id="parentpagination">
         <div class="pagination table-responsive rounded">
           <button class="page-link" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
@@ -189,6 +193,6 @@
           </button>
         </div>
       </div>
-
-    </div>
+      
+  
   

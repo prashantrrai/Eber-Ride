@@ -207,6 +207,12 @@ pricingRoutes.post("/addpricing", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    if(error.keyPattern){
+      if (error.keyPattern.city && error.keyPattern.service) {
+        console.log("Vehicle Already Exists")
+            return res.status(500).json({success: false, message: "Vehicle Already Exists"});
+      } 
+    }
     res.status(500).json({ success: false, message: error });
   }
 });
@@ -269,38 +275,64 @@ pricingRoutes.put("/updatepricing/:id", async (req, res) => {
   }
 });
 
-// // ---------------------------GET DATA, SEARCH, PAGINATION, SORT--------------------------------------------------------------------
+// ---------------------------GET DATA, SEARCH, PAGINATION, SORT--------------------------------------------------------------------
 pricingRoutes.get("/pricingdata", async (req, res) => {
 
-  // let page = parseInt(req.query.page) || 1;
   let page = +req.query.page || 1;
   let limit = +req.query.limit || 5;
-  let search = req.query.search;
+  // let search = req.query.search;
   let skip = (page - 1) * limit;
 
   try {
-    let query = {};
+    // let query = {};
 
-    if (search) {
-      query = {
-        $or: [
-          { country: { $regex: search, $options: "i" } },
-          { city: { $regex: search, $options: "i" } },
-          { service: { $regex: search, $options: "i" } },
-        ],
-      };
-    }
+    // if (search) {
+    //   query = {
+    //     $or: [
+    //       { country: { $regex: search, $options: "i" } },
+    //       { city: { $regex: search, $options: "i" } },
+    //       { service: { $regex: search, $options: "i" } },
+    //     ],
+    //   };
+    // }
 
-    let pricingdata = await pricingModel.find(query).limit(limit).skip(skip).sort({ city : -1, _id: 1 })
-
-    const count = await pricingModel.find(query).count();
-
+    const count = await pricingModel.find().count();
     let totalPage = Math.ceil(count / limit);
-
+    
     if (page > totalPage) {
       page = totalPage;
       skip = (page - 1) * limit;
     }
+    
+    // let pricingdata = await pricingModel.find(query).limit(limit).skip(skip).sort({ city : -1, _id: 1 })
+    const aggregatePipeline = [
+      { $lookup: {
+        from: "countrymodels",
+        localField: "country",
+        foreignField: "_id",
+        as: "countryDetails"
+      }}, 
+      { $lookup: {
+        from: "citymodels",
+        localField: "city",
+        foreignField: "_id",
+        as: "cityDetails"
+      }},
+      { $lookup: {
+        from: "vehiclemodels",
+        localField: "service",
+        foreignField: "_id",
+        as: "serviceDetails"
+      }},
+    
+    { $unwind: "$countryDetails" },{ $unwind: "$cityDetails" },{ $unwind: "$serviceDetails" },
+    // { $match: query },
+    { $sort: { city: -1, _id: 1 } },
+    { $skip: skip },
+    { $limit: limit }
+    ];
+
+    const pricingdata = await pricingModel.aggregate(aggregatePipeline);
 
     res.json({ success: true, message: "Data Found", pricingdata, page, limit, totalPage, count })
   } catch (error) {

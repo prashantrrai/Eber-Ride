@@ -61,7 +61,7 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
@@ -133,6 +133,9 @@
       width: 80%;
       margin: 20px;
     }
+    .button-search-div{
+      display: block
+    }
   }
   
   @media screen and (max-width: 480px) {
@@ -148,6 +151,8 @@
       width: 90%;
       margin: 20px;
     }
-
+    .button-search-div{
+      display: block
+    }
   }
 

@@ -85,9 +85,6 @@
 
 
 
-
-
-
     //to fetch data from database of registered vehicle and show in /vehicledata route of frontend.
     VehicleRoutes.get('/vehicledata', async (req, res) => {
     try {
