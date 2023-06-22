@@ -29,7 +29,7 @@ export class DriverComponent {
   vehiclesData: any
   serviceForm!: FormGroup;
   selectedVehicle: any;
-
+  count: any;
 
   constructor(
     private _driver: DriverService,
@@ -156,7 +156,7 @@ export class DriverComponent {
         
         this.driverArray = response.driverdata;
         this.totalPages = response.totalPage;
-        // console.log(this.totalPages);
+        this.count = response.count;
         
         this.updatePaginatedDrivers();
       },
@@ -174,12 +174,11 @@ export class DriverComponent {
   onPageChange(pageNumber: number) {
     if (pageNumber >= 1 && pageNumber <= this.totalPages) {
       this.currentPage = pageNumber;
-      // this.updatePaginatedDrivers();
+      this.updatePaginatedDrivers();
       this.getDriverData();
     }
   }
   getPagesArray(): number[] {
-    // console.log(this.totalPages);
     
     return Array(this.totalPages).fill(0).map((_, index) => index + 1);
   }

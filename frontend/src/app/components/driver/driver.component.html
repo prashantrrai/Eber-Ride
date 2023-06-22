@@ -95,7 +95,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let driver of driverArray| paginate: { itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+      <tr *ngFor="let driver of driverArray| paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count};let i = index">
         <td><img src="http://localhost:4000/{{ driver.profile}}" alt="driver-profile"></td>
         <td>{{ driver.drivername }}</td>
         <td>{{ driver.driveremail }}</td>
@@ -140,25 +140,30 @@
             </button>
           </div>
         </div> -->
-        <div class="d-flex justify-content-center">
-          <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true"></pagination-controls>
-        </div>
-  
-  
+
       </div>
     </div>
 
-  <!-------------------------------------------SERVICE MODAL--------------------------------------------------- -->
-  <div class="modal-body" *ngIf="serviceModal">
-    <form class="container" [formGroup]="serviceForm" (ngSubmit)="updateService()">
-    <h1>Select Service Type</h1>
-    <select class="form-control w-100" name="vehicle" #vehicle (change)="onSelectedVehicle(vehicle.value)" formControlName="servicetype">
-      <option  value="null" disabled selected>Select Service</option>
-      <option [value]="vehicle._id" *ngFor="let vehicle of vehiclesData ">{{vehicle.vehicleName}}</option>
-    </select>
-    <div class="p-2">
-    <button class="btn btn-success m-2">Add</button>
-    <button class="btn btn-danger" (click)="closeModal()">Close</button>
+
+    <!-------------------------------------------SERVICE MODAL--------------------------------------------------- -->
+    <div class="modal-body" *ngIf="serviceModal">
+      <form class="container" [formGroup]="serviceForm" (ngSubmit)="updateService()">
+      <h1>Select Service Type</h1>
+      <select class="form-control w-100" name="vehicle" #vehicle (change)="onSelectedVehicle(vehicle.value)" formControlName="servicetype">
+        <option  value="null" disabled selected>Select Service</option>
+        <option [value]="vehicle._id" *ngFor="let vehicle of vehiclesData ">{{vehicle.vehicleName}}</option>
+      </select>
+      <div class="p-2">
+      <button class="btn btn-success m-2">Add</button>
+      <button class="btn btn-danger" (click)="closeModal()">Close</button>
+      </div>
+      </form>
     </div>
-    </form>
-  </div>
+
+    <!-- ---------------------------------------------PAGINATION USING NGX-------------------------------------------- ----- -->
+    <div class="d-flex justify-content-center">
+      <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true"></pagination-controls>
+    </div>
+
+
+
