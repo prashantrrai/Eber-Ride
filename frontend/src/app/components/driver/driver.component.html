@@ -77,7 +77,7 @@
 </div>
 
 
-<!-- --------------------------------------------------Aeactivated driver table------------------------------------------------ -->
+<!-- -------------------------------------------------DRIVER TABLE------------------------------------------------ -->
 <div class="parentFormContainer">
   <div id="tableContainer">
   <div class="table-responsive">
@@ -95,7 +95,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let driver of driverArray">
+      <tr *ngFor="let driver of driverArray| paginate: { itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
         <td><img src="http://localhost:4000/{{ driver.profile}}" alt="driver-profile"></td>
         <td>{{ driver.drivername }}</td>
         <td>{{ driver.driveremail }}</td>
@@ -123,8 +123,7 @@
   </div>
 
         <!-- -----------------------------------PAGINATION-------------------------------------------------- -->
-        <div class="pagination d-flex justify-content-center" id="parentpagination">
-          <!-- pagination buttons -->
+        <!-- <div class="pagination d-flex justify-content-center" id="parentpagination">
           <div class="pagination table-responsive rounded">
             <button class="page-link" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
               <i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous
@@ -140,7 +139,11 @@
               Next <i class="fa fa-angle-double-right" aria-hidden="true"></i>
             </button>
           </div>
+        </div> -->
+        <div class="d-flex justify-content-center">
+          <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true"></pagination-controls>
         </div>
+  
   
       </div>
     </div>

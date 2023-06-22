@@ -34,7 +34,7 @@ export class DriverService {
   }
   
   getDriver(search: string, page: number, limit: number) {
-    const url = `${this.serverUrl}/driverdata?query=${search}&page=${page}&limit=${limit}`;
+    const url = `${this.serverUrl}/driverdata?search=${search}&page=${page}&limit=${limit}`;
     return this.http.get(url);
   }
 

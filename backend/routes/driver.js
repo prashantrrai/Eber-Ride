@@ -112,6 +112,7 @@ driverRoutes.post(
 );
 
 // --------------------------------------------GET DRIVERS DATA, SEARCH, PAGINATION, SORT------------------------------------------------------
+// API SARKHI KAROJIYARE  DATA 3 HOI AND PAGE1 AND LIMIT 10 , 7 , 6  SUDHI PROPER WORK KARE CHE PACHI NATHI KARTU 
 driverRoutes.get("/driverdata", async (req, res) => {
   let page = +req.query.page || 1;
   let limit = +req.query.limit || 5;
@@ -184,6 +185,7 @@ driverRoutes.get("/driverdata", async (req, res) => {
 });
 
 // ----------------------------------------------------DELETE DRIVER--------------------------------------------------------
+
 driverRoutes.delete("/driverdata/:id", async (req, res) => {
   try {
     const driverId = req.params.id;
@@ -200,6 +202,7 @@ driverRoutes.delete("/driverdata/:id", async (req, res) => {
 });
 
 // --------------------------------------------------------UPDATE DRIVER--------------------------------------------------------
+
 driverRoutes.put(
   "/updatedriver/:id",
   upload.single("profile"),
@@ -252,6 +255,7 @@ driverRoutes.put(
 );
 
 // --------------------------------------------------------UPDATE DRIVER STATUS--------------------------------------------------------
+
   driverRoutes.put('/drivers/:id', async (req, res) => {
     const { status } = req.body;
     console.log(status)
@@ -268,6 +272,7 @@ driverRoutes.put(
   });
 
   //---------------------------------------------------------- ADD OR UPDATE SERVICE---------------------------------------------------
+
   driverRoutes.post('/service/:id', async (req, res) => {
     const { servicetype } = req.body;
     console.log(req.body);

@@ -44,13 +44,6 @@ import { MatDialogModule } from '@angular/material/dialog'
         MatRadioModule,
         MatCheckboxModule,
         MatDialogModule,
-
-        MatToolbarModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatListModule,
-        MatSidenavModule,
     ]
 })
 export class MaterialModule { }

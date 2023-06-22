@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -17,14 +16,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VehicleComponent } from './components/vehicle/vehicle.component';
 import { AuthService } from './Service/auth.service';
 import { CountryComponent } from './components/country/country.component';
-import { ToastrModule } from 'ngx-toastr';
 import { CityComponent } from './components/city/city.component';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { UsersComponent } from './components/users/users.component';
 import { DriverComponent } from './components/driver/driver.component';
 import { PricingComponent } from './components/pricing/pricing.component';
 import { SettingComponent } from './components/setting/setting.component';  
 import { MaterialModule } from './material-module';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserModule } from '@angular/platform-browser';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -50,9 +50,10 @@ import { MaterialModule } from './material-module';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MaterialModule,
     ToastrModule.forRoot(),
     NgxPaginationModule,
-    MaterialModule
+
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}, AuthService],
   bootstrap: [AppComponent]

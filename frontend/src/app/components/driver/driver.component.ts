@@ -30,12 +30,13 @@ export class DriverComponent {
   serviceForm!: FormGroup;
   selectedVehicle: any;
 
+
   constructor(
     private _driver: DriverService,
     private formBuilder: FormBuilder,
-    private toastr: ToastrService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
     this.getCountryCode()
@@ -100,7 +101,7 @@ export class DriverComponent {
   // -----------------------DRIVER PROFILE---------------------------
   onFileSelected(event: any) {
     this.file = event.target.files[0];
-    // console.log(this.file);
+    console.log(this.file);
   }
   
   // -------------------------------------------------NG SUBMIT FXN---------------------------------------------------------
@@ -114,14 +115,24 @@ export class DriverComponent {
 
   // --------------------------------------------ADD VEHICLE PRICING FXN---------------------------------------------
   AddDriver() {
+    // using object but image not uploading
     const formValues = this.driverForm.value;
     console.log(formValues);
 
+    // using formdata for image uploading
+    var formData = new FormData();
+    formData.append("drivername", this.driverForm.value.drivername);
+    formData.append("driveremail", this.driverForm.value.driveremail);
+    formData.append("countrycode", this.selectedcountrycode);
+    formData.append("driverphone", this.driverForm.value.driverphone);
+    formData.append("city", this.selectedCity);
+    formData.append("profile", this.file);
+
+
     if (this.driverForm.valid) {
-      this._driver.addDriver(formValues).subscribe({
+      this._driver.addDriver(formData).subscribe({
         next: (response: any) => {
           console.log(response);
-          // this.driverArray.push(response);
           this.getDriverData();
           // this.driverForm.reset();
           this.toastr.success(response.message);
@@ -141,11 +152,12 @@ export class DriverComponent {
   getDriverData() {
     this._driver.getDriver(this.search ,this.currentPage, this.limit).subscribe({
       next: (response: any) => {
-        // console.log(response)
-        console.log(response.driverdata);
+        // console.log(response.driverdata);
         
         this.driverArray = response.driverdata;
-        this.totalPages = response.totalPages;
+        this.totalPages = response.totalPage;
+        // console.log(this.totalPages);
+        
         this.updatePaginatedDrivers();
       },
       error: (error: any) => {
@@ -167,6 +179,8 @@ export class DriverComponent {
     }
   }
   getPagesArray(): number[] {
+    // console.log(this.totalPages);
+    
     return Array(this.totalPages).fill(0).map((_, index) => index + 1);
   }
   updatePaginatedDrivers() {
@@ -223,12 +237,12 @@ export class DriverComponent {
   console.log(updatedData);
 
   const formdata = new FormData();
-  formdata.append("profile", this.file);
   formdata.append("drivername", updatedData.drivername);
   formdata.append("driveremail", updatedData.driveremail);
   formdata.append("countrycode", updatedData.countrycode);
-  formdata.append("city", updatedData.city);
   formdata.append("driverphone", updatedData.driverphone);
+  formdata.append("city", updatedData.city);
+  formdata.append("profile", this.file);
   
 
   this._driver.updateDriver(this.id, formdata).subscribe({
