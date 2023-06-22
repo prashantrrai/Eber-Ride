@@ -227,6 +227,7 @@ export class PricingComponent {
     this.id = values._id;
     console.log(values);
     this.onSelectedCountry(values.country)
+    
     this.pricingForm.patchValue({
       country: values.country,
       city: values.city,

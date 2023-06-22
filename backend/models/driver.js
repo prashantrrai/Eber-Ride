@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const Schema = mongoose.Schema
 
 const driver_Schema = new mongoose.Schema({
   profile: {
@@ -20,12 +20,12 @@ const driver_Schema = new mongoose.Schema({
     required: true,
   },
   driverphone: {
-    type: String,
+    type: Number,
     required: true,
     unique: true,
   },
   city: {
-    type: String,
+    type: Schema.Types.ObjectId,
     required: true,
   },
   status: {
@@ -33,8 +33,8 @@ const driver_Schema = new mongoose.Schema({
     default: false
   },
   servicetype: {
-    type: String,
-    default: "None"
+    type: Schema.Types.ObjectId,
+    default: null
   }
 });
 

@@ -2,12 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { AppRoutingModule } from './app-routing.module';
 
 
@@ -30,6 +24,7 @@ import { UsersComponent } from './components/users/users.component';
 import { DriverComponent } from './components/driver/driver.component';
 import { PricingComponent } from './components/pricing/pricing.component';
 import { SettingComponent } from './components/setting/setting.component';  
+import { MaterialModule } from './material-module';
 
 @NgModule({
   declarations: [
@@ -55,15 +50,9 @@ import { SettingComponent } from './components/setting/setting.component';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatListModule,
-    MatSidenavModule,
     ToastrModule.forRoot(),
-    NgxPaginationModule
-
+    NgxPaginationModule,
+    MaterialModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}, AuthService],
   bootstrap: [AppComponent]

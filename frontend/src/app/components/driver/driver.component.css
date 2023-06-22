@@ -1,3 +1,4 @@
+
 .parentFormContainer {
     display: flex;
     justify-content: center;
@@ -143,6 +144,9 @@
       padding: 20px;
       margin: 40px;
     }
+    #button-search-div{
+      display: block;
+    }
   }
   
   @media (max-width: 480px) {
@@ -156,7 +160,9 @@
     }
 
   }
-
+  #button-search-div{
+    display: block;
+  }
   
   .card-container {
     display: flex;

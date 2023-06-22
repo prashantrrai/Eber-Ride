@@ -15,7 +15,7 @@ export class DriverService {
   constructor(private http: HttpClient) { }
 
 
-  fetchCountryAPI(): Observable<any> {
+  getCountryCode(): Observable<any> {
     return this.http.get(`${this.countryAPI}`);
   }
 
@@ -33,8 +33,8 @@ export class DriverService {
     return this.http.post<any>(`${this.serverUrl}/adddriver`, driverData);
   }
   
-  getDriver(page: number, limit: number) {
-    const url = `${this.serverUrl}/driverdata?page=${page}&limit=${limit}`;
+  getDriver(search: string, page: number, limit: number) {
+    const url = `${this.serverUrl}/driverdata?query=${search}&page=${page}&limit=${limit}`;
     return this.http.get(url);
   }
 
@@ -51,7 +51,7 @@ export class DriverService {
 
   updateStatus(driverId: string, status: boolean): Observable<any> {
     // console.log(userData)
-    const url = `${this.serverUrl}/drivers/${driverId}/status`;   
+    const url = `${this.serverUrl}/drivers/${driverId}`;   
     const body = { status }; 
     return this.http.put<any>(url, body);
   }
@@ -61,10 +61,10 @@ export class DriverService {
     return this.http.post<any>(url, servicename);
   }
 
-  searchDriver(query: string, page: number, limit: number): Observable<any> {
-    // console.log(query, page, limit)
-    return this.http.get(`${this.serverUrl}/driversearch?query=${query}&page=${page}&limit=${limit}`);
-  }
+  // searchDriver(query: string, page: number, limit: number): Observable<any> {
+  //   // console.log(query, page, limit)
+  //   return this.http.get(`${this.serverUrl}/driversearch?query=${query}&page=${page}&limit=${limit}`);
+  // }
 
 
 }
