@@ -180,7 +180,6 @@ export class DriverComponent {
     }
   }
   getPagesArray(): number[] {
-    
     return Array(this.totalPages).fill(0).map((_, index) => index + 1);
   }
   updatePaginatedDrivers() {

@@ -7,7 +7,7 @@ const path = require('path');
 const profile_path = path.join(__dirname, "../Public/Upload");
 
 
-  // Multer Code
+  //---------------------------------------MULTER CODE FOR IMAGE UPLOAD---------------------------------------//
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       console.log(file)
@@ -45,7 +45,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
 
 
 
-  // Add New User
+  //-----------------------------------------------ADD USER----------------------------------------------//
   userRoutes.post('/adduser', async (req, res, next) => {
     upload.single('profile')(req, res, function (err) {
       if (err instanceof multer.MulterError) {
@@ -83,7 +83,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
   });
 
 
-// // Get all users
+//-----------------------------------------------GET ALL USERS----------------------------------------------//
 // userRoutes.get('/userdata', async (req, res) => {
 //   try {
 //     const userdata = await userModel.find({});
@@ -96,7 +96,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
 //   });
   
 
-  // Delete a USER
+  // ---------------------------------------------DELETE USER----------------------------------------------//
   userRoutes.delete('/userdata/:id', async (req, res) => {
     try {
       const userId = req.params.id;
@@ -115,7 +115,7 @@ const profile_path = path.join(__dirname, "../Public/Upload");
 
 
 
-  // Update a user
+  // ---------------------------------------------UPDATE USER----------------------------------------------//
   userRoutes.put('/updateuser/:id',upload.single('profile'), async (req, res) => {
     // console.log(req.body)
     // console.log(req.file)
@@ -144,117 +144,124 @@ const profile_path = path.join(__dirname, "../Public/Upload");
   });
 
 
-  // Search users
-  userRoutes.get('/usersearch', async (req, res) => {
-    try {
-      const query = req.query;
-      const currentPage = parseInt(query.currentPage) || 1;
-      const limit = parseInt(query.limit) || 5;
-      const skip = (currentPage - 1) * limit;
-      const { sortColumn, sortOrder } = req.query;
+  // ---------------------------------------------SEARCH USER----------------------------------------------//
+  // userRoutes.get('/usersearch', async (req, res) => {
+  //   try {
+  //     const query = req.query;
+  //     const currentPage = parseInt(query.currentPage) || 1;
+  //     const limit = parseInt(query.limit) || 5;
+  //     const skip = (currentPage - 1) * limit;
+  //     const { sortColumn, sortOrder } = req.query;
 
-      console.log(query)
+  //     console.log(query)
 
-      const searchData = {
+  //     const searchData = {
+  //       $or: [
+  //         { username: { $regex: query.query, $options: 'i' } },
+  //         { userphone: { $regex: query.query, $options: 'i' } },
+  //         { useremail: { $regex: query.query, $options: 'i' } },
+  //       ],
+  //     };
+
+  //     // Check if the query is a valid ObjectId
+  //     if (mongoose.Types.ObjectId.isValid(query.query)) {
+  //       searchData.$or.push({ _id: query.query });
+  //     }
+
+  //     const count = await userModel.countDocuments(searchData);
+  //     const totalPages = Math.ceil(count / limit);
+
+  //     const sortObject = {};
+  //     // sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
+  //     sortObject['username'] = 1;
+
+  //     const userdata = await userModel.find(searchData).skip(skip).limit(limit).sort(sortObject);
+
+  //     // console.log(userdata)
+ 
+  //     res.json({ success: true, message: 'User Data found from Search', userdata, totalPages });
+  //   } catch (error) {
+  //     console.log(error);
+  //     res.status(500).json({ success: false, message: error });
+  //   }
+  // });
+
+
+  // ---------------------------------------------GET USER DATA PAGINATION----------------------------------------------//
+  // userRoutes.get('/userdata', async (req, res) => {
+  //   try {
+  //     const { page, limit } = req.query;
+  //     const pageNumber = parseInt(page) || 1;
+  //     const limitNumber = parseInt(limit) || 5;
+
+  //     const totalUsers = await userModel.countDocuments({});
+  //     const totalPages = Math.ceil(totalUsers / limitNumber);
+
+  //     const userdata = await userModel
+  //       .find({})
+  //       .skip((pageNumber - 1) * limitNumber)
+  //       .limit(limitNumber);
+        
+  //       console.log(userdata)
+  //       res.json({
+  //         success: true,
+  //         message: 'Users Retrieved Successfully',
+  //         page: pageNumber,
+  //         limit: limitNumber,
+  //         totalPages: totalPages,
+  //         userdata: userdata
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //     res.status(500).json({ success: false, message: error });
+  //   }
+  // });
+
+
+
+// --------------------------------GET USER DATA, SEARCH, PAGINATION, SORT-----------------------------------//
+userRoutes.get("/userdata", async (req, res) => {
+  let page = +req.query.page || 1;
+  let limit = +req.query.limit || 5;
+  let search = req.query.search;
+  let skip = (page - 1) * limit;
+
+  try {
+    let query = {};
+
+    if (search) {
+      query = {
         $or: [
-          { username: { $regex: query.query, $options: 'i' } },
-          { userphone: { $regex: query.query, $options: 'i' } },
-          { useremail: { $regex: query.query, $options: 'i' } },
+          { username: { $regex: search, $options: "i" } },
+          { useremail: { $regex: search, $options: "i" } },
+          { userphone: { $regex: search, $options: "i" } },
         ],
       };
-
-      // Check if the query is a valid ObjectId
-      if (mongoose.Types.ObjectId.isValid(query.query)) {
-        searchData.$or.push({ _id: query.query });
-      }
-
-      const count = await userModel.countDocuments(searchData);
-      const totalPages = Math.ceil(count / limit);
-
-      const sortObject = {};
-      // sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
-      sortObject['username'] = 1;
-
-      const userdata = await userModel.find(searchData).skip(skip).limit(limit).sort(sortObject);
-
-      // console.log(userdata)
- 
-      res.json({ success: true, message: 'User Data found from Search', userdata, totalPages });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ success: false, message: error });
     }
-  });
 
+    const count = await userModel.find(query).count();
+    let totalPage = Math.ceil(count / limit);
 
-  // Get User Data with (pagination)
-  userRoutes.get('/userdata', async (req, res) => {
-    try {
-      const { page, limit } = req.query;
-      const pageNumber = parseInt(page) || 1;
-      const limitNumber = parseInt(limit) || 5;
-
-      const totalUsers = await userModel.countDocuments({});
-      const totalPages = Math.ceil(totalUsers / limitNumber);
-
-      const userdata = await userModel
-        .find({})
-        .skip((pageNumber - 1) * limitNumber)
-        .limit(limitNumber);
-        
-        console.log(userdata)
-        res.json({
-          success: true,
-          message: 'Users Retrieved Successfully',
-          page: pageNumber,
-          limit: limitNumber,
-          totalPages: totalPages,
-          userdata: userdata
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ success: false, message: error });
+    if (page > totalPage) {
+      page = totalPage;
+      skip = (page - 1) * limit;
     }
-  });
+    let userdata = await userModel.find(query).limit(limit).skip(skip).sort({ username : -1, _id: 1 })
 
-
-
-
-
-// // Get User Data with pagination and sorting
-// userRoutes.get('/userdata', async (req, res) => {
-//   try {
-//     const { page, limit, sortColumn, sortOrder } = req.query;
-//     const pageNumber = parseInt(page) || 1;
-//     const limitNumber = parseInt(limit) || 5;
-
-//     const totalUsers = await userModel.countDocuments({});
-//     const totalPages = Math.ceil(totalUsers / limitNumber);
-
-//     const sortObject = {};
-//     sortObject[sortColumn] = sortOrder === 'asc' ? 1 : -1;
-//     sortObject['username'] = 1;
-//     const userdata = await userModel
-//       .find({})
-//       .sort(sortObject)
-//       .skip((pageNumber - 1) * limitNumber)
-//       .limit(limitNumber);
-
-//     console.log(userdata);
-//     res.json({
-//       success: true,
-//       message: 'Users Retrieved Successfully',
-//       page: pageNumber,
-//       limit: limitNumber,
-//       totalPages: totalPages,
-//       userdata: userdata,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ success: false, message: error });
-//   }
-// });
-
+    res.json({
+      success: true,
+      message: "Data Found",
+      userdata,
+      page,
+      limit,
+      totalPage,
+      count,
+    });
+  } catch (error) {
+    res.status(500).send(error);
+    console.log(error);
+  }
+});
 
 module.exports = userRoutes;
 

@@ -20,13 +20,13 @@ export class UsersComponent {
   id: any;
   count: any;
   
-  searchValue: string = '';
+  search: string = '';
   
-  usersArray: any[] = []; // Array to store all users
-  paginatedUsers: any[] = []; // Array to store the currently displayed users
-  currentPage = 1; // Current page number
-  limit = 5; // Number of users per page
-  totalPages = 0; // Total number of pages
+  usersArray: any[] = [];
+  paginatedUsers: any[] = [];
+  currentPage = 1
+  limit = 5; 
+  totalPages = 0; 
 
   constructor(
     private _users: UsersService,
@@ -38,7 +38,6 @@ export class UsersComponent {
   ngOnInit(): void {
     this.getUserData();
     this.fetchCountryDataAPI();
-    console.log('user call');
     
     this.AddForm = this.formBuilder.group({
       profile: [""],
@@ -55,31 +54,15 @@ export class UsersComponent {
     });
   }
 
-  // getUserData(): void {
-  //   this._users.getuserData().subscribe({
-  //     next: (users: any) => {
-  //       // console.log(users);
-
-  //       if (users) {
-  //         this.usersArray = users;
-  //       } else {
-  //         console.warn("No user data found");
-  //       }
-  //     },
-  //     error: (error: any) => {
-  //       console.log(error.error.message);
-  //       // alert(error.error.message);
-  //     },
-  //   });
-  // }
-
+  // --------------------------------------------GET USER DATA---------------------------------------------
   getUserData() {
-    this._users.getUsers(this.currentPage, this.limit).subscribe({
+    this._users.getUsers(this.search, this.currentPage, this.limit).subscribe({
       next: (response: any) => {
-        // console.log(response)
+        console.log(response)
         this.usersArray = response.userdata;
-        this.totalPages = response.totalPages;
-        // this.totalPages = Math.ceil(this.usersArray.length / this.limit);
+        this.totalPages = response.totalPage;
+        this.count = response.count;
+
         this.updatePaginatedUsers();
       },
       error: (error: any) => {
@@ -88,8 +71,22 @@ export class UsersComponent {
       },
     });
   }
-
-
+  onPageSizeChange(event: any): void {
+    this.limit = parseInt(event.target.value);
+    this.currentPage = 1;
+    this.updatePaginatedUsers();
+    this.getUserData();
+  }
+  onPageChange(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+      this.currentPage = pageNumber;
+      this.updatePaginatedUsers();
+      this.getUserData();
+    }
+  }
+  getPagesArray(): number[] {
+    return Array(this.totalPages).fill(0).map((_, index) => index + 1);
+  }
   updatePaginatedUsers() {
     const startIndex = (this.currentPage - 1) * this.limit;
     const endIndex = startIndex + this.limit;
@@ -97,38 +94,7 @@ export class UsersComponent {
   }
 
 
-  onPageSizeChange(event: any): void {
-    this.limit = parseInt(event.target.value); // Parse the limit value as an integer
-
-    // Reset the current page to 1 when the limit changes
-    this.currentPage = 1;
-
-    // Update the paginatedUsers array based on the new limit and current page
-    this.updatePaginatedUsers();
-
-    this.getUserData();
-  }
-
-  onPageChange(pageNumber: number) {
-    // Validate the new page number
-    if (pageNumber >= 1 && pageNumber <= this.totalPages) {
-      this.currentPage = pageNumber;
-
-    // Update the paginatedUsers array based on the new page
-    this.updatePaginatedUsers();
-
-    this.getUserData();   //The purpose of calling this.getUserData() is to fetch the updated user data from the backend API based on the new page number. It ensures that the user data displayed on the current page reflects the updated page number.
-    // If you comment out this.getUserData(), the user data displayed on the current page may not be updated according to the new page number. The paginatedUsers array will be updated correctly, but the actual data retrieved from the backend will remain the same as the previous page.
-    // In summary, this.getUserData() fetches the user data from the backend API, while this.updatePaginatedUsers() updates the paginatedUsers array to display the appropriate subset of users on the current page. Both functions work together to ensure the correct user data is displayed when the page changes.
-    }
-  }
-
-
-  getPagesArray(): number[] {
-    return Array(this.totalPages).fill(0).map((_, index) => index + 1);
-  }
-
-
+  // --------------------------------GET COUNTRY CODE DATA FROM REST API--------------------------------------
   fetchCountryDataAPI(): void {
     this._users.fetchCountryAPI().subscribe({
       next: (countries) => {
@@ -145,17 +111,18 @@ export class UsersComponent {
       },
     });
   }
-
   onSelected(value: any) {
     this.selectedCC = value;
     // console.log(value)
   }
 
+  // --------------------IMAGE SELECTED---------------------
   onFileSelected(event: any) {
     this.file = event.target.files[0];
     console.log(this.file);
   }
 
+  // --------------------------------------------ADD USER DATA---------------------------------------------
   AddUser() {
     var formData = new FormData();
     formData.append("profile", this.file);
@@ -183,6 +150,7 @@ export class UsersComponent {
     }
   }
 
+  // --------------------------------------------DELETE USER DATA---------------------------------------------
   deleteUser(userId: string): void {
     const confirmation = confirm("Are you sure you want to delete this user?");
 
@@ -201,21 +169,18 @@ export class UsersComponent {
     }
   }
 
+  // --------------------------------------------UPDATE USER DATA---------------------------------------------
   updateBtnClick(user: any): void {
     this.id = user._id;
     this.updateForm = true;
     this.AddbuttonForm = false
-    // console.log(user._id)
-    // console.log(user)
     this.userupdateForm.patchValue({
       updateusername: user.username,
       updateuseremail: user.useremail,
       updatecountrycode: user.countrycode,
       updateuserphone: user.userphone,
     });
-    // console.log(this.userupdateForm.value)
   }
-
   updateUSER(): void {
     const updatedData = this.userupdateForm.value;
     var formdata = new FormData();
@@ -243,43 +208,31 @@ export class UsersComponent {
   }
 
 
-
-  searchUsers() {
-    this.currentPage = 1; // Reset the current page to 1 when searching
-    // console.log(this.searchValue)
-    this._users.searchUsers(this.searchValue, this.currentPage, this.limit).subscribe({
-      next: (response: any) => {
-        // console.log(response)
-        this.usersArray = response.userdata;
-        this.totalPages = response.totalPages;
-        this.updatePaginatedUsers(); // Update paginatedUsers array based on search results
-      },
-      error: (error: any) => {
-        console.log(error.error.message);
-      }
-  });
-  }
+  // --------------------------------------------SEARCH USER DATA---------------------------------------------
+  // searchUsers() {
+  //   this.currentPage = 1;
+  //   this._users.searchUsers(this.searchValue, this.currentPage, this.limit).subscribe({
+  //     next: (response: any) => {
+  //       // console.log(response)
+  //       this.usersArray = response.userdata;
+  //       this.totalPages = response.totalPages;
+  //       this.updatePaginatedUsers(); // Update paginatedUsers array based on search results
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error.error.message);
+  //     }
+  // });
+  // }
   
+  // --------------------------------------------CUSTOM BUTTON---------------------------------------------
   updateCancel() {
     this.updateForm = !this.updateForm;
   }
   
-
   toggleFormVisibility() {
     this.AddbuttonForm = !this.AddbuttonForm;
     this.updateForm = false
   }
-
-  // onPageChange(event: any): void {
-  //   this.page = event;
-  //   this.getUserData();
-  // }
-
-  // onPageSizeChange(event: any): void {
-  //   this.tableSize = event.target.value;
-  //   this.page = 1;
-  //   this.getUserData();
-  // }
 
   resetTimer() {
     this.authService.resetInactivityTimer();

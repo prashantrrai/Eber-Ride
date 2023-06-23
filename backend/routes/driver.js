@@ -111,8 +111,7 @@ driverRoutes.post(
   }
 );
 
-// --------------------------------------------GET DRIVERS DATA, SEARCH, PAGINATION, SORT------------------------------------------------------
-// API SARKHI KAROJIYARE  DATA 3 HOI AND PAGE1 AND LIMIT 10 , 7 , 6  SUDHI PROPER WORK KARE CHE PACHI NATHI KARTU 
+// --------------------------------GET DRIVERS DATA, SEARCH, PAGINATION, SORT-----------------------------------//
 driverRoutes.get("/driverdata", async (req, res) => {
   let page = +req.query.page || 1;
   let limit = +req.query.limit || 5;

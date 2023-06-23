@@ -19,13 +19,8 @@ export class UsersService {
   }
   
   addUser(userData: any): Observable<any> {
-    // console.log(userData);
     return this.http.post<any>(`${this.serverUrl}/adduser`, userData);
   }
-  
-  // getuserData(): Observable<any> {
-  //   return this.http.get<any>(`${this.serverUrl}/userdata`);
-  // }
 
 
   deleteUser(userId: string): Observable<any> {
@@ -39,13 +34,13 @@ export class UsersService {
     return this.http.put<any>(url, userData);
   }
 
-  searchUsers(query: string, page: number, limit: number): Observable<any> {
-    console.log(query, page, limit)
-    return this.http.get(`${this.serverUrl}/usersearch?query=${query}&page=${page}&limit=${limit}`);
-  }
+  // searchUsers(query: string, page: number, limit: number): Observable<any> {
+  //   console.log(query, page, limit)
+  //   return this.http.get(`${this.serverUrl}/usersearch?query=${query}&page=${page}&limit=${limit}`);
+  // }
 
-  getUsers(page: number, limit: number) {
-    const url = `${this.serverUrl}/userdata?page=${page}&limit=${limit}`;
+  getUsers(search: string ,page: number, limit: number) {
+    const url = `${this.serverUrl}/userdata?search=${search}&page=${page}&limit=${limit}`;
     return this.http.get(url);
   }
 }
