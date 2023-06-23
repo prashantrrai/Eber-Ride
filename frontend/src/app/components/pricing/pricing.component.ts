@@ -90,11 +90,12 @@ export class PricingComponent {
   onSelectedCity(city: any) {
     this.selectedCity = city;
     console.log(city);
+    this.getService()
   }
 
   // -----------------GET SERVICE DATA---------------
   getService(): void {
-    this._pricing.getServiceData().subscribe({
+    this._pricing.getServiceData({city:this.selectedCity, country: this.selectedCountry}).subscribe({
       next: (response) => {
         this.serviceData = response.data;
       },

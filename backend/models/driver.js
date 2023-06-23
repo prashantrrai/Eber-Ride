@@ -20,7 +20,7 @@ const driver_Schema = new mongoose.Schema({
     required: true,
   },
   driverphone: {
-    type: Number,
+    type: String,
     required: true,
     unique: true,
   },

@@ -19,8 +19,10 @@ export class PricingService {
     return this.http.get(`${this.serverUrl}/citydata`);
   }
 
-  getServiceData(): Observable<any> {
-    return this.http.get(`${this.serverUrl}/vehicledata`);
+  getServiceData(data:any): Observable<any> {
+    console.log(data);
+    
+    return this.http.post(`${this.serverUrl}/vehicledata`, data);
   }
 
   addPricing(pricingdata: any): Observable<any> {

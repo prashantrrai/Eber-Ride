@@ -2,7 +2,9 @@
   const VehicleRoutes = express.Router() 
   const vehicleModel = require('../models/vehicle');
   const multer = require('multer');
-  const path = require('path')
+  const path = require('path');
+const pricingModel = require("../models/pricing");
+const { log } = require("console");
   const img_path = path.join(__dirname, "../Public/Upload");
 
 
@@ -47,7 +49,7 @@
   });
 
 
-  //  API to register vehicle data in database using Angular form.
+  // -------------------------------------------------ADD NEW VEHICLE---------------------------------------------
   VehicleRoutes.post('/vehicleadd', async (req, res, next) => {
     upload.single('vehicleImage')(req, res, function (err) {
       if (err instanceof multer.MulterError) {
@@ -84,11 +86,20 @@
     });
 
 
-
-    //to fetch data from database of registered vehicle and show in /vehicledata route of frontend.
-    VehicleRoutes.get('/vehicledata', async (req, res) => {
-    try {
-      const data = await vehicleModel.find({});
+    // ---------------------------------------CHECKING CITY AND COUNTRY FROM PRICING---------------------------------------------
+    VehicleRoutes.post('/vehicledata', async (req, res) => {
+      try {
+      const usedVehicle = await pricingModel.find({ $and: [{city: req.body.city}, {country: req.body.country}]})
+      const newArray = usedVehicle.map(vehicle => vehicle.service);
+      // const data = await vehicleModel.find({});
+      const data = await vehicleModel.aggregate([
+        {
+          $match: {
+            _id: { $nin: newArray } // Exclude documents with the specified city values
+          }
+        }
+      ])
+      // console.log(data)
       res.json({ data });
     } catch (err) {
       console.log(err);
@@ -96,9 +107,19 @@
     }
   })
 
-
-
-  //  API to update data of user in database using Angular form.
+  // ----------------------------------------------GET VEHICLE DATA-----------------------------------------------------------
+  VehicleRoutes.get('/vehicledata', async (req, res) => {
+    try {
+    const data = await vehicleModel.find({});
+    console.log(data)
+    res.json({ data });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Internal Server Error");
+  }
+})
+  
+  // ----------------------------------------------UPDATE VEHICLE DATA-----------------------------------------------------------
   VehicleRoutes.put('/updateVehicle/:id',upload.single('vehicleImage'), async (req, res) => {
   //  console.log(req.file)
     try {

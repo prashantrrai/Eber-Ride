@@ -132,7 +132,7 @@ driverRoutes.get("/driverdata", async (req, res) => {
       };
     }
 
-    const count = await driverModel.find().count();
+    const count = await driverModel.find(query).count();
     let totalPage = Math.ceil(count / limit);
 
     if (page > totalPage) {
