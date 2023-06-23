@@ -224,6 +224,8 @@ userRoutes.get("/userdata", async (req, res) => {
   let page = +req.query.page || 1;
   let limit = +req.query.limit || 5;
   let search = req.query.search;
+  let sortBy = req.query.sortBy || "username";
+  let sortOrder = req.query.sortOrder || "desc";
   let skip = (page - 1) * limit;
 
   try {
@@ -246,7 +248,20 @@ userRoutes.get("/userdata", async (req, res) => {
       page = totalPage;
       skip = (page - 1) * limit;
     }
-    let userdata = await userModel.find(query).limit(limit).skip(skip).sort({ username : -1, _id: 1 })
+
+    let sortCriteria = {};
+
+    if (sortBy === "name") {
+      sortCriteria = { username: sortOrder === "asc" ? 1 : -1 };
+    } else if (sortBy === "email") {
+      sortCriteria = { useremail: sortOrder === "asc" ? 1 : -1 };
+    } else if (sortBy === "phone") {
+      sortCriteria = { userphone: sortOrder === "asc" ? 1 : -1 };
+    }
+
+
+    // let userdata = await userModel.find(query).limit(limit).skip(skip).sort({ username : -1, _id: 1 })
+    let userdata = await userModel.find(query).limit(limit).skip(skip).sort(sortCriteria)
 
     res.json({
       success: true,

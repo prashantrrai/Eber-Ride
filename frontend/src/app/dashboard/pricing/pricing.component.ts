@@ -247,19 +247,6 @@ export class PricingComponent {
   
       this.spinner.hide();
     }, 2000);
-    // this.pricingForm.patchValue({
-    //   country: values.country,
-    //   city: values.city,
-    //   service: values.service,
-    //   driverprofit: values.driverprofit,
-    //   minfare: values.minfare,
-    //   distancebaseprice: values.distancebaseprice,
-    //   baseprice: values.baseprice,
-    //   ppudist: values.ppudist,
-    //   pputime: values.pputime,
-    //   maxspace: values.maxspace,
-    // });
-    // this.spinner.hide();
   }
   UpdatePricing() {
     const data = this.pricingForm.value;

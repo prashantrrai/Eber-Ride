@@ -1,4 +1,11 @@
+.sortby{
+  margin-right: 40px;
+}
+.sortorder{
+  margin-left: 40px;
 
+
+}
 
 .parentFormContainer {
     display: flex;

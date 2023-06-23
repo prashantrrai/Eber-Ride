@@ -34,13 +34,20 @@ export class UsersService {
     return this.http.put<any>(url, userData);
   }
 
-  // searchUsers(query: string, page: number, limit: number): Observable<any> {
-  //   console.log(query, page, limit)
-  //   return this.http.get(`${this.serverUrl}/usersearch?query=${query}&page=${page}&limit=${limit}`);
+  // getUsers(search: string ,page: number, limit: number) {
+  //   const url = `${this.serverUrl}/userdata?search=${search}&page=${page}&limit=${limit}`;
+  //   return this.http.get(url);
   // }
-
-  getUsers(search: string ,page: number, limit: number) {
-    const url = `${this.serverUrl}/userdata?search=${search}&page=${page}&limit=${limit}`;
-    return this.http.get(url);
+  getUsers(search: string, page: number, limit: number, sortBy: string, sortOrder: string): Observable<any> {
+    const params = {
+      search: search,
+      page: page.toString(),
+      limit: limit.toString(),
+      sortBy: sortBy,
+      sortOrder: sortOrder
+    };
+    const url = `${this.serverUrl}/userdata`;
+    return this.http.get(url, { params: params });
   }
+
 }

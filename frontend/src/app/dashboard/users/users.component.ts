@@ -19,14 +19,14 @@ export class UsersComponent {
   selectedCC: any;
   id: any;
   count: any;
-  
   search: string = '';
-  
   usersArray: any[] = [];
   paginatedUsers: any[] = [];
   currentPage = 1
   limit = 5; 
   totalPages = 0; 
+  selectedSortBy!: string;
+  selectedSortOrder!: string;
 
   constructor(
     private _users: UsersService,
@@ -56,7 +56,7 @@ export class UsersComponent {
 
   // --------------------------------------------GET USER DATA---------------------------------------------
   getUserData() {
-    this._users.getUsers(this.search, this.currentPage, this.limit).subscribe({
+    this._users.getUsers(this.search, this.currentPage, this.limit, this.selectedSortBy, this.selectedSortOrder).subscribe({
       next: (response: any) => {
         console.log(response)
         this.usersArray = response.userdata;
@@ -66,8 +66,7 @@ export class UsersComponent {
         this.updatePaginatedUsers();
       },
       error: (error: any) => {
-        console.log(error.error.message);
-        alert(error.error.message);
+        console.log(error);
       },
     });
   }
@@ -208,22 +207,6 @@ export class UsersComponent {
   }
 
 
-  // --------------------------------------------SEARCH USER DATA---------------------------------------------
-  // searchUsers() {
-  //   this.currentPage = 1;
-  //   this._users.searchUsers(this.searchValue, this.currentPage, this.limit).subscribe({
-  //     next: (response: any) => {
-  //       // console.log(response)
-  //       this.usersArray = response.userdata;
-  //       this.totalPages = response.totalPages;
-  //       this.updatePaginatedUsers(); // Update paginatedUsers array based on search results
-  //     },
-  //     error: (error: any) => {
-  //       console.log(error.error.message);
-  //     }
-  // });
-  // }
-  
   // --------------------------------------------CUSTOM BUTTON---------------------------------------------
   updateCancel() {
     this.updateForm = !this.updateForm;

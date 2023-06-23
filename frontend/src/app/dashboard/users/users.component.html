@@ -1,8 +1,60 @@
 <button class="mt-4 btn btn-primary" id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp; Add Users</button>
 
+<!-- ---------------------------PAGINATION, SEARCH, SORT-------------------------------- -->
+<div class="mt-5">
+  <div class="d-flex justify-content-center align-items-center">
+  <label for="pageSize">Show Data :</label>
+  <div class="custom-select">
+    <select class="form-control m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
+      <option [ngValue]="null">Select Page</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="10">10</option>
+    </select>
+    <i class="fas fa-chevron-down dropdown-icon"></i>
+  </div>
+  <input type="text" class="form-control w-25 m-4 p-2" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="search" (input)="getUserData()">
+  </div>
+</div>
+
+<div class="mt-5">
+  <div class="d-flex justify-content-center align-items-center">
+
+    <div class="sortby">
+      <label for="sortBy">Sort By:</label>
+      <div class="custom-select">
+        <select class="form-control mx-2" id="sortBy" [(ngModel)]="selectedSortBy" (change)="getUserData()">
+          <option value="name">Name</option>
+          <option value="email">Email</option>
+          <option value="phone">Phone</option>
+        </select>
+      <i class="fas fa-chevron-down dropdown-icon"></i>
+      </div>
+    </div>
+
+    <div class="sortorder">
+      <label for="sortOrder">Sort Order:</label>
+      <div class="custom-select">
+        <select class="form-control mx-2" id="sortOrder" [(ngModel)]="selectedSortOrder" (change)="getUserData()">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+      <i class="fas fa-chevron-down dropdown-icon"></i>
+      </div>
+    </div>
+    
+  </div>
+</div>
 
 
-    <!-- Your form content goes here -->
+
+<!-- <button (click)="getSortedData()">Sort</button> -->
+
+
+    <!-- ---------------------------------------------ADD FORM--------------------------------------------- -->
     <div class="parentFormContainer">
         <div id="formContainer" *ngIf="AddbuttonForm">
         <h2 class="mb-3">User Registration</h2>
@@ -16,18 +68,6 @@
                   <label class="form-label d-flex justify-content-start">User Email</label>
                   <input type="email" class="form-control" formControlName="useremail" placeholder="Enter Email"/>
                 </div>
-                <!-- <div class="dropdown mb-3">
-                  <label class="form-label d-flex justify-content-start">Country Code</label>
-                  <select class="form-label d-flex justify-content-start form-control" name="code" #code (change)="onSelected(code.value)">
-                    <option value="">Select country code</option>
-                    <option  [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label d-flex justify-content-start">Phone</label>
-                  <input type="tel" class="form-control" formControlName="userphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
-                </div> -->
-
                 <div class="parent mb-3">
                   <label class="form-label d-flex justify-content-start">Phone Number</label>
                   <div class="phone-input w-100">
@@ -50,7 +90,7 @@
         </div>
       </div>
 
-
+      <!-- ---------------------------------------------UPDATE FORM--------------------------------------------- -->
       <div class="container-fluid" (mousemove)="resetTimer()">
         <div class="updateContainer py-4" *ngIf="updateForm">
           <div id="Container">
@@ -64,17 +104,6 @@
                 <label class="form-label d-flex justify-content-start">Email</label>
                 <input type="email" class="form-control" formControlName="updateuseremail" />
               </div>
-              <!-- <div class="dropdown mb-3">
-                <label class="form-label d-flex justify-content-start">Country Code</label>
-                <select class="form-label d-flex justify-content-start form-control" name="code" #code (change)="onSelected(code.value)"  formControlName="updatecountrycode">
-                  <option  [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label d-flex justify-content-start">Phone</label>
-                <input type="tel" class="form-control" formControlName="updateuserphone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
-              </div> -->
-
               <div class="parent mb-3">
                 <label class="form-label d-flex justify-content-start">Phone Number</label>
                 <div class="phone-input w-100">
@@ -101,26 +130,7 @@
       </div>
   
 
-
-  <div class="mt-5">
-    <div class="d-flex justify-content-center align-items-center">
-    <label for="pageSize">Show Data :</label>
-    <div class="custom-select">
-      <select class="form-control m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
-        <option [ngValue]="null">Select Page</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="10">10</option>
-      </select>
-      <i class="fas fa-chevron-down dropdown-icon"></i>
-    </div>
-    <input type="text" class="form-control w-25 m-4 p-2" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="search" (input)="getUserData()">
-    </div>
-  </div>
-
+  <!-- ---------------------------------------------TABLE--------------------------------------------- -->  
     <div class="parentFormContainer">
       <div id="tableContainer">
         <div class="table-responsive">
@@ -137,47 +147,29 @@
             </tr>
             </thead>
             <tbody>
-            <!-- <tr *ngFor="let user of usersArray | paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: totalPages };let i = index">
-              <td><img src="http://localhost:4000/{{ user.profile}}" alt=""></td>
-              <td>{{ user.username }}</td>
-              <td>{{ user.useremail }}</td>
-              <td>{{ user.countrycode }}</td>
-              <td>{{ user.userphone }}</td>
-              <td>
-                <button id="updatebtn" (click)="updateBtnClick(user)">
-                  <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-              </td>
-              <td>
-                <button id="deletebtn" (click)="deleteAdmin(user._id)">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </td>
-            </tr> -->
-
-            <tr *ngFor="let user of usersArray" >
-              <td><img src="http://localhost:4000/{{ user.profile}}" alt="user-profile"></td>
-              <td>{{ user.username }}</td>
-              <td>{{ user.useremail }}</td>
-              <td>{{ user.countrycode }}</td>
-              <td>{{ user.userphone }}</td>
-              <td>
-                <button id="updatebtn" (click)="updateBtnClick(user)">
-                  <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-              </td>
-              <td>
-                <button id="deletebtn" (click)="deleteUser(user._id)">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </td>
-            </tr>
+              <tr *ngFor="let user of usersArray" >
+                <td><img src="http://localhost:4000/{{ user.profile}}" alt="user-profile"></td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.useremail }}</td>
+                <td>{{ user.countrycode }}</td>
+                <td>{{ user.userphone }}</td>
+                <td>
+                  <button id="updatebtn" (click)="updateBtnClick(user)">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+                <td>
+                  <button id="deletebtn" (click)="deleteUser(user._id)">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
 
+        <!-- ---------------------------PAGINATION-------------------------------- -->
         <div class="pagination d-flex justify-content-center" id="parentpagination">
-          <!-- pagination buttons -->
           <div class="pagination table-responsive rounded">
             <button class="page-link" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
               <i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous
@@ -198,12 +190,5 @@
     
       </div>
     </div>
-
-
-    <!-- Pagination
-    <div class="d-flex justify-content-center">
-      <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true">
-      </pagination-controls>
-    </div> -->
 
 
