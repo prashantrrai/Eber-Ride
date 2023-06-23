@@ -28,7 +28,7 @@ import { AuthModule } from './auth/auth.module';
     MaterialModule,
     ToastrModule.forRoot(),
     DashboardModule,
-    AuthModule
+    AuthModule,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}, AuthService],
   bootstrap: [AppComponent]

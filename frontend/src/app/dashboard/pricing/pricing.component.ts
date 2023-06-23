@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/Service/auth.service";
 import { PricingService } from "src/app/Service/pricing.service";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: "app-pricing",
@@ -34,12 +35,12 @@ export class PricingComponent {
     private toastr: ToastrService,
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private _pricing: PricingService
+    private _pricing: PricingService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
     this.getCountry()
-    this.getService()
     this.searchPrice();
 
     this.pricingForm = this.formBuilder.group({
@@ -228,19 +229,37 @@ export class PricingComponent {
     this.id = values._id;
     console.log(values);
     this.onSelectedCountry(values.country)
-    
-    this.pricingForm.patchValue({
-      country: values.country,
-      city: values.city,
-      service: values.service,
-      driverprofit: values.driverprofit,
-      minfare: values.minfare,
-      distancebaseprice: values.distancebaseprice,
-      baseprice: values.baseprice,
-      ppudist: values.ppudist,
-      pputime: values.pputime,
-      maxspace: values.maxspace,
-    });
+
+    this.spinner.show();
+    setTimeout(() => {
+      this.pricingForm.patchValue({
+        country: values.country,
+        city: values.city,
+        service: values.service,
+        driverprofit: values.driverprofit,
+        minfare: values.minfare,
+        distancebaseprice: values.distancebaseprice,
+        baseprice: values.baseprice,
+        ppudist: values.ppudist,
+        pputime: values.pputime,
+        maxspace: values.maxspace,
+      });
+  
+      this.spinner.hide();
+    }, 2000);
+    // this.pricingForm.patchValue({
+    //   country: values.country,
+    //   city: values.city,
+    //   service: values.service,
+    //   driverprofit: values.driverprofit,
+    //   minfare: values.minfare,
+    //   distancebaseprice: values.distancebaseprice,
+    //   baseprice: values.baseprice,
+    //   ppudist: values.ppudist,
+    //   pputime: values.pputime,
+    //   maxspace: values.maxspace,
+    // });
+    // this.spinner.hide();
   }
   UpdatePricing() {
     const data = this.pricingForm.value;

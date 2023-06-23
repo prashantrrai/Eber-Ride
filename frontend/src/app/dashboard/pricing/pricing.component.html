@@ -44,6 +44,7 @@
           <div class="form-group row align-items-center mb-2">
             <label class="col-sm-3 col-form-label text-end">City</label>
             <div class="col-sm-9 form-custom-select">
+              <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
               <select class="form-control" id="city-name" name="city" #city (change)="onSelectedCity(city.value)" formControlName="city">
                 <option value="">Select City</option>
                 <option [value]="city._id" *ngFor="let city of citiesname">{{city.city}}</option>

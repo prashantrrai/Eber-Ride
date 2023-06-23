@@ -4,7 +4,6 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MaterialModule } from '../material-module';
@@ -25,10 +24,10 @@ import { MenuComponent } from './menu/menu.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    // BrowserAnimationsModule,
     MaterialModule,
     ToastrModule.forRoot(),
     NgxPaginationModule,
+  
   ]
 })
 export class DashboardModule { }

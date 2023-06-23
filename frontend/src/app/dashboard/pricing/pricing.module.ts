@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 const routes : Routes = [{ path : "" , component : PricingComponent , pathMatch : "full"}]
 
@@ -17,7 +18,9 @@ const routes : Routes = [{ path : "" , component : PricingComponent , pathMatch 
     FormsModule,
     ReactiveFormsModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    NgxSpinnerModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ]
 })
 export class PricingModule { }
