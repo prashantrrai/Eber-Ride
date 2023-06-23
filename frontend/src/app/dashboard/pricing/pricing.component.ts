@@ -24,7 +24,7 @@ export class PricingComponent {
   selectedVehicle: any;
   valueArray: any[] = [];
   searchValue: string = '';
-  limit: number = 10;
+  limit: number = 5;
   currentPage: number = 1;
   totalPages: number = 0;
   paginatedData: any[] = [];
@@ -241,9 +241,7 @@ export class PricingComponent {
       pputime: values.pputime,
       maxspace: values.maxspace,
     });
-
   }
-
   UpdatePricing() {
     const data = this.pricingForm.value;
 
