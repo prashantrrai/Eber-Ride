@@ -11,6 +11,9 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   if (email === 'admin' && password === 'password'){
     localStorage.setItem('token', 'your_token_value');
+    const router = new Router();
+    console.log("working")
+    router.navigate(['/dashboard']);
     return true;
   } else {
     const router = new Router();

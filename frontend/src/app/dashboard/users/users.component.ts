@@ -38,7 +38,8 @@ export class UsersComponent {
   ngOnInit(): void {
     this.getUserData();
     this.fetchCountryDataAPI();
-
+    console.log('user call');
+    
     this.AddForm = this.formBuilder.group({
       profile: [""],
       username: ["", [Validators.required]],
