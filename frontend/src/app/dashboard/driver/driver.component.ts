@@ -134,7 +134,8 @@ export class DriverComponent {
         next: (response: any) => {
           console.log(response);
           this.getDriverData();
-          // this.driverForm.reset();
+          this.driverForm.reset();
+          this.driverFormButton = false;
           this.toastr.success(response.message);
         },
         error: (error: any) => {
@@ -250,6 +251,7 @@ export class DriverComponent {
       this.driverArray.push(response.updatedDriver);
       this.getDriverData();
       this.driverForm.reset();
+      this.driverFormButton = false;
       this.file = null
       this.toastr.success(response.message);
     },
