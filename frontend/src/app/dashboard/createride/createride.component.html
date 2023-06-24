@@ -1,0 +1,191 @@
+<div class="main-div">
+    <mat-card class="left-card">
+      <mat-card-content>
+        <!-- -------------------------------------------------USER DETAILS FORM------------------------------------------------ -->
+        <form [formGroup]="userForm" (ngSubmit)="getUserDetails()">
+          <select class="form-select country-code" formControlName="countryCode">
+            <option value="+91" selected>+91</option>
+            <option value="{{code}}" *ngFor="let code of countryCodes">{{code}}</option>
+          </select>
+  
+          <input type="text" class="form-control number" formControlName="number" [(ngModel)]="numericInputValue"
+            (input)="filterNonDigits($event)" placeholder="Enter phone number">
+  
+          <button class="btn btn-primary get-details" type="submit" [disabled]="!userForm.valid">Get Details</button>
+  
+        </form>
+  
+        <!-- User details -->
+        <div class="card my-2" *ngIf="isUser">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{user.name}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{user.email}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Mobile</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{user.countryCode}}-{{user.number}}</p>
+              </div>
+            </div>
+            <hr>
+            <button class="btn btn-primary get-detail" style="float: right; width: 100px;"
+              (click)="addTravelForm()">Next</button>
+          </div>
+        </div>
+  
+        <div class="mt-4" *ngIf="!isNext">
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="travelForm" (ngSubmit)="calculateRoute()">
+                <h5 class="card-title">Travel Information</h5>
+                <div class="mb-3">
+                  <label for="startInput" class="form-label">Starting Point</label>
+                  <input type="text" class="form-control" id="startInput" placeholder="Enter starting point" #startInput
+                    (change)="startInputChange()" formControlName="start">
+                  <div
+                    *ngIf="(travelForm.controls.start.errors && travelForm.get('start')?.touched)|| travelForm.get('start')?.dirty"
+                    class="my-2">
+                    <div *ngIf="travelForm.controls.start.errors">
+                      <div *ngIf="travelForm.controls.start.errors['required']" style="color: red;">
+                        Please enter starting point!
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div *ngIf="!isInZone" style="color: red;">
+                      Service is not available from given location you have entered!
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="endInput" class="form-label">Destination</label>
+                  <input type="text" class="form-control" id="endInput" placeholder="Enter destination" #endInput
+                    formControlName="end">
+                  <div
+                    *ngIf="(travelForm.controls.end.errors && travelForm.get('end')?.touched)|| travelForm.get('end')?.dirty"
+                    class="my-2">
+                    <div *ngIf="travelForm.controls.end.errors">
+                      <div *ngIf="travelForm.controls.end.errors['required']" style="color: red;">
+                        Please enter destination!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="mb-3">
+                  <label for="waypoint" class="form-label">Way point</label>
+                  <div class="d-flex gap-2">
+                    <input type="text" placeholder="Waypoint" #waypointInput id="waypoint" class="form-control">
+                    <button (click)="addWaypoint()" class="btn btn-success add-stops" [disabled]="stops ==stopsCounter"
+                      type="button">Add_Stops</button>
+                  </div>
+                </div>
+  
+                <div class="mb-3">
+                  <div *ngFor="let waypoint of waypoints; let i = index" class=" d-flex gap-2 mb-2">
+                    <input type=" text" [value]="waypoint" disabled class="form-control" id="added-waypoint">
+                    <button (click)="removeWaypoint(i)" class="btn btn-danger">Remove</button>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-success mb-2" [disabled]="!travelForm.valid"
+                  #directionBtn>Directions</button>
+              </form>
+            </div>
+          </div>
+        </div>
+  
+      </mat-card-content>
+    </mat-card>
+  
+    <div class="right-div">
+      <div id="map"></div>
+  
+      <div *ngIf="isRoute && isInZone">
+        <div class="list-group mb-2">
+          <a class="list-group-item list-group-item-action">Estimate Distance : {{totalDistance}}</a>
+          <a class="list-group-item list-group-item-action">Estimate Time :
+            {{totalHours }} hours {{ totalMinutes }} minutes</a>
+          <a class="list-group-item list-group-item-action"
+            *ngFor="let pricing of vehiclesPricing">{{pricing.vehicleType|titlecase}} |
+            Estimate Fare : {{pricing.estimateFare}}</a>
+          <a class="list-group-item list-group-item-action" *ngIf="vehiclesPricing.length == 0" style="color: red;">No
+            service type available
+            right now!</a>
+        </div>
+  
+        <div class="list-group">
+  
+          <form [formGroup]="rideForm" (ngSubmit)="onBookRide()">
+            <a class="list-group-item list-group-item-action">
+              <select class="form-select" id="serviceType" #serviceType (change)="onSelectServiceType(serviceType.value)"
+                formControlName="serviceType">
+                <option value="">Select service type</option>
+                <option value="{{pricing.vehicleType}}" *ngFor="let pricing of vehiclesPricing">
+                  {{pricing.vehicleType|titlecase}}
+                </option>
+              </select>
+            </a>
+  
+            <a class="list-group-item list-group-item-action">
+              <p>Select payment option</p>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="paymentOption" id="cashP" value="cash"
+                  formControlName="paymentOption">
+                <label class="form-check-label" for="cashP">Cash</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="paymentOption" id="schedule" value="card"
+                  formControlName="paymentOption">
+                <label class="form-check-label" for="schedule">Card</label>
+              </div>
+            </a>
+  
+            <a class="list-group-item list-group-item-action">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rideTime" value="bookNow"
+                  (change)="handleRadioChange()" formControlName="rideTime" [(ngModel)]="selectedOption">
+                <label class="form-check-label" for="bookNow">Book Now</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="selectedOption" name="rideTime" value="schedule"
+                  (change)="handleRadioChange()" formControlName="rideTime">
+                <label class="form-check-label" for="schedule">Schedule</label>
+              </div>
+              <button type="button" type="submit" class="btn btn-primary mx-3" [disabled]="!rideForm.valid">Book
+                ride</button>
+            </a>
+          </form>
+  
+          <a class="list-group-item list-group-item-action">
+            <div class="d-flex gap-2">
+              <input type="date" class="form-control" [(ngModel)]="selectedDate" [disabled]="selectedOption === 'bookNow'"
+                (change)="date()" min="{{ minDate }}">
+              <input type="time" class="form-control" [(ngModel)]="selectedTime" [disabled]="selectedOption === 'bookNow'"
+                (input)="time()" [min]="minTime">
+            </div>
+          </a>
+  
+        </div>
+      </div>
+  
+      <!-- <div id="summary-panel"> </div> -->
+    </div>
+  
+  </div>

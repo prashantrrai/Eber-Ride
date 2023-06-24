@@ -9,6 +9,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MaterialModule } from '../material-module';
 import { FooterComponent } from './footer/footer.component';
 import { MenuComponent } from './menu/menu.component';
+import { CreaterideModule } from './createride/createride.module';
 
 
 
@@ -27,7 +28,7 @@ import { MenuComponent } from './menu/menu.component';
     MaterialModule,
     ToastrModule.forRoot(),
     NgxPaginationModule,
-  
+    CreaterideModule,
   ]
 })
 export class DashboardModule { }

@@ -1,0 +1,56 @@
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .success-component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #e6f3e6;
+    border: 1px solid #b3e6cc;
+    border-radius: 4px;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .success-icon {
+    font-size: 48px;
+    color: #4caf50;
+  }
+  
+  .success-title {
+    font-size: 24px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+  
+  .success-message {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  
+  .success-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .success-button:hover {
+    background-color: #45a049;
+  }
+  
+  .success-button:focus {
+    outline: none;
+  }

@@ -10,9 +10,15 @@ export class SettingService {
 
   constructor(private http: HttpClient) { }
 
-  addSetting(formValues: any) {
-    console.log(formValues)
-    return this.http.post<any>(`${this.serverUrl}/setting`, formValues);
+  // addSetting(formValues: any) {
+  //   console.log(formValues)
+  //   return this.http.post<any>(`${this.serverUrl}/setting`, formValues);
+  // }
+  getStops() {
+    return this.http.get<any>(`${this.serverUrl}/settingdata`);
+  }
+  updateSetting(formValues: any) {
+    return this.http.put<any>(`${this.serverUrl}/updatesetting`, formValues);
   }
 
 }

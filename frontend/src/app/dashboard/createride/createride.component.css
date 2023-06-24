@@ -1,0 +1,89 @@
+.main-div {
+    padding: 0px 1em;
+    margin: 1em 0px;
+  }
+  
+  .left-card {
+    margin: 0.6em auto;
+    height: fit-content;
+  }
+  
+  .map-summary {
+    margin: 15px auto;
+    border: 1px solid black;
+    border-radius: 15px;
+  }
+  
+  #summary-panel {
+    padding: 10px;
+  }
+  
+  #map {
+    min-width: 200px;
+    height: 400px;
+    margin: 15px auto;
+    border: 1px solid black;
+    border-radius: 15px;
+  }
+  
+  
+  .country-code {
+    max-width: 80px;
+    margin: 6px 6px 6px 0px;
+    display: inline-block;
+  }
+  
+  .number {
+    max-width: 300px;
+    display: inline-block;
+    margin: 6px 6px 6px 0px;
+  }
+  
+  .get-details {
+    margin-bottom: 5px !important;
+  }
+  
+  .user-details {
+    font-size: 18px;
+  }
+  
+  input:disabled {
+    /* / background-color: #fff; / */
+    background-color: #e9ecef;
+  }
+  
+  #startInput:disabled {
+    background-color: #e9ecef !important;
+  }
+  
+  #serviceType {
+    max-width: 300px;
+  }
+  
+  @media (width >=380px) {
+    .address-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+  
+    .user-form {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+  }
+  
+  @media (width >=935px) {
+    .main-div {
+      display: grid;
+      grid-template-columns: auto 2fr;
+      gap: 1.3em;
+    }
+  
+  
+    .left-card {
+      width: auto;
+    }
+  
+  }

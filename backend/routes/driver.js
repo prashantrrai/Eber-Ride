@@ -116,8 +116,10 @@ driverRoutes.get("/driverdata", async (req, res) => {
   let page = +req.query.page || 1;
   let limit = +req.query.limit || 5;
   let search = req.query.search;
+  let sortBy = req.query.sortBy || "drivername";
+  let sortOrder = req.query.sortOrder || "desc";
   let skip = (page - 1) * limit;
-
+  console.log("sortBy", sortBy, "sortOrder", sortOrder)
   try {
     let query = {};
 
@@ -137,6 +139,16 @@ driverRoutes.get("/driverdata", async (req, res) => {
     if (page > totalPage) {
       page = totalPage;
       skip = (page - 1) * limit;
+    }
+
+    let sortCriteria = {};
+
+    if (sortBy === "name") {
+      sortCriteria = { drivername: sortOrder === "asc" ? 1 : -1 };
+    } else if (sortBy === "email") {
+      sortCriteria = { driveremail: sortOrder === "asc" ? 1 : -1 };
+    } else if (sortBy === "phone") {
+      sortCriteria = { driverphone: sortOrder === "asc" ? 1 : -1 };
     }
 
     const aggregatePipeline = [
@@ -161,7 +173,7 @@ driverRoutes.get("/driverdata", async (req, res) => {
       { $unwind:{path: "$serviceDetails",
         preserveNullAndEmptyArrays: true }},
       { $match: query },
-      { $sort: { city: -1, _id: 1 } },
+      { $sort: sortCriteria },
       { $skip: skip },
       { $limit: limit },
     ];

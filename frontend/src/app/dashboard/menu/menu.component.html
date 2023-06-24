@@ -4,7 +4,7 @@
   </button>
   <div class="d-flex align-items-center justify-content-between w-100">
     <div class="example-spacer">
-      <span>EBER</span>
+      <span>Admin Dashboard</span>
       <!-- <img src="../../assets/images/eber logo.png" alt="Logo"> -->
     </div>
     <div >
@@ -28,8 +28,8 @@
       <mat-list-item>
         <button [matMenuTriggerFor]="lvl1master"  color="accent" mat-button><mat-icon>local_taxi</mat-icon> Rides</button>
         <mat-menu #lvl1master="matMenu">
-          <button  color="accent" routerLink="/dashboard/createride/createride"   mat-menu-item><mat-icon>calendar_month</mat-icon>Create Ride</button>
-          <button routerLink="confirmride"  mat-menu-item><mat-icon>check_circle </mat-icon>Confirmed Rides</button>
+          <button  color="accent" routerLink="/createride"   mat-menu-item><mat-icon>calendar_month</mat-icon>Create Ride</button>
+          <button routerLink="/confirmride"  mat-menu-item><mat-icon>check_circle </mat-icon>Confirmed Rides</button>
           <button routerLink="admin"  mat-menu-item><mat-icon>history_toggle_off</mat-icon> Ride History</button>
       </mat-menu>
     </mat-list-item>

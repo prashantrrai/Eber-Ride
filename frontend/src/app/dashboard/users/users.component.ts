@@ -54,45 +54,6 @@ export class UsersComponent {
     });
   }
 
-  // --------------------------------------------GET USER DATA---------------------------------------------
-  getUserData() {
-    this._users.getUsers(this.search, this.currentPage, this.limit, this.selectedSortBy, this.selectedSortOrder).subscribe({
-      next: (response: any) => {
-        console.log(response)
-        this.usersArray = response.userdata;
-        this.totalPages = response.totalPage;
-        this.count = response.count;
-
-        this.updatePaginatedUsers();
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    });
-  }
-  onPageSizeChange(event: any): void {
-    this.limit = parseInt(event.target.value);
-    this.currentPage = 1;
-    this.updatePaginatedUsers();
-    this.getUserData();
-  }
-  onPageChange(pageNumber: number) {
-    if (pageNumber >= 1 && pageNumber <= this.totalPages) {
-      this.currentPage = pageNumber;
-      this.updatePaginatedUsers();
-      this.getUserData();
-    }
-  }
-  getPagesArray(): number[] {
-    return Array(this.totalPages).fill(0).map((_, index) => index + 1);
-  }
-  updatePaginatedUsers() {
-    const startIndex = (this.currentPage - 1) * this.limit;
-    const endIndex = startIndex + this.limit;
-    this.paginatedUsers = this.usersArray.slice(startIndex, endIndex);
-  }
-
-
   // --------------------------------GET COUNTRY CODE DATA FROM REST API--------------------------------------
   fetchCountryDataAPI(): void {
     this._users.fetchCountryAPI().subscribe({
@@ -148,6 +109,44 @@ export class UsersComponent {
       this.toastr.warning("All Fields are Required");
     }
   }
+
+    // --------------------------------------------GET USER DATA FXN---------------------------------------------
+    getUserData() {
+      this._users.getUsers(this.search, this.currentPage, this.limit, this.selectedSortBy, this.selectedSortOrder).subscribe({
+        next: (response: any) => {
+          this.usersArray = response.userdata;
+          this.totalPages = response.totalPage;
+          this.count = response.count;
+  
+          this.updatePaginatedUsers();
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+      });
+    }
+    onPageSizeChange(event: any): void {
+      this.limit = parseInt(event.target.value);
+      this.currentPage = 1;
+      this.updatePaginatedUsers();
+      this.getUserData();
+    }
+    onPageChange(pageNumber: number) {
+      if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+        this.currentPage = pageNumber;
+        this.updatePaginatedUsers();
+        this.getUserData();
+      }
+    }
+    getPagesArray(): number[] {
+      return Array(this.totalPages).fill(0).map((_, index) => index + 1);
+    }
+    updatePaginatedUsers() {
+      const startIndex = (this.currentPage - 1) * this.limit;
+      const endIndex = startIndex + this.limit;
+      this.paginatedUsers = this.usersArray.slice(startIndex, endIndex);
+    }
+  
 
   // --------------------------------------------DELETE USER DATA---------------------------------------------
   deleteUser(userId: string): void {

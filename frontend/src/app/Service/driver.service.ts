@@ -33,9 +33,17 @@ export class DriverService {
     return this.http.post<any>(`${this.serverUrl}/adddriver`, driverData);
   }
   
-  getDriver(search: string, page: number, limit: number) {
-    const url = `${this.serverUrl}/driverdata?search=${search}&page=${page}&limit=${limit}`;
-    return this.http.get(url);
+  getDriver(search: string, page: number, limit: number, sortBy: string, sortOrder: string): Observable<any> {
+    const params = {
+      search: search,
+      page: page.toString(),
+      limit: limit.toString(),
+      sortBy: sortBy,
+      sortOrder: sortOrder
+    };
+    console.log(params)
+    const url = `${this.serverUrl}/driverdata`;
+    return this.http.get(url, { params: params });
   }
 
   deleteDriver(driverId: string): Observable<any> {

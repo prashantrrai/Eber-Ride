@@ -5,29 +5,71 @@ const SettingModel = require('../models/setting');
 
 
 // --------------------------------------------POST SETTING DATA API---------------------------------------------
-settingRouter.post('/setting', async (req, res) => {
+// settingRouter.post('/setting', async (req, res) => {
 
-    const {ridetimeout, stop} = req.body;
+//     const {ridetimeout, stop} = req.body;
 
+//     try {
+//         const settingData = new SettingModel({
+//             ridetimeout: ridetimeout,
+//             stop: stop,
+//         })
+
+//         await settingData.save();
+//         console.log(settingData);
+//         res.status(200).json({
+//             success: true,
+//             message: "Setting Data Added Successfully",
+//             settingData,
+//           });
+
+//     } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ success: false, message: error });
+//     }
+// })
+
+// --------------------------------------------GET SETTING DATA API---------------------------------------------
+settingRouter.get('/settingdata', async (req, res) => {
     try {
-        const settingData = new SettingModel({
-            ridetimeout: ridetimeout,
-            stop: stop,
-        })
-
-        await settingData.save();
-        console.log(settingData);
+        const settingData = await SettingModel.find();
         res.status(200).json({
             success: true,
-            message: "Setting Data Added Successfully",
+            message: "Setting Data Found Successfully",
             settingData,
-          });
-
+            });
     } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error });
+        console.log(error);
+        res.status(500).json({ success: false, message: error });
     }
 })
+
+// // --------------------------------------------UPDATE SETTING DATA API---------------------------------------------
+settingRouter.put("/updatesetting", async (req, res) => {
+    try {
+      const {ridetimeout, stop} = req.body;
+        let data;
+
+      if(stop){
+        data = {stop: stop};
+      }else{
+        data = {ridetimeout: ridetimeout};
+      }
+  
+      let settingdata = await SettingModel.findByIdAndUpdate("6496aa3f9ab2c15de79d0fee",data, { new: true });
+
+      await settingdata.save()
+      console.log(settingdata)
+      res.status(200).json({
+          success: true,
+          message: "Setting Data Updated Successfully",
+          settingdata,
+        });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error });
+    }
+  });
 
 module.exports = settingRouter;
 
@@ -49,24 +91,5 @@ module.exports = settingRouter;
 //     }
 //   });
   
-// // --------------------------------------------UPDATE SETTING DATA API---------------------------------------------
-// settingRouter.put("/updatepricing/:id", async (req, res) => {
-//     try {
-//       const id = req.params.id;
-//       const {ridetimeout, stop} = req.body;
-  
-//       const settingdata = {ridetimeout: ridetimeout, stop: stop};
-  
-//       await SettingModel.findByIdAndUpdate(id, settingdata, { new: true });
 
-//       res.status(200).json({
-//           success: true,
-//           message: "Setting Data Updated Successfully",
-//           settingdata,
-//         });
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).json({ success: false, message: error });
-//     }
-//   });
   

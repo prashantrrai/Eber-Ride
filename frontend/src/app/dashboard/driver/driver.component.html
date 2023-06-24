@@ -12,7 +12,7 @@
 
   <!-- -----------------------------------------SHOW DATA--AND--SEARCH------------------------------------------------------- -->
   <div>
-    <div class="d-flex justify-content-center align-items-center">
+    <div  id="custom-input">
       <label for="pageSize">Show Data :</label>
       <div class="custom-select">
         <select class="form-control m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
@@ -26,10 +26,35 @@
         </select>
         <i class="fas fa-chevron-down dropdown-icon"></i>
       </div>
-      <input type="text" class="form-control w-25 m-4 p-2" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="search" (input)="getDriverData()">
+      <input type="text" class="form-control m-4 p-2" id="search" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="search" (input)="getDriverData()">
+      <div class="sortby">
+        <label for="sortBy">Sort By:</label>
+        <div class="custom-select">
+          <select class="form-control mx-2" id="sortBy" [(ngModel)]="selectedSortBy" (change)="getDriverData()">
+            <option value="name">Name</option>
+            <option value="email">Email</option>
+            <option value="phone">Phone</option>
+          </select>
+        <i class="fas fa-chevron-down dropdown-icon"></i>
+        </div>
+      </div>
+  
+      <div class="sortorder">
+        <label for="sortOrder">Sort Order:</label>
+        <div class="custom-select">
+          <select class="form-control mx-2" id="sortOrder" [(ngModel)]="selectedSortOrder" (change)="getDriverData()">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        <i class="fas fa-chevron-down dropdown-icon"></i>
+        </div>
+      </div>
     </div>
+    
   </div>
 </div>
+
+
 
 <!-- -----------------------------------------DRIVER FORM---------------------------------------------------- -->
 <div class="parentFormContainer">

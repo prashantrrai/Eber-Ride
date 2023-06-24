@@ -19,6 +19,7 @@ const routes: Routes = [
       {path:'setting',loadChildren:()=>import('./setting/setting.module').then(m=>m.SettingModule)},
       {path:'users',loadChildren:()=>import('./users/users.module').then(m=>m.UsersModule)},
       {path:'vehicletype',loadChildren:()=>import('./vehicle/vehicle.module').then(m=>m.VehicleModule)},
+      {path:'createride',loadChildren:()=>import('./createride/createride.module').then(m=>m.CreaterideModule)},
     ]
   },
 

@@ -1,4 +1,25 @@
 
+.sortorder{
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sortorder{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#custom-input{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+#search{
+  width: 25%;
+}
+
 .parentFormContainer {
     display: flex;
     justify-content: center;
@@ -147,6 +168,21 @@
     #button-search-div{
       display: block;
     }
+    
+    .sortorder{
+      margin-left: 20px;
+      display: block;
+    }
+    .sortorder{
+      display: block;
+    }
+    #custom-input{
+      display: block;
+    }
+    #search{
+      width: 100%;
+    }
+
   }
   
   @media (max-width: 480px) {

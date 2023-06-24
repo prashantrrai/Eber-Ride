@@ -30,6 +30,8 @@ export class DriverComponent {
   serviceForm!: FormGroup;
   selectedVehicle: any;
   count: any;
+  selectedSortBy!: string;
+  selectedSortOrder!: string;
 
   constructor(
     private _driver: DriverService,
@@ -151,10 +153,8 @@ export class DriverComponent {
 
   //--------------------------------------------GET DRIVER DATA FXN---------------------------------------------
   getDriverData() {
-    this._driver.getDriver(this.search ,this.currentPage, this.limit).subscribe({
+    this._driver.getDriver(this.search ,this.currentPage, this.limit, this.selectedSortBy, this.selectedSortOrder).subscribe({
       next: (response: any) => {
-        // console.log(response.driverdata);
-        
         this.driverArray = response.driverdata;
         this.totalPages = response.totalPage;
         this.count = response.count;
