@@ -10,7 +10,7 @@ export class CreaterideService {
   constructor(private http: HttpClient) { }
 
   getUserByNumber(number: any) {
-    return this.http.get<any>(`${this.serverUrl}/user/${number}`);
+    return this.http.get<any>(`${this.serverUrl}/userdata/${number}`);
   }
 
   addRide(rideData: any) {

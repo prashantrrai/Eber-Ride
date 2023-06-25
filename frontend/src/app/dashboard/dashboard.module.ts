@@ -9,8 +9,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MaterialModule } from '../material-module';
 import { FooterComponent } from './footer/footer.component';
 import { MenuComponent } from './menu/menu.component';
-import { CreaterideModule } from './createride/createride.module';
+import { RouterModule, Routes } from '@angular/router';
 
+const routes : Routes = [{ path : "" , component : DashboardComponent , pathMatch : "full"}]
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { CreaterideModule } from './createride/createride.module';
   ],
   imports: [
     CommonModule,
+    RouterModule.forChild(routes),
     DashboardRoutingModule,
     FormsModule,
     ReactiveFormsModule,
@@ -28,7 +30,6 @@ import { CreaterideModule } from './createride/createride.module';
     MaterialModule,
     ToastrModule.forRoot(),
     NgxPaginationModule,
-    CreaterideModule,
   ]
 })
 export class DashboardModule { }

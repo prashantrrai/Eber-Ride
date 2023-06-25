@@ -19,12 +19,22 @@ export class AuthService {
   startInactivityTimer(): void {
     this.inactivityTimeout = setTimeout(() => {
       this.logout();
-    }, 20 * 60 * 1000); // 20 minutes in milliseconds
+    // }, 20 * 60 * 1000); // 20 minutes in milliseconds
+  }, 5* 1000); // 20 minutes in milliseconds
   }
 
   resetInactivityTimer(): void {
     clearTimeout(this.inactivityTimeout);
     this.startInactivityTimer();
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token') || !!sessionStorage.getItem('token');
+  }
+
+  deleteToken(): void {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
   }
 
 }
