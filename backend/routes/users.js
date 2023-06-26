@@ -280,14 +280,14 @@ userRoutes.get("/userdata", async (req, res) => {
 
 // ---------------------------GET USER DETAILS FROM PHONE NUMBER----------------------------------//
 userRoutes.post('/userdata/number', async (req, res) => {
-  const {number} = req.body;
+  const {countrycode, userphone} = req.body;
   // console.log(req.body);
   try {
-    const user = await userModel.findOne({userphone: number})
+    const user = await userModel.findOne(req.body)
     if (!user) {
       return res.status(404).send({ message: "No user found" });
     }
-    // console.log(user);
+    console.log(user)
     res.send(user)
   } catch (error) {
     res.status(500).send(error)

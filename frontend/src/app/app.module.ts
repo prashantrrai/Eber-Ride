@@ -18,7 +18,7 @@ import { SuccessDialogComponent } from './shared/success-dialog/success-dialog.c
 @NgModule({
   declarations: [
     AppComponent,
-    SuccessDialogComponent
+    SuccessDialogComponent,
   ],
   imports: [
     BrowserModule,

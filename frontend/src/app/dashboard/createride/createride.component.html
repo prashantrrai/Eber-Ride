@@ -1,21 +1,23 @@
+<!-- -------------------------------------------------MAIN DIV---------------------------------------------- -->
 <div class="main-div">
     <mat-card class="left-card">
       <mat-card-content>
         <!-- -------------------------------------------------USER DETAILS FORM------------------------------------------------ -->
         <form [formGroup]="userForm" (ngSubmit)="getUserDetails()">
-          <select class="form-select country-code" formControlName="countryCode">
+          <select class="form-select country-code" formControlName="countrycode">
             <option value="+91" selected>+91</option>
             <option value="{{code}}" *ngFor="let code of countryCodes">{{code}}</option>
           </select>
   
-          <input type="text" class="form-control number" formControlName="number" [(ngModel)]="numericInputValue"
+          <!-- <input type="text" class="form-control number" formControlName="userphone" [(ngModel)]="numericInputValue"
+            (input)="filterNonDigits($event)" placeholder="Enter phone number"> -->
+            <input type="text" class="form-control number" formControlName="userphone"
             (input)="filterNonDigits($event)" placeholder="Enter phone number">
-  
+
           <button class="btn btn-primary get-details" type="submit" [disabled]="!userForm.valid">Get Details</button>
-  
         </form>
   
-        <!-- User details -->
+        <!-- ---------------USER DETAILS CARD------------------- -->
         <div class="card my-2" *ngIf="isUser">
           <div class="card-body">
             <div class="row">
@@ -23,7 +25,7 @@
                 <p class="mb-0">Name</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.name}}</p>
+                <p class="text-muted mb-0">{{user.username}}</p>
               </div>
             </div>
             <hr>
@@ -32,7 +34,7 @@
                 <p class="mb-0">Email</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.email}}</p>
+                <p class="text-muted mb-0">{{user.useremail}}</p>
               </div>
             </div>
             <hr>
@@ -41,7 +43,7 @@
                 <p class="mb-0">Mobile</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.countryCode}}-{{user.number}}</p>
+                <p class="text-muted mb-0">{{user.countrycode}}&nbsp;{{user.userphone}}</p>
               </div>
             </div>
             <hr>
@@ -49,52 +51,59 @@
               (click)="addTravelForm()">Next</button>
           </div>
         </div>
-  
+        
+        <!-- ------------------TRAVEL DETAILS FORM------------------- -->
         <div class="mt-4" *ngIf="!isNext">
           <div class="card">
             <div class="card-body">
               <form [formGroup]="travelForm" (ngSubmit)="calculateRoute()">
                 <h5 class="card-title">Travel Information</h5>
                 <div class="mb-3">
-                  <label for="startInput" class="form-label">Starting Point</label>
+                  <div class="d-flex align-items-center mb-1">
+                    <label for="startInput">Starting Point</label>
+                  </div>
                   <input type="text" class="form-control" id="startInput" placeholder="Enter starting point" #startInput
-                    (change)="startInputChange()" formControlName="start">
-                  <div
-                    *ngIf="(travelForm.controls.start.errors && travelForm.get('start')?.touched)|| travelForm.get('start')?.dirty"
-                    class="my-2">
-                    <div *ngIf="travelForm.controls.start.errors">
-                      <div *ngIf="travelForm.controls.start.errors['required']" style="color: red;">
-                        Please enter starting point!
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <div *ngIf="!isInZone" style="color: red;">
-                      Service is not available from given location you have entered!
+                  (change)="startInputChange()" formControlName="start">
+                  <div *ngIf="(travelForm.controls.start.errors && travelForm.get('start')?.touched)|| travelForm.get('start')?.dirty"
+                  class="my-1">
+                  <div class="d-flex align-items-center" *ngIf="travelForm.controls.start.errors">
+                    <div *ngIf="travelForm.controls.start.errors['required']" style="color: red;">
+                      Please enter starting point!
                     </div>
                   </div>
                 </div>
+                <div>
+                  <div *ngIf="!isInZone" style="color: red;">
+                    Service is not available from given location you have entered!
+                  </div>
+                </div>
+                </div>
                 <div class="mb-3">
-                  <label for="endInput" class="form-label">Destination</label>
+                  <div class="d-flex align-items-center mb-1">
+                    <label for="endInput" class="form-label">Destination</label>
+                  </div>
                   <input type="text" class="form-control" id="endInput" placeholder="Enter destination" #endInput
-                    formControlName="end">
+                  formControlName="end">
                   <div
-                    *ngIf="(travelForm.controls.end.errors && travelForm.get('end')?.touched)|| travelForm.get('end')?.dirty"
-                    class="my-2">
-                    <div *ngIf="travelForm.controls.end.errors">
-                      <div *ngIf="travelForm.controls.end.errors['required']" style="color: red;">
-                        Please enter destination!
-                      </div>
+                  *ngIf="(travelForm.controls.end.errors && travelForm.get('end')?.touched)|| travelForm.get('end')?.dirty"
+                  class="my-1">
+                  <div *ngIf="travelForm.controls.end.errors">
+                    <div class="d-flex align-items-center" *ngIf="travelForm.controls.end.errors['required']" style="color: red;">
+                      Please enter destination!
                     </div>
                   </div>
                 </div>
-  
-                <div class="mb-3">
+              </div>
+              
+              <!-- ------------------WAY POINT------------------- -->
+              <div class="mb-3">
+                <div class="d-flex align-items-center mb-1">
                   <label for="waypoint" class="form-label">Way point</label>
-                  <div class="d-flex gap-2">
-                    <input type="text" placeholder="Waypoint" #waypointInput id="waypoint" class="form-control">
+                </div>
+                <div class="d-flex gap-2">
+                  <input type="text" placeholder="Enter Stops" #waypointInput id="waypoint" class="form-control">
                     <button (click)="addWaypoint()" class="btn btn-success add-stops" [disabled]="stops ==stopsCounter"
-                      type="button">Add_Stops</button>
+                      type="button">Add</button>
                   </div>
                 </div>
   
@@ -104,8 +113,8 @@
                     <button (click)="removeWaypoint(i)" class="btn btn-danger">Remove</button>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-success mb-2" [disabled]="!travelForm.valid"
-                  #directionBtn>Directions</button>
+                <button type="submit" class="btn btn-info mb-2" [disabled]="!travelForm.valid"
+                  #directionBtn>Calculate</button>
               </form>
             </div>
           </div>
@@ -119,11 +128,11 @@
   
       <div *ngIf="isRoute && isInZone">
         <div class="list-group mb-2">
-          <a class="list-group-item list-group-item-action">Estimate Distance : {{totalDistance}}</a>
+          <a class="list-group-item list-group-item-action">Estimate Distance : {{totalDistance}} Km</a>
           <a class="list-group-item list-group-item-action">Estimate Time :
             {{totalHours }} hours {{ totalMinutes }} minutes</a>
           <a class="list-group-item list-group-item-action"
-            *ngFor="let pricing of vehiclesPricing">{{pricing.vehicleType|titlecase}} |
+            *ngFor="let pricing of vehiclesPricing">{{pricing.service.vehicleName|titlecase}} |
             Estimate Fare : {{pricing.estimateFare}}</a>
           <a class="list-group-item list-group-item-action" *ngIf="vehiclesPricing.length == 0" style="color: red;">No
             service type available
@@ -137,8 +146,8 @@
               <select class="form-select" id="serviceType" #serviceType (change)="onSelectServiceType(serviceType.value)"
                 formControlName="serviceType">
                 <option value="">Select service type</option>
-                <option value="{{pricing.vehicleType}}" *ngFor="let pricing of vehiclesPricing">
-                  {{pricing.vehicleType|titlecase}}
+                <option value="{{pricing.service.vehicleName}}" *ngFor="let pricing of vehiclesPricing">
+                  {{pricing.service.vehicleName|titlecase}}
                 </option>
               </select>
             </a>

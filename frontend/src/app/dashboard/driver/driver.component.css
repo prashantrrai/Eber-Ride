@@ -113,7 +113,7 @@
     border-radius: 10px;
     box-shadow: 4px 4px 16px #17b009;
     width: 90%;
-    max-width: 800px;
+    /* max-width: 800px; */
     padding: 20px;
     margin: 40px;
   }
@@ -295,6 +295,6 @@
   background-color: green;
 }
 
-.declined {
+/* .declined {
   background-color: red;
-}
+} */

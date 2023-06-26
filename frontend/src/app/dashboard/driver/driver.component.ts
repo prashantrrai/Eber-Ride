@@ -50,7 +50,7 @@ export class DriverComponent {
       profile: [""],
       drivername: ["", [Validators.required]],
       driveremail: ["", [Validators.required, Validators.email]],
-      countrycode: ["", [Validators.required]],
+      countrycode: ["+91", [Validators.required]],
       driverphone: ["", [Validators.required, Validators.minLength(10)]],
       city: ["", [Validators.required]],
       status: [""],

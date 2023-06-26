@@ -1,6 +1,7 @@
 .main-div {
     padding: 0px 1em;
     margin: 1em 0px;
+    background-color: rgba(0, 0, 0, 0.868);
   }
   
   .left-card {
@@ -22,8 +23,8 @@
     min-width: 200px;
     height: 400px;
     margin: 15px auto;
-    border: 1px solid black;
-    border-radius: 15px;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 5px;
   }
   
   

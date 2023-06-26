@@ -175,4 +175,16 @@ pricingRoutes.get("/pricingdata", async (req, res) => {
   }
 });
 
+// ----------------Vehicle data with City ID---------------//
+pricingRoutes.get("/vehicle/:id", async (req, res) => {
+  try {
+    const cityId = req.params.id;
+    const pricingdata = await pricingModel.find({ city: cityId }).populate("service",'vehicleName');
+    res.status(200).json({ success: true, message: "Pricing Data Found based on City ID", pricingdata });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ success: false, message: error });
+  }
+});
+
 module.exports = pricingRoutes;

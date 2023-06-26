@@ -1,7 +1,8 @@
 
 
 img{
-  height: 60px;
-  margin-left: 20px;
-  cursor: pointer;
+  height: 100vh;
+  width: 100%;
+  /* margin-left: 20px; */
+  /* cursor: pointer; */
 }

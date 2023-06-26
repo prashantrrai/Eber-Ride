@@ -5,7 +5,7 @@
   <div class="d-flex align-items-center justify-content-between w-100">
     <div class="example-spacer">
       <span>Admin Dashboard</span>
-      <!-- <img src="../../assets/images/eber logo.png" alt="Logo"> -->
+      <!-- <img src="../../assets/images/eber logo.png" alt="Logo">  -->
     </div>
     <div >
       <!-- <button [matMenuTriggerFor]="lvl1master" mat-button>Master</button> -->
@@ -23,19 +23,19 @@
   <mat-drawer class="bg-dark"  #drawer opened="false" mode="side" position="start" >
   <mat-nav-list >
       <mat-list-item >
-          <button routerLink="/works" color="accent" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>
+          <button routerLink="dashboard" color="accent" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>
       </mat-list-item>
       <mat-list-item>
         <button [matMenuTriggerFor]="lvl1master"  color="accent" mat-button><mat-icon>local_taxi</mat-icon> Rides</button>
         <mat-menu #lvl1master="matMenu">
-          <button  color="accent" routerLink="/createride"   mat-menu-item><mat-icon>calendar_month</mat-icon>Create Ride</button>
-          <button routerLink="/confirmride"  mat-menu-item><mat-icon>check_circle </mat-icon>Confirmed Rides</button>
+          <button  color="accent" routerLink="createride"   mat-menu-item><mat-icon>calendar_month</mat-icon>Create Ride</button>
+          <button routerLink="confirmride"  mat-menu-item><mat-icon>check_circle </mat-icon>Confirmed Rides</button>
           <button routerLink="admin"  mat-menu-item><mat-icon>history_toggle_off</mat-icon> Ride History</button>
       </mat-menu>
     </mat-list-item>
 
       <mat-list-item>
-          <button routerLink="/users" color="accent"  mat-button><mat-icon>person</mat-icon>Users</button>
+          <button routerLink="users" color="accent"  mat-button><mat-icon>person</mat-icon>Users</button>
       </mat-list-item>
       <mat-list-item>
         <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button><mat-icon>account_circle</mat-icon>Drivers</button>
@@ -47,10 +47,10 @@
       <mat-list-item>
           <button  [matMenuTriggerFor]="lvl3master" color="accent"  mat-button><mat-icon>monetization_on</mat-icon> Pricing</button>
           <mat-menu #lvl3master="matMenu">
-            <button  routerLink="/country" mat-menu-item><mat-icon>language</mat-icon>Country</button>
-            <button routerLink="/city"  mat-menu-item><mat-icon>language</mat-icon>City</button>
-            <button  routerLink="/vehicletype" mat-menu-item><mat-icon> directions_car</mat-icon> Vehicle type</button>
-            <button  routerLink="/vehiclepricing" mat-menu-item><mat-icon> monetization_on</mat-icon>Vehicle Pricing</button>
+            <button  routerLink="country" mat-menu-item><mat-icon>language</mat-icon>Country</button>
+            <button routerLink="city"  mat-menu-item><mat-icon>language</mat-icon>City</button>
+            <button  routerLink="vehicletype" mat-menu-item><mat-icon> directions_car</mat-icon> Vehicle type</button>
+            <button  routerLink="vehiclepricing" mat-menu-item><mat-icon> monetization_on</mat-icon>Vehicle Pricing</button>
         </mat-menu>
       </mat-list-item>
       <mat-list-item>
@@ -61,6 +61,8 @@
   <mat-drawer-content>
       <div style="text-align: center;min-height: 600px;">
           <router-outlet></router-outlet>
+          <!-- <img src="../../../assets/images/pexels-sebastiaan-stam-1097456.jpg" alt="home"> -->
+          
       </div>
   </mat-drawer-content>
 </mat-drawer-container>

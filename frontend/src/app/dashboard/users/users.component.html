@@ -72,7 +72,7 @@
                   <label class="form-label d-flex justify-content-start">Phone Number</label>
                   <div class="phone-input w-100">
                       <select class="form-control w-25" id="country-code" name="code" #code (change)="onSelected(code.value)">
-                        <option value="+1">+1</option>
+                        <option value="+91" selected>+91</option>
                         <option [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
                       </select>
                       <input type="tel" class="form-control"  id="phone-number" formControlName="userphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
@@ -108,7 +108,7 @@
                 <label class="form-label d-flex justify-content-start">Phone Number</label>
                 <div class="phone-input w-100">
                     <select class="form-control w-25" id="country-code" name="code" #code (change)="onSelected(code.value)"  formControlName="updatecountrycode">
-                      <option value="+1">+1</option>
+                      <option value="+91" selected>+91</option>
                       <option [value]="code" *ngFor="let code of countrycode ">{{code}}</option>
                     </select>
                     <input type="tel" class="form-control"  id="phone-number" formControlName="updateuserphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>

@@ -9,8 +9,8 @@ export class CreaterideService {
 
   constructor(private http: HttpClient) { }
 
-  getUserByNumber(number: any) {
-    return this.http.get<any>(`${this.serverUrl}/userdata/${number}`);
+  getUserByNumber(phonedata: any) {
+    return this.http.post<any>(`${this.serverUrl}/userdata/number`, phonedata);
   }
 
   addRide(rideData: any) {
@@ -18,7 +18,8 @@ export class CreaterideService {
   }
 
   getServiceType(cityId: any) {
-    return this.http.get<any>(`${this.serverUrl}/servicetype/ + cityId`);
+    // console.log(cityId)
+    return this.http.get<any>(`${this.serverUrl}/vehicle/${cityId}`);
   }
 
 

@@ -13,7 +13,8 @@ const priceSchema = new mongoose.Schema({
     },
     service: {
         type: Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref:'vehicleModel'
     },
     driverprofit: {
         type: Number,

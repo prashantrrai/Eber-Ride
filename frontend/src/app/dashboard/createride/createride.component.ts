@@ -9,6 +9,7 @@ import {
 import { FormBuilder, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
+import { AuthService } from "src/app/Service/auth.service";
 import { CityService } from "src/app/Service/city.service";
 import { CreaterideService } from "src/app/Service/createride.service";
 import { SuccessDialogComponent } from "src/app/shared/success-dialog/success-dialog.component";
@@ -44,8 +45,8 @@ export class CreaterideComponent {
   estimateFare: any;
 
   userForm = this.fb.group({
-    countryCode: ["+91", Validators.required],
-    number: [
+    countrycode: ["+91", Validators.required],
+    userphone: [
       "",
       [
         Validators.required,
@@ -92,7 +93,8 @@ export class CreaterideComponent {
     private _city: CityService,
     private cdr: ChangeDetectorRef,
     private _setting: SettingService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -100,7 +102,7 @@ export class CreaterideComponent {
     this.selectedDate = this.formatDate(currentDate);
     this.selectedTime = this.formatTime(currentDate);
     this.getCodes();
-    this.getNumberOfStops();
+    // this.getNumberOfStops();
     this.initMap();
   }
 
@@ -108,13 +110,13 @@ export class CreaterideComponent {
   initMap() {
     navigator.geolocation.getCurrentPosition((location) => {
       let result = location.coords;
-      console.log(result);
+      // console.log(result);
       const place = { lat: result.latitude, lng: result.longitude };
       this.map = new google.maps.Map(
         document.getElementById("map") as HTMLElement,
         {
           zoom: 7,
-          center: place, // Default map center
+          center: place,
         }
       );
     });
@@ -142,56 +144,56 @@ export class CreaterideComponent {
   }
 
   //--------------- TO GET NO. OF STOPS ------------------
-  getNumberOfStops() {
-    this._setting.getStops().subscribe({
-      next: (response: any) => {
-        // console.log(response.settingData[0]);
-        this.stops = response[0].stops;
-      },
-      error: (error) => {
-        this.toaster.error(error.message);
-      },
-    });
-  }
+  // getNumberOfStops() {
+  //   this._setting.getStops().subscribe({
+  //     next: (response: any) => {
+  //       // console.log(response.settingData[0]);
+  //       this.stops = response[0].stops;
+  //     },
+  //     error: (error) => {
+  //       this.toaster.error(error.message);
+  //     },
+  //   });
+  // }
 
-  // ------------------PHONE NUMBER FORM---------------------
+  // ------------------PHONE NUMBER FILTER---------------------
   filterNonDigits(event: any) {
-    // console.log(this.numericInputValue);
-    this.numericInputValue = this.numericInputValue.replace(/\D/g, "");
-    if (this.numericInputValue.length > 9) {
-      this.numericInputValue = this.numericInputValue.slice(0, 10);
-
-      this.userForm.patchValue({
-        number: this.numericInputValue,
-      });
+    let inputValue: string = event.target.value;
+    inputValue = inputValue.replace(/\D/g, "");
+  
+    if (inputValue.length > 10) {
+      inputValue = inputValue.slice(0, 10);
     }
-    event.target.value = this.numericInputValue;
+  
+    this.userForm.patchValue({
+      userphone: inputValue
+    });
+  
+    event.target.value = inputValue;
   }
 
   // ----------------------------------------GET USER DETAILS----------------------------------------//
   getUserDetails() {
     this.isNext = true;
-    // console.log(this.userForm.value);
     const userData = {
-      countryCode: this.userForm.value.countryCode,
-      number: this.userForm.value.number,
+      countrycode: this.userForm.value.countrycode,
+      userphone: this.userForm.value.userphone,
     };
-    // console.log(userData)
 
     this._createride.getUserByNumber(userData).subscribe({
       next: (user: any) => {
-        console.log(user)
         this.isUser = true;
+        this.user = user
         this.polygons = [];
-        this.user = user[0];
+
         this._city.getcity().subscribe({
           next: (cities: any) => {
+
             this.cities = cities;
             this.cities.forEach((city: any) => {
-              this.polygons.push(city.polygonCord);
+              this.polygons.push(city.coordinates);
             });
-            console.log(this.cities);
-            console.log(this.polygons, "polygons.....");
+            // console.log(this.polygons, "polygons.....");
 
             this.polygonObjects = this.polygons.map(function (
               polygonCoordinates: any
@@ -201,7 +203,7 @@ export class CreaterideComponent {
               });
             });
 
-            // this.cordsArray = this.cities.polygonCord
+            this.cordsArray = this.cities.coordinates
           },
           error: (error: any) => {
             console.log(error);
@@ -210,9 +212,9 @@ export class CreaterideComponent {
         });
       },
       error: (error: any) => {
-        console.log(error);
+        console.log(error.error.message);
         if (error.error) {
-          this.toaster.error(error.error.message);
+          this.toaster.error(error.error.message, "Sorry");
           this.user = undefined;
           this.isUser = false;
         } else {
@@ -222,30 +224,29 @@ export class CreaterideComponent {
     });
   }
 
-  //After user found
+  // ----------------------------------------AFTER USER FOUND----------------------------------------//
   addTravelForm() {
     this.isNext = false;
     this.isUser = false;
 
     setTimeout(() => {
-      console.log("start...........");
+      console.log("starting 2 msec after user found...........");
       this.initAutocomplete();
     }, 200);
   }
 
+  // --------------------AUTO COMPLETE FUNCTION IN TRAVEL FORM-------------------
   initAutocomplete() {
     let start = document.getElementById("startInput") as HTMLInputElement;
     const startAutocomplete = new google.maps.places.Autocomplete(start);
     let waypoints = document.getElementById("waypoint") as HTMLInputElement;
 
-    const waypointsAutocomplete = new google.maps.places.Autocomplete(
-      waypoints
-    );
+    const waypointsAutocomplete = new google.maps.places.Autocomplete(waypoints);
     let end = document.getElementById("endInput") as HTMLInputElement;
     const endAutocomplete = new google.maps.places.Autocomplete(end);
   }
 
-  // whent starting location change
+  //-------------whent starting location change-------------------
   startInputChange() {
     this.rideForm.reset();
     this.rideForm.patchValue({
@@ -256,7 +257,6 @@ export class CreaterideComponent {
     if (this.startLocation != "") {
       this.checkLocation();
     }
-    console.log("change.........");
   }
 
   //to check service is available from starting location or not
@@ -266,13 +266,13 @@ export class CreaterideComponent {
 
       setTimeout(() => {
         let input = document.getElementById("startInput") as HTMLInputElement;
-        console.log(input.value);
+        // console.log(input.value);
         geocoder.geocode(
           { address: input.value },
           (results: any, status: any) => {
             if (status === "OK") {
               const location = results[0].geometry.location;
-              console.log(location);
+              // console.log(location);
               this.isInZone = false;
               for (var i = 0; i < this.polygonObjects.length; i++) {
                 if (
@@ -286,11 +286,11 @@ export class CreaterideComponent {
                   break; // Exit the loop if the location is found within any polygon
                 }
               }
-              console.log(this.isInZone);
-              console.log(this.cityIndex, "cityindex....");
+              // console.log(this.isInZone);
+              // console.log(this.cityIndex, "cityindex....");
 
               if (!this.isInZone) {
-                console.log("service unable");
+                console.log("service Not Available");
                 if (this.endInput) {
                   this.endInput.nativeElement.disabled = true;
                   this.waypointInput.nativeElement.disabled = true;
@@ -303,11 +303,11 @@ export class CreaterideComponent {
                   this.waypointInput.nativeElement.disabled = false;
                   this.directionBtn.nativeElement.disabled = false;
                 }
-                console.log("service available");
+                console.log("Service Available");
                 this.toaster.success("Service is available in city!");
               }
             } else {
-              alert("Select location from auto suggestion " + status);
+              this.toaster.info("Select location from Auto Suggestion " + status);
             }
           }
         );
@@ -315,6 +315,7 @@ export class CreaterideComponent {
     }
   }
 
+  // ----------------------ADD WAY POINTS----------------------
   addWaypoint() {
     const waypoint = this.waypointInput?.nativeElement.value;
     if (waypoint) {
@@ -324,6 +325,7 @@ export class CreaterideComponent {
     }
   }
 
+  // ----------------------REMOVE WAY POINTS----------------------
   removeWaypoint(index: number) {
     this.stopsCounter--;
     this.waypoints.splice(index, 1);
@@ -371,12 +373,14 @@ export class CreaterideComponent {
   }
 
   calculateFare(vehiclePricing: any, cityIndex: any) {
-    let minFare = +vehiclePricing.minFare;
-    let baseDistance = +vehiclePricing.baseDistance;
-    let basePrice = +vehiclePricing.basePrice;
-    let pDistance = +vehiclePricing.pDistance;
-    let pTime = +vehiclePricing.pTime;
+    let minFare = +vehiclePricing.minfare;
+    let baseDistance = +vehiclePricing.distancebaseprice;
+    let basePrice = +vehiclePricing.baseprice;
+    let pDistance = +vehiclePricing.ppudist;
+    let pTime = +vehiclePricing.pputime;
 
+    console.log(minFare, baseDistance, basePrice, pDistance, pTime);
+    console.log(typeof minFare, typeof baseDistance, typeof basePrice, typeof pDistance, typeof pTime);
     let estimatePrice =
       //added multiply * temporarily
       (this.totalDistance - baseDistance) * pDistance +
@@ -388,10 +392,7 @@ export class CreaterideComponent {
 
     this.estimateFare = estimatePrice;
     this.vehiclesPricing[cityIndex].estimateFare = estimatePrice;
-    console.log(
-      this.vehiclesPricing[cityIndex].estimateFare,
-      "big log..........."
-    );
+    console.log(this.vehiclesPricing[cityIndex].estimateFare,"big log...........");
 
     console.log(estimatePrice, "Fare......");
   }
@@ -406,7 +407,7 @@ export class CreaterideComponent {
     this._createride.getServiceType(cityId).subscribe({
       next: (vehiclesPricing: any) => {
         console.log(vehiclesPricing);
-        this.vehiclesPricing = vehiclesPricing;
+        this.vehiclesPricing = vehiclesPricing.pricingdata;
 
         // to calculate fare......
         this.vehiclesPricing.forEach((vehiclePricing: any, i: number) => {
@@ -487,7 +488,7 @@ export class CreaterideComponent {
   onSelectServiceType(serviceType: any) {
     console.log(serviceType);
     this.selectedVehicle = this.vehiclesPricing.find((price: any) => {
-      return price.vehicleType === serviceType;
+      return price.service.vehicleName === serviceType;
     });
     if (this.selectedVehicle) {
       this.selectedVehicle.totalDistance = this.totalDistance;
@@ -545,7 +546,7 @@ export class CreaterideComponent {
     return `${hours}:${minutes}`;
   }
 
-  // To book ride
+  // ------------------------------------TO BOOK RIDE---------------------------------------------//
   onBookRide() {
     console.log(this.rideForm.value);
     this.selectedVehicle.startLocation = this.startLocation;
@@ -557,7 +558,7 @@ export class CreaterideComponent {
       time: this.selectedTime,
       vehicleId: this.selectedVehicle._id,
       userId: this.user._id,
-      cityId: this.selectedVehicle.cityId,
+      cityId: this.selectedVehicle.city,
       startLocation: this.startLocation,
       endLocation: this.endLocation,
       wayPoints: this.waypoints,
@@ -585,5 +586,9 @@ export class CreaterideComponent {
         this.toaster.error(error.message);
       },
     });
+  }
+
+  resetTimer() {
+    this.authService.resetInactivityTimer();
   }
 }

@@ -73,7 +73,7 @@
         <label class="form-label d-flex justify-content-start">Phone Number</label>
         <div class="phone-input w-100">
             <select class="form-control w-25" id="country-code" name="code" #code (change)="onSelectedCode(code.value)" formControlName="countrycode">
-              <option value="">+1</option>
+              <option value="+91" selected>+91</option>
               <option [value]="code" *ngFor="let code of countrycodeArray ">{{code}}</option>
             </select>
             <input type="tel" class="form-control"  id="phone-number" formControlName="driverphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
@@ -114,7 +114,7 @@
         <th>Email</th>
         <th>Phone</th>
         <th>City</th>
-        <th>Status</th>
+        <th>Driver Status</th>
         <th>Service</th>
         <th>Action</th>
       </tr>
@@ -129,8 +129,8 @@
         <td>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"  [checked]="driver.status" (click)="driverStatus(driver)" [ngClass]="{'approved': driver.status, 'declined': !driver.status}">
+            {{driver.status == true ? 'Approved': "Declined"}}
           </div>
-          {{driver.status == true ? 'Approved': "Declined"}}
         </td>
         <td *ngIf="driver.servicetype != null">{{driver.serviceDetails.vehicleName}}</td>
         <td *ngIf="driver.servicetype == null">No Service</td>

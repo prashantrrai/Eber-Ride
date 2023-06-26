@@ -4,7 +4,7 @@ const driverModel = require('../models/driver')
 const createRideRouter = new express.Router();
 
 // ------------------------------CREATE RIDE---------------------------------------------//
-createRideRouter.post('/createRide', async (req, res) => {
+createRideRouter.post('/addride', async (req, res) => {
   console.log(req.body);
   try {
     const ride = new createRideModel(req.body)
@@ -55,7 +55,7 @@ createRideRouter.patch('/cancelRideToBeComfirmed', async (req, res) => {
 
 
 
-createRideRouter.get('/rides', async (req, res) => {
+createRideRouter.get('/ridedata', async (req, res) => {
   try {
     const rides = await createRideModel.find()
     res.send(rides)

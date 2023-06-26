@@ -19,8 +19,7 @@ export class AuthService {
   startInactivityTimer(): void {
     this.inactivityTimeout = setTimeout(() => {
       this.logout();
-    // }, 20 * 60 * 1000); // 20 minutes in milliseconds
-  }, 5* 1000); // 20 minutes in milliseconds
+    }, 20 * 60 * 1000); // 20 minutes in milliseconds
   }
 
   resetInactivityTimer(): void {
