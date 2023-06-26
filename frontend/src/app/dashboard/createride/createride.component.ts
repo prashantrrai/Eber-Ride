@@ -102,7 +102,7 @@ export class CreaterideComponent {
     this.selectedDate = this.formatDate(currentDate);
     this.selectedTime = this.formatTime(currentDate);
     this.getCodes();
-    // this.getNumberOfStops();
+    this.getNumberOfStops();
     this.initMap();
   }
 
@@ -144,17 +144,17 @@ export class CreaterideComponent {
   }
 
   //--------------- TO GET NO. OF STOPS ------------------
-  // getNumberOfStops() {
-  //   this._setting.getStops().subscribe({
-  //     next: (response: any) => {
-  //       // console.log(response.settingData[0]);
-  //       this.stops = response[0].stops;
-  //     },
-  //     error: (error) => {
-  //       this.toaster.error(error.message);
-  //     },
-  //   });
-  // }
+  getNumberOfStops() {
+    this._setting.getStops().subscribe({
+      next: (response: any) => {
+        // console.log(response.settingData[0]);
+        this.stops = response[0].stops;
+      },
+      error: (error) => {
+        this.toaster.error(error.message);
+      },
+    });
+  }
 
   // ------------------PHONE NUMBER FILTER---------------------
   filterNonDigits(event: any) {
@@ -425,18 +425,6 @@ export class CreaterideComponent {
 
   drawRoute(response: any) {
     const route = response.routes[0];
-    // const summaryPanel: any = document.getElementById("summary-panel");
-    // summaryPanel.innerHTML = "";
-
-    // Display route summary
-    // for (let i = 0; i < route.legs.length; i++) {
-    //   const routeSegment = i + 1;
-    //   summaryPanel.innerHTML += "<b>Route Segment: " + routeSegment + "</b><br>";
-    //   summaryPanel.innerHTML += route.legs[i].start_address + " to ";
-    //   summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
-    //   summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
-    //   summaryPanel.innerHTML += route.legs[i].duration.text + "<br><br>";
-    // }
 
     let totalDistance = 0;
     for (let i = 0; i < route.legs.length; i++) {
@@ -469,11 +457,6 @@ export class CreaterideComponent {
     console.log(this.totalTime, "minutes.....");
 
     this.getVehiclePricing(this.cityIndex);
-
-    // summaryPanel.innerHTML += "<b>Total Distance: " + "</b><br>";
-    // summaryPanel.innerHTML += (totalDistance / 1000) + "km" + "<br><br>";
-    // summaryPanel.innerHTML += "<b>Total Duration: " + "</b><br>";
-    // summaryPanel.innerHTML += this.totalHours + ' hours ' + this.totalMinutes + ' minutes' + "<br><br>";
 
     // Clear previous route
     this.directionsRenderer.setMap(null);

@@ -1,7 +1,12 @@
-<button mat-button mat-stroked-button color="primary" id="showbtn"
+<div class="d-flex justify-content-center">
+  <button class="m-4 d-flex align-items-center justify-content-center" mat-button mat-stroked-button color="primary" id="showbtn"
         (click)="toggleFormVisibility()">
         <mat-icon>add_circle</mat-icon> Add Country
-</button>
+  </button>
+  <input type="text" class="form-control m-4 w-25" id="search" placeholder="Search by Name..." [(ngModel)]="search" (input)="countrySearch()">
+
+</div>
+
     <!-- Your form content goes here -->
     <div class="parentFormContainer">
         <div id="formContainer" *ngIf="AddbuttonForm">

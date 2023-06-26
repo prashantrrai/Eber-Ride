@@ -25,6 +25,12 @@ export class CountryService {
   getcountryData(): Observable<any> {
     return this.http.get(`${this.serverUrl}/countrydata`);
   }
+  searchCountry(search: string): Observable<any> {
+    const params = {
+      search: search,
+    };
+    return this.http.get(`${this.serverUrl}/searchcountry/`, { params: params });
+  }
 
 
 }

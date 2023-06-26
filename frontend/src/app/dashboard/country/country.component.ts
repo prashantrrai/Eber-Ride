@@ -30,6 +30,7 @@ export class CountryComponent implements OnInit {
           flag: ''
       }
   countryDataDB: any[] = [];
+  search: string = '';
 
 
   constructor(private http: HttpClient, private _country: CountryService, private formbuilder: FormBuilder, private toastr: ToastrService, private authService: AuthService) {
@@ -39,6 +40,7 @@ export class CountryComponent implements OnInit {
   ngOnInit(): void {
     this.fetchCountryDataAPI();
     this.getDatafromDB()
+    this.countrySearch()
 
     this.countryForm = this.formbuilder.group({
             countryname:['', Validators.required],
@@ -127,8 +129,18 @@ export class CountryComponent implements OnInit {
         });
         }
       }
-
-
+  
+  // ------------------------------------SEARCH COUNTRY DATA------------------------------//
+  countrySearch(){
+    this._country.searchCountry(this.search).subscribe({
+      next: (response: any) => {
+        this.countryDataDB = response.countrydata;
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+    });
+  }
 
   toggleFormVisibility() {
     this.AddbuttonForm = !this.AddbuttonForm; 
