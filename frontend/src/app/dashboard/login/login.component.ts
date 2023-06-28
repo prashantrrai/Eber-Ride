@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
       }
       );
     } else {
-      this.toastr.warning('All fields are required');
+      this.toastr.warning('All Fields are required.');
     }
   }
 

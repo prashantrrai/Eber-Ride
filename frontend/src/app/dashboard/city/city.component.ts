@@ -269,9 +269,6 @@ export class CityComponent implements OnInit {
   // To check the drawn Zone inside coordinates or not and add city in database.............
   checkZone_AddCity() {
       if(this.cityForm.value.countryname != ""){
-        console.log(this.selectedCountry)
-        console.log(this.cityForm.value.cityName)
-        console.log(this.cityForm.valid)
         const geocoder = new google.maps.Geocoder();
         const input = document.getElementById("inputCity") as HTMLInputElement;
 
