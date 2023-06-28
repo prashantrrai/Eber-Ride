@@ -4,6 +4,7 @@ import { VehicleComponent } from './vehicle.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes : Routes = [{ path : "" , component : VehicleComponent , pathMatch : "full"}]
 
@@ -14,7 +15,8 @@ const routes : Routes = [{ path : "" , component : VehicleComponent , pathMatch 
     RouterModule.forChild(routes),
     FormsModule,
     ReactiveFormsModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ]
 })
 export class VehicleModule { }

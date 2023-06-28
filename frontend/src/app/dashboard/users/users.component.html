@@ -141,7 +141,7 @@
               <div class="parent mb-3">
                 <label class="form-label d-flex justify-content-start">Phone Number</label>
                 <div class="phone-input w-100">
-                  <select class="form-control w-25" id="country-code" name="code" #code (change)="onSelected(code.value)">
+                  <select class="form-control w-25" id="country-code" name="code" #code (change)="onSelected(code.value)" formControlName="updatecountrycode">
                     <option value="+91" selected>+91</option>
                     <option [value]="code" *ngFor="let code of countrycode">{{code}}</option>
                   </select>
@@ -182,10 +182,8 @@
               <th>Profile</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Country Code</th>
               <th>Phone</th>
-              <th>Update</th>
-              <th>Delete</th>
+              <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -193,17 +191,13 @@
                 <td><img src="http://localhost:4000/{{ user.profile}}" alt="user-profile"></td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.useremail }}</td>
-                <td>{{ user.countrycode }}</td>
-                <td>{{ user.userphone }}</td>
-                <td>
-                  <button id="updatebtn" (click)="updateBtnClick(user)">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </button>
-                </td>
-                <td>
-                  <button id="deletebtn" (click)="deleteUser(user._id)">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
+                <td>{{user.countrycode + " " + user.userphone}}</td>
+                <td> 
+                  <button [matMenuTriggerFor]="lvl2master" color="accent"  mat-button><mat-icon>edit</mat-icon></button>
+                  <mat-menu #lvl2master="matMenu">
+                      <button mat-menu-item id="updatebtn" (click)="updateBtnClick(user)"><mat-icon>update</mat-icon>Update</button>
+                      <button mat-menu-item id="deletebtn" (click)="deleteUser(user._id)"><mat-icon>delete_forever</mat-icon>Delete</button>
+                  </mat-menu>
                 </td>
               </tr>
             </tbody>
