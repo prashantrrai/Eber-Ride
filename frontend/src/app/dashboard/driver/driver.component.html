@@ -61,15 +61,34 @@
   <div id="formContainer" *ngIf="driverFormButton">
   <h2 class="mb-3">Driver Registration</h2>
     <form class="container" [formGroup]="driverForm" (ngSubmit)="onSubmit()">
+
       <div class="mb-3">
         <label class="form-label d-flex justify-content-start">Driver Name</label>
-        <input type="text" class="form-control" formControlName="drivername" placeholder="Enter Username"/>
+        <input type="text" class="form-control" formControlName="drivername" placeholder="Enter Name"
+          [class.is-invalid]="driverForm.get('drivername')?.invalid && (driverForm.get('drivername')?.touched || driverForm.get('drivername')?.dirty)" />
+        <div *ngIf="driverForm.get('drivername')?.invalid && (driverForm.get('drivername')?.touched || driverForm.get('drivername')?.dirty)"
+          class="invalid-feedback">
+          <div *ngIf="driverForm.get('drivername')?.errors?.['required']">Name is required.</div>
+        </div>
       </div>
-      <div class="mb-3">
+
+      <!-- <div class="mb-3">
         <label class="form-label d-flex justify-content-start">Driver Email</label>
         <input type="email" class="form-control" formControlName="driveremail" placeholder="Enter Email"/>
+      </div> -->
+      <div class="mb-3">
+        <label class="form-label d-flex justify-content-start">Driver Email</label>
+        <input type="email" class="form-control" formControlName="driveremail"  placeholder="Enter Email"
+          [class.is-invalid]="driverForm.get('driveremail')?.invalid && (driverForm.get('driveremail')?.touched || driverForm.get('driveremail')?.dirty)" />
+        <div *ngIf="driverForm.get('driveremail')?.invalid && (driverForm.get('driveremail')?.touched || driverForm.get('driveremail')?.dirty)"
+          class="invalid-feedback">
+          <div *ngIf="driverForm.get('driveremail')?.errors?.['required']">Email is required.</div>
+          <div *ngIf="driverForm.get('driveremail')?.errors?.['email']">Please enter a valid email.</div>
+        </div>
       </div>
-      <div class="parent mb-3">
+
+
+      <!-- <div class="parent mb-3">
         <label class="form-label d-flex justify-content-start">Phone Number</label>
         <div class="phone-input w-100">
             <select class="form-control w-25" id="country-code" name="code" #code (change)="onSelectedCode(code.value)" formControlName="countrycode">
@@ -78,7 +97,25 @@
             </select>
             <input type="tel" class="form-control"  id="phone-number" formControlName="driverphone" placeholder="Enter Phone" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
         </div>
+      </div> -->
+      <div class="parent mb-3">
+        <label class="form-label d-flex justify-content-start">Phone Number</label>
+        <div class="phone-input w-100">
+          <select class="form-control w-25" id="country-code" name="code" #code  (change)="onSelectedCode(code.value)" formControlName="countrycode">
+            <option value="+91" selected>+91</option>
+            <option [value]="code" *ngFor="let code of countrycodeArray">{{code}}</option>
+          </select>
+          <input type="tel" class="form-control" id="phone-number" formControlName="driverphone" placeholder="Enter Phone"
+            maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+            [class.is-invalid]="driverForm.get('driverphone')?.invalid && (driverForm.get('driverphone')?.touched || driverForm.get('driverphone')?.dirty)">
+          <div *ngIf="driverForm.get('driverphone')?.invalid && (driverForm.get('driverphone')?.touched || driverForm.get('driverphone')?.dirty)"
+            class="invalid-feedback text-danger">
+            <div *ngIf="driverForm.get('driverphone')?.errors?.['required']">Phone is required.</div>
+            <div *ngIf="driverForm.get('driverphone')?.errors?.['minlength']">Phone number must be 10 digits.</div>
+          </div>
+        </div>
       </div>
+
       <div class="mb-3">
         <label class="form-label d-flex justify-content-start">Choose City</label>
         <select class="form-control w-100" id="city-name" name="city" #city (change)="onSelectedCity(city.value)" formControlName="city">
@@ -86,6 +123,7 @@
           <option [value]="city._id" *ngFor="let city of citiesname ">{{city.city}}</option>
         </select>
       </div>
+
       <div class="mb-3">
         <label class="form-label d-flex justify-content-start">Upload Profile</label>
           <input type="file" class="form-control" formControlName="profile"  name="profile" (change)="onFileSelected($event)"/>
