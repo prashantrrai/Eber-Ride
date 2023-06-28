@@ -1,0 +1,21 @@
+<div class="info-component">
+  <div class="ride-details-dialog">
+    <h2>Ride Details</h2>
+    <div class="ride-details">
+      <span class="details-key">Request ID :</span>
+      <span class="details-value">{{data._id}}</span>
+    </div>
+    <div class="ride-details">
+      <span class="details-key">Pickup Location:</span>
+      <span class="details-value">{{data.startLocation}}</span>
+    </div>
+    <div class="ride-details">
+      <span class="details-key">Drop-off Location:</span>
+      <span class="details-value">{{data.endLocation}}</span>
+    </div>
+    <!-- Add more ride details here -->
+  </div>
+  <div mat-dialog-actions>
+    <button class="info-button" mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+  </div>
+</div>

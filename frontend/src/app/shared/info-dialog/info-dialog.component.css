@@ -1,4 +1,4 @@
-@keyframes fadeIn {
+/* @keyframes fadeIn {
     0% {
       opacity: 0;
       transform: translateY(-20px);
@@ -10,49 +10,52 @@
     }
   }
   
-  .success-component {
+  .info-component {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background-color: #e6f3e6;
-    border: 1px solid #b3e6cc;
+    background-color: #e2acffa6;
+    border: 1px solid #ffffff;
     border-radius: 4px;
     animation: fadeIn 0.5s ease-in-out;
   }
   
-  .success-icon {
-    font-size: 48px;
-    color: #4caf50;
-  }
   
-  .success-title {
-    font-size: 24px;
-    margin-top: 10px;
-    margin-bottom: 5px;
-  }
-  
-  .success-message {
-    font-size: 18px;
-    margin-bottom: 15px;
-  }
-  
-  .success-button {
+  .info-button {
     padding: 10px 20px;
     font-size: 16px;
     border: none;
     border-radius: 4px;
-    /* background-color: #4caf50; */
     background-color: #830fff;
     color: white;
     cursor: pointer;
   }
   
-  .success-button:hover {
-    /* background-color: #45a049; */
+  .info-button:hover {
     background-color: #fff;
   }
   
-  .success-button:focus {
+  .info-button:focus {
     outline: none;
+  } */
+
+
+
+  .ride-details-dialog {
+    text-align: center;
+  }
+  
+  .ride-details {
+    margin-bottom: 10px;
+  }
+  
+  .details-key {
+    font-weight: bold;
+  }
+  
+  @media (max-width: 767px) {
+    .ride-details-dialog {
+      padding: 20px;
+    }
   }
