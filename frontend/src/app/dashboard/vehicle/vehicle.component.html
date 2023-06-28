@@ -5,14 +5,22 @@
         <div id="formContainer">
       
           <form class="container" [formGroup]="vehicleForm"  (ngSubmit)="addVehicle()">
+
             <div class="mb-3">
               <label class="form-label d-flex justify-content-start">Vehicle Type</label>
-              <input type="text" class="form-control" formControlName="vehicleName" />
+              <input type="text" class="form-control" formControlName="vehicleName"
+                [class.is-invalid]="vehicleForm.get('vehicleName')?.invalid && (vehicleForm.get('vehicleName')?.touched || vehicleForm.get('vehicleName')?.dirty)" />
+              <div *ngIf="vehicleForm.get('vehicleName')?.invalid && (vehicleForm.get('vehicleName')?.touched || vehicleForm.get('vehicleName')?.dirty)"
+                class="invalid-feedback">
+                <div *ngIf="vehicleForm.get('vehicleName')?.errors?.['required']">Vehicle is required.</div>
+              </div>
             </div>
+            
             <div class="mb-3">
               <label class="form-label d-flex justify-content-start">Add Vehicle Image</label>
               <input type="file" class="form-control" formControlName="vehicleImage" name="vehicleImage" (change)="onFileSelected($event)"/>
             </div>
+
             <div>
               <button type="submit" class="btn btn-primary w-100" id="Addbutton"> Add</button>
             </div>  

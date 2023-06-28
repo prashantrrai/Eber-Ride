@@ -30,6 +30,7 @@
       <div id="formContainer" *ngIf="addForm">
         <h2 class="mb-3">Add Vehicle Pricing</h2>
         <form class="container" [formGroup]="pricingForm"  (ngSubmit)="onSubmit()">
+
           <div class="form-group row align-items-center mb-2">
             <label class="col-sm-3 col-form-label text-end">Country</label>
             <div class="col-sm-9 form-custom-select">
@@ -67,14 +68,26 @@
           <div class="form-group row align-items-center mb-2">
             <label class="col-sm-3 col-form-label text-end">Driver's Profit</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="driverprofit" placeholder="Driver Profit" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="driverprofit" placeholder="Driver Profit" 
+              maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+              [class.is-invalid]="pricingForm.get('driverprofit')?.invalid && (pricingForm.get('driverprofit')?.touched || pricingForm.get('driverprofit')?.dirty)"/>
+              <div *ngIf="pricingForm.get('driverprofit')?.invalid && (pricingForm.get('driverprofit')?.touched || pricingForm.get('driverprofit')?.dirty)"
+              class="invalid-feedback">
+              <div *ngIf="pricingForm.get('driverprofit')?.errors?.['required']">Field is required.</div>
+            </div>
             </div>
           </div>
   
-          <div class="form-group row align-items-center">
+          <div class="form-group row align-items-center mb-2">
             <label class="col-sm-3 col-form-label text-end">Min. Fare</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="minfare" placeholder="Minimum Fare" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="minfare" placeholder="Minimum Fare" 
+              maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+              [class.is-invalid]="pricingForm.get('minfare')?.invalid && (pricingForm.get('minfare')?.touched || pricingForm.get('minfare')?.dirty)"/>
+              <div *ngIf="pricingForm.get('minfare')?.invalid && (pricingForm.get('minfare')?.touched || pricingForm.get('minfare')?.dirty)"
+              class="invalid-feedback">
+              <div *ngIf="pricingForm.get('minfare')?.errors?.['required']">Field is required.</div>
+            </div>
             </div>
           </div>
   
@@ -92,28 +105,52 @@
           <div class="form-group row align-items-center">
             <label class="col-sm-3 col-form-label text-end">Base Price</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="baseprice" placeholder="Base Price" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="baseprice" placeholder="Base Price"
+               maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+               [class.is-invalid]="pricingForm.get('baseprice')?.invalid && (pricingForm.get('baseprice')?.touched || pricingForm.get('baseprice')?.dirty)"/>
+               <div *ngIf="pricingForm.get('baseprice')?.invalid && (pricingForm.get('baseprice')?.touched || pricingForm.get('baseprice')?.dirty)"
+              class="invalid-feedback">
+              <div *ngIf="pricingForm.get('baseprice')?.errors?.['required']">Field is required.</div>
+               </div>
             </div>
           </div>
   
           <div class="form-group row align-items-center">
             <label class="col-sm-3 col-form-label text-end">Price Per Unit Distance</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="ppudist" placeholder="Price Per Unit Distance" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="ppudist" placeholder="Price Per Unit Distance" 
+              maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+              [class.is-invalid]="pricingForm.get('ppudist')?.invalid && (pricingForm.get('ppudist')?.touched || pricingForm.get('ppudist')?.dirty)"/>
+              <div *ngIf="pricingForm.get('ppudist')?.invalid && (pricingForm.get('ppudist')?.touched || pricingForm.get('ppudist')?.dirty)"
+              class="invalid-feedback">
+              <div *ngIf="pricingForm.get('ppudist')?.errors?.['required']">Field is required.</div>
+               </div>
             </div>
           </div>
-  
+
           <div class="form-group row align-items-center">
             <label class="col-sm-3 col-form-label text-end">Price Per Unit Time(min)</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="pputime" placeholder="Price Per Unit Time(min)" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="pputime" placeholder="Price Per Unit Time(min)"
+               maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+               [class.is-invalid]="pricingForm.get('pputime')?.invalid && (pricingForm.get('pputime')?.touched || pricingForm.get('pputime')?.dirty)"/>
+               <div *ngIf="pricingForm.get('pputime')?.invalid && (pricingForm.get('pputime')?.touched || pricingForm.get('pputime')?.dirty)"
+              class="invalid-feedback">
+              <div *ngIf="pricingForm.get('pputime')?.errors?.['required']">Field is required.</div>
+               </div>
             </div>
           </div>
   
           <div class="form-group row align-items-center">
             <label class="col-sm-3 col-form-label text-end">Max Space</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" formControlName="maxspace" placeholder="Max Space" maxlength="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+              <input type="text" class="form-control" formControlName="maxspace" placeholder="Max Space" 
+              maxlength="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+              [class.is-invalid]="pricingForm.get('maxspace')?.invalid && (pricingForm.get('maxspace')?.touched || pricingForm.get('maxspace')?.dirty)"/>
+              <div *ngIf="pricingForm.get('maxspace')?.invalid && (pricingForm.get('maxspace')?.touched || pricingForm.get('maxspace')?.dirty)"
+              class="invalid-feedback">
+              <div *ngIf="pricingForm.get('maxspace')?.errors?.['required']">Field is required.</div>
+               </div>
             </div>
           </div>
     
