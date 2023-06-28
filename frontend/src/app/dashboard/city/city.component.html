@@ -5,10 +5,7 @@
       <option value>Select country </option>
       <option *ngFor="let country of countryData " [value]="country._id">{{country.countryName}}</option>
     </select>
-    
-
       <input id="inputCity" placeholder="Enter city name" formControlName="cityname">
-      <!-- <button (click)="checkZone_AddCity()" >Add City</button> -->
       <button *ngIf="isaddbutton" (click)="checkZone_AddCity()">Add City</button>
       <button *ngIf="isupdatebutton" (click)="updateCity()">Update City</button>
     </form>
@@ -20,17 +17,7 @@
     </div>
     </div>
 
-
-
-    
-  <label for="pageSize">Show Data : </label>
-  <select id="pageSize" [(ngModel)]="tableSize" (change)="onPageSizeChange($event)">
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-  </select>
-  
+  <!-- --------------------TABLE CONTAINER-------------------- -->
   <div class="parenttableContainer">
     <div id="tableContainer">
       <div class="table-responsive">
@@ -43,13 +30,6 @@
           </tr>
           </thead>
           <tbody>
-          <!-- <tr *ngFor="let city of cityData| paginate: { itemsPerPage: tableSize, currentPage: page,totalItems: count   };let i = index">
-            <td>{{ city.countryDetails.countryName }}</td>
-            <td>{{ city.city }}</td>
-            <td>
-                <button id="updatebtn" (click)="editbtn(city._id, city)"><i class="fa-solid fa-pen-to-square" ></i>   </button>
-            </td>
-          </tr> -->
           <tr *ngFor="let city of cityData">
             <td>{{ city.countryDetails.countryName }}</td>
             <td>{{ city.city }}</td>
@@ -62,10 +42,3 @@
       </div>
     </div>
   </div>
-
-
-  <!-- <div class="d-flex justify-content-center">
-    <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true">
-    </pagination-controls>
-  </div>
-   -->

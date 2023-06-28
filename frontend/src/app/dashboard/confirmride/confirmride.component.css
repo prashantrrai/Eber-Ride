@@ -1,0 +1,23 @@
+.parentFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+#tableContainer{
+  background-color: #00000036;
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px #000000;
+  width: 90%;
+  padding: 20px;
+  margin: 40px;
+}
+
+pre{
+  font-size: 13px;
+  font-weight: 900;
+  color: #000000;
+}

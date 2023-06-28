@@ -290,24 +290,25 @@ export class CreaterideComponent {
               // console.log(this.cityIndex, "cityindex....");
 
               if (!this.isInZone) {
-                console.log("service Not Available");
+                // console.log("Service Not Available");
                 if (this.endInput) {
                   this.endInput.nativeElement.disabled = true;
                   this.waypointInput.nativeElement.disabled = true;
                   this.directionBtn.nativeElement.disabled = true;
                 }
-                this.toaster.error("Service is not available in given city!");
+                this.toaster.error("Service is Not Available in City");
               } else {
                 if (this.endInput) {
                   this.endInput.nativeElement.disabled = false;
                   this.waypointInput.nativeElement.disabled = false;
                   this.directionBtn.nativeElement.disabled = false;
                 }
-                console.log("Service Available");
-                this.toaster.success("Service is available in city!");
+                // console.log("Service Available");
+                this.toaster.success("Service is Available in City");
               }
             } else {
-              this.toaster.info("Select location from Auto Suggestion " + status);
+              this.toaster.info("Select Location from Auto Suggestion");
+              // console.log("Select location from auto suggestion", status);
             }
           }
         );
@@ -362,10 +363,12 @@ export class CreaterideComponent {
         } else {
           if (status === "ZERO_RESULTS") {
             this.isRoute = false;
-            alert("No route found for given locations! " + status);
+            alert("No route found for given locations!");
+            console.log("No route found for given locations! " + status)
           } else {
             this.isRoute = false;
-            alert("Select location from auto suggestion " + status);
+            alert("Select location from auto suggestion ");
+            console.log("Select location from auto suggestion " + status)
           }
         }
       }
@@ -422,7 +425,7 @@ export class CreaterideComponent {
       },
     });
   }
-
+ 
   drawRoute(response: any) {
     const route = response.routes[0];
 
@@ -434,7 +437,7 @@ export class CreaterideComponent {
     let totalDuration = 0;
     for (let i = 0; i < route.legs.length; i++) {
       const leg = route.legs[i];
-      totalDuration += +leg.duration.value;
+      totalDuration += +leg.duration.value;  
     }
 
     this.totalDistance = +totalDistance / 1000;
@@ -460,14 +463,19 @@ export class CreaterideComponent {
 
     // Clear previous route
     this.directionsRenderer.setMap(null);
-    this.directionsRenderer = new google.maps.DirectionsRenderer();
+    this.directionsRenderer = new google.maps.DirectionsRenderer({
+      polylineOptions: {
+        strokeColor: "blue",
+        strokeWeight: 5,
+      }
+    });
     this.directionsRenderer.setMap(this.map);
 
     // Display new route
     this.directionsRenderer.setDirections(response);
   }
 
-  //To add vehicle pricing in selectedVehicle
+  //-------------------------------SELECT SERVICE TYPE---------------------------------------------//
   onSelectServiceType(serviceType: any) {
     console.log(serviceType);
     this.selectedVehicle = this.vehiclesPricing.find((price: any) => {
@@ -480,7 +488,7 @@ export class CreaterideComponent {
     console.log(this.selectedVehicle);
   }
 
-  // for selecting date and time  on radio button
+  //---------------------------------SELECT DATE AND TIME------------------------------------------//
   handleRadioChange() {
     console.log("input...");
     if (this.selectedOption === "bookNow") {
@@ -497,7 +505,7 @@ export class CreaterideComponent {
       );
       const currentDateTime = new Date();
 
-      //not working right now
+      //-------------------------------------------------------------------------------------------------------------------------------------------------//
       if (selectedDateTime < currentDateTime) {
         console.log("if...");
 
@@ -506,6 +514,7 @@ export class CreaterideComponent {
           this.selectedTime = this.formatTime(currentDateTime);
         }, 0);
       }
+      // ------------------------------------------------------------------------------------------------------------------------------------------------//
     }
   }
 
@@ -516,6 +525,7 @@ export class CreaterideComponent {
     console.log(this.selectedTime);
   }
 
+  // ------------------------------------FORMAT DATE AND TIME----------------------------------------//
   formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -529,7 +539,7 @@ export class CreaterideComponent {
     return `${hours}:${minutes}`;
   }
 
-  // ------------------------------------TO BOOK RIDE---------------------------------------------//
+  // -------------------------------------------------TO BOOK RIDE------------------------------------------------------//
   onBookRide() {
     console.log(this.rideForm.value);
     this.selectedVehicle.startLocation = this.startLocation;
@@ -556,13 +566,22 @@ export class CreaterideComponent {
         console.log(res);
         this.toaster.success("Ride booked successfully!");
         const dialogRef = this.dialog.open(SuccessDialogComponent, {
-          width: "600px",
+          width: "300px",
           data: { title: "Ride Booked", content: "Ride booked successfully!" },
         });
         this.rideForm.reset();
         this.rideForm.patchValue({
           serviceType: "",
         });
+        this.userForm.reset();
+        this.userForm.patchValue({
+          countrycode: '+91',
+        });
+        this.travelForm.reset();
+        this.isNext = false;
+        this.isRoute = false;
+        this.directionsRenderer.setMap(null);
+
       },
       error: (error) => {
         console.log(error);
@@ -571,6 +590,15 @@ export class CreaterideComponent {
     });
   }
 
+  // ------------------------------------EXTRA FUNCTIONALITIES CODE---------------------------------------------//
+
+  close(){
+    this.isNext = true;
+    this.isRoute = false;
+    this.directionsRenderer.setMap(null);
+    this.travelForm.reset();
+    this.removeWaypoint(0)
+  }
   resetTimer() {
     this.authService.resetInactivityTimer();
   }

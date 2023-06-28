@@ -33,6 +33,7 @@ const driverRoutes = require("./routes/driver");
 const pricingRoutes = require("./routes/pricing");
 const settingRouter = require("./routes/setting");
 const createRideRoutes = require("./routes/createride");
+const confirmRideRouter = require("./routes/confirmride");
 
 app.use(fetchAdmin);
 app.use(loginRoutes);
@@ -47,6 +48,7 @@ app.use(driverRoutes);
 app.use(pricingRoutes);
 app.use(settingRouter)
 app.use(createRideRoutes);
+app.use(confirmRideRouter);
 
 app.get("/", async (req, res) => {
   res.json({

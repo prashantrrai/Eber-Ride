@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DriverComponent } from './driver.component';
+import { ConfirmrideComponent } from './confirmride.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -8,11 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 
-const routes : Routes = [{ path : "" , component : DriverComponent , pathMatch : "full"}]
-
+const routes: Routes = [  
+  { path: '', component: ConfirmrideComponent, pathMatch: 'full' }
+];
 
 @NgModule({
-  declarations: [DriverComponent],
+  declarations: [
+    ConfirmrideComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -24,4 +27,4 @@ const routes : Routes = [{ path : "" , component : DriverComponent , pathMatch :
     MatButtonModule
   ]
 })
-export class DriverModule { }
+export class ConfirmrideModule { }

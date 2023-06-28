@@ -22,6 +22,7 @@ const routes: Routes = [
       {path:'users',loadChildren:()=>import('./users/users.module').then(m=>m.UsersModule)},
       {path:'vehicletype',loadChildren:()=>import('./vehicle/vehicle.module').then(m=>m.VehicleModule)},
       {path:'createride',loadChildren:()=>import('./createride/createride.module').then(m=>m.CreaterideModule)},
+      {path:'confirmride',loadChildren:()=>import('./confirmride/confirmride.module').then(m=>m.ConfirmrideModule)},
     ]
   },
 

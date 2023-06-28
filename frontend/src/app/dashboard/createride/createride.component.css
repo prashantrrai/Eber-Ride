@@ -1,12 +1,23 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Barlow&family=Fasthand&family=Noto+Sans+Vai&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sofia&display=swap'); */
+
+
 .main-div {
+    font-family: 'Poppins', sans-serif;
     padding: 0px 1em;
     margin: 1em 0px;
-    background-color: rgba(0, 0, 0, 0.868);
+    /* background-color: rgba(0, 0, 0, 0.868); */
   }
   
   .left-card {
-    margin: 0.6em auto;
+    /* margin: 0.6em auto; */
     height: fit-content;
+    margin: 15px auto;
+    background-color: #890aff;
+  }
+  .rightDivForm{
+    background-color: #890aff;
+    padding: 10px;
+    justify-items: left;
   }
   
   .map-summary {
@@ -23,8 +34,9 @@
     min-width: 200px;
     height: 400px;
     margin: 15px auto;
-    border: 1px solid rgb(255, 255, 255);
+    /* border: 5px solid #ffffff; */
     border-radius: 5px;
+    box-shadow: 8px 8px 16px #242424;
   }
   
   
@@ -40,16 +52,44 @@
     margin: 6px 6px 6px 0px;
   }
   
-  .get-details {
+  .get-details{
     margin-bottom: 5px !important;
+    background-color: #6ce000;
+    border: none;
+    font-weight: 600;
+  }
+  .bookbtn {
+    margin-bottom: 5px !important;
+    background-color: #6ce000;
+    border: none;
+    font-weight: 600;
+    color: white;
+  }
+  .get-details:hover {
+    background-color: #e2e2e2;
   }
   
   .user-details {
     font-size: 18px;
   }
+
+  p{
+    font-size: 16px;
+    font-family:'Times New Roman', Times, serif;
+    font-weight: 800;
+  }
+  .card-title{
+    font-size: 20px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 800;
+  }
+  .add-stops{
+    background-color: #6c18cc;
+    color: white;
+    border: none;
+  }
   
   input:disabled {
-    /* / background-color: #fff; / */
     background-color: #e9ecef;
   }
   

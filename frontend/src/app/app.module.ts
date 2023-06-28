@@ -14,11 +14,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AuthModule } from './auth/auth.module';
 import { SuccessDialogComponent } from './shared/success-dialog/success-dialog.component';
+import { InfoDialogComponent } from './shared/info-dialog/info-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SuccessDialogComponent,
+    InfoDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -73,7 +73,7 @@ cityRoutes.get("/citydata", async (req, res) => {
           city: req.body.city,
           coordinates: req.body.coordinates
         };
-        console.log(cityId)
+        console.log(updatedCity.city)
         console.log(updatedCity)
   
         let cityData =  await cityModel.findByIdAndUpdate(cityId, updatedCity, {new:true});
@@ -81,7 +81,20 @@ cityRoutes.get("/citydata", async (req, res) => {
       res.json({ success: true, message: "City Updated Successfully" ,cityData});
     } catch (err) {
       console.log(err);
-      res.status(500).json({ success: false, message: "City Update Failed" });
+      res.status(500).json({ success: false, message: "City Already Exists" });
+    }
+  });
+
+  //----------------------------API TO FETCH ALL ZONES OF A COUNTRY-------------------------------//
+  cityRoutes.get("/coordinates/:countryid", async (req, res) => {
+    try {
+      const id = req.params.countryid;
+      console.log(id)
+      const citydata = await cityModel.find({country_id : id})
+      // console.log(citydata)
+      res.send(citydata);
+    } catch (err) {
+      res.status(400).send(err.message.split(":")[2]);
     }
   });
 

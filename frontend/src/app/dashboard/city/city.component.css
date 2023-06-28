@@ -57,6 +57,15 @@
     #formContainer input{
       margin: 10px;
     }
+    #tableContainer {
+      width: 90%;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 4px 4px 16px #000000;
+      max-width: 600px;
+      padding: 20px;
+      margin: 40px;
+    }
   }
   
   
@@ -73,7 +82,7 @@
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 4px 4px 16px #000000;
-  max-width: 600px;
+  /* max-width: 600px; */
   padding: 20px;
   margin: 40px;
 }

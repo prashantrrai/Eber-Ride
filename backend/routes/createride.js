@@ -55,14 +55,7 @@ createRideRouter.patch('/cancelRideToBeComfirmed', async (req, res) => {
 
 
 
-createRideRouter.get('/ridedata', async (req, res) => {
-  try {
-    const rides = await createRideModel.find()
-    res.send(rides)
-  } catch (error) {
-    res.status(500).send(error)
-  }
-})
+
 
 createRideRouter.get('/ridesInfo', async (req, res) => {
   try {

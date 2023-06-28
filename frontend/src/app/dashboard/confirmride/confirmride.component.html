@@ -1,0 +1,55 @@
+<div class="parentFormContainer">
+    <div id="tableContainer">
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="bg-light text-dark">
+                    <tr>
+                        <th><pre>Req. ID</pre></th>
+                        <th><pre>User ID</pre></th>
+                        <th><pre>Username</pre></th>
+                        <th><pre>Pick up Time</pre></th>
+                        <th><pre>Pick up Address</pre></th>
+                        <th><pre>Drop off Address</pre></th>
+                        <th><pre>Service Type</pre></th>
+                        <th><pre>Status</pre></th>
+                        <th><pre>Info</pre></th>
+                        <th><pre>Action</pre></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let ride of ridesArray| paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index">
+
+                        <td>{{ ride._id }}</td>
+                        <td>{{ ride.userId }}</td>
+                        <td>{{ ride }}</td>
+                        <td>{{ ride.rideDate }}</td>
+                        <td>{{ ride.startLocation }}</td>
+                        <td>{{ ride.endLocation }}</td>
+                        <td>{{ ride.serviceType }}</td>
+                        <td>Approved</td>
+                        <td>
+                            <button color="accent"
+                                mat-button (click)="openDialog(ride)"><mat-icon>info</mat-icon></button>
+                        </td>
+                        <td>
+                            <button [matMenuTriggerFor]="lvl2master" color="accent"
+                                mat-button><mat-icon>edit</mat-icon></button>
+                            <mat-menu #lvl2master="matMenu">
+                                <button mat-menu-item id="updatebtn"><mat-icon>update</mat-icon>Assign Driver</button>
+                                <button mat-menu-item id="updatebtn"><mat-icon>cancel</mat-icon>Cancel</button>
+                            </mat-menu>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ---------------------------------------------PAGINATION USING NGX-------------------------------------------- ----- -->
+<div class="d-flex justify-content-center">
+    <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5"
+        [responsive]="true"></pagination-controls>
+</div>
+  
