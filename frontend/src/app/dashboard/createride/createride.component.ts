@@ -31,12 +31,12 @@ export class CreaterideComponent {
   directionsRenderer: any;
   waypoints: any = [];
   user: any;
-  cities: any;
+  cities: any =[];
   cordsArray: any;
   polygon: any;
   isInZone: boolean = true;
   polygons: any = [];
-  polygonObjects: any;
+  polygonObjects: any = [];
   cityIndex: any;
   isRoute: any = false;
   vehiclesPricing: any = [];
@@ -149,8 +149,8 @@ export class CreaterideComponent {
   getNumberOfStops() {
     this._setting.getStops().subscribe({
       next: (response: any) => {
-        // console.log(response.settingData[0]);
-        this.stops = response[0].stops;
+        console.log(response.settingData[0]);
+        this.stops = response.stop;
       },
       error: (error) => {
         this.toaster.error(error.message);
@@ -190,8 +190,10 @@ export class CreaterideComponent {
 
         this._city.getcity(this.page, this.limit).subscribe({
           next: (cities: any) => {
+console.log(cities, "cities........................:::::::::::::::");
 
-            this.cities = cities;
+            this.cities = cities.citydata;
+
             this.cities.forEach((city: any) => {
               this.polygons.push(city.coordinates);
             });
@@ -268,7 +270,7 @@ export class CreaterideComponent {
 
       setTimeout(() => {
         let input = document.getElementById("startInput") as HTMLInputElement;
-        // console.log(input.value);
+        console.log(input.value);
         geocoder.geocode(
           { address: input.value },
           (results: any, status: any) => {
@@ -284,15 +286,17 @@ export class CreaterideComponent {
                   )
                 ) {
                   this.cityIndex = i;
+                  console.log(this.cityIndex,"new loggggggggggggggggggggggggg...................");
+                  
                   this.isInZone = true;
                   break; // Exit the loop if the location is found within any polygon
                 }
               }
-              // console.log(this.isInZone);
-              // console.log(this.cityIndex, "cityindex....");
+              console.log(this.isInZone);
+              console.log(this.cityIndex, "cityindex....");
 
               if (!this.isInZone) {
-                // console.log("Service Not Available");
+                console.log("Service Not Available");
                 if (this.endInput) {
                   this.endInput.nativeElement.disabled = true;
                   this.waypointInput.nativeElement.disabled = true;
@@ -305,12 +309,12 @@ export class CreaterideComponent {
                   this.waypointInput.nativeElement.disabled = false;
                   this.directionBtn.nativeElement.disabled = false;
                 }
-                // console.log("Service Available");
+                console.log("Service Available");
                 this.toaster.success("Service is Available in City");
               }
             } else {
               this.toaster.info("Select Location from Auto Suggestion");
-              // console.log("Select location from auto suggestion", status);
+              console.log("Select location from auto suggestion", status);
             }
           }
         );
@@ -397,7 +401,7 @@ export class CreaterideComponent {
 
     this.estimateFare = estimatePrice;
     this.vehiclesPricing[cityIndex].estimateFare = estimatePrice;
-    console.log(this.vehiclesPricing[cityIndex].estimateFare,"big log...........");
+    console.log(this.vehiclesPricing[cityIndex].estimateFare,"log...........");
 
     console.log(estimatePrice, "Fare......");
   }
@@ -580,9 +584,10 @@ export class CreaterideComponent {
           countrycode: '+91',
         });
         this.travelForm.reset();
-        this.isNext = false;
+        this.isNext = true;
         this.isRoute = false;
         this.directionsRenderer.setMap(null);
+        this.removeWaypoint(0)
 
       },
       error: (error) => {

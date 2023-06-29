@@ -77,11 +77,13 @@ export class PricingComponent {
   // -----------------GET CITY DATA---------------
   getCity(): void {
     this._pricing.getCityData().subscribe({
-      next: (response) => {
+      next: (response: any) => {
         console.log(response)
-        const filteredCities = response.filter((city: any) => city.countryDetails._id === this.selectedCountry);
+        const filteredCities = response.citydata.filter((city: any) => city.countryDetails._id === this.selectedCountry);
         console.log(filteredCities)
+        this.citiesname=[]
         this.citiesname = filteredCities;
+        this.getService()
       },
       error: (error) => {
         console.log(error.error.message);
@@ -278,6 +280,13 @@ export class PricingComponent {
     this.showButton = true;
     this.isEditMode = false;
     this.pricingForm.reset();
+    this.pricingForm.patchValue({
+      country:'',
+      city:'',
+      service:'',
+      distancebaseprice:'',
+    });
+
   }
 
   resetTimer() {

@@ -32,14 +32,24 @@ cityRoutes.post("/cityadd", async (req, res) => {
   }
 });
 
-
-
-
-// API to find registered city and country Name in Mongodb............
+// --------------------------------GET CITY DATA WITH PAGINATION-----------------------------------//
 cityRoutes.get("/citydata", async (req, res) => {
+  let page = +req.query.page || 1;
+  let limit = +req.query.limit || 5;
+  let skip = (page - 1) * limit;
   try {
-    // const citydata = await City_Schema.find();
-    const citydata = await cityModel.aggregate([{
+    
+    const count = await cityModel.find().count();
+    let totalPage = Math.ceil(count / limit);
+    
+
+    if (page > totalPage) {
+      page = totalPage;
+      skip = (page - 1) * limit;
+    }
+
+    const aggregatePipeline = [
+      { 
         $lookup: {
           from:'countrymodels',
           foreignField:'_id',
@@ -47,21 +57,58 @@ cityRoutes.get("/citydata", async (req, res) => {
           as:'countryDetails'
         }
       },
-      { $unwind: '$countryDetails' }
-    ])
-    
-    // const citydata = await cityModel.find({});
-    // // res.json({ citydata });
 
-    // console.log(citydata);
-    res.send(citydata);
-    
+      { $unwind: "$countryDetails" },
+      { $skip: skip },
+      { $limit: limit },
+    ];
+
+    const citydata = await cityModel.aggregate(aggregatePipeline);
+
+    res.json({
+      success: true,
+      message: "City Data Found",
+      citydata,
+      page,
+      limit,
+      totalPage,
+      count,
+    });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ success: false, message: error });
+  }
+});
 
-    res.status(500).json({ success: false, message: error});
-  }      
-})
+
+
+// API to find registered city and country Name in Mongodb............
+// cityRoutes.get("/citydata", async (req, res) => {
+//   try {
+//     // const citydata = await City_Schema.find();
+//     const citydata = await cityModel.aggregate([{
+//         $lookup: {
+//           from:'countrymodels',
+//           foreignField:'_id',
+//           localField:'country_id',
+//           as:'countryDetails'
+//         }
+//       },
+//       { $unwind: '$countryDetails' }
+//     ])
+    
+//     // const citydata = await cityModel.find({});
+//     // // res.json({ citydata });
+
+//     // console.log(citydata);
+//     res.send(citydata);
+    
+//   } catch (error) {
+//     console.log(error);
+
+//     res.status(500).json({ success: false, message: error});
+//   }      
+// })
 
 
 

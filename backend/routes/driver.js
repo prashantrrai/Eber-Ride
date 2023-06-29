@@ -1,5 +1,3 @@
-// --------------------------------------------After Adding Object ID---------------------------------------------
-
 const express = require("express");
 const driverRoutes = express.Router();
 const driverModel = require("../models/driver");
@@ -8,7 +6,7 @@ const path = require("path");
 const profile_path = path.join(__dirname, "../Public/Upload");
 const mongoose = require("mongoose");
 
-//----------------------------------------------------------- Multer Code----------------------------------------------
+//-------------------------------------------------------MULTER CODE----------------------------------------------
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     console.log(file);

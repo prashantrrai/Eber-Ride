@@ -88,7 +88,8 @@ export class DriverComponent {
   getCityNamefromDB(): void {
     this._driver.getCityData().subscribe({
       next: (response) => {
-        this.citiesname = response;
+        console.log(response)
+        this.citiesname = response.citydata;
       },
       error: (error) => {
         console.log(error.error.message);
@@ -97,7 +98,7 @@ export class DriverComponent {
   }
   onSelectedCity(value: any) {
     this.selectedCity = value;
-    // console.log(value)
+    console.log(value)
   }
 
   // -----------------------DRIVER PROFILE---------------------------

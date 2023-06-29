@@ -25,7 +25,7 @@ loginRoutes.post('/login', async (req,res) => {
           const user = await signup_data.findOne({ email });
   
           if (!user) {
-            return res.status(401).json({ success: false, message: "Authentication failed. User not found." });
+            return res.status(401).json({ success: false, message: "Authentication Failed. User Not Found." });
           }
           // comparing hashed password stored in the database with the user enetered password from Body.
           const decryptedPassword = bcrypt.compareSync(password, user.password);
