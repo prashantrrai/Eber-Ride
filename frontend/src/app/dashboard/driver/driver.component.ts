@@ -37,7 +37,7 @@ export class DriverComponent {
     private _driver: DriverService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {

@@ -21,9 +21,18 @@ export class CityService {
     return this.http.post<any>(`${this.serverUrl}/cityadd`, cityData );
   }
 
-  getcity():Observable<any>{
-    return this.http.get<any>(`${this.serverUrl}/citydata`);
+  getcity(page: number, limit: number):Observable<any>{
+    const params = {
+      page: page,
+      limit: limit,
+    };
+    // console.log(params)
+    const url = `${this.serverUrl}/citydata`;
+    return this.http.get(url, { params: params });
   }
+  // getcity():Observable<any>{
+  //   return this.http.get(`${this.serverUrl}/citydata`);
+  // }
 
   updateCity(cityId: string, cityData: any): Observable<any> {
     console.log(cityId)
@@ -36,5 +45,6 @@ export class CityService {
     console.log(countryid)
     return this.http.get<any>(`${this.serverUrl}/coordinates/${countryid}`);
   } 
+
 
 }

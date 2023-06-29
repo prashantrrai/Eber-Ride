@@ -4,6 +4,7 @@ declare var google: any;
 import { HttpClient } from "@angular/common/http";
 import { ToastrService } from "ngx-toastr";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { AuthService } from "src/app/Service/auth.service";
 
 @Component({
   selector: "app-city",
@@ -39,9 +40,8 @@ export class CityComponent implements OnInit {
   isupdatebutton: boolean = false;
   isCountryDisabled: boolean = false;
   id: any;
-  page: any;
+  page: number =1;
   tableSize: any;
-  count: any;
   countryName: any;
   city: any;
   citydata: any = {
@@ -50,12 +50,19 @@ export class CityComponent implements OnInit {
   };
   polygonObj: any;
   polygon: any;
-
+  totalPages: number = 0;
+  limit: number = 5;
+  currentPage: number = 1;
+  paginatedData: any[] = [];
+  count: any;
+  
   constructor(
     private toastr: ToastrService,
     private _city: CityService,
     private http: HttpClient,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+
   ) {
     this.cityForm = this.formBuilder.group({
       countryname: ["", Validators.required],
@@ -65,10 +72,10 @@ export class CityComponent implements OnInit {
 
   ngOnInit(): void {
     this.cityForm = this.formBuilder.group({
-      countryname: "",
-      cityname: "",
+      countryname: [""],
+      cityname: [""],
     });
-    this.loadCities();
+    this.getCItyData();
     this.getCountryNamefromDB();
     this.initMap();
   }
@@ -178,18 +185,40 @@ export class CityComponent implements OnInit {
     });
   }
 
-  loadCities(): void {
-    this._city.getcity().subscribe({
+  //---------------------------------------GET CITY DATA------------------------------------------//
+  getCItyData(): void {
+    this._city.getcity(this.currentPage, this.limit).subscribe({
       next: (response) => {
-        this.cityData = response;
-        // console.log(response);
+        this.cityData = response.citydata;
+        this.count = response.count;
+        this.totalPages = response.totalPage;
       },
       error: (error) => {
         console.log(error);
       },
     });
   }
-
+  onPageSizeChange(event: any): void {
+    this.limit = parseInt(event.target.value);
+    this.currentPage = 1;
+    this.updatePaginatedData();
+    this.getCItyData();
+  }
+  onPageChange(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+      this.currentPage = pageNumber;
+      this.updatePaginatedData();
+      this.getCItyData();
+    }
+  }
+  // getPagesArray(): number[] {
+  //   return Array(this.totalPages).fill(0).map((_, index) => index + 1);
+  // }
+  updatePaginatedData() {
+    const startIndex = (this.currentPage - 1) * this.limit;
+    const endIndex = startIndex + this.limit;
+    this.paginatedData = this.cityData.slice(startIndex, endIndex);
+  }
   //------TO REMOVE POLYGON-----------------//
   removePolygon() {
     if(this.polygonObj){
@@ -304,7 +333,7 @@ export class CityComponent implements OnInit {
                   this.cityData.push(response.city);
                   // this.toastr.success(response.message);
                   alert(response.message);
-                  this.loadCities();
+                  this.getCItyData();
                   this.getCountryNamefromDB();
                   this.marker.setVisible(false); // Hide the marker
                   this.marker.setPosition(null); // Clear the marker position
@@ -428,7 +457,7 @@ export class CityComponent implements OnInit {
               this.isaddbutton = true;
               this.cityForm.get('countryname')?.enable();
               
-              this.loadCities();
+              this.getCItyData();
               this.getCountryNamefromDB();
               this.marker.setVisible(false);
               this.marker.setPosition(null); 
@@ -448,5 +477,10 @@ export class CityComponent implements OnInit {
       }
     });
 
+  }
+
+
+  resetTimer() {
+    this.authService.resetInactivityTimer();
   }
 }

@@ -84,6 +84,8 @@ export class CreaterideComponent {
   totalHours: any;
   totalMinutes: any;
   estimateTime: string = "";
+  page: number = 1
+  limit: number =500
 
   constructor(
     private http: HttpClient,
@@ -186,7 +188,7 @@ export class CreaterideComponent {
         this.user = user
         this.polygons = [];
 
-        this._city.getcity().subscribe({
+        this._city.getcity(this.page, this.limit).subscribe({
           next: (cities: any) => {
 
             this.cities = cities;

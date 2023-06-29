@@ -17,6 +17,22 @@
     </div>
     </div>
 
+  <!-- ----------------------------SHOW DATA PER PAGE------------------------------------ -->
+  <div class="d-flex justify-content-center align-items-center">
+    <label for="pageSize">Show Data :</label>
+    <div class="custom-select">
+      <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
+        <option [ngValue]="null">Select Page</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+      </select>
+    </div>
+  </div>
+
   <!-- --------------------TABLE CONTAINER-------------------- -->
   <div class="parenttableContainer">
     <div id="tableContainer">
@@ -30,7 +46,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let city of cityData">
+          <tr *ngFor="let city of cityData | paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count};let i = index">
             <td>{{ city.countryDetails.countryName }}</td>
             <td>{{ city.city }}</td>
             <td>
@@ -41,4 +57,9 @@
         </table>
       </div>
     </div>
+  </div>
+
+  <!-- ---------------------------------------------PAGINATION USING NGX-------------------------------------------- ----- -->
+  <div class="d-flex justify-content-center">
+    <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true"></pagination-controls>
   </div>
