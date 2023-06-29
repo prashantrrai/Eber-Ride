@@ -41,7 +41,9 @@
   } */
 
 
-
+  .info-component{
+    overflow: hidden;
+  }
   .ride-details-dialog {
     text-align: center;
   }
@@ -53,6 +55,17 @@
   .details-key {
     font-weight: bold;
   }
+  .info-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #830fff;
+    color: white;
+    cursor: pointer;
+  }
+  
+
   
   @media (max-width: 767px) {
     .ride-details-dialog {
