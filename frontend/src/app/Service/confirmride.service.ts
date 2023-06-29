@@ -11,7 +11,10 @@ export class ConfirmrideService {
 
   constructor(private http: HttpClient) { }
   
+  // getride(): Observable<any>{
+  //   return this.http.get(`${this.serverUrl}/ridedata`);
+  // }
   getride(): Observable<any>{
-    return this.http.get(`${this.serverUrl}/ridedata`);
+    return this.http.get(`${this.serverUrl}/ridesinfo`);
   }
 }

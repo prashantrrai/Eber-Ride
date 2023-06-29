@@ -274,6 +274,13 @@ export class PricingComponent {
   toggleFormVisibility() {
     this.addForm = !this.addForm;
     this.isEditMode = false;
+    this.pricingForm.reset();
+    this.pricingForm.patchValue({
+      country:'',
+      city:'',
+      service:'',
+      distancebaseprice:'',
+    });
   }
   CancelForm() {
     this.addForm = false;

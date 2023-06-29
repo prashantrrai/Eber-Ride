@@ -10,17 +10,17 @@ const createRideSchema = mongoose.Schema(
     vehicleId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "NewVehiclePricings",
+      ref: "pricingModel",
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "Users",
+      ref: "userModel",
     },
     cityId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "Cities",
+      ref: "cityModel",
     },
     startLocation: {},
     endLocation: {},
@@ -31,7 +31,7 @@ const createRideSchema = mongoose.Schema(
     estimateFare: {},
     driverId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Drivers",
+      ref: "driverModel",
     },
     nearest: {
       type: String,
