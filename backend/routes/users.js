@@ -4,7 +4,7 @@ const userRoutes = express.Router()
 const userModel = require("../models/users");
 const multer = require('multer');
 const path = require('path');
-const profile_path = path.join(__dirname, "../Public/Upload");
+const profile_path = path.join(__dirname, "../Public/Profile");
 
 
   //---------------------------------------MULTER CODE FOR IMAGE UPLOAD---------------------------------------//

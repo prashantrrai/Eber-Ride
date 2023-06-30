@@ -3,7 +3,7 @@ const driverRoutes = express.Router();
 const driverModel = require("../models/driver");
 const multer = require("multer");
 const path = require("path");
-const profile_path = path.join(__dirname, "../Public/Upload");
+const profile_path = path.join(__dirname, "../Public/Profile");
 const mongoose = require("mongoose");
 
 //-------------------------------------------------------MULTER CODE----------------------------------------------

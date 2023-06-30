@@ -6,10 +6,10 @@ const PORT = process.env.PORT || 3000;
 const cors = require("cors");
 
 const path = require("path");
-const img_path = path.join(__dirname, "/Public/Upload");
+const img_path = path.join(__dirname, "/Public/Vehicle");
 app.use(express.static(img_path));
 
-const profile_path = path.join(__dirname, "/Public/Upload");
+const profile_path = path.join(__dirname, "/Public/Profile");
 app.use(express.static(profile_path));
 
 require("./database/db");

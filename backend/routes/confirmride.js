@@ -1,6 +1,7 @@
 const express = require('express');
 const confirmRideRouter = new express.Router();
 const createRideModel = require('../models/createride');
+const driverModel = require('../models/driver')
 
 
 // ------------------------------GET RIDE DATA-----------------------------------------//
@@ -95,6 +96,17 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send(error)
+  }
+})
+
+// ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE------------------------------------//
+confirmRideRouter.get('/assigneddriverdata', async (req, res) => {
+  try {
+    const driverdatta = await driverModel.find()
+    res.send(driverdatta)
+  } catch (error) {
+      console.log(error);    
+      res.status(500).send(error)
   }
 })
 

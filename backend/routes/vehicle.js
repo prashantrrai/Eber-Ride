@@ -5,7 +5,7 @@
   const path = require('path');
 const pricingModel = require("../models/pricing");
 const { log } = require("console");
-  const img_path = path.join(__dirname, "../Public/Upload");
+  const img_path = path.join(__dirname, "../Public/Vehicle");
 
 
 

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const driver_Schema = new mongoose.Schema({
   profile: {
     type: String,
-    default: "default profile.png"
+    default: "profile 3.png"
   },
   drivername: {
     type: String,

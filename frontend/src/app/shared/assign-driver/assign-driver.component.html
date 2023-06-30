@@ -1,0 +1,115 @@
+<div class="container p-4">
+  <!-- ----------------------------------------TABLE------------------------------------------------- -->
+  <div class="parentFormContainer">
+    <div id="tableContainer">
+    <div class="table-responsive">
+      <table class="table">
+        <thead class="bg-light text-dark">
+        <tr>
+          <th>Profile</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>City</th>
+          <!-- <th>Driver Status</th> -->
+          <th>Service</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let driver of driverArray">
+          <td><img src="http://localhost:4000/{{ driver.profile}}" alt="driver-profile"></td>
+          <td>{{ driver.drivername }}</td>
+          <td>{{ driver.driveremail }}</td>
+          <td>{{driver.countrycode + " " + driver.driverphone}}</td>
+          <td>{{driver.cityDetails.city}}</td>
+          <td *ngIf="driver.servicetype != null">{{driver.serviceDetails.vehicleName}}</td>
+          <td *ngIf="driver.servicetype == null">No Service</td>
+          <td> 
+              <button class="btn btn-primary" >Assign Driver</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ------------------------------------------RIDE DETAILS------------------------------------------------- -->
+    <div class="info-component">
+      <div class="ride-details-dialog">
+        <h2 class="text-start">Ride Details</h2>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">Request ID</span>
+          <span class="details-value col-sm-3  text-start">: {{data._id}}</span>
+        </div>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">User ID </span>
+          <span class="details-value col-sm-3  text-start">: {{data.userId}}</span>
+        </div>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">User Name </span>
+          <span class="details-value col-sm-3  text-start">: {{ data.userDetails.username }}</span>
+        </div>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">User Email </span>
+          <span class="details-value col-sm-3  text-start">: {{ data.userDetails.useremail }}</span>
+        </div>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">User Phone </span>
+          <span class="details-value col-sm-3  text-start">: {{ data.userDetails.userphone }}</span>
+        </div>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">Pickup Location</span>
+          <span class="details-value col-sm-3 text-start">: {{data.startLocation}}</span>
+        </div>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">Drop-off Location</span>
+          <span class="details-value col-sm-3 text-start">: {{data.endLocation}}</span>
+        </div>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">Way Point </span>
+          <span class="details-value col-sm-3 text-start" *ngIf="data.wayPoints && data.wayPoints.length > 0; else noWayPoints">: {{ data.wayPoints }}</span>
+          <ng-template #noWayPoints>
+            <span class="details-value col-sm-3 text-start">: No way point</span>
+          </ng-template>
+        </div>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">Service Type </span>
+          <span class="details-value col-sm-3  text-start">: {{data.serviceType}}</span>
+        </div>
+
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">Total Distance </span>
+          <span class="details-value col-sm-3  text-start">: {{data.totalDistance}}</span>
+        </div>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">Estimatetd Time </span>
+          <span class="details-value col-sm-3  text-start">: {{data.estimateTime}}</span>
+        </div>
+    
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">Estimated Fare </span>
+          <span class="details-value col-sm-3  text-start">: ₹ {{data.estimateFare}}</span>
+        </div>
+        
+        <div class="ride-details row align-items-center">
+          <span class="details-key col-sm-3 text-start">Booking Time </span>
+          <span class="details-value col-sm-3  text-start"  >: {{data.updatedAt}}</span>
+        </div>
+
+      </div>
+
+      <div mat-dialog-actions>
+        <button class="info-button" mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+      </div>
+    </div>
+</div>

@@ -3,54 +3,85 @@
     <h2>Ride Details</h2>
 
     <div class="ride-details row align-items-center">
-      <span class="details-key col-sm-3 text-end">User ID :</span>
-      <span class="details-value col-sm-3  text-start">{{data.userId}}</span>
-    </div>
-    <div class="ride-details row align-items-center">
-      <span class="details-key col-sm-3 text-end">User Name :</span>
-      <span class="details-value col-sm-3  text-start">Prashnat</span>
-    </div>
-    <div class="ride-details row align-items-center">
-      <span class="details-key col-sm-3 text-end">User Profile :</span>
-      <span class="details-value col-sm-3  text-start">image</span>
-      <!-- <img src="" alt="user-profile"> -->
-    </div>
-    <div class="ride-details row align-items-center">
       <span class="details-key col-sm-3 text-end">Request ID :</span>
       <span class="details-value col-sm-3  text-start">{{data._id}}</span>
     </div>
+
+    <div class="ride-details row align-items-center">
+      <span class="details-key col-sm-3 text-end">User ID :</span>
+      <span class="details-value col-sm-3  text-start">{{data.userId}}</span>
+    </div>
+
+    <div class="ride-details row align-items-center">
+      <span class="details-key col-sm-3 text-end">User Name :</span>
+      <span class="details-value col-sm-3  text-start">{{ data.userDetails.username }}</span>
+    </div>
+
+    <div class="ride-details row align-items-center" >
+      <span class="details-key col-sm-3 text-end">User Profile :</span>
+      <div id="userimage">
+        <img class="details-key col-sm-3 fit-image" src= "http://localhost:4000/{{ data.userDetails.profile }}" alt="user-profile">
+      </div>
+    </div>
+
+    <div class="ride-details row align-items-center">
+      <span class="details-key col-sm-3 text-end">User Email :</span>
+      <span class="details-value col-sm-3  text-start">{{ data.userDetails.useremail }}</span>
+    </div>
+
+    <div class="ride-details row align-items-center">
+      <span class="details-key col-sm-3 text-end">User Phone :</span>
+      <span class="details-value col-sm-3  text-start">{{ data.userDetails.userphone }}</span>
+    </div>
+
     <div class="ride-details row align-items-center">
       <span class="details-key col-sm-3 text-end">Pickup Location:</span>
       <span class="details-value col-sm-3 text-start">{{data.startLocation}}</span>
     </div>
+
     <div class="ride-details row align-items-center">
       <span class="details-key col-sm-3 text-end">Drop-off Location:</span>
       <span class="details-value col-sm-3 text-start">{{data.endLocation}}</span>
     </div>
+
     <div class="ride-details row align-items-center">
       <span class="details-key col-sm-3 text-end">Way Point :</span>
-      <span class="details-value col-sm-3  text-start">{{data.wayPoints}}</span>
+      <span class="details-value col-sm-3 text-start" *ngIf="data.wayPoints && data.wayPoints.length > 0; else noWayPoints">{{ data.wayPoints }}</span>
+      <ng-template #noWayPoints>
+        <span class="details-value col-sm-3 text-start">No way point</span>
+      </ng-template>
     </div>
+
     <div class="ride-details row align-items-center">
       <span class="details-key col-sm-3 text-end">Service Type :</span>
       <span class="details-value col-sm-3  text-start">{{data.serviceType}}</span>
     </div>
+
+    <div class="ride-details row align-items-center" >
+      <span class="details-key col-sm-3 text-end">Service Image :</span>
+      <div id="serviceimage">
+        <img class="details-key col-sm-3 " src= "http://localhost:4000/{{ data.vehicleDetails.vehicleImage }}" alt="service-photo">
+      </div>
+    </div>
+
     <div class="ride-details row align-items-center">
       <span class="details-key col-sm-3 text-end">Total Distance :</span>
-      <span class="details-value col-sm-3  text-start">{{data.totalDistance
-      }}</span>
+      <span class="details-value col-sm-3  text-start">{{data.totalDistance}}</span>
     </div>
+
     <div class="ride-details row align-items-center">
       <span class="details-key col-sm-3 text-end">Estimatetd Time :</span>
       <span class="details-value col-sm-3  text-start">{{data.estimateTime}}</span>
     </div>
+
     <div class="ride-details row align-items-center">
       <span class="details-key col-sm-3 text-end">Estimated Fare :</span>
       <span class="details-value col-sm-3  text-start">₹ {{data.estimateFare}}</span>
     </div>
+    
     <div class="ride-details row align-items-center">
       <span class="details-key col-sm-3 text-end">Booking Time :</span>
-      <span class="details-value col-sm-3  text-start">{{data.updatedAt}}</span>
+      <span class="details-value col-sm-3  text-start"  >{{data.updatedAt}}</span>
     </div>
 
     

@@ -572,7 +572,7 @@ console.log(cities, "cities........................:::::::::::::::");
         console.log(res);
         this.toaster.success("Ride booked successfully!");
         const dialogRef = this.dialog.open(SuccessDialogComponent, {
-          width: "300px",
+          width: "600px",
           data: { title: "Ride Booked", content: "Ride booked successfully!" },
         });
         this.rideForm.reset();

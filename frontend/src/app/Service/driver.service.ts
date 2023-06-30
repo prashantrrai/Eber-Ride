@@ -36,14 +36,18 @@ export class DriverService {
   getDriver(search: string, page: number, limit: number, sortBy: string, sortOrder: string): Observable<any> {
     const params = {
       search: search,
-      page: page.toString(),
-      limit: limit.toString(),
+      page: page,
+      limit: limit,
       sortBy: sortBy,
       sortOrder: sortOrder
     };
-    console.log(params)
+    // console.log(params)
     const url = `${this.serverUrl}/driverdata`;
     return this.http.get(url, { params: params });
+  }
+  getDriverdata(): Observable<any> {
+    const url = `${this.serverUrl}/driverdata`;
+    return this.http.get(url);
   }
 
   deleteDriver(driverId: string): Observable<any> {

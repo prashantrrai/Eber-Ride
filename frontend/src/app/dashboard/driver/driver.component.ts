@@ -357,7 +357,11 @@ export class DriverComponent {
   CancelForm(){
     this.driverFormButton = false;
     this.isEditMode = false;
-    // this.showButton = true;
+    this.driverForm.reset()
+    this.driverForm.patchValue({
+      countrycode:'',
+      city:'',
+    });
   }
 
   resetTimer() {

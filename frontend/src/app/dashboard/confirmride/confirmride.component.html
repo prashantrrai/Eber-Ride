@@ -22,21 +22,21 @@
 
                         <td>{{ ride._id }}</td>
                         <td>{{ ride.userId }}</td>
-                        <td>{{ ride }}</td>
+                        <td>{{ ride.userDetails.username }}</td>
                         <td>{{ ride.rideDate }}</td>
                         <td>{{ ride.startLocation }}</td>
                         <td>{{ ride.endLocation }}</td>
                         <td>{{ ride.serviceType }}</td>
-                        <td>Approved</td>
+                        <td></td>
                         <td>
                             <button color="accent"
-                                mat-button (click)="openDialog(ride)"><mat-icon>info</mat-icon></button>
+                                mat-button (click)="openInfoDialog(ride)"><mat-icon>info</mat-icon></button>
                         </td>
                         <td>
                             <button [matMenuTriggerFor]="lvl2master" color="accent"
                                 mat-button><mat-icon>edit</mat-icon></button>
                             <mat-menu #lvl2master="matMenu">
-                                <button mat-menu-item id="updatebtn"><mat-icon>update</mat-icon>Assign Driver</button>
+                                <button mat-menu-item id="updatebtn" (click)="openAssignDriverDialog(ride)"><mat-icon>update</mat-icon>Assign Driver</button>
                                 <button mat-menu-item id="updatebtn"><mat-icon>cancel</mat-icon>Cancel</button>
                             </mat-menu>
                         </td>
