@@ -102,7 +102,9 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
 // ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE------------------------------------//
 confirmRideRouter.get('/assigneddriverdata', async (req, res) => {
   try {
-    const driverdatta = await driverModel.find()
+    const { cityId, serviceId } = req.query;
+    const driverdatta = await driverModel.find({ cityId, serviceId })
+    console.log(driverdatta);
     res.send(driverdatta)
   } catch (error) {
       console.log(error);    

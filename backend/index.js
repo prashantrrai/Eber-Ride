@@ -3,6 +3,11 @@ const app = express();
 require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 
+const initializeSocket = require("./socket");
+const http = require("http");
+const server = http.createServer();
+const socketServer = initializeSocket(server);
+
 const cors = require("cors");
 
 const path = require("path");
