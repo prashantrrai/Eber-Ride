@@ -10,7 +10,7 @@
           </select>
 
             <input type="text" class="form-control number" formControlName="userphone"
-            (input)="filterNonDigits($event)" placeholder="Enter 10 digit phone number">
+            (input)="filterPhone($event)" placeholder="Enter 10 digit phone number">
 
           <button class="btn get-details" type="submit" [disabled]="!userForm.valid">Get Details</button>
         </form>
@@ -23,7 +23,7 @@
                 <p class="mb-0">Name</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.username}}</p>
+                <p class="text-muted mb-0">{{userArray.username}}</p>
               </div>
             </div>
             <div class="row p-2">
@@ -31,7 +31,7 @@
                 <p class="mb-0">Email</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.useremail}}</p>
+                <p class="text-muted mb-0">{{userArray.useremail}}</p>
               </div>
             </div>
             <div class="row p-2">
@@ -39,7 +39,7 @@
                 <p class="mb-0">Mobile</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.countrycode}}&nbsp;{{user.userphone}}</p>
+                <p class="text-muted mb-0">{{userArray.countrycode}}&nbsp;{{userArray.userphone}}</p>
               </div>
             </div>
             <button class="btn btn-primary get-detail" style="float: right; width: 100px;"
@@ -103,7 +103,7 @@
                 </div>
   
                 <div class="mb-3">
-                  <div *ngFor="let waypoint of waypoints; let i = index" class=" d-flex gap-2 mb-2">
+                  <div *ngFor="let waypoint of waypointsArray; let i = index" class=" d-flex gap-2 mb-2">
                     <input type=" text" [value]="waypoint" disabled class="form-control" id="added-waypoint">
                     <button (click)="removeWaypoint(i)" class="btn btn-danger">Remove</button>
                   </div>
@@ -183,9 +183,9 @@
           <a class="list-group-item list-group-item-action">
             <div class="d-flex gap-5">
               <input type="date" class="form-control" [(ngModel)]="selectedDate" [disabled]="selectedOption === 'bookNow'"
-                (change)="date()" min="{{ minDate }}">
+                (change)="onselecteddate()" min="{{ minDate }}">
               <input type="time" class="form-control" [(ngModel)]="selectedTime" [disabled]="selectedOption === 'bookNow'"
-                (input)="time()" [min]="minTime">
+                (input)="onselectedtime()" [min]="minTime">
             </div>
           </a>
   

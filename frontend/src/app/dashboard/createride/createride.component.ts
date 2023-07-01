@@ -29,13 +29,13 @@ export class CreaterideComponent {
   map: any;
   directionsService: any;
   directionsRenderer: any;
-  waypoints: any = [];
-  user: any;
+  waypointsArray: any = [];
+  userArray: any;
   cities: any =[];
-  cordsArray: any;
+  cordinatesArray: any = [];
   polygon: any;
   isInZone: boolean = true;
-  polygons: any = [];
+  polygonsArray: any = [];
   polygonObjects: any = [];
   cityIndex: any;
   isRoute: any = false;
@@ -68,8 +68,8 @@ export class CreaterideComponent {
   });
 
   numericInputValue: any = "";
-  isNext = true;
-  isUser = false;
+  isNext = true;  // to Show NEXT button
+  isUser = false; // to Hide USER Details FORM
   selectedVehicle: any;
   stops: any;
   stopsCounter: any = 0;
@@ -103,7 +103,7 @@ export class CreaterideComponent {
     const currentDate = new Date();
     this.selectedDate = this.formatDate(currentDate);
     this.selectedTime = this.formatTime(currentDate);
-    this.getCodes();
+    this.getcountryCode();
     this.getNumberOfStops();
     this.initMap();
   }
@@ -128,18 +128,34 @@ export class CreaterideComponent {
   }
 
   //--------------------COUNTRY CODES REST API--------------------
-  getCodes() {
-    this.http.get("https://restcountries.com/v3.1/all").subscribe({
-      next: (countries: any) => {
-        countries.forEach((response: any) => {
-          if (response.idd.suffixes) {
-            let code = response.idd.root + response.idd.suffixes[0];
-            this.countryCodes.push(code);
-          }
+  // getCodes() {
+  //   this.http.get("https://restcountries.com/v3.1/all").subscribe({
+  //     next: (countries: any) => {
+  //       countries.forEach((response: any) => {
+  //         if (response.idd.suffixes) {
+  //           let code = response.idd.root + response.idd.suffixes[0];
+  //           this.countryCodes.push(code);
+  //         }
+  //       });
+  //       this.countryCodes.sort();
+  //     },
+  //     error: (error) => {
+  //       console.log(error);
+  //     },
+  //   });
+  // }
+  getcountryCode(){
+    this._createride.getcode().subscribe({
+      next: (response) => {
+        // console.log(response)
+        let code = response.countrydata.forEach((element: any) => {
+          // console.log(element.countryCode)
+          this.countryCodes.push(element.countryCode)
         });
         this.countryCodes.sort();
+        // console.log(this.countrycode)
       },
-      error: (error) => {
+      error: (error: any) => {
         console.log(error);
       },
     });
@@ -149,7 +165,7 @@ export class CreaterideComponent {
   getNumberOfStops() {
     this._setting.getStops().subscribe({
       next: (response: any) => {
-        console.log(response.settingData[0]);
+        // console.log(response.settingData[0]);
         this.stops = response.stop;
       },
       error: (error) => {
@@ -159,7 +175,7 @@ export class CreaterideComponent {
   }
 
   // ------------------PHONE NUMBER FILTER---------------------
-  filterNonDigits(event: any) {
+  filterPhone(event: any) {
     let inputValue: string = event.target.value;
     inputValue = inputValue.replace(/\D/g, "");
   
@@ -183,31 +199,29 @@ export class CreaterideComponent {
     };
 
     this._createride.getUserByNumber(userData).subscribe({
-      next: (user: any) => {
+      next: (userResponse: any) => {
+        console.log(userResponse)
+        this.userArray = userResponse
         this.isUser = true;
-        this.user = user
-        this.polygons = [];
+        this.polygonsArray = [];  // to clear the polygon array
 
         this._city.getcity(this.page, this.limit).subscribe({
-          next: (cities: any) => {
-console.log(cities, "cities........................:::::::::::::::");
+          next: (resp: any) => {
+            console.log("This is Available Cities in DB for Service============",resp);
 
-            this.cities = cities.citydata;
+            this.cities = resp.citydata;
 
             this.cities.forEach((city: any) => {
-              this.polygons.push(city.coordinates);
+              this.polygonsArray.push(city.coordinates);
             });
-            // console.log(this.polygons, "polygons.....");
+            console.log("City's Polygons data:  ",this.polygonsArray);
 
-            this.polygonObjects = this.polygons.map(function (
-              polygonCoordinates: any
-            ) {
+
+            this.polygonObjects = this.polygonsArray.map(function (polygonCoordinates: any) {
               return new google.maps.Polygon({
                 paths: polygonCoordinates,
               });
             });
-
-            this.cordsArray = this.cities.coordinates
           },
           error: (error: any) => {
             console.log(error);
@@ -219,7 +233,7 @@ console.log(cities, "cities........................:::::::::::::::");
         console.log(error.error.message);
         if (error.error) {
           this.toaster.error(error.error.message, "Sorry");
-          this.user = undefined;
+          this.userArray = undefined;
           this.isUser = false;
         } else {
           this.toaster.error(error.status, error.statusText);
@@ -230,11 +244,11 @@ console.log(cities, "cities........................:::::::::::::::");
 
   // ----------------------------------------AFTER USER FOUND----------------------------------------//
   addTravelForm() {
-    this.isNext = false;
-    this.isUser = false;
+    this.isNext = false;  // to hide NEXT button
+    this.isUser = false;  // to hide USER form
 
     setTimeout(() => {
-      console.log("starting 2 msec after user found...........");
+      console.log("Autocomplete Function Initiated====================Now");
       this.initAutocomplete();
     }, 200);
   }
@@ -250,7 +264,7 @@ console.log(cities, "cities........................:::::::::::::::");
     const endAutocomplete = new google.maps.places.Autocomplete(end);
   }
 
-  //-------------whent starting location change-------------------
+  //-------------when starting location change-------------------
   startInputChange() {
     this.rideForm.reset();
     this.rideForm.patchValue({
@@ -263,11 +277,10 @@ console.log(cities, "cities........................:::::::::::::::");
     }
   }
 
-  //to check service is available from starting location or not
+  //--------------TO CHECK START LOCATION IS AVAILABLE IN ZONE OR NOT----------------//
   checkLocation() {
     if (this.polygonObjects?.length != 0) {
       const geocoder = new google.maps.Geocoder();
-
       setTimeout(() => {
         let input = document.getElementById("startInput") as HTMLInputElement;
         console.log(input.value);
@@ -276,7 +289,7 @@ console.log(cities, "cities........................:::::::::::::::");
           (results: any, status: any) => {
             if (status === "OK") {
               const location = results[0].geometry.location;
-              // console.log(location);
+              console.log("This is location=============",location);
               this.isInZone = false;
               for (var i = 0; i < this.polygonObjects.length; i++) {
                 if (
@@ -286,14 +299,14 @@ console.log(cities, "cities........................:::::::::::::::");
                   )
                 ) {
                   this.cityIndex = i;
-                  console.log(this.cityIndex,"new loggggggggggggggggggggggggg...................");
+                  console.log("INDEX VALUE OF CITY[i]============",this.cityIndex);
                   
                   this.isInZone = true;
                   break; // Exit the loop if the location is found within any polygon
                 }
               }
-              console.log(this.isInZone);
-              console.log(this.cityIndex, "cityindex....");
+              console.log("Wheather CITY is in Zone or NOT=============",this.isInZone);
+              console.log("CITY INDEX AFTER LOOP==============",this.cityIndex);
 
               if (!this.isInZone) {
                 console.log("Service Not Available");
@@ -313,8 +326,8 @@ console.log(cities, "cities........................:::::::::::::::");
                 this.toaster.success("Service is Available in City");
               }
             } else {
-              this.toaster.info("Select Location from Auto Suggestion");
               console.log("Select location from auto suggestion", status);
+              this.toaster.info("Select Location from Auto Suggestion");
             }
           }
         );
@@ -327,7 +340,7 @@ console.log(cities, "cities........................:::::::::::::::");
     const waypoint = this.waypointInput?.nativeElement.value;
     if (waypoint) {
       this.stopsCounter++;
-      this.waypoints.push(waypoint);
+      this.waypointsArray.push(waypoint);
       this.waypointInput.nativeElement.value = ""; // Clear the input field
     }
   }
@@ -335,7 +348,7 @@ console.log(cities, "cities........................:::::::::::::::");
   // ----------------------REMOVE WAY POINTS----------------------
   removeWaypoint(index: number) {
     this.stopsCounter--;
-    this.waypoints.splice(index, 1);
+    this.waypointsArray.splice(index, 1);
   }
 
   // To get direction
@@ -347,15 +360,16 @@ console.log(cities, "cities........................:::::::::::::::");
       serviceType: "",
     });
 
-    console.log(this.startLocation, this.endLocation);
+    console.log("STARTING LOCATION:   ",this.startLocation);
+    console.log("DESTINATION LOCATION:   ",this.endLocation);
 
-    console.log(this.waypoints, "waypints array");
+    console.log("MY WAY POINT ARRAY===================",this.waypointsArray);
 
     this.directionsService?.route(
       {
         origin: this.startLocation,
         destination: this.endLocation,
-        waypoints: this.waypoints.map((waypoint: any) => ({
+        waypoints: this.waypointsArray.map((waypoint: any) => ({
           location: waypoint,
         })),
         optimizeWaypoints: true,
@@ -364,7 +378,7 @@ console.log(cities, "cities........................:::::::::::::::");
       (response: any, status: string) => {
         if (status === "OK") {
           this.drawRoute(response);
-          console.log(this.travelForm.value);
+          // console.log(this.travelForm.value);
           this.isRoute = true;
         } else {
           if (status === "ZERO_RESULTS") {
@@ -381,49 +395,50 @@ console.log(cities, "cities........................:::::::::::::::");
     );
   }
 
+  //-------------------------CALCULATE FARE----------------------------//
   calculateFare(vehiclePricing: any, cityIndex: any) {
     let minFare = +vehiclePricing.minfare;
     let baseDistance = +vehiclePricing.distancebaseprice;
     let basePrice = +vehiclePricing.baseprice;
-    let pDistance = +vehiclePricing.ppudist;
-    let pTime = +vehiclePricing.pputime;
+    let ppudist = +vehiclePricing.ppudist;
+    let pputime = +vehiclePricing.pputime;
 
-    console.log(minFare, baseDistance, basePrice, pDistance, pTime);
-    console.log(typeof minFare, typeof baseDistance, typeof basePrice, typeof pDistance, typeof pTime);
     let estimatePrice =
       //added multiply * temporarily
-      (this.totalDistance - baseDistance) * pDistance +
-      basePrice +
-      this.totalTime * pTime;
+      ((this.totalDistance - baseDistance) * ppudist) + (basePrice) + (this.totalTime * pputime);
+
     if (estimatePrice < minFare || estimatePrice < basePrice) {
       estimatePrice = minFare;
     }
 
     this.estimateFare = estimatePrice;
     this.vehiclesPricing[cityIndex].estimateFare = estimatePrice;
-    console.log(this.vehiclesPricing[cityIndex].estimateFare,"log...........");
 
-    console.log(estimatePrice, "Fare......");
+    console.log("This is SERVICE FEES ==============",this.vehiclesPricing[cityIndex].estimateFare);
+    console.log("This is SERVICE FARE ==============",estimatePrice)
+    //This FARE is rounded Off to Nearesr 10 Integer So that helpful in Payment in Denominations(ROUNDED in TIME and DISTANCE)
   }
 
-  //to get vehicles pricing...........
+  //----------------------GET VEHICLE PRICING----------------------//
   getVehiclePricing(index: any) {
-    console.log(index, "index....");
+    console.log("CITY Index Value=========",index);
 
     const cityId = this.cities[index]._id;
-    console.log(cityId);
+    console.log("CITY ID========",cityId);
+    const cityname = this.cities[index].city;
+    console.log("CITY NAME========",cityname);
 
     this._createride.getServiceType(cityId).subscribe({
       next: (vehiclesPricing: any) => {
         console.log(vehiclesPricing);
         this.vehiclesPricing = vehiclesPricing.pricingdata;
 
-        // to calculate fare......
-        this.vehiclesPricing.forEach((vehiclePricing: any, i: number) => {
-          this.calculateFare(vehiclePricing, i);
+        //-----------TO Calculate the FARE -----------------//
+        this.vehiclesPricing.forEach((vehiclePricing: any, cityindex: number) => {
+          this.calculateFare(vehiclePricing, cityindex);
         });
         this.cdr.detectChanges();
-        console.log(this.vehiclesPricing, "Estimated price..aa array");
+        console.log("Estimated Price Array==================",this.vehiclesPricing);
       },
       error: (error: any) => {
         console.log(error);
@@ -433,6 +448,13 @@ console.log(cities, "cities........................:::::::::::::::");
   }
  
   drawRoute(response: any) {
+    console.log(response)
+    // console.log(response.routes[0])
+    // console.log(response.routes[0].legs[0])
+    // console.log(response.routes[0].legs[0].distance.text, "Values Not Precise Round Figure")
+    // console.log(response.routes[0].legs[0].distance.value , "meters")
+    // console.log(response.routes[0].legs[0].duration.text, "Values Not Precise Round Figure")
+    // console.log(response.routes[0].legs[0].duration.value , "minutes")
     const route = response.routes[0];
 
     let totalDistance = 0;
@@ -447,27 +469,21 @@ console.log(cities, "cities........................:::::::::::::::");
     }
 
     this.totalDistance = +totalDistance / 1000;
-    this.totalDistance = this.totalDistance.toFixed(1);
+    // this.totalDistance = this.totalDistance.toFixed(1);   //to round off the value to 1 decimal place
     console.log("Total Distance:", this.totalDistance, "km");
 
     this.totalHours = Math.floor(totalDuration / 3600);
     this.totalMinutes = Math.round((totalDuration % 3600) / 60);
-    console.log(
-      "Total Time:",
-      this.totalHours,
-      "hours",
-      this.totalMinutes,
-      "minutes"
-    );
-    this.estimateTime =
-      this.totalHours + " hours " + this.totalMinutes + " minutes ";
+    console.log("Total Time:", this.totalHours,"hours", this.totalMinutes,"minutes");
+
+    this.estimateTime = this.totalHours + " hours " + this.totalMinutes + " minutes ";
     this.totalTime = +totalDuration / 60;
-    this.totalTime = this.totalTime.toFixed(1);
-    console.log(this.totalTime, "minutes.....");
+    // this.totalTime = this.totalTime.toFixed(1);     //to round off the value to 1 decimal place
+    console.log("Total Minutes============",this.totalTime);
 
     this.getVehiclePricing(this.cityIndex);
 
-    // Clear previous route
+    //----------------CLEAR PREVIOUS ROUTE------------------//
     this.directionsRenderer.setMap(null);
     this.directionsRenderer = new google.maps.DirectionsRenderer({
       polylineOptions: {
@@ -477,26 +493,33 @@ console.log(cities, "cities........................:::::::::::::::");
     });
     this.directionsRenderer.setMap(this.map);
 
-    // Display new route
+    //-----------------DISPLAY NEW ROUTE-----------------------//
     this.directionsRenderer.setDirections(response);
   }
 
   //-------------------------------SELECT SERVICE TYPE---------------------------------------------//
   onSelectServiceType(serviceType: any) {
     console.log(serviceType);
+    //It is returning condition value True or False, If selected vehicle is same as serviceType
     this.selectedVehicle = this.vehiclesPricing.find((price: any) => {
+      console.log(price.service.vehicleName === serviceType)
       return price.service.vehicleName === serviceType;
     });
+    console.log("Selected Vehicle Condition Value===========",this.selectedVehicle);
+    
     if (this.selectedVehicle) {
       this.selectedVehicle.totalDistance = this.totalDistance;
       this.selectedVehicle.totalTime = this.totalTime;
     }
-    console.log(this.selectedVehicle);
+    // console.log(this.selectedVehicle);
+    // console.log(this.selectedVehicle.totalDistance);
+    // console.log(this.selectedVehicle.totalTime);
+    
   }
 
   //---------------------------------SELECT DATE AND TIME------------------------------------------//
   handleRadioChange() {
-    console.log("input...");
+    console.log("RADION BUTTON CLICKED=================");
     if (this.selectedOption === "bookNow") {
       const currentDate = new Date();
       this.selectedDate = this.formatDate(currentDate);
@@ -513,7 +536,7 @@ console.log(cities, "cities........................:::::::::::::::");
 
       //-------------------------------------------------------------------------------------------------------------------------------------------------//
       if (selectedDateTime < currentDateTime) {
-        console.log("if...");
+        console.log("selectedDateTime < currentDateTime=====================");
 
         setTimeout(() => {
           this.selectedDate = this.formatDate(currentDateTime);
@@ -524,11 +547,13 @@ console.log(cities, "cities........................:::::::::::::::");
     }
   }
 
-  date() {
+  onselecteddate() {
     console.log(this.selectedDate);
+    console.log("SELECTED DATE==================",this.selectedDate);
   }
-  time() {
+  onselectedtime() {
     console.log(this.selectedTime);
+    console.log("SELECTED TIME==================",this.selectedTime);
   }
 
   // ------------------------------------FORMAT DATE AND TIME----------------------------------------//
@@ -550,27 +575,30 @@ console.log(cities, "cities........................:::::::::::::::");
     console.log(this.rideForm.value);
     this.selectedVehicle.startLocation = this.startLocation;
     this.selectedVehicle.endLocation = this.endLocation;
-    this.selectedVehicle.waypints = this.waypoints;
+    this.selectedVehicle.waypints = this.waypointsArray;
     this.rideData = {
       ...this.rideForm.value,
       rideDate: this.selectedDate,
       time: this.selectedTime,
-      vehicleId: this.selectedVehicle._id,
-      userId: this.user._id,
+      serviceId: this.selectedVehicle._id,
+      userId: this.userArray._id,
       cityId: this.selectedVehicle.city,
       startLocation: this.startLocation,
       endLocation: this.endLocation,
-      wayPoints: this.waypoints,
+      wayPoints: this.waypointsArray,
       totalDistance: this.totalDistance,
       totalTime: this.totalTime,
       estimateTime: this.estimateTime,
       estimateFare: this.selectedVehicle.estimateFare,
     };
     console.log(this.rideData);
+
     this._createride.addRide(this.rideData).subscribe({
-      next: (res) => {
-        console.log(res);
+      next: (response) => {
+        console.log(response);
+
         this.toaster.success("Ride booked successfully!");
+
         const dialogRef = this.dialog.open(SuccessDialogComponent, {
           width: "600px",
           data: { title: "Ride Booked", content: "Ride booked successfully!" },

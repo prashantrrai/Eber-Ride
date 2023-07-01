@@ -7,7 +7,7 @@ const createRideSchema = mongoose.Schema(
     serviceType: {},
     rideDate: {},
     time: {},
-    vehicleId: {
+    serviceId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "pricingModel",

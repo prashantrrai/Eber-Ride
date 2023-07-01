@@ -9,14 +9,17 @@ export class DriverService {
 
 
   private serverUrl = 'http://localhost:4000';
-  private countryAPI = 'https://restcountries.com/v3.1/all'
+  // private countryAPI = 'https://restcountries.com/v3.1/all'
 
 
   constructor(private http: HttpClient) { }
 
 
-  getCountryCode(): Observable<any> {
-    return this.http.get(`${this.countryAPI}`);
+  // getCountryCode(): Observable<any> {
+  //   return this.http.get(`${this.countryAPI}`);
+  // }
+  getcode(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/countrydata`);
   }
 
   

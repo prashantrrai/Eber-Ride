@@ -15,6 +15,7 @@ export class SettingComponent {
   stopArray: any[] = [1, 2, 3, 4, 5];
   selectedTimeout: any;
   selectedStop: any;
+  setting: any=[];
 
   constructor(
     private _setting: SettingService,
@@ -24,6 +25,8 @@ export class SettingComponent {
   ) {}
 
   ngOnInit(): void {
+    this.getsettingData()
+
     this.settingForm = this.formBuilder.group({
       ridetimeout: ["", [Validators.required]],
       stop: ["", [Validators.required]],
@@ -35,7 +38,8 @@ export class SettingComponent {
     console.log(ridetimeout);
     this._setting.updateSetting({ridetimeout}).subscribe({
       next: (response: any) => {
-        console.log(response.settingdata);
+        // console.log(response.settingdata);
+        this.setting = response.settingdata;
         this.toastr.success(response.message);
       },
       error: (error: any) => {
@@ -51,7 +55,23 @@ export class SettingComponent {
     this._setting.updateSetting({stop}).subscribe({
       next: (response: any) => {
         console.log(response.settingdata);
+        this.setting = response.settingdata;
+        console.log(this.setting)
         this.toastr.success(response.message);
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.toastr.error(error.error.message);
+      },
+    });
+  }
+
+  getsettingData(){
+    this._setting.getStops().subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.setting = response.settingData[0];
+        // this.toastr.success(response.message);
       },
       error: (error: any) => {
         console.log(error);

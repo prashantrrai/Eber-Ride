@@ -66,6 +66,7 @@ export class CountryComponent implements OnInit {
   fetchCountryDataAPI() :void{
     this._country.fetchCountryAPI().subscribe({
       next: (response) => {
+        // console.log(response)
         this.countryData = response;
       },
       error: (error) => {
@@ -89,7 +90,8 @@ export class CountryComponent implements OnInit {
           this.countryForm.patchValue({
             countryname: selectedCountry.name.common,
             countrytimezone: selectedCountry.timezones,
-            countrycode: selectedCountry.cca2,
+            // countrycode: selectedCountry.cca2,
+            countrycode: (selectedCountry.idd.root + selectedCountry.idd.suffixes[0]),
             countrycurrency: this.symbol,
             flag: selectedCountry.flags.png
           });
@@ -148,6 +150,7 @@ export class CountryComponent implements OnInit {
 
   cancel() {
     this.AddbuttonForm = false;
+    this.countryForm.reset();
   }
 
   resetTimer() {

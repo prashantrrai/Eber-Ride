@@ -88,6 +88,7 @@ export class VehicleComponent implements OnInit {
         this.vehicleForm.reset()
         this.updateButtonForm = false
         console.log(this.vehiclesData)
+        this.file = null
         this.toastr.success(res.message);
 
         

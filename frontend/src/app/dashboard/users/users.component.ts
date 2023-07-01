@@ -37,12 +37,15 @@ export class UsersComponent {
 
   ngOnInit(): void {
     this.getUserData();
-    this.fetchCountryDataAPI();
+    // this.fetchCountryDataAPI();
+    this.getcountryCode();
+
     
     this.AddForm = this.formBuilder.group({
       profile: [""],
       username: ["", [Validators.required]],
       useremail: ["", [Validators.required, Validators.email]],
+      countrycode: ["", [Validators.required]],
       userphone: ["", [Validators.required, Validators.minLength(10)]],
     });
 
@@ -55,16 +58,32 @@ export class UsersComponent {
   }
 
   // --------------------------------GET COUNTRY CODE DATA FROM REST API--------------------------------------
-  fetchCountryDataAPI(): void {
-    this._users.fetchCountryAPI().subscribe({
-      next: (countries) => {
-        countries.forEach((code: any) => {
-          if (code.idd.suffixes) {
-            let cc = code.idd.root + code.idd.suffixes[0];
-            this.countrycode.push(cc);
-          }
+  // fetchCountryDataAPI(): void {
+  //   this._users.fetchCountryAPI().subscribe({
+  //     next: (countries) => {
+  //       countries.forEach((code: any) => {
+  //         if (code.idd.suffixes) {
+  //           let cc = code.idd.root + code.idd.suffixes[0];
+  //           this.countrycode.push(cc);
+  //         }
+  //       });
+  //       this.countrycode.sort();
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error);
+  //     },
+  //   });
+  // }
+  getcountryCode(){
+    this._users.getcode().subscribe({
+      next: (response) => {
+        // console.log(response)
+        let code = response.countrydata.forEach((element: any) => {
+          // console.log(element.countryCode)
+          this.countrycode.push(element.countryCode)
         });
         this.countrycode.sort();
+        // console.log(this.countrycode)
       },
       error: (error: any) => {
         console.log(error);
@@ -73,7 +92,7 @@ export class UsersComponent {
   }
   onSelected(value: any) {
     this.selectedCC = value;
-    // console.log(value)
+    console.log(value)
   }
 
   // --------------------IMAGE SELECTED---------------------
@@ -98,6 +117,7 @@ export class UsersComponent {
           this.AddForm.reset();
           this.AddbuttonForm = false;
           this.getUserData();
+          this.file = null
           this.toastr.success(resp.message);
         },
         error: (error: any) => {
@@ -178,6 +198,7 @@ export class UsersComponent {
       updatecountrycode: user.countrycode,
       updateuserphone: user.userphone,
     });
+    // console.log(user.countrycode)
   }
   updateUSER(): void {
     const updatedData = this.userupdateForm.value;

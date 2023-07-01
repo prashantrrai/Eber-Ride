@@ -87,7 +87,7 @@
         <label class="form-label d-flex justify-content-start">Phone Number</label>
         <div class="phone-input w-100">
           <select class="form-control w-25" id="country-code" name="code" #code  (change)="onSelectedCode(code.value)" formControlName="countrycode">
-            <option value="+91" selected>+91</option>
+            <option value="">Select</option>
             <option [value]="code" *ngFor="let code of countrycodeArray">{{code}}</option>
           </select>
           <input type="tel" class="form-control" id="phone-number" formControlName="driverphone" placeholder="Enter Phone"

@@ -41,7 +41,8 @@ export class DriverComponent {
   ) { }
 
   ngOnInit(): void {
-    this.getCountryCode()
+    // this.getCountryCode()
+    this.getcountryCode();
     this.getCityNamefromDB()
     this.getDriverData()
     this.getVehicleNamefromDB()
@@ -50,7 +51,7 @@ export class DriverComponent {
       profile: [""],
       drivername: ["", [Validators.required]],
       driveremail: ["", [Validators.required, Validators.email]],
-      countrycode: ["+91", [Validators.required]],
+      countrycode: ["", [Validators.required]],
       driverphone: ["", [Validators.required, Validators.minLength(10)]],
       city: ["", [Validators.required]],
       status: [""],
@@ -62,16 +63,33 @@ export class DriverComponent {
   }
 
   // -----------------------GET COUNTRY CODE---------------------------
-  getCountryCode() {
-    this._driver.getCountryCode().subscribe({
+  // getCountryCode() {
+  //   this._driver.getCountryCode().subscribe({
+  //     next: (response) => {
+  //       // console.log(response)
+  //       let data = response.map((code: any) => {
+  //         if (code.idd.suffixes) {
+  //           let countrycode = code.idd.root + code.idd.suffixes[0];
+  //           this.countrycodeArray.push(countrycode);
+  //         }
+  //       })
+  //       this.countrycodeArray.sort();
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error);
+  //     },
+  //   });
+  // }
+  getcountryCode(){
+    this._driver.getcode().subscribe({
       next: (response) => {
-        let data = response.map((code: any) => {
-          if (code.idd.suffixes) {
-            let countrycode = code.idd.root + code.idd.suffixes[0];
-            this.countrycodeArray.push(countrycode);
-          }
-        })
+        // console.log(response)
+        let code = response.countrydata.forEach((element: any) => {
+          // console.log(element.countryCode)
+          this.countrycodeArray.push(element.countryCode)
+        });
         this.countrycodeArray.sort();
+        // console.log(this.countrycodeArray)
       },
       error: (error: any) => {
         console.log(error);
@@ -116,7 +134,7 @@ export class DriverComponent {
     }
   }
 
-  // --------------------------------------------ADD VEHICLE PRICING FXN---------------------------------------------
+  // --------------------------------------------ADD DRIVER FXN---------------------------------------------
   AddDriver() {
     // using object but image not uploading
     const formValues = this.driverForm.value;
@@ -139,6 +157,7 @@ export class DriverComponent {
           this.getDriverData();
           this.driverForm.reset();
           this.driverFormButton = false;
+          this.file = null
           this.toastr.success(response.message);
         },
         error: (error: any) => {
@@ -348,6 +367,11 @@ export class DriverComponent {
   toggleFormVisibility() {
     this.driverFormButton = !this.driverFormButton;
     this.isEditMode = false;
+    this.driverForm.reset()
+    this.driverForm.patchValue({
+      countrycode:'',
+      city:'',
+    });
   }
   closeModal(): void {
     this.serviceModal = false;

@@ -14,8 +14,11 @@ export class UsersService {
   constructor(private http: HttpClient) { }
 
 
-  fetchCountryAPI(): Observable<any> {
-    return this.http.get(`${this.countryAPI}`);
+  // fetchCountryAPI(): Observable<any> {
+  //   return this.http.get(`${this.countryAPI}`);
+  // }
+  getcode(): Observable<any> {
+    return this.http.get(`${this.serverUrl}/countrydata`);
   }
   
   addUser(userData: any): Observable<any> {
