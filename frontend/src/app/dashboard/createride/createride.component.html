@@ -175,7 +175,7 @@
                   (change)="handleRadioChange()" formControlName="rideTime">
                 <label class="form-check-label" for="schedule">Schedule</label>
               </div>
-              <button type="button" type="submit" class="btn mx-3 bookbtn" [disabled]="!rideForm.valid">Confirm
+              <button type="button" type="submit" class="btn mx-3 bookbtn" [disabled]="!rideForm.valid || !isDateTimeValid">Confirm
                 Ride</button>
             </a>
           </form>

@@ -86,6 +86,7 @@ export class CreaterideComponent {
   estimateTime: string = "";
   page: number = 1
   limit: number =500
+  isDateTimeValid: boolean = true;
 
   constructor(
     private http: HttpClient,
@@ -483,7 +484,7 @@ export class CreaterideComponent {
 
     this.getVehiclePricing(this.cityIndex);
 
-    //----------------CLEAR PREVIOUS ROUTE------------------//
+    //----------------CLEAR PREVIOUS ROUTE and DRAW NEW------------------//
     this.directionsRenderer.setMap(null);
     this.directionsRenderer = new google.maps.DirectionsRenderer({
       polylineOptions: {
@@ -505,7 +506,7 @@ export class CreaterideComponent {
       console.log(price.service.vehicleName === serviceType)
       return price.service.vehicleName === serviceType;
     });
-    console.log("Selected Vehicle Condition Value===========",this.selectedVehicle);
+    console.log("Selected Vehicle Condition Value===========", this.selectedVehicle);
     
     if (this.selectedVehicle) {
       this.selectedVehicle.totalDistance = this.totalDistance;
@@ -519,11 +520,12 @@ export class CreaterideComponent {
 
   //---------------------------------SELECT DATE AND TIME------------------------------------------//
   handleRadioChange() {
-    console.log("RADION BUTTON CLICKED=================");
+    // console.log("RADION BUTTON CLICKED=================");
     if (this.selectedOption === "bookNow") {
       const currentDate = new Date();
       this.selectedDate = this.formatDate(currentDate);
       this.selectedTime = this.formatTime(currentDate);
+      this.isDateTimeValid = true;
     } else {
       const currentDate = new Date();
       this.minDate = this.formatDate(currentDate);
@@ -534,15 +536,22 @@ export class CreaterideComponent {
       );
       const currentDateTime = new Date();
 
-      //-------------------------------------------------------------------------------------------------------------------------------------------------//
+      //------------REFRESH DATE AND TIME WHEN SELECTING--------------//
       if (selectedDateTime < currentDateTime) {
-        console.log("selectedDateTime < currentDateTime=====================");
+        // console.log(selectedDateTime < currentDateTime);
 
         setTimeout(() => {
           this.selectedDate = this.formatDate(currentDateTime);
           this.selectedTime = this.formatTime(currentDateTime);
         }, 0);
+
+        this.isDateTimeValid = false;
       }
+      this.isDateTimeValid = selectedDateTime > currentDateTime;
+      if(!this.isDateTimeValid){
+        this.toaster.info("Please select valid date and time");
+      }
+      console.log("isDateTimeValid=============", this.isDateTimeValid)
       // ------------------------------------------------------------------------------------------------------------------------------------------------//
     }
   }
@@ -550,10 +559,13 @@ export class CreaterideComponent {
   onselecteddate() {
     console.log(this.selectedDate);
     console.log("SELECTED DATE==================",this.selectedDate);
+    this.handleRadioChange()
   }
   onselectedtime() {
-    console.log(this.selectedTime);
+    // console.log(this.selectedTime);
     console.log("SELECTED TIME==================",this.selectedTime);
+    console.log(this.isDateTimeValid)
+    this.handleRadioChange()
   }
 
   // ------------------------------------FORMAT DATE AND TIME----------------------------------------//
