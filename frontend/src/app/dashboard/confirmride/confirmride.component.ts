@@ -34,7 +34,7 @@ export class ConfirmrideComponent {
   getrideData() {
     this._ride.getride().subscribe({
       next: (response: any) => {
-        // console.log(response)
+        console.log(response)
         this.ridesArray = response;
       },
       error: (error: any) => {
@@ -56,9 +56,6 @@ export class ConfirmrideComponent {
       this.getrideData();
     }
   }
-  // getPagesArray(): number[] {
-  //   return Array(this.totalPages).fill(0).map((_, index) => index + 1);
-  // }
   updatePaginatedDrivers() {
     const startIndex = (this.currentPage - 1) * this.limit;
     const endIndex = startIndex + this.limit;
@@ -67,7 +64,7 @@ export class ConfirmrideComponent {
 
   //--------------------------------------DIALOG REF CODE---------------------------------------------//
   openInfoDialog(ride: any): void {
-    // console.log(ride)
+    console.log(ride)
     const dialogConfig = new MatDialogConfig();
     
     dialogConfig.disableClose = false;
@@ -78,8 +75,11 @@ export class ConfirmrideComponent {
     const dialogRef = this.dialog.open(InfoDialogComponent, dialogConfig);
     
   }
+  
 
   openAssignDriverDialog(ride: any): void {
+    // console.log(ride);
+    
     const dialogConfig = new MatDialogConfig();
     
     dialogConfig.disableClose = false;

@@ -5,14 +5,14 @@ const driverModel = require('../models/driver')
 
 
 // ------------------------------GET RIDE DATA-----------------------------------------//
-confirmRideRouter.get('/ridedata', async (req, res) => {
-    try {
-      const rides = await createRideModel.find()
-      res.send(rides)
-    } catch (error) {
-      res.status(500).send(error)
-    }
-  })
+// confirmRideRouter.get('/ridedata', async (req, res) => {
+//     try {
+//       const rides = await createRideModel.find()
+//       res.send(rides)
+//     } catch (error) {
+//       res.status(500).send(error)
+//     }
+//   })
 
 
 // --------------------------------------------RIDE INFO---------------------------------------------//
@@ -56,7 +56,7 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
       {
         $lookup: {
           from: 'pricingmodels',
-          localField: 'vehicleId',
+          localField: 'serviceId',
           foreignField: '_id',
           as: 'pricingDetails'
         }
@@ -92,6 +92,7 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
     ];
     // const rides = await CreateRide.find().populate('userId', ['name', 'profile']).populate('cityId', 'city').populate({ path: 'vehicleId', populate: { path: 'vehicleId', select: 'vehicleType' } }).populate('driverId')
     const rides = await createRideModel.aggregate(aggregationPipeline).exec()
+    console.log(rides);
     res.send(rides)
   } catch (error) {
     console.log(error);
@@ -102,12 +103,13 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
 // ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE------------------------------------//
 confirmRideRouter.get('/assigneddriverdata', async (req, res) => {
   try {
-    const { cityId, serviceId } = req.query;
-    const driverdatta = await driverModel.find({ cityId, serviceId })
+    const { cityId, serviceId } = req.body;
+    console.log(req.body);
+    const driverdatta = await driverModel.find({ city: cityId, servicetype: serviceId })
     console.log(driverdatta);
     res.send(driverdatta)
   } catch (error) {
-      console.log(error);    
+      console.log(error);
       res.status(500).send(error)
   }
 })
