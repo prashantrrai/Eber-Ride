@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
-const initializeSocket = require("./socket");
-const http = require("http");
-const server = http.createServer();
-const socketServer = initializeSocket(server);
+const http = require('http').Server(app);
+const initializeSocket = require("./utils/socket")
+
 
 const cors = require("cors");
+app.use(cors());
 
 const path = require("path");
 const img_path = path.join(__dirname, "/Public/Vehicle");
@@ -23,7 +23,6 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(cors());
 
 const fetchAdmin = require("./routes/adminfetch");
 const loginRoutes = require("./routes/adminlogin");
@@ -63,7 +62,15 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
+// io.on('connection', (socket) => {
+//   console.log('a user connected');
+//   socket.on('disconnect', () => {
+//     console.log('user disconnected');
+//   }); 
+// });
+
+initializeSocket(http)
+http.listen(PORT, () => {
   // const today = new Date();
   //   const yyyy = today.getFullYear();
   //   let mm = today.getMonth() + 1; // Months start at 0!

@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { DriverService } from 'src/app/Service/driver.service';
 import { environment } from 'src/app/environment/environment';
 import { MatIcon } from '@angular/material/icon';
+import { ConfirmrideService } from 'src/app/Service/confirmride.service';
 
 @Component({
   selector: 'app-assign-driver',
@@ -24,24 +25,27 @@ export class AssignDriverComponent implements OnInit{
     public dialogRef: MatDialogRef<AssignDriverComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _driver: DriverService,
+    private _ride: ConfirmrideService
   ) {}
 
   
   ngOnInit(): void {
     this.getDriverData()
 
-
+    
     this.dataArray = this.data;
+    // console.log(this.data);
     // console.log(this.dataArray)
   }
 
   //--------------------------------------------GET DRIVER DATA FXN---------------------------------------------
   getDriverData() {
-    this._driver.getDriverdata().subscribe({
+    this._ride.getMatchedDriverdata({cityId: this.data.cityId, serviceId: this.data.serviceId }).subscribe({
       next: (response: any) => {
         console.log(response);
+        this.driverArray = response;
+        // console.log(this.driverArray);
         
-        this.driverArray = response.driverdata;
       },
       error: (error: any) => {
         console.log(error);

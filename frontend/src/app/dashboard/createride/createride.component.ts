@@ -258,6 +258,8 @@ export class CreaterideComponent {
   initAutocomplete() {
     let start = document.getElementById("startInput") as HTMLInputElement;
     const startAutocomplete = new google.maps.places.Autocomplete(start);
+    console.log(startAutocomplete);
+    
     let waypoints = document.getElementById("waypoint") as HTMLInputElement;
 
     const waypointsAutocomplete = new google.maps.places.Autocomplete(waypoints);
@@ -274,14 +276,16 @@ export class CreaterideComponent {
     this.startLocation = this.startInput?.nativeElement.value;
     this.isInZone = true;
     if (this.startLocation != "") {
-      this.checkLocation();
+      this.checkmyLocation();
     }
   }
 
   //--------------TO CHECK START LOCATION IS AVAILABLE IN ZONE OR NOT----------------//
-  checkLocation() {
+  checkmyLocation() {
     if (this.polygonObjects?.length != 0) {
       const geocoder = new google.maps.Geocoder();
+      console.log(geocoder);
+      
       setTimeout(() => {
         let input = document.getElementById("startInput") as HTMLInputElement;
         console.log(input.value);

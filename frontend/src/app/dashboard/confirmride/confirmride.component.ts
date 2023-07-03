@@ -18,12 +18,14 @@ export class ConfirmrideComponent {
   totalPages: number = 0;
   count: any
   paginatedRideData: any[] = [];
+  driverArray: any = [];
 
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
     private _ride: ConfirmrideService,
     private dialog: MatDialog,
+
   ){}
 
   ngOnInit(): void{
@@ -56,9 +58,6 @@ export class ConfirmrideComponent {
       this.getrideData();
     }
   }
-  // getPagesArray(): number[] {
-  //   return Array(this.totalPages).fill(0).map((_, index) => index + 1);
-  // }
   updatePaginatedDrivers() {
     const startIndex = (this.currentPage - 1) * this.limit;
     const endIndex = startIndex + this.limit;
@@ -67,7 +66,7 @@ export class ConfirmrideComponent {
 
   //--------------------------------------DIALOG REF CODE---------------------------------------------//
   openInfoDialog(ride: any): void {
-    // console.log(ride)
+    console.log(ride)
     const dialogConfig = new MatDialogConfig();
     
     dialogConfig.disableClose = false;
@@ -78,8 +77,11 @@ export class ConfirmrideComponent {
     const dialogRef = this.dialog.open(InfoDialogComponent, dialogConfig);
     
   }
+  
 
   openAssignDriverDialog(ride: any): void {
+    // console.log(ride);
+    
     const dialogConfig = new MatDialogConfig();
     
     dialogConfig.disableClose = false;
@@ -89,6 +91,15 @@ export class ConfirmrideComponent {
     
     const dialogRef = this.dialog.open(AssignDriverComponent, dialogConfig);
     
+    // this._ride.getMatchedDriverdata({cityId: ride.cityId, serviceId: ride.serviceId }).subscribe({
+    //   next: (response: any) => {
+    //     console.log(response);
+    //     this.driverArray = response;
+    //   },
+    //   error: (error: any) => {
+    //     console.log(error);
+    //   },
+    // })
   }
   
   // ---------------------------------------EXTRA COMMON CODE-----------------------------------------------------//

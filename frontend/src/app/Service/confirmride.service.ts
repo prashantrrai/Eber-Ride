@@ -17,4 +17,11 @@ export class ConfirmrideService {
   getride(): Observable<any>{
     return this.http.get(`${this.serverUrl}/ridesinfo`);
   }
+
+  getMatchedDriverdata(data: any): Observable<any> {
+    // console.log(data);
+    
+    const url = `${this.serverUrl}/assigneddriverdata`;
+    return this.http.post(url,data);
+  }
 }
