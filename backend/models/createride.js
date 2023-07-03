@@ -10,7 +10,7 @@ const createRideSchema = mongoose.Schema(
     serviceId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "pricingModel",
+      ref: "driverModel",
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,

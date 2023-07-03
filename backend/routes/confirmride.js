@@ -104,38 +104,38 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
 confirmRideRouter.post('/assigneddriverdata', async (req, res) => {
   try {
     const { cityId, serviceId } = req.body;
-    // console.log(req.body);
-    // const driverdatta = await driverModel.find({ city: cityId, servicetype: serviceId })
-    // console.log(driverdatta);
+    console.log(req.body);
+    const driverdatta = await driverModel.find({ city: cityId, servicetype: serviceId })
+    console.log(driverdatta);
 
-    const aggregationPipeline = [
+    // const aggregationPipeline = [
 
-      {
-        $lookup: {
-          from: 'citymodels',
-          localField: 'city',
-          foreignField: '_id',
-          as: 'cityDetails'
-        }
-      },
-      {
-        $unwind: "$cityDetails"
-      },
-      {
-        $lookup: {
-          from: 'vehiclemodels',
-          localField: 'servicetype',
-          foreignField: '_id',
-          as: 'serviceDetails'
-        }
-      },
-      {
-        $unwind: "$serviceDetails"
-      },
-      {
-        $match: { 'cityDetails._id': cityId, 'serviceDetails._id': serviceId}
+    //   {
+    //     $lookup: {
+    //       from: 'citymodels',
+    //       localField: 'city',
+    //       foreignField: '_id',
+    //       as: 'cityDetails'
+    //     }
+    //   },
+    //   {
+    //     $unwind: "$cityDetails"
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: 'vehiclemodels',
+    //       localField: 'servicetype',
+    //       foreignField: '_id',
+    //       as: 'serviceDetails'
+    //     }
+    //   },
+    //   {
+    //     $unwind: "$serviceDetails"
+    //   },
+    //   {
+        // $match: { 'cityDetails._id': cityId, 'serviceDetails._id': serviceId}
         // $match: { city: cityId, servicetype : serviceId}
-      },
+      // },
 
       // {
       //   $match: {
@@ -147,10 +147,10 @@ confirmRideRouter.post('/assigneddriverdata', async (req, res) => {
       //     }
       //   }
       // }
-    ];
-    const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
-    res.send(driverdata)
-    console.log(driverdata);
+    // ];
+    // const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
+    res.send(driverdatta)
+    // console.log(driverdata);
   } catch (error) {
       console.log(error);
       res.status(500).send(error)

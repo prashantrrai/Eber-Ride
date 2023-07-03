@@ -10,9 +10,9 @@
           <th>Name</th>
           <th>Email</th>
           <th>Phone</th>
-          <th>City</th>
+          <!-- <th>City</th> -->
           <!-- <th>Driver Status</th> -->
-          <th>Service</th>
+          <!-- <th>Service</th> -->
           <th>Action</th>
         </tr>
         </thead>
@@ -22,9 +22,9 @@
           <td>{{ driver.drivername }}</td>
           <td>{{ driver.driveremail }}</td>
           <td>{{driver.countrycode + " " + driver.driverphone}}</td>
-          <td>{{driver.cityDetails.city}}</td>
-          <td *ngIf="driver.servicetype != null">{{driver.serviceDetails.vehicleName}}</td>
-          <td *ngIf="driver.servicetype == null">No Service</td>
+          <!-- <td>{{driver.cityDetails.city}}</td> -->
+          <!-- <td *ngIf="driver.servicetype != null">{{driver.serviceDetails.vehicleName}}</td>
+          <td *ngIf="driver.servicetype == null">No Service</td> -->
           <td> 
               <button class="btn btn-primary" >Assign Driver</button>
           </td>

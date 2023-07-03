@@ -594,7 +594,7 @@ export class CreaterideComponent {
       ...this.rideForm.value,
       rideDate: this.selectedDate,
       time: this.selectedTime,
-      serviceId: this.selectedVehicle._id,
+      serviceId: this.selectedVehicle.service._id,
       userId: this.userArray._id,
       cityId: this.selectedVehicle.city,
       startLocation: this.startLocation,
