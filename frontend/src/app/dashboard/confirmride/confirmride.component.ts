@@ -18,12 +18,14 @@ export class ConfirmrideComponent {
   totalPages: number = 0;
   count: any
   paginatedRideData: any[] = [];
+  driverArray: any = [];
 
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
     private _ride: ConfirmrideService,
     private dialog: MatDialog,
+
   ){}
 
   ngOnInit(): void{
@@ -34,7 +36,7 @@ export class ConfirmrideComponent {
   getrideData() {
     this._ride.getride().subscribe({
       next: (response: any) => {
-        console.log(response)
+        // console.log(response)
         this.ridesArray = response;
       },
       error: (error: any) => {
@@ -89,6 +91,15 @@ export class ConfirmrideComponent {
     
     const dialogRef = this.dialog.open(AssignDriverComponent, dialogConfig);
     
+    // this._ride.getMatchedDriverdata({cityId: ride.cityId, serviceId: ride.serviceId }).subscribe({
+    //   next: (response: any) => {
+    //     console.log(response);
+    //     this.driverArray = response;
+    //   },
+    //   error: (error: any) => {
+    //     console.log(error);
+    //   },
+    // })
   }
   
   // ---------------------------------------EXTRA COMMON CODE-----------------------------------------------------//

@@ -4,7 +4,6 @@
   const multer = require('multer');
   const path = require('path');
 const pricingModel = require("../models/pricing");
-const { log } = require("console");
   const img_path = path.join(__dirname, "../Public/Vehicle");
 
 
@@ -111,7 +110,7 @@ const { log } = require("console");
   VehicleRoutes.get('/vehicledata', async (req, res) => {
     try {
     const data = await vehicleModel.find({});
-    console.log(data)
+    // console.log(data)
     res.json({ data });
   } catch (err) {
     console.log(err);

@@ -9,17 +9,17 @@ const mongoose = require("mongoose");
 //-------------------------------------------------------MULTER CODE----------------------------------------------
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    console.log(file);
+    // console.log(file);
     cb(null, profile_path);
   },
 
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
-    console.log(file);
+    // console.log(file);
     // let fileName = file.fieldname + '-' + Date.now() + ext;
     let fileName = file.originalname;
     req.body.profile = fileName;
-    console.log(req.body.profile);
+    // console.log(req.body.profile);
     cb(null, fileName);
   },
 });
@@ -79,7 +79,7 @@ driverRoutes.post(
         });
       } else {
         const profile = req.file.filename;
-        console.log(profile);
+        // console.log(profile);
         newDriver = new driverModel({
           profile: profile,
           drivername: drivername,
@@ -91,7 +91,7 @@ driverRoutes.post(
       }
 
       await newDriver.save();
-      console.log(newDriver);
+      // console.log(newDriver);
       res.status(201).json({
         success: true,
         message: "Driver Added Successfully",
@@ -117,7 +117,7 @@ driverRoutes.get("/driverdata", async (req, res) => {
   let sortBy = req.query.sortBy || "name";
   let sortOrder = req.query.sortOrder || "desc";
   let skip = (page - 1) * limit;
-  console.log("sortBy", sortBy, "sortOrder", sortOrder)
+  // console.log("sortBy", sortBy, "sortOrder", sortOrder)
   try {
     let query = {};
 
@@ -219,14 +219,14 @@ driverRoutes.put(
   "/updatedriver/:id",
   upload.single("profile"),
   async (req, res) => {
-    console.log(req.body);
-    console.log(req.file);
+    // console.log(req.body);
+    // console.log(req.file);
     const { drivername, driveremail, countrycode, driverphone, city } =
       req.body;
 
     try {
       const driverId = req.params.id;
-      console.log(driverId);
+      // console.log(driverId);
       let updatedDriver;
 
       if (!req.file) {
@@ -240,7 +240,7 @@ driverRoutes.put(
         updatedDriver = await driverModel.findByIdAndUpdate(driverId, data, {new: true});
       } 
       else {
-        console.log(req.file.filename);
+        // console.log(req.file.filename);
         const driver = {
           profile: req.file.filename,
           drivername: drivername,
@@ -270,10 +270,10 @@ driverRoutes.put(
 
   driverRoutes.put('/drivers/:id', async (req, res) => {
     const { status } = req.body;
-    console.log(status)
+    // console.log(status)
     try {
       const { id } = req.params;
-      console.log(id)
+      // console.log(id)
 
       await driverModel.findByIdAndUpdate(id, { status },  {new: true});
 
@@ -287,15 +287,15 @@ driverRoutes.put(
 
   driverRoutes.post('/service/:id', async (req, res) => {
     const { servicetype } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     try {
       const driverId = req.params.id;
-      console.log(driverId)
+      // console.log(driverId)
       const data = {servicetype: servicetype}
 
       // Check if service already exists
       const existingService = await driverModel.findByIdAndUpdate(driverId, data, {new: true});
-      console.log(existingService)
+      // console.log(existingService)
       res.json({ success: true, message: 'Service Updated Successfully', existingService });
 
     } catch (error) {

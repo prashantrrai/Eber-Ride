@@ -55,19 +55,8 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
       },
       {
         $lookup: {
-          from: 'pricingmodels',
-          localField: 'serviceId',
-          foreignField: '_id',
-          as: 'pricingDetails'
-        }
-      },
-      {
-        $unwind: "$pricingDetails"
-      },
-      {
-        $lookup: {
           from: 'vehiclemodels',
-          localField: 'pricingDetails.service',
+          localField: 'serviceId',
           foreignField: '_id',
           as: 'vehicleDetails'
         }
@@ -75,6 +64,17 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
       {
         $unwind: "$vehicleDetails"
       },
+      // {
+      //   $lookup: {
+      //     from: 'vehiclemodels',
+      //     localField: 'pricingDetails.service',
+      //     foreignField: '_id',
+      //     as: 'vehicleDetails'
+      //   }
+      // },
+      // {
+      //   $unwind: "$vehicleDetails"
+      // },
       {
         $lookup: {
           from: "drivermodels",
@@ -101,13 +101,56 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
 })
 
 // ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE------------------------------------//
-confirmRideRouter.get('/assigneddriverdata', async (req, res) => {
+confirmRideRouter.post('/assigneddriverdata', async (req, res) => {
   try {
     const { cityId, serviceId } = req.body;
-    console.log(req.body);
-    const driverdatta = await driverModel.find({ city: cityId, servicetype: serviceId })
-    console.log(driverdatta);
-    res.send(driverdatta)
+    // console.log(req.body);
+    // const driverdatta = await driverModel.find({ city: cityId, servicetype: serviceId })
+    // console.log(driverdatta);
+
+    const aggregationPipeline = [
+
+      {
+        $lookup: {
+          from: 'citymodels',
+          localField: 'city',
+          foreignField: '_id',
+          as: 'cityDetails'
+        }
+      },
+      {
+        $unwind: "$cityDetails"
+      },
+      {
+        $lookup: {
+          from: 'vehiclemodels',
+          localField: 'servicetype',
+          foreignField: '_id',
+          as: 'serviceDetails'
+        }
+      },
+      {
+        $unwind: "$serviceDetails"
+      },
+      {
+        $match: { 'cityDetails._id': cityId, 'serviceDetails._id': serviceId}
+        // $match: { city: cityId, servicetype : serviceId}
+      },
+
+      // {
+      //   $match: {
+      //     $expr: {
+      //       $and: [
+      //         { $eq: ["$cityDetails._id", cityId] },
+      //         { $eq: ["$serviceDetails._id", serviceId] }
+      //       ]
+      //     }
+      //   }
+      // }
+    ];
+    const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
+    res.send(driverdata)
+    console.log(driverdata);
   } catch (error) {
       console.log(error);
       res.status(500).send(error)

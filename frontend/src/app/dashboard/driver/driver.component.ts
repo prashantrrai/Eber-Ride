@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/Service/auth.service';
 import { DriverService } from 'src/app/Service/driver.service';
+import { SocketService } from 'src/app/Service/socket.service';
 
 @Component({
   selector: 'app-driver',
@@ -38,6 +39,7 @@ export class DriverComponent {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService,
+    private socket: SocketService
   ) { }
 
   ngOnInit(): void {

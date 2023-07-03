@@ -18,8 +18,10 @@ export class ConfirmrideService {
     return this.http.get(`${this.serverUrl}/ridesinfo`);
   }
 
-  getMatchedDriverdata(): Observable<any> {
+  getMatchedDriverdata(data: any): Observable<any> {
+    // console.log(data);
+    
     const url = `${this.serverUrl}/assigneddriverdata`;
-    return this.http.get(url);
+    return this.http.post(url,data);
   }
 }

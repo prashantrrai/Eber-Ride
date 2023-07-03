@@ -25,26 +25,26 @@ export class AssignDriverComponent implements OnInit{
     public dialogRef: MatDialogRef<AssignDriverComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _driver: DriverService,
-    private _confirmride: ConfirmrideService
+    private _ride: ConfirmrideService
   ) {}
 
   
   ngOnInit(): void {
     this.getDriverData()
 
-
+    
     this.dataArray = this.data;
+    // console.log(this.data);
     // console.log(this.dataArray)
   }
 
   //--------------------------------------------GET DRIVER DATA FXN---------------------------------------------
   getDriverData() {
-    this._confirmride.getMatchedDriverdata().subscribe({
+    this._ride.getMatchedDriverdata({cityId: this.data.cityId, serviceId: this.data.serviceId }).subscribe({
       next: (response: any) => {
         console.log(response);
-        
-        this.driverArray = response.driverdata;
-        console.log(this.driverArray);
+        this.driverArray = response;
+        // console.log(this.driverArray);
         
       },
       error: (error: any) => {
