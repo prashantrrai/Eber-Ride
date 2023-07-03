@@ -562,9 +562,7 @@ export class CreaterideComponent {
     this.handleRadioChange()
   }
   onselectedtime() {
-    // console.log(this.selectedTime);
     console.log("SELECTED TIME==================",this.selectedTime);
-    console.log(this.isDateTimeValid)
     this.handleRadioChange()
   }
 
