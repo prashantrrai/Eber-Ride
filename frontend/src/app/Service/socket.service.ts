@@ -13,8 +13,17 @@ export class SocketService {
     }
 
   updatedriverStatus(driverId: string, status: boolean) : void {
-    this.socket.emit('driverstatusupdate', { driverId, status});
+    console.log(driverId, status);
+    this.socket.emit('driverstatus', { driverId, status});
+  }
 
+  onUpdateStatusData(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('statusdata', (data) => {
+        // console.log(data);
+        observer.next(data);
+      });
+    });
   }
 
   // updateDriverRide(driverrideId: string, driverId: string, assignedvalue: string, created: string): void {

@@ -49,6 +49,7 @@ export class DriverComponent {
     this.getCityNamefromDB()
     this.getDriverData()
     this.getVehicleNamefromDB()
+    
 
     this.driverForm = this.formBuilder.group({
       profile: [""],
@@ -109,7 +110,7 @@ export class DriverComponent {
   getCityNamefromDB(): void {
     this._driver.getCityData().subscribe({
       next: (response) => {
-        console.log(response)
+        // console.log(response)
         this.citiesname = response.citydata;
       },
       error: (error) => {
@@ -288,7 +289,9 @@ export class DriverComponent {
   driverStatus(driver: any) {
     this.id = driver._id;
     const status = !driver.status;
-    console.log(status)
+    // console.log(driver._id);
+    // console.log(status)
+    
   
     // const data = {updatedriverstatus: driver.status}
     // console.log(data)
@@ -315,9 +318,20 @@ export class DriverComponent {
     // ----------------------------With Socket.IO----------------------------//
     this._socket.updatedriverStatus(this.id, status);
 
-    driver.status = status; // Update the driver's status in the UI
+    this._socket.onUpdateStatusData().subscribe({
+      next: (response) => {
+        // console.log(response);
+        
+        this.driverArray = response;
+        this.getDriverData();
+        this.toastr.success(response.message,  'Success')
+      },
+    error: (error: any) => {
+        console.log(error);
+        this.toastr.error(error.error.message)
+      }
+  })
   }
-
 
   //-----------------------------------------GET VEHICLE DATA FROM DB-----------------------------------------------
   getVehicleNamefromDB(){

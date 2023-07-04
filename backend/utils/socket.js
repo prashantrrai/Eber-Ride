@@ -14,17 +14,16 @@ async function initializeSocket(server) {
 
 
     // --------------------------------------------------------UPDATE DRIVER STATUS--------------------------------------------------------//
-    socket.on('driverstatusupdate', async (data) => {
+    socket.on('driverstatus', async (data) => {
         const { driverId, status } = data;
-        console.log(data)
+        // console.log(data)
 
         try {
-
             await driverModel.findByIdAndUpdate(driverId, { status },  {new: true});
-            socket.emit('driverstatusupdated', { success: true, message: 'Driver Status Updated Successfully.' });
+            socket.emit('statusdata', { success: true, message: 'Driver Status Updated Successfully.' });
         } 
         catch (error) {
-            socket.emit('driverstatusupdated', { success: false, message: error });
+            socket.emit('statusdata', { success: false, message: error });
           }
         });
 
@@ -70,7 +69,7 @@ async function initializeSocket(server) {
   
       ];
       const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
-      console.log(driverdata);
+    //   console.log(driverdata);
       socket.emit('driverdata', driverdata);
       
     } catch (error) {
