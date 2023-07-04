@@ -71,10 +71,10 @@ export class DriverService {
   //   return this.http.put<any>(url, body);
   // }
 
-  updateService(driverId: string, servicename: any): Observable<any> {
-    const url = `${this.serverUrl}/service/${driverId}`;
-    return this.http.post<any>(url, servicename);
-  }
+  // updateService(driverId: string, servicename: any): Observable<any> {
+  //   const url = `${this.serverUrl}/service/${driverId}`;
+  //   return this.http.post<any>(url, servicename);
+  // }
 
   // searchDriver(query: string, page: number, limit: number): Observable<any> {
   //   // console.log(query, page, limit)

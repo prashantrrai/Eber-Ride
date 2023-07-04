@@ -27,6 +27,21 @@ async function initializeSocket(server) {
           }
         });
 
+    // --------------------------------------------------------UPDATE DRIVER SERVICE TYPE--------------------------------------------------------//
+    socket.on('driverService', async (data) => {
+        const { driverId, servicetype } = data;
+            console.log(data);
+
+        try {
+            const existingService = await driverModel.findByIdAndUpdate(driverId, { servicetype },  {new: true});
+            io.emit('servicedata', { success: true, message: 'Service Updated Successfully', existingService });
+        } 
+        catch (error) {
+            io.emit('servicedata', { success: false, message: error });
+          }
+        });
+
+
 
     // ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE ,STATUS TRUE------------------------------------//
     socket.on('assigneddriverdata', async (data) => {

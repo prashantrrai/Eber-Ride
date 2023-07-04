@@ -285,22 +285,24 @@ driverRoutes.put(
 
   //---------------------------------------------------------- ADD OR UPDATE SERVICE---------------------------------------------------
 
-  driverRoutes.post('/service/:id', async (req, res) => {
-    const { servicetype } = req.body;
-    // console.log(req.body);
-    try {
-      const driverId = req.params.id;
-      // console.log(driverId)
-      const data = {servicetype: servicetype}
+  // driverRoutes.post('/service/:id', async (req, res) => {
+  //   const { servicetype } = req.body;
+  //   // console.log(req.body);
+  //   try {
+  //     const driverId = req.params.id;
+  //     // console.log(driverId)
+  //     const data = {servicetype: servicetype}
 
-      // Check if service already exists
-      const existingService = await driverModel.findByIdAndUpdate(driverId, data, {new: true});
-      // console.log(existingService)
-      res.json({ success: true, message: 'Service Updated Successfully', existingService });
+  //     // Check if service already exists
+  //     const existingService = await driverModel.findByIdAndUpdate(driverId, data, {new: true});
+  //     // console.log(existingService)
+  //     res.json({ success: true, message: 'Service Updated Successfully', existingService });
 
-    } catch (error) {
-      console.log(error.message);
-      res.status(500).json({ success: false, message: 'Failed to add or update service' });
-    }
-  });
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     res.status(500).json({ success: false, message: 'Failed to add or update service' });
+  //   }
+  // });
+
+  
 module.exports = driverRoutes;

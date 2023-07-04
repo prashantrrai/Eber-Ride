@@ -12,6 +12,8 @@ export class SocketService {
      this.socket = io('http://localhost:4000'); 
     }
 
+
+  // -----------------------------DRIVER STATUS UPDATE-----------------------------//
   updatedriverStatus(driverId: string, status: boolean) : void {
     console.log(driverId, status);
     this.socket.emit('driverstatus', { driverId, status});
@@ -27,6 +29,7 @@ export class SocketService {
     });
   }
 
+  // -----------------------------ASSIGNED DRIVER UPDATE-----------------------------//
   getAssignedDriverData(cityId: string, serviceId: string): void {
     // console.log(cityId, serviceId);
     this.socket.emit('assigneddriverdata', { cityId, serviceId });
@@ -40,7 +43,25 @@ export class SocketService {
         
         observer.next(data);
       });
-      
+
     });
   }
+
+    // -----------------------------DRIVER SERVICE UPDATE-----------------------------//
+    updatedriverService( driverId: string, servicetype: any ) : void {
+      // console.log(driverId, servicetype);
+      this.socket.emit('driverService', { driverId, servicetype});
+    }
+  
+    onUpdateServiceData(): Observable<any> {
+      return new Observable((observer) => {
+        this.socket.on('servicedata', (data) => {
+          console.log(data);
+  
+          observer.next(data);
+        });
+      });
+    }
+
+
 }

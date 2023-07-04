@@ -50,6 +50,7 @@ export class DriverComponent {
     this.getDriverData()
     this.getVehicleNamefromDB()
     this.getDriverStatus()
+    this.getDriverService()
     
 
     this.driverForm = this.formBuilder.group({
@@ -320,7 +321,7 @@ export class DriverComponent {
 }
 
 
-  // ----------------------------With Socket.IO----------------------------//
+  // ----------------------------DRIVER STATUS With Socket.IO----------------------------//
   getDriverStatus(){
     
     this._socket.onUpdateStatusData().subscribe({
@@ -351,7 +352,7 @@ export class DriverComponent {
   }
   onSelectedVehicle(vehicle: string): void {
     this.selectedVehicle = vehicle
-    console.log(vehicle)
+    // console.log(vehicle)
   }
 
   // -------------------------------------------------SERVICE FXN------------------------------------------------
@@ -359,6 +360,8 @@ export class DriverComponent {
     this.driverFormButton = false
     this.serviceModal = true;
 
+    // console.log(driver);
+    
     this.id = driver._id
     this.serviceForm.patchValue({
       servicetype: driver.servicetype
@@ -368,29 +371,51 @@ export class DriverComponent {
   
   // -----------------------------------------------------UPDATE SERVICE FXN-----------------------------------------------
   updateService(): void {
-    if (this.serviceForm.valid) {
+    const data = this.serviceForm.value.servicetype
+    console.log(data)
 
-      const data = {servicetype:this.serviceForm.value.servicetype}
-      console.log(data)
+    // if (this.serviceForm.valid) {
 
-      this._driver.updateService(this.id, data).subscribe({
-        next: (response: any) => {
-          console.log(response);
-          // this.driverArray.push(response);
+
+    //   this._driver.updateService(this.id, data).subscribe({
+    //     next: (response: any) => {
+    //       console.log(response);
+    //       // this.driverArray.push(response);
+    //       this.getDriverData()
+    //       this.serviceModal = false;
+    //       this.serviceForm.reset();
+    //       this.toastr.success(response.message)
+
+    //     },
+    //     error: (error: any) => {
+    //       console.error(error);
+    //       this.toastr.error(error.error)
+
+    //     }
+    //   });
+    // }
+    this._socket.updatedriverService(this.id, data);
+  }
+
+    // ----------------------------DRIVER SERVICE With Socket.IO----------------------------//
+    getDriverService(){
+    
+      this._socket.onUpdateServiceData().subscribe({
+        next: (response) => {
+          // console.log(response);
           this.getDriverData()
           this.serviceModal = false;
           this.serviceForm.reset();
-          this.toastr.success(response.message)
-
+          this.toastr.success(response.message,  'Success');
         },
-        error: (error: any) => {
-          console.error(error);
+      error: (error: any) => {
+          console.log(error);
           this.toastr.error(error.error.message)
-
         }
-      });
+    })
     }
-  }
+
+
   
   // ----------------------------------------BUTTONS CONTROL PANEL---------------------------------------------
   toggleFormVisibility() {

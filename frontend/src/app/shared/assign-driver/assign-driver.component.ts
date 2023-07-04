@@ -67,10 +67,9 @@ export class AssignDriverComponent implements OnInit {
         console.log(response);
 
         this._socketService.getAssignedDriverData(cityId, serviceId)
-        
+
         this._socketService.onAssignedDriverData().subscribe((driverData) => {
           // console.log(driverData);
-
           if (driverData) {
 
             this.driverArray = driverData;
@@ -90,11 +89,32 @@ export class AssignDriverComponent implements OnInit {
       if (driverData) {
 
         this.driverArray = driverData;
-        console.log(this.driverArray);
+        // console.log(this.driverArray);
 
       } else {
         console.log('Error retrieving assigned driver data:', driverData);
       }
     });
+
+
+    // ------------------------UPDATE SERVICE DATA ON REAL TIME---------------------------//
+    this._socketService.onUpdateServiceData().subscribe({
+      next: (servicedata) => {
+      // console.log(servicedata);
+      this._socketService.getAssignedDriverData(cityId, serviceId)
+
+      if (servicedata) {
+
+        this.driverArray = servicedata;
+        // console.log(this.driverArray);
+
+      } else {
+        console.log('Error retrieving assigned driver data:', servicedata);
+      }
+      }
+
+
+    });
+    
   }
 }
