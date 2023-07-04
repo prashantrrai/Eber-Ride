@@ -31,6 +31,10 @@ img{
     color: white;
     cursor: pointer;
   }
+  .nearest-driver-button {
+    background-color: green;
+    color: white;
+  }
   
   @media (max-width: 767px) {
     .ride-details-dialog {

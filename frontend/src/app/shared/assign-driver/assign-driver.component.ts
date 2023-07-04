@@ -11,7 +11,7 @@ import { SocketService } from 'src/app/Service/socket.service';
   templateUrl: './assign-driver.component.html',
   styleUrls: ['./assign-driver.component.css']
 })
-export class AssignDriverComponent implements OnInit{
+export class AssignDriverComponent implements OnInit {
   baseUrl = environment.baseUrl
   dataArray: any[] = [];
   // assignedDrivers: any[] = [];
@@ -28,13 +28,13 @@ export class AssignDriverComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _socketService: SocketService
 
-  ) {}
+  ) { }
 
-  
+
   ngOnInit(): void {
     this.getDriverData()
 
-    
+
     this.dataArray = this.data;
     // console.log(this.data);
     // console.log(this.dataArray)
@@ -47,7 +47,7 @@ export class AssignDriverComponent implements OnInit{
   //       console.log(response);
   //       this.driverArray = response;
   //       // console.log(this.driverArray);
-        
+
   //     },
   //     error: (error: any) => {
   //       console.log(error);
@@ -62,10 +62,33 @@ export class AssignDriverComponent implements OnInit{
 
     this._socketService.getAssignedDriverData(cityId, serviceId)
 
-    this._socketService.onAssignedDriverData().subscribe((driverData) => {
-      console.log(driverData);
-      if (driverData) {
+    this._socketService.onUpdateStatusData().subscribe({
+      next: (response) => {
+        console.log(response);
+
+        this._socketService.getAssignedDriverData(cityId, serviceId)
         
+        this._socketService.onAssignedDriverData().subscribe((driverData) => {
+          // console.log(driverData);
+
+          if (driverData) {
+
+            this.driverArray = driverData;
+            console.log(this.driverArray);
+
+          } else {
+            console.log('Error retrieving assigned driver data:', driverData);
+          }
+        });
+      }
+    })
+
+
+    this._socketService.onAssignedDriverData().subscribe((driverData) => {
+      // console.log(driverData);
+
+      if (driverData) {
+
         this.driverArray = driverData;
         console.log(this.driverArray);
 

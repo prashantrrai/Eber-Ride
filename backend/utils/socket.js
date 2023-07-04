@@ -19,11 +19,11 @@ async function initializeSocket(server) {
         // console.log(data)
 
         try {
-            await driverModel.findByIdAndUpdate(driverId, { status },  {new: true});
-            socket.emit('statusdata', { success: true, message: 'Driver Status Updated Successfully.' });
+            const data = await driverModel.findByIdAndUpdate(driverId, { status },  {new: true});
+            io.emit('statusdata', { success: true, data, message: 'Driver Status Updated Successfully.' });
         } 
         catch (error) {
-            socket.emit('statusdata', { success: false, message: error });
+            io.emit('statusdata', { success: false, message: error });
           }
         });
 
@@ -70,11 +70,11 @@ async function initializeSocket(server) {
       ];
       const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
     //   console.log(driverdata);
-      socket.emit('driverdata', driverdata);
+      io.emit('driverdata', driverdata , {success: true, message: "Driver Assigned Successfully"});
       
     } catch (error) {
         console.log(error);
-        socket.emit('driverdata', { success: false, message: error });
+        io.emit('driverdata', { success: false, message: error });
     }
   })
 

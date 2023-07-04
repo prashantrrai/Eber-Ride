@@ -21,17 +21,14 @@ export class SocketService {
     return new Observable((observer) => {
       this.socket.on('statusdata', (data) => {
         // console.log(data);
+
         observer.next(data);
       });
     });
   }
 
-  // updateDriverRide(driverrideId: string, driverId: string, assignedvalue: string, created: string): void {
-  //   this.socket.emit('updatedriverride', { driverrideId, driverId, assignedvalue, created });
-  // }
-
   getAssignedDriverData(cityId: string, serviceId: string): void {
-    console.log(cityId, serviceId);
+    // console.log(cityId, serviceId);
     this.socket.emit('assigneddriverdata', { cityId, serviceId });
     
   }
@@ -39,10 +36,11 @@ export class SocketService {
   onAssignedDriverData(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on('driverdata', (data) => {
-        console.log(data);
+        // console.log(data);
         
         observer.next(data);
       });
+      
     });
   }
 }

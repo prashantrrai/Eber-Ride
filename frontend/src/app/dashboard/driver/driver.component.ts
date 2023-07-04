@@ -49,6 +49,7 @@ export class DriverComponent {
     this.getCityNamefromDB()
     this.getDriverData()
     this.getVehicleNamefromDB()
+    this.getDriverStatus()
     
 
     this.driverForm = this.formBuilder.group({
@@ -315,16 +316,20 @@ export class DriverComponent {
   //   driver.status = status; // Update the driver's status in the UI
   // }
 
-    // ----------------------------With Socket.IO----------------------------//
-    this._socket.updatedriverStatus(this.id, status);
+  this._socket.updatedriverStatus(this.id, status);
+}
 
+
+  // ----------------------------With Socket.IO----------------------------//
+  getDriverStatus(){
+    
     this._socket.onUpdateStatusData().subscribe({
       next: (response) => {
         // console.log(response);
         
         this.driverArray = response;
         this.getDriverData();
-        this.toastr.success(response.message,  'Success')
+        this.toastr.success(response.message,  'Success');
       },
     error: (error: any) => {
         console.log(error);
