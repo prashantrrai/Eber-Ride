@@ -64,12 +64,12 @@ export class DriverService {
     return this.http.put<any>(url, userData);
   }
 
-  updateStatus(driverId: string, status: boolean): Observable<any> {
-    // console.log(userData)
-    const url = `${this.serverUrl}/drivers/${driverId}`;   
-    const body = { status }; 
-    return this.http.put<any>(url, body);
-  }
+  // updateStatus(driverId: string, status: boolean): Observable<any> {
+  //   // console.log(userData)
+  //   const url = `${this.serverUrl}/drivers/${driverId}`;   
+  //   const body = { status }; 
+  //   return this.http.put<any>(url, body);
+  // }
 
   updateService(driverId: string, servicename: any): Observable<any> {
     const url = `${this.serverUrl}/service/${driverId}`;

@@ -4,6 +4,7 @@ import { DriverService } from 'src/app/Service/driver.service';
 import { environment } from 'src/app/environment/environment';
 import { MatIcon } from '@angular/material/icon';
 import { ConfirmrideService } from 'src/app/Service/confirmride.service';
+import { SocketService } from 'src/app/Service/socket.service';
 
 @Component({
   selector: 'app-assign-driver',
@@ -11,9 +12,10 @@ import { ConfirmrideService } from 'src/app/Service/confirmride.service';
   styleUrls: ['./assign-driver.component.css']
 })
 export class AssignDriverComponent implements OnInit{
-  dataArray: any[] = [];
   baseUrl = environment.baseUrl
-  driverArray: any = []
+  dataArray: any[] = [];
+  // assignedDrivers: any[] = [];
+  driverArray: any[] = [];
   search!: string;
   currentPage!: number;
   limit!: number;
@@ -24,8 +26,8 @@ export class AssignDriverComponent implements OnInit{
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<AssignDriverComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _driver: DriverService,
-    private _ride: ConfirmrideService
+    private _socketService: SocketService
+
   ) {}
 
   
@@ -39,17 +41,37 @@ export class AssignDriverComponent implements OnInit{
   }
 
   //--------------------------------------------GET DRIVER DATA FXN---------------------------------------------
-  getDriverData() {
-    this._ride.getMatchedDriverdata({cityId: this.data.cityId, serviceId: this.data.serviceId }).subscribe({
-      next: (response: any) => {
-        console.log(response);
-        this.driverArray = response;
-        // console.log(this.driverArray);
+  // getDriverData() {
+  //   this._confirmride.getMatchedDriverdata({cityId: this.data.cityId, serviceId: this.data.serviceId }).subscribe({
+  //     next: (response: any) => {
+  //       console.log(response);
+  //       this.driverArray = response;
+  //       // console.log(this.driverArray);
         
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error);
+  //     },
+  //   });
+  // }
+
+  // ---------------------------------------GET ASSIGNED DRIVER DATA USING SOCKET-----------------------------------------//
+  getDriverData() {
+    const cityId = this.data.cityId;
+    const serviceId = this.data.serviceId;
+
+    this._socketService.getAssignedDriverData(cityId, serviceId)
+
+    this._socketService.onAssignedDriverData().subscribe((driverData) => {
+      console.log(driverData);
+      if (driverData) {
+        
+        this.driverArray = driverData;
+        console.log(this.driverArray);
+
+      } else {
+        console.log('Error retrieving assigned driver data:', driverData);
+      }
     });
   }
 }

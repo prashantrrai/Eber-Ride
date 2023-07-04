@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/Service/auth.service';
 import { InfoDialogComponent } from 'src/app/shared/info-dialog/info-dialog.component';
 import { AssignDriverComponent } from 'src/app/shared/assign-driver/assign-driver.component';
+import { SocketService } from 'src/app/Service/socket.service';
 
 @Component({
   selector: 'app-confirmride',
@@ -25,6 +26,7 @@ export class ConfirmrideComponent {
     private toastr: ToastrService,
     private _ride: ConfirmrideService,
     private dialog: MatDialog,
+    private _socket: SocketService
 
   ){}
 

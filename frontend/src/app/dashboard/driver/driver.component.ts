@@ -39,7 +39,8 @@ export class DriverComponent {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService,
-    private socket: SocketService
+    private socket: SocketService,
+    private _socket: SocketService
   ) { }
 
   ngOnInit(): void {
@@ -295,18 +296,25 @@ export class DriverComponent {
     // const formdata = new FormData();
     // formdata.append("updatedriverstatus", String(status));
   
-    this._driver.updateStatus(this.id, status).subscribe({
-      next: (response: any) => {
-        console.log(response);
-        this.driverArray.push(response.status)
-        this.getDriverData();
-        this.toastr.success(response.message,  'Success')
-      },
-      error: (error: any) => {
-        console.error(error);
-        this.toastr.error(error.error.message)
-      }
-    });
+    // ----------------------------Without Socket.IO----------------------------//
+  //   this._driver.updateStatus(this.id, status).subscribe({
+  //     next: (response: any) => {
+  //       console.log(response);
+  //       this.driverArray.push(response.status)
+  //       this.getDriverData();
+  //       this.toastr.success(response.message,  'Success')
+  //     },
+  //     error: (error: any) => {
+  //       console.error(error);
+  //       this.toastr.error(error.error.message)
+  //     }
+  //   });
+  //   driver.status = status; // Update the driver's status in the UI
+  // }
+
+    // ----------------------------With Socket.IO----------------------------//
+    this._socket.updatedriverStatus(this.id, status);
+
     driver.status = status; // Update the driver's status in the UI
   }
 

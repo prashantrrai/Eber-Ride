@@ -2,7 +2,7 @@ const express = require('express');
 const confirmRideRouter = new express.Router();
 const createRideModel = require('../models/createride');
 const driverModel = require('../models/driver')
-
+const { mongoose } = require('mongoose')
 
 // ------------------------------GET RIDE DATA-----------------------------------------//
 // confirmRideRouter.get('/ridedata', async (req, res) => {
@@ -92,7 +92,7 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
     ];
     // const rides = await CreateRide.find().populate('userId', ['name', 'profile']).populate('cityId', 'city').populate({ path: 'vehicleId', populate: { path: 'vehicleId', select: 'vehicleType' } }).populate('driverId')
     const rides = await createRideModel.aggregate(aggregationPipeline).exec()
-    console.log(rides);
+    // console.log(rides);
     res.send(rides)
   } catch (error) {
     console.log(error);
@@ -100,61 +100,60 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
   }
 })
 
-// ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE------------------------------------//
-confirmRideRouter.post('/assigneddriverdata', async (req, res) => {
-  try {
-    const { cityId, serviceId } = req.body;
-    console.log(req.body);
-    const driverdatta = await driverModel.find({ city: cityId, servicetype: serviceId })
-    console.log(driverdatta);
+// // ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE + STATUS TRUE------------------------------------//
+// confirmRideRouter.post('/assigneddriverdata', async (req, res) => {
+//   console.log(req.body);
+//   try {
+//     // const { cityId, serviceId } = req.body;
+//     const cityId = new mongoose.Types.ObjectId(req.body.cityId);
+//     const serviceId = new mongoose.Types.ObjectId(req.body.serviceId); //vehicle id 
+//     // console.log(req.body);
+//     // const driverdatta = await driverModel.find({ city: cityId, servicetype: serviceId })
+//     // console.log(driverdatta);
 
-    // const aggregationPipeline = [
+//     const aggregationPipeline = [
 
-    //   {
-    //     $lookup: {
-    //       from: 'citymodels',
-    //       localField: 'city',
-    //       foreignField: '_id',
-    //       as: 'cityDetails'
-    //     }
-    //   },
-    //   {
-    //     $unwind: "$cityDetails"
-    //   },
-    //   {
-    //     $lookup: {
-    //       from: 'vehiclemodels',
-    //       localField: 'servicetype',
-    //       foreignField: '_id',
-    //       as: 'serviceDetails'
-    //     }
-    //   },
-    //   {
-    //     $unwind: "$serviceDetails"
-    //   },
-    //   {
-        // $match: { 'cityDetails._id': cityId, 'serviceDetails._id': serviceId}
-        // $match: { city: cityId, servicetype : serviceId}
-      // },
+//       {
+//         $lookup: {
+//           from: 'citymodels',
+//           localField: 'city',
+//           foreignField: '_id',
+//           as: 'cityDetails'
+//         }
+//       },
+//       {
+//         $unwind: "$cityDetails"
+//       },
+//       {
+//         $lookup: {
+//           from: 'vehiclemodels',
+//           localField: 'servicetype',
+//           foreignField: '_id',
+//           as: 'serviceDetails'
+//         }
+//       },
+//       {
+//         $unwind: "$serviceDetails"
+//       },
+//       // {
+//       //   $match: { 'cityDetails._id': cityId, 'serviceDetails._id': serviceId}
+//       // },
+//       {
+//         $match: {
+//           city: cityId,
+//           status: true,
+//           servicetype: serviceId,
+//         },
+//       },
 
-      // {
-      //   $match: {
-      //     $expr: {
-      //       $and: [
-      //         { $eq: ["$cityDetails._id", cityId] },
-      //         { $eq: ["$serviceDetails._id", serviceId] }
-      //       ]
-      //     }
-      //   }
-      // }
-    // ];
-    // const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
-    res.send(driverdatta)
-    // console.log(driverdata);
-  } catch (error) {
-      console.log(error);
-      res.status(500).send(error)
-  }
-})
+//     ];
+//     const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
+//     res.send(driverdata)
+//     console.log(driverdata);
+//   } catch (error) {
+//       console.log(error);
+//       res.status(500).send(error)
+//   }
+// })
 
 module.exports = confirmRideRouter;

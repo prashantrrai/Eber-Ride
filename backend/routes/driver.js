@@ -268,20 +268,20 @@ driverRoutes.put(
 
 // --------------------------------------------------------UPDATE DRIVER STATUS--------------------------------------------------------
 
-  driverRoutes.put('/drivers/:id', async (req, res) => {
-    const { status } = req.body;
-    // console.log(status)
-    try {
-      const { id } = req.params;
-      // console.log(id)
+  // driverRoutes.put('/drivers/:id', async (req, res) => {
+  //   const { status } = req.body;
+  //   // console.log(status)
+  //   try {
+  //     const { id } = req.params;
+  //     // console.log(id)
 
-      await driverModel.findByIdAndUpdate(id, { status },  {new: true});
+  //     await driverModel.findByIdAndUpdate(id, { status },  {new: true});
 
-      res.status(200).json({success: true, message: 'Driver Status Updated Successfully.' });
-    } catch (error) {
-      res.status(500).json({success: false, message: error});
-    }
-  });
+  //     res.status(200).json({success: true, message: 'Driver Status Updated Successfully.' });
+  //   } catch (error) {
+  //     res.status(500).json({success: false, message: error});
+  //   }
+  // });
 
   //---------------------------------------------------------- ADD OR UPDATE SERVICE---------------------------------------------------
 
