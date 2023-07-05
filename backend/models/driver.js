@@ -35,6 +35,10 @@ const driver_Schema = new mongoose.Schema({
   servicetype: {
     type: Schema.Types.ObjectId,
     default: null
+  },
+  assign: {
+    type: Boolean,
+    default: 0
   }
 });
 

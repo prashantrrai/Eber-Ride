@@ -56,13 +56,14 @@
   
   .get-details{
     margin-bottom: 5px !important;
-    background-color: #6ce000;
+    background-color: #00b52d;
+    color: white;
     border: none;
     font-weight: 600;
   }
   .bookbtn {
     margin-bottom: 5px !important;
-    background-color: #6ce000;
+    background-color: #00a01b;
     border: none;
     font-weight: 600;
     color: white;

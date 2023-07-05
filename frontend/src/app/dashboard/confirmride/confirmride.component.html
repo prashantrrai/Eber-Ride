@@ -18,7 +18,8 @@
                 </thead>
                 <tbody>
                     <tr
-                        *ngFor="let ride of ridesArray| paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index">
+                        *ngFor="let ride of ridesArray">
+                        <!-- *ngFor="let ride of ridesArray| paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index"> -->
 
                         <td>{{ ride._id }}</td>
                         <td>{{ ride.userId }}</td>

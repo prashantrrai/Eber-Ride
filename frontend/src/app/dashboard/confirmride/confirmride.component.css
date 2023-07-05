@@ -23,7 +23,8 @@ pre{
 }
 
 .statusbadge{
-  background-color: #009900;
+  /* background-color: #009900; */
+  background-color: #00b200;
 }
 .infobadge{
   box-shadow: inset 2px 2px 4px 2px rgb(109, 98, 250);
