@@ -26,7 +26,7 @@
           <td *ngIf="driver.servicetype == null">No Service</td>
           <td *ngIf="driver.servicetype != null">{{driver.serviceDetails.vehicleName}}</td>
           <td> 
-              <button class="btn btn-primary" >Assign Driver</button>
+              <button class="btn btn-primary" (click)="assignDriver(driver)" >Assign Driver</button>
           </td>
         </tr>
         </tbody>

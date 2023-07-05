@@ -166,8 +166,9 @@ export class CreaterideComponent {
   getNumberOfStops() {
     this._setting.getStops().subscribe({
       next: (response: any) => {
-        // console.log(response.settingData[0]);
-        this.stops = response.stop;
+        // console.log(response);
+        this.stops = response.settingData[0].stop;
+        // console.log(this.stops);
       },
       error: (error) => {
         this.toaster.error(error.message);
@@ -646,7 +647,7 @@ export class CreaterideComponent {
     this.isRoute = false;
     this.directionsRenderer.setMap(null);
     this.travelForm.reset();
-    this.removeWaypoint(0)
+    this.removeWaypoint(5)
   }
   resetTimer() {
     this.authService.resetInactivityTimer();

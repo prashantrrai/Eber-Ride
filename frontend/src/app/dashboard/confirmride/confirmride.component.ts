@@ -20,11 +20,13 @@ export class ConfirmrideComponent {
   count: any
   paginatedRideData: any[] = [];
   driverArray: any = [];
+  rideStatus!: string; 
+  assignedDriverName!: string;
 
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
-    private _ride: ConfirmrideService,
+    private _confirmride: ConfirmrideService,
     private dialog: MatDialog,
     private _socket: SocketService
 
@@ -36,7 +38,7 @@ export class ConfirmrideComponent {
 
   //-------------------------------------------- GET RIDE DATA ---------------------------------------------
   getrideData() {
-    this._ride.getride().subscribe({
+    this._confirmride.getride().subscribe({
       next: (response: any) => {
         // console.log(response)
         this.ridesArray = response;
@@ -66,9 +68,30 @@ export class ConfirmrideComponent {
     this.paginatedRideData = this.ridesArray.slice(startIndex, endIndex);
   }
 
-  //--------------------------------------DIALOG REF CODE---------------------------------------------//
+  // -------------------------------------DELETE RIDE------------------------------------------//
+  deleteRide(rideid: string) {
+    // console.log(rideid);
+
+    const confirmation = confirm("Are you sure you want to delete this Ride?");
+    if (confirmation) {
+      this._confirmride.cancelride(rideid).subscribe({
+        next: (response: any) => {
+          // console.log(response);
+          this.getrideData()
+          this.toastr.success(response.message, "Success")
+        },
+        error: (error: any) => {
+          console.log(error);
+          this.toastr.error(error.statusText)
+          
+        }
+      })
+    }
+  }
+
+  //--------------------------------------INFO DIALOG REF CODE---------------------------------------------//
   openInfoDialog(ride: any): void {
-    console.log(ride)
+    // console.log(ride)
     const dialogConfig = new MatDialogConfig();
     
     dialogConfig.disableClose = false;
@@ -80,7 +103,7 @@ export class ConfirmrideComponent {
     
   }
   
-
+  //--------------------------------------ASSIGN DIALOG REF CODE---------------------------------------------//
   openAssignDriverDialog(ride: any): void {
     // console.log(ride);
     
@@ -92,19 +115,19 @@ export class ConfirmrideComponent {
     dialogConfig.data = ride; 
     
     const dialogRef = this.dialog.open(AssignDriverComponent, dialogConfig);
-    
-    // this._ride.getMatchedDriverdata({cityId: ride.cityId, serviceId: ride.serviceId }).subscribe({
-    //   next: (response: any) => {
-    //     console.log(response);
-    //     this.driverArray = response;
-    //   },
-    //   error: (error: any) => {
-    //     console.log(error);
-    //   },
-    // })
+
+    dialogRef.afterClosed().subscribe((selectedDriverName: string) => {
+      if (selectedDriverName) {
+        this.assignedDriverName = selectedDriverName;
+        console.log(ride);
+        
+        
+        
+      }
+    });
   }
   
-  // ---------------------------------------EXTRA COMMON CODE-----------------------------------------------------//
+  // ---------------------------------------EXTRA COMMON CODE--------------------------------------------//
   resetTimer() {
     this.authService.resetInactivityTimer();
   }

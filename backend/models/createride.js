@@ -45,6 +45,10 @@ const createRideSchema = mongoose.Schema(
       trim: true,
       default: "0",
     },
+    assign: {
+      type : Boolean,
+      default: 0
+    }
   },
   {
     timestamps: true,

@@ -20,8 +20,10 @@ export class ConfirmrideService {
 
   getMatchedDriverdata(data: any): Observable<any> {
     // console.log(data);
-    
     const url = `${this.serverUrl}/assigneddriverdata`;
     return this.http.post(url,data);
+  }
+  cancelride(rideid: string){
+    return this.http.delete<any>(`${this.serverUrl}/ridesinfo/${rideid}`)
   }
 }

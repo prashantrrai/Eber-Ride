@@ -23,7 +23,7 @@ export class InfoDialogComponent implements OnInit{
   
   ngOnInit(): void {
     this.dataArray = this.data;
-    console.log(this.dataArray)
+    // console.log(this.dataArray)
   }
 
 

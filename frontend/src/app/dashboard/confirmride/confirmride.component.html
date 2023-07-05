@@ -12,7 +12,7 @@
                         <th><pre>Drop off Address</pre></th>
                         <th><pre>Service Type</pre></th>
                         <th><pre>Status</pre></th>
-                        <th><pre>Info</pre></th>
+                        <th><pre>Assign</pre></th>
                         <th><pre>Action</pre></th>
                     </tr>
                 </thead>
@@ -27,17 +27,29 @@
                         <td>{{ ride.startLocation }}</td>
                         <td>{{ ride.endLocation }}</td>
                         <td>{{ ride.serviceType }}</td>
-                        <td></td>
-                        <td>
+                        <td [ngSwitch]="rideStatus">
+                            <span class="badge statusbadge" *ngSwitchCase="'Accepted'">Accepted</span>
+                            <span class="badge statusbadge" *ngSwitchCase="'Arrived'">Arrived</span>
+                            <span class="badge statusbadge" *ngSwitchCase="'Picked'">Picked</span>
+                            <span class="badge statusbadge" *ngSwitchCase="'Started'">Started</span>
+                            <span class="badge statusbadge" *ngSwitchCase="'Completed'">Completed</span>
+                            <span class="badge statusbadge"  style="font-size: 14px;" *ngSwitchDefault>Pending</span>
+                        </td>
+                        <!-- <td>
                             <button color="accent"
                                 mat-button (click)="openInfoDialog(ride)"><mat-icon>info</mat-icon></button>
+                        </td>                         -->
+                        <td>
+                            <button class="btn btn-primary" *ngIf="assignedDriverName">{{ assignedDriverName }}</button>
+                            <button class="btn btn-primary"  (click)="openAssignDriverDialog(ride)" *ngIf="!assignedDriverName">Assign Driver</button>
                         </td>
                         <td>
                             <button [matMenuTriggerFor]="lvl2master" color="accent"
                                 mat-button><mat-icon>edit</mat-icon></button>
                             <mat-menu #lvl2master="matMenu">
-                                <button mat-menu-item id="updatebtn" (click)="openAssignDriverDialog(ride)"><mat-icon>update</mat-icon>Assign Driver</button>
-                                <button mat-menu-item id="updatebtn"><mat-icon>cancel</mat-icon>Cancel</button>
+                                <!-- <button mat-menu-item *ngIf="!assignedDriverName" (click)="openAssignDriverDialog(ride)"><mat-icon>update</mat-icon>Assign Driver</button> -->
+                                <button mat-menu-item (click)="openInfoDialog(ride)"><mat-icon>info</mat-icon>Ride Info</button>
+                                <button mat-menu-item  (click)="deleteRide(ride._id)"><mat-icon>delete</mat-icon>Delete Ride</button>
                             </mat-menu>
                         </td>
                     </tr>

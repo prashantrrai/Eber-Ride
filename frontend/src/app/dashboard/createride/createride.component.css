@@ -12,10 +12,12 @@
     /* margin: 0.6em auto; */
     height: fit-content;
     margin: 15px auto;
-    background-color: #890aff;
+    /* background-color: #7d4eff; */
+    background-color: #4a494e;
   }
   .rightDivForm{
-    background-color: #890aff;
+    /* background-color: #7d4eff; */
+    background-color: #4a494e;
     padding: 10px;
     justify-items: left;
   }
@@ -84,7 +86,8 @@
     font-weight: 600;
   }
   .add-stops{
-    background-color: #6c18cc;
+    /* background-color: #7d4eff; */
+    background-color: #4a494e;
     color: white;
     border: none;
   }

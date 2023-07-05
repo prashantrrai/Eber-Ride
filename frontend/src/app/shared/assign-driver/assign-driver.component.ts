@@ -40,21 +40,6 @@ export class AssignDriverComponent implements OnInit {
     // console.log(this.dataArray)
   }
 
-  //--------------------------------------------GET DRIVER DATA FXN---------------------------------------------
-  // getDriverData() {
-  //   this._confirmride.getMatchedDriverdata({cityId: this.data.cityId, serviceId: this.data.serviceId }).subscribe({
-  //     next: (response: any) => {
-  //       console.log(response);
-  //       this.driverArray = response;
-  //       // console.log(this.driverArray);
-
-  //     },
-  //     error: (error: any) => {
-  //       console.log(error);
-  //     },
-  //   });
-  // }
-
   // ---------------------------------------GET ASSIGNED DRIVER DATA USING SOCKET-----------------------------------------//
   getDriverData() {
     const cityId = this.data.cityId;
@@ -115,6 +100,11 @@ export class AssignDriverComponent implements OnInit {
 
 
     });
+  }
+
+  assignDriver(driver: any) {
+    console.log(driver);
     
+    this.dialogRef.close(driver.drivername);
   }
 }

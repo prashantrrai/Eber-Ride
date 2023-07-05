@@ -79,6 +79,7 @@ async function initializeSocket(server) {
               city: cityId,
               servicetype: serviceId,
               status: true,
+              assign: 0
             },
         },
   

@@ -22,3 +22,18 @@ pre{
   color: #000000;
 }
 
+.statusbadge{
+  background-color: #009900;
+}
+.infobadge{
+  box-shadow: inset 2px 2px 4px 2px rgb(109, 98, 250);
+  border: none;
+  font-size: 16px;
+  color: black;
+  font-weight: 700;
+}
+.btn:hover{
+  box-shadow:  inset 4px 4px 4px 2px rgb(109, 98, 250);;
+  background: #ffffff;
+  color: #000000;
+}
