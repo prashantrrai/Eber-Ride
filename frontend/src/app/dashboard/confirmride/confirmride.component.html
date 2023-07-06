@@ -9,7 +9,7 @@
                         <th><pre>Username</pre></th>
                         <th><pre>Pick up Time</pre></th>
                         <th><pre>Pick up Address</pre></th>
-                        <th><pre>Drop off Address</pre></th>
+                        <th><pre >Drop off Address</pre></th>
                         <th><pre>Service Type</pre></th>
                         <th><pre>Status</pre></th>
                         <th><pre>Assign</pre></th>
@@ -25,8 +25,8 @@
                         <td>{{ ride.userId }}</td>
                         <td>{{ ride.userDetails.username }}</td>
                         <td>{{ ride.rideDate }}</td>
-                        <td>{{ ride.startLocation }}</td>
-                        <td>{{ ride.endLocation }}</td>
+                        <td class="fixed-width">{{ ride.startLocation }}</td>
+                        <td class="fixed-width">{{ ride.endLocation }}</td>
                         <td>{{ ride.serviceType }}</td>
                         <td [ngSwitch]="rideStatus">
                             <span class="badge statusbadge" *ngSwitchCase="'Accepted'">Accepted</span>

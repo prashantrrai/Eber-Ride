@@ -18,7 +18,7 @@ const routes : Routes = [{ path : "" , component : DashboardComponent , pathMatc
   declarations: [
     DashboardComponent,
     MenuComponent, 
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     CommonModule,

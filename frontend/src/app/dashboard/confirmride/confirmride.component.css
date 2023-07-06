@@ -38,3 +38,6 @@ pre{
   background: #ffffff;
   color: #000000;
 }
+.fixed-width {
+  width: 100px;
+}

@@ -23,8 +23,11 @@ const routes: Routes = [
       {path:'vehicletype',loadChildren:()=>import('./vehicle/vehicle.module').then(m=>m.VehicleModule)},
       {path:'createride',loadChildren:()=>import('./createride/createride.module').then(m=>m.CreaterideModule)},
       {path:'confirmride',loadChildren:()=>import('./confirmride/confirmride.module').then(m=>m.ConfirmrideModule)},
+      {path: "runningrequest", loadChildren:() => import('./runningrequest/runningrequest.module').then(m=>m.RunningrequestModule)},
+      { path: 'ridehistory', loadChildren: () => import('./ridehistory/ridehistory.module').then(m => m.RidehistoryModule) },
     ]
   },
+
 
 ];
 

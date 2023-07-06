@@ -1,0 +1,44 @@
+<div class="container p-4">
+  <!-- ----------------------------------------TABLE------------------------------------------------- -->
+  <div class="parentFormContainer">
+    <div id="tableContainer">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="bg-light text-dark">
+            <tr>
+              <th>Profile</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>City</th>
+              <!-- <th>Driver Status</th> -->
+              <th>Service</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let driver of driverArray">
+              <td>
+                <img
+                  src="http://localhost:4000/{{ driver.profile }}"
+                  alt="driver-profile"
+                />
+              </td>
+              <td>{{ driver.drivername }}</td>
+              <td>{{ driver.driveremail }}</td>
+              <td>{{ driver.countrycode + " " + driver.driverphone }}</td>
+              <td>{{ driver.cityDetails.city }}</td>
+              <td *ngIf="driver.servicetype == null">No Service</td>
+              <td *ngIf="driver.servicetype != null">
+                {{ driver.serviceDetails.vehicleName }}
+              </td>
+              <td>
+                <button class="btn btn-primary">Assign Driver</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

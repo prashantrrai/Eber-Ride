@@ -107,16 +107,9 @@ export class AssignDriverComponent implements OnInit {
 
     });
 
-    // this._socketService.onFinalassignedDriverData().subscribe({
-    //   next: (driverdata) => {
-    //   console.log(driverdata);
-    //   this._socketService.FinalassignedDriver(cityId, serviceId)
-    //   }
-    // });
   }
 
   // --------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-----------------------//
-
   assigndriverdata(){
     this._socketService.onFinalassignedDriverData().subscribe({
       next: (response) => {
