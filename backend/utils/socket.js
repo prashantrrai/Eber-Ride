@@ -112,12 +112,12 @@ async function initializeSocket(server) {
 
       console.log(ride);
 
-      io.emit('driverdata', { success: true, driver, message: 'Driver Assigned Successfully.' });
-      io.emit('driverdata', { success: true, ride, message: 'Driver Assigned Successfully.' });
+      io.emit('afterassigneddriver', { success: true, driver, message: 'Driver Assigned Successfully.' });
+      io.emit('afterassigneddriver', { success: true, ride, message: 'Driver Assigned Successfully.' });
       
     } catch (error) {
         console.log(error);
-        io.emit('driverdata', { success: false, message: error });
+        io.emit('afterassigneddriver', { success: false, message: error });
     }
   })
 

@@ -130,8 +130,7 @@ export class ConfirmrideComponent {
     //==========emit wala function=============
     this._socket.FinalassignedDriver(this.driverId  , this.rideId)
 
-  });
-
+    });
 
   }
   

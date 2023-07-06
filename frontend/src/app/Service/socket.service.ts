@@ -73,8 +73,8 @@ export class SocketService {
 
     onFinalassignedDriverData(): Observable<any> {
       return new Observable((observer) => {
-        this.socket.on('driverdata', (data) => {
-          console.log(data);
+        this.socket.on('afterassigneddriver', (data) => {
+          // console.log(data);
   
           observer.next(data);
         });

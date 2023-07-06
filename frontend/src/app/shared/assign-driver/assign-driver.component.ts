@@ -21,6 +21,8 @@ export class AssignDriverComponent implements OnInit {
   limit!: number;
   selectedSortBy!: string;
   selectedSortOrder!: string;
+  cityId: any;
+  serviceId: any;
 
   constructor(
     public dialog: MatDialog,
@@ -33,6 +35,7 @@ export class AssignDriverComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDriverData()
+    this.assigndriverdata()
 
 
     this.dataArray = this.data;
@@ -42,19 +45,19 @@ export class AssignDriverComponent implements OnInit {
 
   // ---------------------------------------GET ASSIGNED DRIVER DATA USING SOCKET-----------------------------------------//
   getDriverData() {
-    const cityId = this.data.cityId;
-    const serviceId = this.data.serviceId;
+     this.cityId = this.data.cityId;
+    this.serviceId = this.data.serviceId;
     // console.log(cityId);
     // console.log(serviceId);
     
     
-    this._socketService.getAssignedDriverData(cityId, serviceId)
+    this._socketService.getAssignedDriverData(this.cityId, this.serviceId)
 
     this._socketService.onUpdateStatusData().subscribe({
       next: (response) => {
         console.log(response);
 
-        this._socketService.getAssignedDriverData(cityId, serviceId)
+        this._socketService.getAssignedDriverData(this.cityId, this.serviceId)
 
         this._socketService.onAssignedDriverData().subscribe((driverData) => {
           // console.log(driverData);
@@ -89,7 +92,7 @@ export class AssignDriverComponent implements OnInit {
     this._socketService.onUpdateServiceData().subscribe({
       next: (servicedata) => {
       // console.log(servicedata);
-      this._socketService.getAssignedDriverData(cityId, serviceId)
+      this._socketService.getAssignedDriverData(this.cityId, this.serviceId)
 
       if (servicedata) {
 
@@ -104,15 +107,35 @@ export class AssignDriverComponent implements OnInit {
 
     });
 
-    this._socketService.onFinalassignedDriverData().subscribe({
-      next: (driverdata) => {
-      console.log(driverdata);
-      // this._socketService.getAssignedDriverData(cityId, serviceId)
-      }
-    });
+    // this._socketService.onFinalassignedDriverData().subscribe({
+    //   next: (driverdata) => {
+    //   console.log(driverdata);
+    //   this._socketService.FinalassignedDriver(cityId, serviceId)
+    //   }
+    // });
   }
 
   // --------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-----------------------//
+
+  assigndriverdata(){
+    this._socketService.onFinalassignedDriverData().subscribe({
+      next: (response) => {
+        // console.log(response);
+
+        this._socketService.getAssignedDriverData(this.cityId, this.serviceId)
+
+        this._socketService.onAssignedDriverData().subscribe((driverData) => {
+          // console.log(driverData);
+          this.driverArray = driverData;
+          console.log(this.driverArray);
+        });
+      }
+    })
+  }
+
+
+
+
   assignDriver(driver: any) {
     // console.log(driver);
     const alldata = {

@@ -235,6 +235,10 @@ export class UsersComponent {
   toggleFormVisibility() {
     this.AddbuttonForm = !this.AddbuttonForm;
     this.updateForm = false
+    this.AddForm.reset()
+    this.AddForm.patchValue({
+      countrycode:''
+    });
   }
 
   resetTimer() {
