@@ -99,18 +99,18 @@ async function initializeSocket(server) {
   socket.on("afterassigneddriver", async(data) => {
     const rideId = data.rideId
     const driverId = data.driverId
-    console.log("This is afterassigneddriver Data===========",data);
-    console.log("Driver ID:",driverId,"RIDE ID:",rideId);
+    // console.log("This is afterassigneddriver Data===========",data);
+    // console.log("Driver ID:",driverId,"RIDE ID:",rideId);
 
     
     try {
       const driver =  await driverModel.findByIdAndUpdate(driverId, { assign: "1" }, { new: true });
-      await driver.save();
-      console.log(driver); 
+      // await driver.save();
+      // console.log(driver); 
       const ride = await  createrideModel.findByIdAndUpdate(rideId, {driverId: driverId}, { new: true })
      
 
-      console.log(ride);
+      // console.log(ride);
 
       io.emit('afterassigneddriver', { success: true, driver, message: 'Driver Assigned Successfully.' });
       io.emit('afterassigneddriver', { success: true, ride, message: 'Driver Assigned Successfully.' });
@@ -121,6 +121,27 @@ async function initializeSocket(server) {
     }
   })
 
+    // ------------------------------------------------DRIVER RUNNING REQUEST TABLE-----------------------------------------------//
+    socket.on("runningrequest", async(data) => {
+      const rideId = data.rideId
+      const driverId = data.driverId
+      console.log("This is Data---------------",data);
+      console.log("Driver ID:",driverId,"RIDE ID:",rideId);
+  
+      try {
+        const driver =  await driverModel.findById(driverId, { assign: "1" });
+        console.log(driver); 
+        const ride = await  createrideModel.findById(rideId, {driverId: driverId})
+        console.log(ride);
+  
+        io.emit('runningrequest', { success: true, driver, message: 'Assigned Driver Data' });
+        io.emit('runningrequest', { success: true, ride, message: 'Assigned Driver Data' });        
+
+      } catch (error) {
+          console.log(error);
+          io.emit('runningrequest', { success: false, message: error });
+      }
+    })
 
 
     socket.on("disconnect", () => {
@@ -135,26 +156,3 @@ async function initializeSocket(server) {
 
 
 module.exports = initializeSocket;
-
-
-
-// socket.on('assigndriver' , async(data)=>{
-//   console.log(data);
-//   const _id = data._id;
-//   const driver_id = data.driver_id;
-//   try{
-//     const driver = await driverModel.findByIdAndUpdate(driver_id, { assign: "1" }, { new: true });
-//     await driver.save();
-//     console.log(driver); 
-//     const ride = await createrideModel.findByIdAndUpdate(_id, {driver_id : driver_id}, { new: true })
-//     await ride.save()
-//     console.log(ride);
-//     io.emit('assigndriver', { driver });
-//     io.emit('assigndriver', { ride });
-//   }catch(error) {
-//     console.log(error);
-//     socket.emit('assigndriver', { success: false })
-//   }
-  
-
-// })

@@ -81,4 +81,22 @@ export class SocketService {
       });
     }
 
+
+    //--------------------------------RUNNING REQUEST DRIVER-----------------------------------------//
+    getrunningdriver( driverId: string , rideId: string ): void {
+      this.socket.emit('runningrequest',  { driverId, rideId});
+      
+    }
+  
+    onrunningrequest(): Observable<any> {
+      return new Observable((observer) => {
+        this.socket.on('runningrequest', (data) => {
+          console.log(data);
+          
+          observer.next(data);
+        });
+  
+      });
+    }
+
 }
