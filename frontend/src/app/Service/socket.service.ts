@@ -15,7 +15,7 @@ export class SocketService {
 
   // -----------------------------DRIVER STATUS UPDATE-----------------------------//
   updatedriverStatus(driverId: string, status: boolean) : void {
-    console.log(driverId, status);
+    // console.log(driverId, status);
     this.socket.emit('driverstatus', { driverId, status});
   }
 
@@ -63,5 +63,22 @@ export class SocketService {
       });
     }
 
+
+    //-----------------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-------------------------------------//
+    FinalassignedDriver( driverId: string , rideId: string ): void {
+      // console.log(rideId, driverId);
+      this.socket.emit('afterassigneddriver', { driverId, rideId});
+      
+    }
+
+    onFinalassignedDriverData(): Observable<any> {
+      return new Observable((observer) => {
+        this.socket.on('driverdata', (data) => {
+          console.log(data);
+  
+          observer.next(data);
+        });
+      });
+    }
 
 }

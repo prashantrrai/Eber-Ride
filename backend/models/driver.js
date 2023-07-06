@@ -37,8 +37,8 @@ const driver_Schema = new mongoose.Schema({
     default: null
   },
   assign: {
-    type: Boolean,
-    default: 0
+    type: String,
+    default: "0"
   }
 });
 

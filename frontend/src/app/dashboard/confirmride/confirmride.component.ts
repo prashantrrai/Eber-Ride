@@ -22,6 +22,9 @@ export class ConfirmrideComponent {
   driverArray: any = [];
   rideStatus!: string; 
   assignedDriverName!: string;
+  driverdata: any;
+  driverId: any;
+  rideId: any;
 
   constructor(
     private authService: AuthService,
@@ -116,15 +119,20 @@ export class ConfirmrideComponent {
     
     const dialogRef = this.dialog.open(AssignDriverComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe((selectedDriverName: string) => {
-      if (selectedDriverName) {
-        this.assignedDriverName = selectedDriverName;
-        console.log(ride);
-        
-        
-        
-      }
-    });
+    dialogRef.afterClosed().subscribe((data: any) => {
+    // console.log(data);
+    this.driverdata = data
+    // console.log(this.driverdata.driverdata._id);
+    this.driverId = this.driverdata.driverdata._id
+    this.rideId = this.driverdata.ridedata._id
+
+    // console.log("Driver ID:",this.driverId,"RIDE ID:",this.rideId);
+    //==========emit wala function=============
+    this._socket.FinalassignedDriver(this.driverId  , this.rideId)
+
+  });
+
+
   }
   
   // ---------------------------------------EXTRA COMMON CODE--------------------------------------------//
@@ -133,3 +141,4 @@ export class ConfirmrideComponent {
   }
   
 }
+
