@@ -22,7 +22,7 @@ export class ConfirmrideComponent {
   driverArray: any = [];
   rideStatus!: string; 
   assignedDriverName!: string;
-  driverdata: any;
+  driverdataArray: any;
   driverId: any;
   rideId: any;
 
@@ -108,7 +108,7 @@ export class ConfirmrideComponent {
   
   //--------------------------------------ASSIGN DIALOG REF CODE---------------------------------------------//
   openAssignDriverDialog(ride: any): void {
-    // console.log(ride);
+    console.log(ride);
     
     const dialogConfig = new MatDialogConfig();
     
@@ -120,11 +120,11 @@ export class ConfirmrideComponent {
     const dialogRef = this.dialog.open(AssignDriverComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((data: any) => {
-    // console.log(data);
-    this.driverdata = data
-    // console.log(this.driverdata.driverdata._id);
-    this.driverId = this.driverdata.driverdata._id
-    this.rideId = this.driverdata.ridedata._id
+    console.log(data);
+    this.driverdataArray = data
+    // console.log(this.driverdataArray.driverdata._id);  
+    this.driverId = this.driverdataArray.driverdata._id
+    this.rideId = this.driverdataArray.ridedata._id
 
     // console.log("Driver ID:",this.driverId,"RIDE ID:",this.rideId);
     //==========emit wala function=============

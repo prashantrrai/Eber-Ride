@@ -18,6 +18,7 @@ const profile_path = path.join(__dirname, "/Public/Profile");
 app.use(express.static(profile_path));
 
 require("./database/db");
+
 const bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({ extended: false }));

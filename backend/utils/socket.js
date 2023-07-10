@@ -121,33 +121,33 @@ async function initializeSocket(server) {
     }
   })
 
-    // ------------------------------------------------DRIVER RUNNING REQUEST TABLE-----------------------------------------------//
-    socket.on("runningrequest", async(data) => {
-      const rideId = data.rideId
-      const driverId = data.driverId
-      console.log("This is Data---------------",data);
-      console.log("Driver ID:",driverId,"RIDE ID:",rideId);
-  
-      try {
-        const driver =  await driverModel.findById(driverId, { assign: "1" });
-        console.log(driver); 
-        const ride = await  createrideModel.findById(rideId, {driverId: driverId})
-        console.log(ride);
-  
-        io.emit('runningrequest', { success: true, driver, message: 'Assigned Driver Data' });
-        io.emit('runningrequest', { success: true, ride, message: 'Assigned Driver Data' });        
+  // ------------------------------------------------DRIVER RUNNING REQUEST TABLE-----------------------------------------------//
+  socket.on("runningrequest", async(data) => {
+    const rideId = data.rideId
+    const driverId = data.driverId
+    console.log("This is Data",data);
+    console.log("Driver ID:",driverId,"RIDE ID:",rideId);
 
-      } catch (error) {
-          console.log(error);
-          io.emit('runningrequest', { success: false, message: error });
-      }
-    })
+    try {
+      const driver =  await driverModel.findById(driverId, { assign: "1" });
+      console.log(driver); 
+      const ride = await  createrideModel.findById(rideId, {driverId: driverId})
+      console.log(ride);
+
+      io.emit('runningrequest', { success: true, driver, message: 'Assigned Driver Data' });
+      io.emit('runningrequest', { success: true, ride, message: 'Assigned Driver Data' });
+
+    } catch (error) {
+        console.log(error);
+        io.emit('runningrequest', { success: false, message: error });
+    }
+  })-
 
 
-    socket.on("disconnect", () => {
-        console.log("client Disconnected");
-    });
-    });
+  socket.on("disconnect", () => {
+      console.log("client Disconnected");
+  });
+  });
 
 
 
