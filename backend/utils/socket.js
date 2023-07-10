@@ -8,7 +8,7 @@ async function initializeSocket(server) {
     const io = socketio(server, {cors: {origin: ["http://localhost:4200"]}});
 
     io.on("connection", (socket) => {
-        console.log("Socket is Working........");
+        console.log("Socket is Working.");
 
 
 
