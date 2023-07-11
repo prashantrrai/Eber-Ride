@@ -7,9 +7,11 @@ import { Socket, io } from 'socket.io-client';
 })
 export class SocketService {
   private socket: Socket;
+  url = 'http://localhost:4000'
+
 
   constructor() {
-     this.socket = io('http://localhost:4000'); 
+     this.socket = io(this.url); 
     }
 
 
@@ -83,20 +85,43 @@ export class SocketService {
 
 
     //--------------------------------RUNNING REQUEST DRIVER-----------------------------------------//
-    getrunningdriver( driverId: string , rideId: string ): void {
-      this.socket.emit('runningrequest',  { driverId, rideId});
+    // listening_running_driver( driverId: string , rideId: string ): void {
+    //   this.socket.emit('runningrequest',  { driverId, rideId});
       
-    }
+    // }
   
-    onrunningrequest(): Observable<any> {
-      return new Observable((observer) => {
-        this.socket.on('runningrequest', (data) => {
-          console.log(data);
+    // onrunningrequest(): Observable<any> {
+    //   return new Observable((observer) => {
+    //     this.socket.on('runningrequest', (data) => {
+    //       console.log(data);
           
-          observer.next(data);
-        });
+    //       observer.next(data);
+    //     });
   
-      });
+    //   });
+    // }
+
+    //--------------------------------RUNNING REQUEST DRIVER-----------------------------------------//
+    listenGetRunning(eventName: string): Observable<any> {
+      return new Observable(observer => {
+        this.socket.on(eventName, (data: any) => {
+          // console.log(data)
+
+          observer.next(data)
+        })
+      })
+    }
+
+
+    //-----------------To emit data from client to Server-----------------//
+    emitRunningData(eventName: string, data: any) {
+      this.socket.emit(eventName, data)
+      console.log(data);
+    }
+
+
+    disconnect() {
+      this.socket.disconnect()
     }
 
 }

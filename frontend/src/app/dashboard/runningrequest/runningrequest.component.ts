@@ -7,32 +7,33 @@ import { SocketService } from 'src/app/Service/socket.service';
   styleUrls: ['./runningrequest.component.css']
 })
 export class RunningrequestComponent {
-  driverArray: any[] =[];
+  driverArray: any[] = [];
   driverId: any;
   rideId: any;
 
   constructor(
-    private _socketservice : SocketService
-  ){}
+    private _socketservice: SocketService
+  ) { }
 
-  ngOnInit(){
-    this.getDriverData()
+  ngOnInit() {
+    this.getRunningData()
   }
 
-  getDriverData(){
-    this._socketservice.onrunningrequest().subscribe({
-      next: (response) => {
-        console.log(response);
-        // this._socketservice.getrunningdriver(this.driverId, this.rideId)
-
-        this._socketservice.onrunningrequest().subscribe((response) => {
-          console.log(response);
-          this.driverArray = response;
-          console.log(this.driverArray);
-        });
-      }
-    })
+  getRunningData() {
+    this._socketservice.emitRunningData('runningrequest','Data from frontend')
+    
+    this._socketservice.listenGetRunning('runningdata').subscribe((data: any) => {
+      console.log(data);
+        // this.driverArray = data;
+      // this._socketservice.getrunningdriver(this.driverId, this.rideId)
+      
+      // this._socketservice.onrunningrequest().subscribe((response) => {
+        //   console.log(response);
+        //   console.log(this.driverArray);
+      });
+      
+    
   }
 
-  
+
 }
