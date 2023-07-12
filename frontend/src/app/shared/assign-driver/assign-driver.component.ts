@@ -47,8 +47,8 @@ export class AssignDriverComponent implements OnInit {
   getDriverData() {
      this.cityId = this.data.cityId;
     this.serviceId = this.data.serviceId;
-    // console.log(cityId);
-    // console.log(serviceId);
+    // console.log(this.cityId);
+    // console.log(this.serviceId);
     
     
     this._socketService.getAssignedDriverData(this.cityId, this.serviceId)
@@ -111,12 +111,12 @@ export class AssignDriverComponent implements OnInit {
 
   // --------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-----------------------//
   assigndriverdata(){
-    this._socketService.onFinalassignedDriverData().subscribe({
+    this._socketService.onFinalassignedDriverData("Assigned Data").subscribe({
       next: (response) => {
-        console.log(response);
+        console.log("New Assigned Driver Details:    ",response);
 
         this._socketService.getAssignedDriverData(this.cityId, this.serviceId)
-        console.log(this.cityId, this.serviceId);
+        // console.log(this.cityId, this.serviceId);
         
 
         this._socketService.onAssignedDriverData().subscribe((driverData) => {

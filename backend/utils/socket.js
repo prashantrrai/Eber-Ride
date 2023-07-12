@@ -41,8 +41,8 @@ async function initializeSocket(server) {
 
 
       // ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE ,STATUS TRUE------------------------------------//
-      socket.on('assigneddriverdata', async (data) => {
-          // console.log(data , "===========bodydata");
+      socket.on('driverdata', async (data) => {
+          // console.log(data , "assigndriverdata");
 
       try {
         const cityId = new mongoose.Types.ObjectId(data.cityId);
@@ -69,7 +69,8 @@ async function initializeSocket(server) {
             }
           },
           {
-            $unwind: "$serviceDetails"
+            $unwind: {path:"$serviceDetails",
+            preserveNullAndEmptyArrays: true}
           },
           {
             $match: {
@@ -82,38 +83,51 @@ async function initializeSocket(server) {
     
         ];
         const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
-        // console.log(driverdata , "============ response data");
+        // console.log(driverdata , "driverdataresponse");
         io.emit('driverdata', driverdata , {success: true, message: "Driver Assigned Successfully"});
         
-      } catch (error) {
+      } catch (error) { 
           console.log(error);
           io.emit('driverdata', { success: false, message: error });
       }
     })
 
       // ------------------------------------------------SHOW DRIVER DATA AFTER ASSIGN-----------------------------------------------//
-      socket.on("afterassigneddriver", async(data) => {
+      socket.on("AssignedData", async(data) => {
         const rideId = data.rideId
         const driverId = data.driverId
-        // console.log("This is afterassigneddriver Data===========",data);
-        // console.log("Driver ID:",driverId,"RIDE ID:",rideId);
 
         
         try {
           const driver =  await driverModel.findByIdAndUpdate(driverId, { assign: "1" }, { new: true });
-          // await driver.save();
-          // console.log(driver); 
-          const ride = await  createrideModel.findByIdAndUpdate(rideId, {driverId: driverId}, { new: true })
+          const updatedRide = await  createrideModel.findByIdAndUpdate(rideId, {driverId: driverId}, { new: true })
+          const ride = await createrideModel.aggregate([
+            {
+              $match: {
+                _id: updatedRide._id
+              }
+            },
+            {
+              $lookup: {
+                from: "drivermodels",
+                localField: "driverId",
+                foreignField: "_id",
+                as: "driverDetails"
+              }
+            },
+            {
+              $unwind: "$driverDetails"
+            },
+          ]);
         
 
           // console.log(ride);
 
-          io.emit('afterassigneddriver', { success: true, driver, message: 'Driver Assigned Successfully.' });
-          io.emit('afterassigneddriver', { success: true, ride, message: 'Driver Assigned Successfully.' });
+          io.emit('data', { success: true, ride , message: 'Driver Assigned Successfully.' });
           
         } catch (error) {
             console.log(error);
-            io.emit('afterassigneddriver', { success: false, message: error });
+            io.emit('data', { success: false, message: error });
         }
       })
 
@@ -121,13 +135,13 @@ async function initializeSocket(server) {
       
       socket.on("runningrequest", async(data) => {
         const driverId = data.driverId
-        console.log(data);
+        // console.log(data);
 
         try {
           const driverdata = await driverModel.find({ assign: "1" });
-          const ridedata = await createrideModel.find({ driverId: driverId });
-          console.log("ridedata",ridedata);
-          console.log("driverdata",driverdata);
+          const ridedata = await createrideModel.find({  driverId: { $exists: true } });
+          // console.log("ridedata",ridedata);
+          // console.log("driverdata",driverdata);
           io.emit('runningdata', {driverdata, ridedata }, {success: true, message: "Running Request Data"});
 
         } catch (error) {
@@ -138,7 +152,23 @@ async function initializeSocket(server) {
       })
 
 
+      // ------------------------------------------------RIDE REJECTED REQUEST TABLE-----------------------------------------------//
+        socket.on("runningrequestReject", async (data) => {
+          const driverId = data.driverId;
 
+          try {
+            // Update assign value to 0 and unset driverId field
+            await createrideModel.updateMany({ driverId: { $exists: true } }, { $set: { assign: "0" }, $unset: { driverId: "" } });
+        
+            const driverdata = await driverModel.find({ assign: "0" });
+            const ridedata = await createrideModel.find({ driverId: { $exists: false } });
+        
+            io.emit('notrunningdata', { driverdata, ridedata }, { success: true, message: "Running Request Reject Data" });
+          } catch (error) {
+            console.error(error);
+            io.emit('notrunningdata', { success: false, message: "Error retrieving data" });
+          }
+        });
 
 
 

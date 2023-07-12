@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RunningrequestService } from 'src/app/Service/runningrequest.service';
 import { SocketService } from 'src/app/Service/socket.service';
 
 @Component({
@@ -7,12 +8,14 @@ import { SocketService } from 'src/app/Service/socket.service';
   styleUrls: ['./runningrequest.component.css']
 })
 export class RunningrequestComponent {
-  driverArray: any[] = [];
+  assignedArray: any;
   driverId: any;
   rideId: any;
+  driverdata: any;
 
   constructor(
-    private _socketservice: SocketService
+    private _socketservice: SocketService,
+    private runningRequestService: RunningrequestService
   ) { }
 
   ngOnInit() {
@@ -20,20 +23,41 @@ export class RunningrequestComponent {
   }
 
   getRunningData() {
-    this._socketservice.emitRunningData('runningrequest','Data from frontend')
+    
+    // this._socketservice.emitRunningData('runningrequest','Data from frontend')
+    this._socketservice.emitRunningData('runningrequest',"")
     
     this._socketservice.listenGetRunning('runningdata').subscribe((data: any) => {
       console.log(data);
-        // this.driverArray = data;
-      // this._socketservice.getrunningdriver(this.driverId, this.rideId)
-      
-      // this._socketservice.onrunningrequest().subscribe((response) => {
-        //   console.log(response);
-        //   console.log(this.driverArray);
+        // this.assignedArray = data.driverdata;
+        // console.log(this.assignedArray);
+        this.assignedArray = data.ridedata;
+        console.log(this.assignedArray);
+        
+        
       });
-      
-    
   }
+
+  rejectRide(rideId: string) {
+    console.log(rideId);
+    
+    this.rejectRunningRequest(rideId);
+  }
+
+  rejectRunningRequest(driverId: string): void {
+    this.runningRequestService.rejectRunningRequest(driverId)
+      .subscribe((response)=> {
+          // Handle successful response
+          console.log('Request rejected:', response);
+        },
+        error => {
+          // Handle error
+          console.error('Error rejecting request:', error);
+        }
+      );
+  }
+
+
 
 
 }

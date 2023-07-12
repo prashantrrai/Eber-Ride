@@ -6,33 +6,26 @@
         <table class="table">
           <thead class="bg-light text-dark">
             <tr>
-              <th>Profile</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>City</th>
-              <th>Service</th>
+              <th>Request ID</th>
+              <th>Pick up Time</th>
+              <th>Pick up Address</th>
+              <th>Drop off Address</th>
+              <th>Service Type</th>
+              <th>Estimate Fare</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let driver of driverArray">
-              <td>
-                <img
-                  src="http://localhost:4000/{{ driver.profile }}"
-                  alt="driver-profile"
-                />
-              </td>
-              <td>{{ driver.drivername }}</td>
-              <td>{{ driver.driveremail }}</td>
-              <td>{{ driver.countrycode + " " + driver.driverphone }}</td>
-              <td>{{ driver.cityDetails.city }}</td>
-              <td *ngIf="driver.servicetype == null">No Service</td>
-              <td *ngIf="driver.servicetype != null">
-                {{ driver.serviceDetails.vehicleName }}
-              </td>
-              <td>
-                <button class="btn btn-primary">Assign Driver</button>
+            <tr *ngFor="let data of assignedArray">
+              <td>{{data._id}}</td>
+              <td>{{data.rideDate + "    " +data.time }}</td>
+              <td>{{data.startLocation}}</td>
+              <td>{{data.endLocation}}</td>
+              <td>{{data.serviceType}}</td>
+              <td>{{data.estimateFare}}</td>
+              <td class="d-flex gap-3">
+                <button class="btn btn-success">Accept Ride</button>
+                <button class="btn btn-warning" (click)="rejectRide(data._id)">Reject Ride</button>
               </td>
             </tr>
           </tbody>

@@ -108,7 +108,7 @@ export class ConfirmrideComponent {
   
   //--------------------------------------ASSIGN DIALOG REF CODE---------------------------------------------//
   openAssignDriverDialog(ride: any): void {
-    console.log(ride);
+    // console.log(ride);
     
     const dialogConfig = new MatDialogConfig();
     
@@ -120,9 +120,9 @@ export class ConfirmrideComponent {
     const dialogRef = this.dialog.open(AssignDriverComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((data: any) => {
-    console.log(data);
+    // console.log(data);
     this.driverdataArray = data
-    // console.log(this.driverdataArray.driverdata._id);  
+    // console.log("Assigned Driver Id:  ",this.driverdataArray.driverdata._id);  
     this.driverId = this.driverdataArray.driverdata._id
     this.rideId = this.driverdataArray.ridedata._id
 

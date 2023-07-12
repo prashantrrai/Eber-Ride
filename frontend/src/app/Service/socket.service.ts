@@ -34,7 +34,7 @@ export class SocketService {
   // -----------------------------ASSIGNED DRIVER UPDATE-----------------------------//
   getAssignedDriverData(cityId: string, serviceId: string): void {
     // console.log(cityId, serviceId);
-    this.socket.emit('assigneddriverdata', { cityId, serviceId });
+    this.socket.emit('driverdata', { cityId, serviceId });
     
   }
 
@@ -68,15 +68,15 @@ export class SocketService {
 
     //-----------------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-------------------------------------//
     FinalassignedDriver( driverId: string , rideId: string ): void {
-      // console.log(rideId, driverId);
-      this.socket.emit('afterassigneddriver', { driverId, rideId});
-      
+      // console.log(driverId, rideId);
+
+      this.socket.emit("AssignedData", {driverId, rideId});   
     }
 
-    onFinalassignedDriverData(): Observable<any> {
+    onFinalassignedDriverData(data: String): Observable<any> {
       return new Observable((observer) => {
-        this.socket.on('afterassigneddriver', (data) => {
-          // console.log(data);
+        this.socket.on('data', (data: any) => {
+          console.log(data);
   
           observer.next(data);
         });
@@ -84,22 +84,6 @@ export class SocketService {
     }
 
 
-    //--------------------------------RUNNING REQUEST DRIVER-----------------------------------------//
-    // listening_running_driver( driverId: string , rideId: string ): void {
-    //   this.socket.emit('runningrequest',  { driverId, rideId});
-      
-    // }
-  
-    // onrunningrequest(): Observable<any> {
-    //   return new Observable((observer) => {
-    //     this.socket.on('runningrequest', (data) => {
-    //       console.log(data);
-          
-    //       observer.next(data);
-    //     });
-  
-    //   });
-    // }
 
     //--------------------------------RUNNING REQUEST DRIVER-----------------------------------------//
     listenGetRunning(eventName: string): Observable<any> {
@@ -116,7 +100,7 @@ export class SocketService {
     //-----------------To emit data from client to Server-----------------//
     emitRunningData(eventName: string, data: any) {
       this.socket.emit(eventName, data)
-      console.log(data);
+      console.log(eventName, data);
     }
 
 
