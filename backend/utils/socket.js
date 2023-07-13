@@ -163,10 +163,27 @@ async function initializeSocket(server) {
             io.emit('notrunningdata', { ridedata, driverdata }, { success: true, message: "Running Request Reject Data" });
           } catch (error) {
             console.error(error);
-            io.emit('notrunningdata', { success: false, message: "Error retrieving data" });
+            io.emit('notrunningdata', { success: false, message: "Ride Not Rejected", error: error.message });
           }
         });
 
+
+        // ------------------------------------------------RIDE CANCEL CONFIRM-RIDE TABLE-----------------------------------------------//
+        socket.on("cancelride", async (rideId) => {
+          console.log(rideId);
+
+          try {
+
+            // const ridedata = await createrideModel.updateMany({ _id: rideId }, { $set: { status: 2 } });
+            const ridedata = await createrideModel.findByIdAndUpdate({ _id: rideId }, { status: 3 } , { new: true });
+            // console.log(ridedata);
+            io.emit('cancelridedata', ridedata, { success: true, message: "Ride Cancelled Successfully", ridedata });
+
+          } catch (error) {
+            console.error(error);
+            io.emit('cancelridedata', { success: false, message: "Ride Not Cancelled", error: error.message });
+          }
+        });
 
 
 

@@ -19,7 +19,9 @@ const { mongoose } = require('mongoose')
 confirmRideRouter.get('/ridesinfo', async (req, res) => {
   try {
     const aggregationPipeline = [
-
+      {
+        $match: { status: 0 } // Add the $match stage to filter by status field
+      },
       {
         $lookup: {
           from: 'usermodels',
@@ -158,21 +160,21 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
 
 
 // -----------------------------------------CANCEL RIDE DELETE API---------------------------------------//
-confirmRideRouter.delete('/ridesinfo/:rideid', async(req, res) => {
-  const rideid = req.params.rideid
-  console.log(rideid);
-  try {
-    const deletedRidedata = await createRideModel.findByIdAndDelete(rideid);
-    if (!deletedRidedata) {
-      return res.status(404).json({ message: "Ride not found" });
-    }
-    return res.status(200).json({success: true, message: "Ride Deleted Successfully"})
+// confirmRideRouter.delete('/ridesinfo/:rideid', async(req, res) => {
+//   const rideid = req.params.rideid
+//   console.log(rideid);
+//   try {
+//     const deletedRidedata = await createRideModel.findByIdAndDelete(rideid);
+//     if (!deletedRidedata) {
+//       return res.status(404).json({ message: "Ride not found" });
+//     }
+//     return res.status(200).json({success: true, message: "Ride Deleted Successfully"})
 
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({success: false, message: error})
-  }
-})
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({success: false, message: error})
+//   }
+// })
 
 
 module.exports = confirmRideRouter;

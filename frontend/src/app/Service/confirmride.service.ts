@@ -1,15 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Socket, io } from 'socket.io-client';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfirmrideService {
+  private socket: Socket;
   
   private serverUrl = 'http://localhost:4000';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.socket = io(this.serverUrl); 
+  }
   
   // getride(): Observable<any>{
   //   return this.http.get(`${this.serverUrl}/ridedata`);
@@ -23,7 +27,30 @@ export class ConfirmrideService {
     const url = `${this.serverUrl}/assigneddriverdata`;
     return this.http.post(url,data);
   }
-  cancelride(rideid: string){
-    return this.http.delete<any>(`${this.serverUrl}/ridesinfo/${rideid}`)
+  // cancelride(rideid: string){
+  //   console.log(rideid);
+    
+  //   return this.http.delete<any>(`${this.serverUrl}/ridesinfo/${rideid}`)
+  // }
+
+  cancelride(){
+
+  }
+  //--------------------------CANCEL RIDE BY USER------------------------------//
+  listencancelride(cancelridedata: string, ridedata: any): Observable<any>  {
+
+    return new Observable(observer => {
+      this.socket.on(cancelridedata, (ridedata: any) => {
+        // console.log(ridedata)
+
+        observer.next(ridedata)
+      })
+    })
+    
+  }
+
+  emitcancelride(cancelride: string, rideId: any){
+    // console.log(rideId);
+    this.socket.emit(cancelride, rideId)
   }
 }

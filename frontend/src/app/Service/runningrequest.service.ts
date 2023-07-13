@@ -36,23 +36,24 @@ export class RunningrequestService {
 
 
 
-  listenrejectRunningRequest(notrunningdata: string, data: any): Observable<any>  {
+    //--------------------------REJECT RIDE BY DRIVER------------------------------//
+    listenrejectRunningRequest(notrunningdata: string, data: any): Observable<any>  {
 
-    return new Observable(observer => {
-      this.socket.on(notrunningdata, (data: any) => {
-        //data coming from backend response ater emiting data in backend from frontend i.e, ON
-        console.log(data)
+      return new Observable(observer => {
+        this.socket.on(notrunningdata, (data: any) => {
+          //data coming from backend response ater emiting data in backend from frontend i.e, ON
+          console.log(data)
 
-        observer.next(data)
+          observer.next(data)
+        })
       })
-    })
-    
-  }
+      
+    }
 
-  emitrejectRunningRequest(Rejectrunningrequest: string, data: any){
+    emitrejectRunningRequest(Rejectrunningrequest: string, data: any){
 
-    console.log(data);
-    //sending data to backend from frontend using emit
-    this.socket.emit(Rejectrunningrequest, data)
-  }
+      console.log(data);
+      //sending data to backend from frontend using emit
+      this.socket.emit(Rejectrunningrequest, data)
+    }
 }

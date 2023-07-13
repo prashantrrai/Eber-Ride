@@ -72,25 +72,26 @@ export class ConfirmrideComponent {
   }
 
   // -------------------------------------DELETE RIDE------------------------------------------//
-  deleteRide(rideid: string) {
-    // console.log(rideid);
+  // deleteRide(rideid: string) {
+  //   // console.log(rideid);
 
-    const confirmation = confirm("Are you sure you want to delete this Ride?");
-    if (confirmation) {
-      this._confirmride.cancelride(rideid).subscribe({
-        next: (response: any) => {
-          // console.log(response);
-          this.getrideData()
-          this.toastr.success(response.message, "Success")
-        },
-        error: (error: any) => {
-          console.log(error);
-          this.toastr.error(error.statusText)
-          
-        }
-      })
-    }
-  }
+  //   const confirmation = confirm("Are you sure you want to delete this Ride?");
+  //   if (confirmation) {
+  //     this._confirmride.cancelride(rideid).subscribe({
+  //       next: (response: any) => {
+  //         // console.log(response);
+  //         this.getrideData()
+  //         this.toastr.success(response.message, "Success")
+  //       },
+  //       error: (error: any) => {
+  //         console.log(error);
+  //         this.toastr.error(error.statusText)
+  //       }
+  //     })
+  //   }
+  // }
+
+
 
   //--------------------------------------INFO DIALOG REF CODE---------------------------------------------//
   openInfoDialog(ride: any): void {
@@ -134,6 +135,21 @@ export class ConfirmrideComponent {
 
   }
   
+
+  //--------------------------------CANCEL RIDE------------------------------------------//
+  cancelride(rideId: any){
+    console.log(rideId);
+    this._confirmride.emitcancelride('cancelride', rideId)
+
+    this._confirmride.listencancelride('cancelridedata', rideId).subscribe((ridedata: any) => {
+      console.log(ridedata);
+      this.getrideData()
+    })
+
+  }
+
+
+
   // ---------------------------------------EXTRA COMMON CODE--------------------------------------------//
   resetTimer() {
     this.authService.resetInactivityTimer();
