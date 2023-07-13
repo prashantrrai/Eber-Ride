@@ -5,6 +5,8 @@ import { environment } from 'src/app/environment/environment';
 import { MatIcon } from '@angular/material/icon';
 import { ConfirmrideService } from 'src/app/Service/confirmride.service';
 import { SocketService } from 'src/app/Service/socket.service';
+import { RunningrequestComponent } from 'src/app/dashboard/runningrequest/runningrequest.component';
+import { RunningrequestService } from 'src/app/Service/runningrequest.service';
 
 @Component({
   selector: 'app-assign-driver',
@@ -23,19 +25,21 @@ export class AssignDriverComponent implements OnInit {
   selectedSortOrder!: string;
   cityId: any;
   serviceId: any;
+  rejectdriver:any;
 
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<AssignDriverComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _socketService: SocketService
-
+    private _socketService: SocketService,
+    private  _runningRequestService: RunningrequestService
   ) { }
 
 
   ngOnInit(): void {
     this.getDriverData()
     this.assigndriverdata()
+    this.gettingrejectrunningrequestdata();
 
 
     this.dataArray = this.data;
@@ -131,17 +135,25 @@ export class AssignDriverComponent implements OnInit {
 
 
   assignDriver(driver: any) {
-    // console.log(driver);
+    console.log(driver);
     const alldata = {
       ridedata : this.data,
       driverdata : driver
      }
 
-
     this.dialogRef.close(alldata);
   }
 
 
+  //when data driver is free then that time this process run 
+  gettingrejectrunningrequestdata(){
+  this._runningRequestService.listenrejectRunningRequest('notrunningdata',this.rejectdriver).subscribe((response: any)=> {
+    // Handle successful response coming from backend that is ON
 
+    this.getDriverData();
+  }
+  );
+  }
 
+  
 }

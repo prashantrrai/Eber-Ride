@@ -133,15 +133,11 @@ async function initializeSocket(server) {
 
       // ------------------------------------------------DRIVER RUNNING REQUEST TABLE-----------------------------------------------//
       
-      socket.on("runningrequest", async(data) => {
-        const driverId = data.driverId
-        // console.log(data);
+      socket.on("runningrequest", async() => {
 
         try {
           const driverdata = await driverModel.find({ assign: "1" });
           const ridedata = await createrideModel.find({  driverId: { $exists: true } });
-          // console.log("ridedata",ridedata);
-          // console.log("driverdata",driverdata);
           io.emit('runningdata', {driverdata, ridedata }, {success: true, message: "Running Request Data"});
 
         } catch (error) {
@@ -153,17 +149,18 @@ async function initializeSocket(server) {
 
 
       // ------------------------------------------------RIDE REJECTED REQUEST TABLE-----------------------------------------------//
-        socket.on("runningrequestReject", async (data) => {
-          const driverId = data.driverId;
+        socket.on("Rejectrunningrequest", async (data) => {
+          // const driverId = data.driverId;
+          console.log(data);
+          console.log(data.driverId);
 
           try {
             // Update assign value to 0 and unset driverId field
-            await createrideModel.updateMany({ driverId: { $exists: true } }, { $set: { assign: "0" }, $unset: { driverId: "" } });
+            const ridedata = await createrideModel.updateMany({ driverId: data.driverId }, { $unset: { driverId: "" } });
+            const driverdata = await driverModel.updateMany({ _id: data.driverId }, { $set: { assign: "0" } });
         
-            const driverdata = await driverModel.find({ assign: "0" });
-            const ridedata = await createrideModel.find({ driverId: { $exists: false } });
         
-            io.emit('notrunningdata', { driverdata, ridedata }, { success: true, message: "Running Request Reject Data" });
+            io.emit('notrunningdata', { ridedata, driverdata }, { success: true, message: "Running Request Reject Data" });
           } catch (error) {
             console.error(error);
             io.emit('notrunningdata', { success: false, message: "Error retrieving data" });

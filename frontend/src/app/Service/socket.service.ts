@@ -85,23 +85,6 @@ export class SocketService {
 
 
 
-    //--------------------------------RUNNING REQUEST DRIVER-----------------------------------------//
-    listenGetRunning(eventName: string): Observable<any> {
-      return new Observable(observer => {
-        this.socket.on(eventName, (data: any) => {
-          // console.log(data)
-
-          observer.next(data)
-        })
-      })
-    }
-
-
-    //-----------------To emit data from client to Server-----------------//
-    emitRunningData(eventName: string, data: any) {
-      this.socket.emit(eventName, data)
-      console.log(eventName, data);
-    }
 
 
     disconnect() {

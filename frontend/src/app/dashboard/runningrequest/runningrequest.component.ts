@@ -15,48 +15,77 @@ export class RunningrequestComponent {
 
   constructor(
     private _socketservice: SocketService,
-    private runningRequestService: RunningrequestService
+    private _runningRequestService: RunningrequestService
   ) { }
 
   ngOnInit() {
-    this.getRunningData()
+    this.getRunningData();
+    this.assigneddriverfromAssignDialogBox();
+    this.relatedtoprashantrai();
+
   }
 
   getRunningData() {
-    
     // this._socketservice.emitRunningData('runningrequest','Data from frontend')
-    this._socketservice.emitRunningData('runningrequest',"")
+    this._runningRequestService.emitRunningData('runningrequest')
     
-    this._socketservice.listenGetRunning('runningdata').subscribe((data: any) => {
+    this._runningRequestService.listenGetRunning('runningdata').subscribe((data: any) => {
       console.log(data);
-        // this.assignedArray = data.driverdata;
-        // console.log(this.assignedArray);
         this.assignedArray = data.ridedata;
         console.log(this.assignedArray);
-        
-        
       });
   }
 
-  rejectRide(rideId: string) {
-    console.log(rideId);
+
+  rejectRide(data: any) {
+    console.log(data);
     
-    this.rejectRunningRequest(rideId);
+    console.log("rideId", data._id);
+    console.log("driverId", data.driverId);
+
+    this.rideId = data._id
+    this.driverId = data.driverId
+    
+    this.rejectRunningRequest(this.driverId,this.rideId);
   }
 
-  rejectRunningRequest(driverId: string): void {
-    this.runningRequestService.rejectRunningRequest(driverId)
-      .subscribe((response)=> {
-          // Handle successful response
-          console.log('Request rejected:', response);
-        },
-        error => {
-          // Handle error
-          console.error('Error rejecting request:', error);
-        }
-      );
+
+  //------------------------------RUNNING REQUEST REJECT------------------------------------//
+  rejectRunningRequest(driverId: string, rideId: string){
+    console.log(rideId, driverId);
+    const data = {
+      rideId: rideId,
+      driverId: driverId
+    }
+
+    this._runningRequestService.emitrejectRunningRequest('Rejectrunningrequest', data)
+    this.getRunningData()
   }
 
+  // 
+
+  relatedtoprashantrai(){
+    const data = {
+      rideId: this.rideId,
+      driverId: this.driverId
+    }
+    this._runningRequestService.listenrejectRunningRequest('notrunningdata',data).subscribe((response: any)=> {
+
+      // Handle successful response coming from backend that is ON
+      // console.log('Request rejected:', response);
+      this.getRunningData()
+    }
+    );
+    
+  }
+
+
+    //  when the assign the driver data that time show a running requeszt data 
+    assigneddriverfromAssignDialogBox(){
+      this._socketservice.onFinalassignedDriverData('data').subscribe((res:any)=>{
+        this.getRunningData()
+      })
+    }
 
 
 
