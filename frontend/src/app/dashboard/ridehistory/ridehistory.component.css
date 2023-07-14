@@ -1,0 +1,26 @@
+/* .badge{
+    font-size: 14px;
+    color: green;
+    background-color: #a5cc8c;
+} */
+
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.5em;
+    margin: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 0.25em;
+  }
+  
+  /* Badge colors */
+  .badge-success {
+    background-color: green;
+    color: white;
+  }
+  
+  .badge-danger {
+    background-color: red;
+    color: white;
+  }
+  

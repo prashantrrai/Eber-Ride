@@ -264,12 +264,12 @@ async function initializeSocket(server) {
       // ------------------------------------------------RIDE REJECTED REQUEST TABLE-----------------------------------------------//
         socket.on("Rejectrunningrequest", async (data) => {
           // const driverId = data.driverId;
-          console.log(data);
-          console.log(data.driverId);
+          // console.log(data);
+          // console.log(data.driverId);
 
           try {
-            // Update assign value to 0 and unset driverId field
-            const ridedata = await createrideModel.updateMany({ driverId: data.driverId }, { $unset: { driverId: "" } });
+
+            const ridedata = await createrideModel.updateMany({ driverId: data.driverId },  { $unset: { driverId: "" }, $set: { status: 0 } });
             const driverdata = await driverModel.updateMany({ _id: data.driverId }, { $set: { assign: "0" } });
         
         
@@ -287,14 +287,93 @@ async function initializeSocket(server) {
 
           try {
 
-            // const ridedata = await createrideModel.updateMany({ _id: rideId }, { $set: { status: 2 } });
             const ridedata = await createrideModel.findByIdAndUpdate({ _id: rideId }, { status: 3 } , { new: true });
             // console.log(ridedata);
-            io.emit('cancelridedata', ridedata, { success: true, message: "Ride Cancelled Successfully", ridedata });
+            io.emit('cancelridedata', { success: true, message: "Ride Cancelled Successfully", ridedata });
 
           } catch (error) {
             console.error(error);
             io.emit('cancelridedata', { success: false, message: "Ride Not Cancelled", error: error.message });
+          }
+        });
+
+
+        // ------------------------------------------------GET DATA in RIDE-HISTORY TABLE-----------------------------------------------//
+        socket.on("ridehistory", async () => {
+
+          try {
+
+            const aggregationPipeline = [
+              {
+                $match: { status: 3 } // Add the $match stage to filter by status field
+              },
+              {
+                $lookup: {
+                  from: 'usermodels',
+                  localField: 'userId',
+                  foreignField: '_id',
+                  as: 'userDetails'
+                }
+              },
+              {
+                $unwind: "$userDetails"
+              },
+              {
+                $lookup: {
+                  from: 'citymodels',
+                  localField: 'cityId',
+                  foreignField: '_id',
+                  as: 'cityDetails'
+                }
+              },
+              {
+                $unwind: "$cityDetails"
+              },
+              {
+                $lookup: {
+                  from: 'countrymodels',
+                  localField: 'cityDetails.country_id',
+                  foreignField: '_id',
+                  as: 'countryDetails'
+                }
+              },
+              {
+                $unwind: "$countryDetails"
+              },
+              {
+                $lookup: {
+                  from: 'vehiclemodels',
+                  localField: 'serviceId',
+                  foreignField: '_id',
+                  as: 'vehicleDetails'
+                }
+              },
+              {
+                $unwind: "$vehicleDetails"
+              },
+              {
+                $lookup: {
+                  from: "drivermodels",
+                  localField: "driverId",
+                  foreignField: "_id",
+                  as: "driverDetails"
+                }
+              },
+              {
+                $unwind: {
+                  path: "$driverDetails",
+                  preserveNullAndEmptyArrays: true
+                }
+              }
+            ];
+
+            const ridesdata = await createrideModel.aggregate(aggregationPipeline).exec()
+            console.log(ridesdata);
+            io.emit('ridehistorydata', { success: true, message: "Ride History Data Found", ridesdata });
+
+          } catch (error) {
+            console.error(error);
+            io.emit('ridehistorydata', { success: false, message: "Ride History Data Not Found", error: error.message });
           }
         });
 

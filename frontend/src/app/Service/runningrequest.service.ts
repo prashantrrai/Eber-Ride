@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
@@ -10,7 +9,7 @@ export class RunningrequestService {
   private socket: Socket;
   private url = 'http://localhost:4000'
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.socket = io(this.url); 
    }
 

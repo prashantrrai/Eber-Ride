@@ -37,7 +37,7 @@ export class ConfirmrideService {
 
   }
   //--------------------------CANCEL RIDE BY USER------------------------------//
-  listencancelride(cancelridedata: string, ridedata: any): Observable<any>  {
+  listencancelride(cancelridedata: string): Observable<any>  {
 
     return new Observable(observer => {
       this.socket.on(cancelridedata, (ridedata: any) => {

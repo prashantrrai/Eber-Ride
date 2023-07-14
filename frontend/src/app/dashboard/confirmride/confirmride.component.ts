@@ -141,7 +141,7 @@ export class ConfirmrideComponent {
     console.log(rideId);
     this._confirmride.emitcancelride('cancelride', rideId)
 
-    this._confirmride.listencancelride('cancelridedata', rideId).subscribe((ridedata: any) => {
+    this._confirmride.listencancelride('cancelridedata').subscribe((ridedata: any) => {
       console.log(ridedata);
       this.getrideData()
     })
