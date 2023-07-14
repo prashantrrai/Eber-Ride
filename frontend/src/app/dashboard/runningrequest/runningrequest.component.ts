@@ -21,7 +21,8 @@ export class RunningrequestComponent {
   ngOnInit() {
     this.getRunningData();
     this.assigneddriverfromAssignDialogBox();
-    this.relatedtoprashantrai();
+    this.afterrejectrunningrequest();
+    this.afteracceptrunningrequest()
 
   }
 
@@ -31,24 +32,23 @@ export class RunningrequestComponent {
     this._runningRequestService.listenGetRunning('runningdata').subscribe((data: any) => {
       // console.log(data);
       this.assignedArray = data.alldata;
-      console.log(this.assignedArray);
+      // console.log(this.assignedArray);
       
     });
   }
 
-
+  //---------------ON REJECT RIDE REQUEST BUTTON CLICK--------------------//
   rejectRide(data: any) {
-    console.log(data);
+    // console.log(data);
 
-    console.log("rideId", data._id);
-    console.log("driverId", data.driverId);
+    // console.log("rideId", data._id);
+    // console.log("driverId", data.driverId);
 
     this.rideId = data._id
     this.driverId = data.driverId
 
     this.rejectRunningRequest(this.driverId, this.rideId);
   }
-
 
   //------------------------------RUNNING REQUEST REJECT------------------------------------//
   rejectRunningRequest(driverId: string, rideId: string) {
@@ -62,22 +62,49 @@ export class RunningrequestComponent {
     this.getRunningData()
   }
 
-  // 
 
-  relatedtoprashantrai() {
+
+  //---------------ON ACCEPT RIDE REQUEST BUTTON CLICK--------------------//
+  acceptRide(data: any){
+    // console.log(data);
+    this.rideId = data._id
+    this.driverId = data.driverId
+
+    this.acceptrunningrequest(this.driverId, this.rideId);
+  }
+
+  //------------------------------ACCEPT REQUEST REJECT------------------------------------//
+  acceptrunningrequest(driverId: string, rideId: string) {
+    // console.log(rideId, driverId);
+    const data = {
+      rideId: rideId,
+      driverId: driverId
+    }
+    
+    this._runningRequestService.emitacceptrunningrequest('acceptrunningreuest', data)
+    this.getRunningData()
+  }
+
+    // AFTER REJECTING RIDE
+  afterrejectrunningrequest() {
     const data = {
       rideId: this.rideId,
       driverId: this.driverId
     }
     this._runningRequestService.listenrejectRunningRequest('notrunningdata', data).subscribe((response: any) => {
-
-      // Handle successful response coming from backend that is ON
-      // console.log('Request rejected:', response);
       this.getRunningData()
     }
     );
-
   }
+
+    // AFTER ACCEPTING RIDE
+    afteracceptrunningrequest() {
+
+      this._runningRequestService.listenacceptrunningrequest('notrunningdata').subscribe((response: any) => {
+        this.getRunningData()
+      }
+      );
+    }
 
 
   //  when the assign the driver data that time show a running requeszt data 

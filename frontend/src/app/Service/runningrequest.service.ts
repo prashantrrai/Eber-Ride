@@ -54,4 +54,23 @@ export class RunningrequestService {
       //sending data to backend from frontend using emit
       this.socket.emit(Rejectrunningrequest, data)
     }
+
+    //--------------------------ACCEPT RIDE BY DRIVER------------------------------//
+    listenacceptrunningrequest(acceptedrunningrequestdata: string): Observable<any>  {
+
+      return new Observable(observer => {
+        this.socket.on(acceptedrunningrequestdata, (data: any) => {
+          console.log(data)
+
+          observer.next(data)
+        })
+      })
+      
+    }
+
+    emitacceptrunningrequest(acceptrunningreuest: string, data: any){
+
+      console.log(data);
+      this.socket.emit(acceptrunningreuest, data)
+    }
 }

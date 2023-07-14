@@ -36,7 +36,7 @@
               <td><img src="http://localhost:4000/{{data.vehicleDetails.vehicleImage}}" alt="vehicle-image"></td>
               <!-- <td>{{data.estimateFare}}</td> -->
               <td class="d-flex gap-3">
-                <button class="btn btn-success">Accept Ride</button>
+                <button class="btn btn-success" (click)="acceptRide(data)">Accept Ride</button>
                 <button class="btn btn-warning" (click)="rejectRide(data)">Reject Ride</button>
               </td>
             </tr>

@@ -280,6 +280,23 @@ async function initializeSocket(server) {
           }
         });
 
+      // ------------------------------------------------RIDE ACCEPTED REQUEST TABLE-----------------------------------------------//
+      socket.on("acceptrunningreuest", async (data) => {
+        console.log(data);
+        const driverId = data.driverId;
+
+        try {
+
+          const ridedata = await createrideModel.updateMany({ driverId: data.driverId },  { $set: { status: 7 } });
+          const driverdata = await driverModel.updateMany({ _id: data.driverId }, { $set: { assign: "0" } });
+          // console.log(ridedata, driverdata);
+      
+          io.emit('acceptedrunningrequestdata', { ridedata, driverdata }, { success: true, message: "Ride Request Accepted" });
+        } catch (error) {
+          console.error(error);
+          io.emit('acceptedrunningrequestdata', { success: false, message: "Ride Not Accepted", error: error.message });
+        }
+      });
 
         // ------------------------------------------------RIDE CANCEL CONFIRM-RIDE TABLE-----------------------------------------------//
         socket.on("cancelride", async (rideId) => {
@@ -305,7 +322,9 @@ async function initializeSocket(server) {
 
             const aggregationPipeline = [
               {
-                $match: { status: 3 } // Add the $match stage to filter by status field
+                $match: {
+                  status: { $in: [3, 7] } // Filter by status field values 3 and 7
+                } 
               },
               {
                 $lookup: {

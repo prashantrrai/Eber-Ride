@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmrideService } from 'src/app/Service/confirmride.service';
 import { RidehistoryService } from 'src/app/Service/ridehistory.service';
+import { RunningrequestService } from 'src/app/Service/runningrequest.service';
 
 @Component({
   selector: 'app-ridehistory',
@@ -21,11 +22,12 @@ export class RidehistoryComponent implements OnInit {
     7: 'Completed',
   };
   
-  constructor(private _ridehistroy: RidehistoryService, private _confirmride: ConfirmrideService){}
+  constructor(private _ridehistroy: RidehistoryService, private _confirmride: ConfirmrideService, private _runningrequest: RunningrequestService){}
 
   ngOnInit(){
     this.getRideHistory()
     this.aftercancelrideinrealtime()
+    this.afteracceptrideinrealtime()
   }
   getRideHistory() {
     
@@ -42,7 +44,13 @@ export class RidehistoryComponent implements OnInit {
     this._confirmride.listencancelride('cancelridedata').subscribe((ridedata: any) => {
       this.getRideHistory()
     })
+  }
 
+
+  afteracceptrideinrealtime(){
+    this._runningrequest.listenacceptrunningrequest('acceptedrunningrequestdata').subscribe((ridedata: any) => {
+      this.getRideHistory()
+    })
   }
 
 }
