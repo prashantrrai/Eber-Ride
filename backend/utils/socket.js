@@ -40,7 +40,7 @@ async function initializeSocket(server) {
 
 
 
-      // ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE ,STATUS TRUE------------------------------------//
+      // ------------------------------------------------SHOW DRIVER DATA OF PARTICULAR CITY AND SERVICE ,STATUS TRUE------------------------------------//
       socket.on('driverdata', async (data) => {
           // console.log(data , "assigndriverdata");
 
@@ -84,11 +84,12 @@ async function initializeSocket(server) {
         ];
         const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
         // console.log(driverdata , "driverdataresponse");
-        io.emit('driverdata', driverdata , {success: true, message: "Driver Assigned Successfully"});
+
+        io.emit('driverdata', driverdata , {success: true, message: "Driver Data Patched in Assign Dialog Box", driverdata});
         
       } catch (error) { 
           console.log(error);
-          io.emit('driverdata', { success: false, message: error });
+          io.emit('driverdata', { success: false,  message: "Driver Data Not Patched in Assign Dialog Box", error: error.message });
       }
     })
 
@@ -96,12 +97,13 @@ async function initializeSocket(server) {
       socket.on("AssignedData", async(data) => {
         const rideId = data.rideId
         const driverId = data.driverId
-
+        console.log(data);
         
         try {
           const driver =  await driverModel.findByIdAndUpdate(driverId, { assign: "1" }, { new: true });
-          const updatedRide = await  createrideModel.findByIdAndUpdate(rideId, {driverId: driverId}, { new: true })
-          const ride = await createrideModel.aggregate([
+          const updatedRide = await  createrideModel.updateMany({ _id: rideId }, { $set: { driverId: driverId, status: 1 } }, { new: true })
+
+          const alldata = await createrideModel.aggregate([
             {
               $match: {
                 _id: updatedRide._id
@@ -118,31 +120,142 @@ async function initializeSocket(server) {
             {
               $unwind: "$driverDetails"
             },
+            {
+              $lookup: {
+                from: 'usermodels',
+                localField: 'userId',
+                foreignField: '_id',
+                as: 'userDetails'
+              }
+            },
+            {
+              $unwind: "$userDetails"
+            },
+            {
+              $lookup: {
+                from: 'citymodels',
+                localField: 'cityId',
+                foreignField: '_id',
+                as: 'cityDetails'
+              }
+            },
+            {
+              $unwind: "$cityDetails"
+            },
+            {
+              $lookup: {
+                from: 'countrymodels',
+                localField: 'cityDetails.country_id',
+                foreignField: '_id',
+                as: 'countryDetails'
+              }
+            },
+            {
+              $unwind: "$countryDetails"
+            },
+            {
+              $lookup: {
+                from: 'vehiclemodels',
+                localField: 'serviceId',
+                foreignField: '_id',
+                as: 'vehicleDetails'
+              }
+            },
+            {
+              $unwind: "$vehicleDetails"
+            },
           ]);
         
 
-          // console.log(ride);
+          console.log(alldata);
 
-          io.emit('data', { success: true, ride , message: 'Driver Assigned Successfully.' });
+          io.emit('data', { success: true, message: 'Driver Assigned Successfully.', alldata});
           
         } catch (error) {
             console.log(error);
-            io.emit('data', { success: false, message: error });
+            io.emit('data', { success: false, message: 'Sorry Driver Not Assigned', error: error.message });
         }
       })
 
-      // ------------------------------------------------DRIVER RUNNING REQUEST TABLE-----------------------------------------------//
+
       
+      // ------------------------------------------------DRIVER RUNNING REQUEST TABLE-----------------------------------------------//
       socket.on("runningrequest", async() => {
 
         try {
-          const driverdata = await driverModel.find({ assign: "1" });
-          const ridedata = await createrideModel.find({  driverId: { $exists: true } });
-          io.emit('runningdata', {driverdata, ridedata }, {success: true, message: "Running Request Data"});
+          // const driverdata = await driverModel.find({ assign: "1" });
+          // const ridedata = await createrideModel.find({  driverId: { $exists: true } });
+
+          const alldata = await createrideModel.aggregate([
+            {
+              $match: {
+                status: 1
+              }
+            },
+            {
+              $lookup: {
+                from: "drivermodels",
+                localField: "driverId",
+                foreignField: "_id",
+                as: "driverDetails"
+              }
+            },
+            {
+              $unwind: "$driverDetails"
+            },
+            {
+              $lookup: {
+                from: 'usermodels',
+                localField: 'userId',
+                foreignField: '_id',
+                as: 'userDetails'
+              }
+            },
+            {
+              $unwind: "$userDetails"
+            },
+            {
+              $lookup: {
+                from: 'citymodels',
+                localField: 'cityId',
+                foreignField: '_id',
+                as: 'cityDetails'
+              }
+            },
+            {
+              $unwind: "$cityDetails"
+            },
+            {
+              $lookup: {
+                from: 'countrymodels',
+                localField: 'cityDetails.country_id',
+                foreignField: '_id',
+                as: 'countryDetails'
+              }
+            },
+            {
+              $unwind: "$countryDetails"
+            },
+            {
+              $lookup: {
+                from: 'vehiclemodels',
+                localField: 'serviceId',
+                foreignField: '_id',
+                as: 'vehicleDetails'
+              }
+            },
+            {
+              $unwind: "$vehicleDetails"
+            },
+          ]);
+
+          // console.log(alldata);
+
+          io.emit('runningdata', {success: true, message: "Running-Request Data", alldata});
 
         } catch (error) {
           console.error(error);
-          io.emit('runningdata', { success: false, message: "Error retrieving data" });
+          io.emit('runningdata', { success: false, message: "Error retrieving data" , error: error.message});
         }
 
       })

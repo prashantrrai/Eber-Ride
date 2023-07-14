@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SocketService {
+export class SocketService implements OnDestroy{
   private socket: Socket;
   url = 'http://localhost:4000'
 
@@ -87,8 +87,10 @@ export class SocketService {
 
 
 
-    disconnect() {
-      this.socket.disconnect()
+    ngOnDestroy() {
+      if (this.socket) {
+        this.socket.disconnect();
+      }
     }
 
 }

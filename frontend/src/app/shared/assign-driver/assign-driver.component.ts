@@ -117,14 +117,14 @@ export class AssignDriverComponent implements OnInit {
   assigndriverdata(){
     this._socketService.onFinalassignedDriverData("Assigned Data").subscribe({
       next: (response) => {
-        console.log("New Assigned Driver Details:    ",response);
+        // console.log("New Assigned Driver Details:    ",response);
 
         this._socketService.getAssignedDriverData(this.cityId, this.serviceId)
         // console.log(this.cityId, this.serviceId);
         
 
         this._socketService.onAssignedDriverData().subscribe((driverData) => {
-          console.log("Remaining Driver to Assign: ",driverData);
+          // console.log("Remaining Driver to Assign: ",driverData);
           this.driverArray = driverData;
         });
       }

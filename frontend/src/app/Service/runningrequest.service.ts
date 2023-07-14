@@ -30,7 +30,6 @@ export class RunningrequestService {
     //-----------------To emit data from client to Server-----------------//
     emitRunningData(runningrequest: string) {
       this.socket.emit(runningrequest)
-      console.log(runningrequest);
     }
 
 

@@ -26,32 +26,32 @@ export class RunningrequestComponent {
   }
 
   getRunningData() {
-    // this._socketservice.emitRunningData('runningrequest','Data from frontend')
     this._runningRequestService.emitRunningData('runningrequest')
-    
+
     this._runningRequestService.listenGetRunning('runningdata').subscribe((data: any) => {
-      console.log(data);
-        this.assignedArray = data.ridedata;
-        console.log(this.assignedArray);
-      });
+      // console.log(data);
+      this.assignedArray = data.alldata;
+      console.log(this.assignedArray);
+      
+    });
   }
 
 
   rejectRide(data: any) {
     console.log(data);
-    
+
     console.log("rideId", data._id);
     console.log("driverId", data.driverId);
 
     this.rideId = data._id
     this.driverId = data.driverId
-    
-    this.rejectRunningRequest(this.driverId,this.rideId);
+
+    this.rejectRunningRequest(this.driverId, this.rideId);
   }
 
 
   //------------------------------RUNNING REQUEST REJECT------------------------------------//
-  rejectRunningRequest(driverId: string, rideId: string){
+  rejectRunningRequest(driverId: string, rideId: string) {
     console.log(rideId, driverId);
     const data = {
       rideId: rideId,
@@ -64,28 +64,28 @@ export class RunningrequestComponent {
 
   // 
 
-  relatedtoprashantrai(){
+  relatedtoprashantrai() {
     const data = {
       rideId: this.rideId,
       driverId: this.driverId
     }
-    this._runningRequestService.listenrejectRunningRequest('notrunningdata',data).subscribe((response: any)=> {
+    this._runningRequestService.listenrejectRunningRequest('notrunningdata', data).subscribe((response: any) => {
 
       // Handle successful response coming from backend that is ON
       // console.log('Request rejected:', response);
       this.getRunningData()
     }
     );
-    
+
   }
 
 
-    //  when the assign the driver data that time show a running requeszt data 
-    assigneddriverfromAssignDialogBox(){
-      this._socketservice.onFinalassignedDriverData('data').subscribe((res:any)=>{
-        this.getRunningData()
-      })
-    }
+  //  when the assign the driver data that time show a running requeszt data 
+  assigneddriverfromAssignDialogBox() {
+    this._socketservice.onFinalassignedDriverData('data').subscribe((res: any) => {
+      this.getRunningData()
+    })
+  }
 
 
 

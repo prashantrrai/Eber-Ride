@@ -66,17 +66,6 @@ confirmRideRouter.get('/ridesinfo', async (req, res) => {
       {
         $unwind: "$vehicleDetails"
       },
-      // {
-      //   $lookup: {
-      //     from: 'vehiclemodels',
-      //     localField: 'pricingDetails.service',
-      //     foreignField: '_id',
-      //     as: 'vehicleDetails'
-      //   }
-      // },
-      // {
-      //   $unwind: "$vehicleDetails"
-      // },
       {
         $lookup: {
           from: "drivermodels",

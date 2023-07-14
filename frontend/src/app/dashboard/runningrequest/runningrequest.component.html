@@ -1,28 +1,40 @@
-<div class="container p-4">
+<div class="container p-4 bg-dark">
   <!-- ----------------------------------------TABLE------------------------------------------------- -->
-  <div class="parentFormContainer">
+  <div class="parentFormContainer bg-light">
     <div id="tableContainer">
       <div class="table-responsive">
         <table class="table">
           <thead class="bg-light text-dark">
             <tr>
-              <th>Request ID</th>
-              <th>Pick up Time</th>
+              <th>Drive Profile</th>
+              <th>Drive Name</th>
+              <th>Drive Phone</th>
+              <th>Ride ID</th> 
+              <th>User Name</th>
+              <th>User Phone</th>
+              <th>Pick up Time & Date</th>
               <th>Pick up Address</th>
               <th>Drop off Address</th>
               <th>Service Type</th>
-              <th>Estimate Fare</th>
+              <th>Vehicle Image</th>
+              <!-- <th>Estimate Fare</th> -->
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let data of assignedArray">
+              <td><img src="http://localhost:4000/{{data.driverDetails.profile}}" alt="driver-profile"></td>
+              <td>{{data.driverDetails.drivername}}</td>
+              <td>{{data.driverDetails.driverphone}}</td>
               <td>{{data._id}}</td>
+              <td>{{data.userDetails.username}}</td>
+              <td>{{data.userDetails.userphone}}</td>
               <td>{{data.rideDate + "    " +data.time }}</td>
-              <td>{{data.startLocation}}</td>
-              <td>{{data.endLocation}}</td>
+              <td class="fixed-width">{{data.startLocation}}</td>
+              <td class="fixed-width">{{data.endLocation}}</td>
               <td>{{data.serviceType}}</td>
-              <td>{{data.estimateFare}}</td>
+              <td><img src="http://localhost:4000/{{data.vehicleDetails.vehicleImage}}" alt="vehicle-image"></td>
+              <!-- <td>{{data.estimateFare}}</td> -->
               <td class="d-flex gap-3">
                 <button class="btn btn-success">Accept Ride</button>
                 <button class="btn btn-warning" (click)="rejectRide(data)">Reject Ride</button>
