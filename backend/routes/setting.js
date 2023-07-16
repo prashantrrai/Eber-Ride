@@ -33,7 +33,7 @@ const SettingModel = require('../models/setting');
 settingRouter.get('/settingdata', async (req, res) => {
     try {
         const settingData = await SettingModel.find();
-        console.log(settingData);
+        // console.log(settingData);
         res.status(200).json({
             success: true,
             message: "Setting Data Found Successfully",
@@ -49,7 +49,10 @@ settingRouter.get('/settingdata', async (req, res) => {
 settingRouter.put("/updatesetting", async (req, res) => {
     try {
       const {ridetimeout, stop} = req.body;
-        let data;
+      console.log(req.body);
+
+      id = req.body.id
+      console.log(id);
 
       if(stop){
         data = {stop: stop};
@@ -57,7 +60,7 @@ settingRouter.put("/updatesetting", async (req, res) => {
         data = {ridetimeout: ridetimeout};
       }
   
-      let settingdata = await SettingModel.findByIdAndUpdate("64a24beb235b284d2cf8b365",data, { new: true });
+      let settingdata = await SettingModel.findByIdAndUpdate(id ,data, { new: true });
 
       await settingdata.save()
       console.log(settingdata)

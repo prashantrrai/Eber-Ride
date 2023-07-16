@@ -49,7 +49,7 @@ export class AssignDriverComponent implements OnInit {
 
   // ---------------------------------------GET ASSIGNED DRIVER DATA USING SOCKET-----------------------------------------//
   getDriverData() {
-     this.cityId = this.data.cityId;
+    this.cityId = this.data.cityId;
     this.serviceId = this.data.serviceId;
     // console.log(this.cityId);
     // console.log(this.serviceId);

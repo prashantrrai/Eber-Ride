@@ -83,7 +83,7 @@ async function initializeSocket(server) {
     
         ];
         const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
-        // console.log(driverdata , "driverdataresponse");
+        console.log(driverdata , "driverdataresponse");
 
         io.emit('driverdata', driverdata , {success: true, message: "Driver Data Patched in Assign Dialog Box", driverdata});
         

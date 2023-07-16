@@ -16,6 +16,7 @@ export class SettingComponent {
   selectedTimeout: any;
   selectedStop: any;
   setting: any=[];
+  id: any;
 
   constructor(
     private _setting: SettingService,
@@ -36,7 +37,7 @@ export class SettingComponent {
   onSelectedRideTimeout(ridetimeout: any) {
     this.selectedTimeout = ridetimeout;
     console.log(ridetimeout);
-    this._setting.updateSetting({ridetimeout}).subscribe({
+    this._setting.updateSetting({ridetimeout:ridetimeout, id:this.id}).subscribe({
       next: (response: any) => {
         // console.log(response.settingdata);
         this.setting = response.settingdata;
@@ -51,8 +52,8 @@ export class SettingComponent {
 
   onSelectedStop(stop: any) {
     this.selectedStop = stop;
-    console.log(stop);
-    this._setting.updateSetting({stop}).subscribe({
+    console.log(this.id);
+    this._setting.updateSetting({stop: stop, id:this.id}).subscribe({
       next: (response: any) => {
         console.log(response.settingdata);
         this.setting = response.settingdata;
@@ -71,11 +72,11 @@ export class SettingComponent {
       next: (response: any) => {
         console.log(response);
         this.setting = response.settingData[0];
-        // this.toastr.success(response.message);
+        this.id = response.settingData[0]._id
+        // console.log(this.id)
       },
       error: (error: any) => {
         console.log(error);
-        this.toastr.error(error.error.message);
       },
     });
   }
