@@ -36,7 +36,7 @@ export class SettingComponent {
 
   onSelectedRideTimeout(ridetimeout: any) {
     this.selectedTimeout = ridetimeout;
-    console.log(ridetimeout);
+    // console.log(ridetimeout);
     this._setting.updateSetting({ridetimeout:ridetimeout, id:this.id}).subscribe({
       next: (response: any) => {
         // console.log(response.settingdata);
@@ -52,12 +52,12 @@ export class SettingComponent {
 
   onSelectedStop(stop: any) {
     this.selectedStop = stop;
-    console.log(this.id);
+    // console.log(this.id);
     this._setting.updateSetting({stop: stop, id:this.id}).subscribe({
       next: (response: any) => {
-        console.log(response.settingdata);
+        // console.log(response.settingdata);
         this.setting = response.settingdata;
-        console.log(this.setting)
+        // console.log(this.setting)
         this.toastr.success(response.message);
       },
       error: (error: any) => {
@@ -70,7 +70,7 @@ export class SettingComponent {
   getsettingData(){
     this._setting.getStops().subscribe({
       next: (response: any) => {
-        console.log(response);
+        // console.log(response);
         this.setting = response.settingData[0];
         this.id = response.settingData[0]._id
         // console.log(this.id)
