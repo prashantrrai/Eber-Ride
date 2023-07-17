@@ -43,11 +43,12 @@
             <thead class="bg-light text-dark">
               <tr>
                 <th>Req. ID</th>
-                <th>User ID</th>
+                <!-- <th>User ID</th> -->
                 <th>Username</th>
                 <th>Pick up Time</th>
                 <th>Pick up Address</th>
                 <th>Drop off Address</th>
+                <th>Driver Name</th>
                 <th>Service Type</th>
                 <th>Status</th>
               </tr>
@@ -56,11 +57,12 @@
                 <tr *ngFor="let ride of ridesArray |  paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index">
 
                     <td>{{ ride._id }}</td>
-                    <td>{{ ride.userId }}</td>
+                    <!-- <td>{{ ride.userId }}</td> -->
                     <td>{{ ride.userDetails.username }}</td>
                     <td>{{ ride.rideDate }}</td>
                     <td class="fixed-width">{{ ride.startLocation }}</td>
                     <td class="fixed-width">{{ ride.endLocation }}</td>
+                    <td>{{ ride.driverDetails.drivername}}</td>
                     <td>{{ ride.serviceType }}</td>
 
                     <td class="badge" [ngClass]="{'badge-success': ride.status === 7, 'badge-danger': ride.status === 3}">

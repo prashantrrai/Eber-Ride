@@ -22,14 +22,15 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
     let page = +req.body.page || 1;
     let limit = +req.body.limit || 5;
     let search = req.body.search;
-    // let filter = req.body.filter;
+    let statusfilter = req.body.statusfilter ;
+    let vehiclefilter = req.body.vehiclefilter;
     // let sortBy = req.body.sortBy || "username";
     // let sortOrder = req.body.sortOrder || "desc";
     let skip = (page - 1) * limit;
 
-    // console.log(req.body);
+    console.log(req.body);
 
-    const matchStage = { status: 0 };
+    const matchStage = {};
     if (search) {
       var searchObjectId
       // const searchRegex = new RegExp(search, 'i');
@@ -48,21 +49,30 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
       ];
     }
 
-    // if (filter) {
-    //   const filterRegex = new RegExp(filter, 'i');
+
+    // matchStage.$or = [];
     
-    //   matchStage.$and = [
-    //     {
-    //       $or: [
-    //         { status: { $regex: filterRegex } },
-    //         { serviceType: { $regex: filterRegex } },
-    //       ],
-    //     },
-    //     { $or: matchStage.$or },
-    //   ];
     
-    //   delete matchStage.$or;
+    if (statusfilter != -1 || vehiclefilter != "") {
+      matchStage.$and = [];
+    
+      if (statusfilter != -1) {
+        matchStage.$and.push({ status: statusfilter });
+      }
+    
+      // Add additional conditions for vehiclefilter if provided
+      if (vehiclefilter != "") {
+        matchStage.$and.push({ serviceType: vehiclefilter });
+      }
+    }
+
+    // if(statusvalue){
+    //   // matchStage.$or.push([{status: [0,1,4]}])
+    //   matchStage.$or.push({status: 0})
+    //   console.log("389")
     // }
+
+
 
 
     // const sortField = sortBy || 'username';
@@ -140,9 +150,19 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
     
     
     const result = await createRideModel.aggregate(aggregationPipeline).exec();
-    const totalCount = result[0]?.totalCount[0]?.count || 0;
-    const totalPages = Math.ceil(totalCount / limit);
     const rides = result[0]?.rides || [];
+
+    let newride = [];
+    for(let i=0;i<rides.length;i++){
+      if(rides[i].status==0 || rides[i].status==1 || rides[i].status==4){
+        newride.push(rides[i]);
+      }
+    }
+
+    // const totalCount = result[0]?.totalCount[0]?.count || 0;
+    const totalCount = newride.length || 0;
+    console.log(totalCount);
+    const totalPages = Math.ceil(totalCount / limit);
     
     if (page > totalPages) {
       page = totalPages;
@@ -155,7 +175,11 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
     //   "page:",page,
     //   "totalpages:",totalPages);
 
-    res.send({ rides, page, limit, totalPages, totalCount });
+    // console.log(rides);
+
+
+    // console.log(newride)
+    res.send({ newride, page, limit, totalPages, totalCount });
 
   } catch (error) {
     console.log(error);

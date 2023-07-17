@@ -26,6 +26,8 @@ export class ConfirmrideComponent {
   driverdataArray: any;
   driverId: any;
   rideId: any;
+  statusfilter: Number = -1;
+  vehiclefilter: String = '';
 
   constructor(
     private authService: AuthService,
@@ -42,10 +44,10 @@ export class ConfirmrideComponent {
 
   //-------------------------------------------- GET RIDE DATA ---------------------------------------------
   getrideData() {
-    this._confirmride.getride(this.currentPage, this.limit, this.search).subscribe({
+    this._confirmride.getride(this.currentPage, this.limit, this.search, this.statusfilter , this.vehiclefilter).subscribe({
       next: (response: any) => {
-        // console.log(response)
-        this.ridesArray = response.rides;
+        console.log(response)
+        this.ridesArray = response.newride;
         this.totalPages = response.totalPages;
         this.count = response.totalCount;
 
