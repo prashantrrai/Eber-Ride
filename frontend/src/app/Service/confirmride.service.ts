@@ -18,8 +18,8 @@ export class ConfirmrideService {
   // getride(): Observable<any>{
   //   return this.http.get(`${this.serverUrl}/ridedata`);
   // }
-  getride(): Observable<any>{
-    return this.http.get(`${this.serverUrl}/ridesinfo`);
+  getride(page: Number, limit: Number, search: String): Observable<any>{
+    return this.http.post(`${this.serverUrl}/ridesinfo`,{page, limit, search});
   }
 
   getMatchedDriverdata(data: any): Observable<any> {

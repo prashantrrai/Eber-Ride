@@ -14,10 +14,11 @@ import { SocketService } from 'src/app/Service/socket.service';
 })
 export class ConfirmrideComponent {
   ridesArray: any[] =[]
-  limit: number = 3;
+  limit: number = 1;
   currentPage: number = 1;
   totalPages: number = 0;
   count: any
+  search: String = '';
   paginatedRideData: any[] = [];
   driverArray: any = [];
   rideStatus!: string; 
@@ -41,10 +42,11 @@ export class ConfirmrideComponent {
 
   //-------------------------------------------- GET RIDE DATA ---------------------------------------------
   getrideData() {
-    this._confirmride.getride().subscribe({
+    this._confirmride.getride(this.currentPage, this.limit, this.search).subscribe({
       next: (response: any) => {
-        // console.log(response)
-        this.ridesArray = response;
+        console.log(response)
+        this.ridesArray = response.rides;
+        
       },
       error: (error: any) => {
         console.log(error);
@@ -54,15 +56,19 @@ export class ConfirmrideComponent {
 
   onPageSizeChange(event: any): void {
     this.limit = parseInt(event.target.value);
+    console.log(this.limit);
+    
     this.currentPage = 1;
     this.updatePaginatedDrivers();
     this.getrideData();
   }
   onPageChange(pageNumber: number) {
+    console.log(pageNumber);
     if (pageNumber >= 1 && pageNumber <= this.totalPages) {
       this.currentPage = pageNumber;
       this.updatePaginatedDrivers();
       this.getrideData();
+      
     }
   }
   updatePaginatedDrivers() {

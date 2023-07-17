@@ -10,7 +10,7 @@ async function initializeSocket(server) {
         console.log("Socket is Running.");
 
 
-      // --------------------------------------------------------UPDATE DRIVER STATUS--------------------------------------------------------//
+      // --------------------------------------------------------DRIVER STATUS UPDATE --------------------------------------------------------//
       socket.on('driverstatus', async (data) => {
           const { driverId, status } = data;
           // console.log(data)
@@ -24,7 +24,8 @@ async function initializeSocket(server) {
             }
           });
 
-      // --------------------------------------------------------UPDATE DRIVER SERVICE TYPE--------------------------------------------------------//
+
+      // --------------------------------------------------------DRIVER SERVICE TYPE UPDATE --------------------------------------------------------//
       socket.on('driverService', async (data) => {
           const { driverId, servicetype } = data;
               console.log(data);
@@ -179,7 +180,7 @@ async function initializeSocket(server) {
 
 
       
-      // ------------------------------------------------DRIVER RUNNING REQUEST TABLE-----------------------------------------------//
+      // ------------------------------------------------SHOW DRIVER RUNNING-REQUEST TABLE-----------------------------------------------//
       socket.on("runningrequest", async() => {
 
         try {
@@ -282,8 +283,8 @@ async function initializeSocket(server) {
 
       // ------------------------------------------------RIDE ACCEPTED REQUEST TABLE-----------------------------------------------//
       socket.on("acceptrunningreuest", async (data) => {
-        console.log(data);
-        const driverId = data.driverId;
+        // console.log(data);
+        // const driverId = data.driverId;
 
         try {
 
@@ -298,6 +299,7 @@ async function initializeSocket(server) {
         }
       });
 
+      
         // ------------------------------------------------RIDE CANCEL CONFIRM-RIDE TABLE-----------------------------------------------//
         socket.on("cancelride", async (rideId) => {
           console.log(rideId);

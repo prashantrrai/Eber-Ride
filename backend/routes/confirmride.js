@@ -2,7 +2,7 @@ const express = require('express');
 const confirmRideRouter = new express.Router();
 const createRideModel = require('../models/createride');
 const driverModel = require('../models/driver')
-const { mongoose } = require('mongoose')
+const mongoose = require('mongoose');
 
 // ------------------------------GET RIDE DATA-----------------------------------------//
 // confirmRideRouter.get('/ridedata', async (req, res) => {
@@ -15,81 +15,152 @@ const { mongoose } = require('mongoose')
 //   })
 
 
-// --------------------------------------------RIDE INFO---------------------------------------------//
-confirmRideRouter.get('/ridesinfo', async (req, res) => {
+// --------------------------------------------GET CONFIRM-RIDE DATA---------------------------------------------//
+confirmRideRouter.post('/ridesinfo', async (req, res) => {
   try {
+    // const { search, sortBy, sortOrder, page, limit } = req.body;
+    let page = +req.body.page || 1;
+    let limit = +req.body.limit || 5;
+    let search = req.body.search;
+    // let filter = req.body.filter;
+    // let sortBy = req.body.sortBy || "username";
+    // let sortOrder = req.body.sortOrder || "desc";
+    let skip = (page - 1) * limit;
+
+    console.log(req.body);
+
+    const matchStage = { status: 0 };
+    if (search) {
+      var searchObjectId
+      // const searchRegex = new RegExp(search, 'i');
+
+      if(search.length==24){
+        searchObjectId = new mongoose.Types.ObjectId(search);
+      }
+      
+      matchStage.$or = [
+        { 'userDetails.username': { $regex: search, $options: 'i' } },
+        { 'userDetails.userphone': { $regex: search, $options: 'i' } },
+        { _id: searchObjectId },
+        { rideDate: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    // if (filter) {
+    //   const filterRegex = new RegExp(filter, 'i');
+    
+    //   matchStage.$and = [
+    //     {
+    //       $or: [
+    //         { status: { $regex: filterRegex } },
+    //         { serviceType: { $regex: filterRegex } },
+    //       ],
+    //     },
+    //     { $or: matchStage.$or },
+    //   ];
+    
+    //   delete matchStage.$or;
+    // }
+
+
+    // const sortField = sortBy || 'username';
+    // const sortOrderValue = sortOrder && sortOrder.toLowerCase() === 'desc' ? -1 : 1;
+    // const sortStage = { [sortField]: sortOrderValue };
+    // console.log(sortStage);
+
     const aggregationPipeline = [
-      {
-        $match: { status: 0 } // Add the $match stage to filter by status field
-      },
       {
         $lookup: {
           from: 'usermodels',
           localField: 'userId',
           foreignField: '_id',
-          as: 'userDetails'
-        }
+          as: 'userDetails',
+        },
       },
-      {
-        $unwind: "$userDetails"
-      },
+      { $unwind: '$userDetails' },
       {
         $lookup: {
           from: 'citymodels',
           localField: 'cityId',
           foreignField: '_id',
-          as: 'cityDetails'
-        }
+          as: 'cityDetails',
+        },
       },
-      {
-        $unwind: "$cityDetails"
-      },
+      { $unwind: '$cityDetails' },
       {
         $lookup: {
           from: 'countrymodels',
           localField: 'cityDetails.country_id',
           foreignField: '_id',
-          as: 'countryDetails'
-        }
+          as: 'countryDetails',
+        },
       },
-      {
-        $unwind: "$countryDetails"
-      },
+      { $unwind: '$countryDetails' },
       {
         $lookup: {
           from: 'vehiclemodels',
           localField: 'serviceId',
           foreignField: '_id',
-          as: 'vehicleDetails'
-        }
+          as: 'vehicleDetails',
+        },
       },
-      {
-        $unwind: "$vehicleDetails"
-      },
+      { $unwind: '$vehicleDetails' },
       {
         $lookup: {
-          from: "drivermodels",
-          localField: "driverId",
-          foreignField: "_id",
-          as: "driverDetails"
-        }
+          from: 'drivermodels',
+          localField: 'driverId',
+          foreignField: '_id',
+          as: 'driverDetails',
+        },
       },
       {
         $unwind: {
-          path: "$driverDetails",
-          preserveNullAndEmptyArrays: true
-        }
+          path: '$driverDetails',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      { $match: matchStage },
+
+      {
+        $facet: {
+          rides: [
+            // { $sort: sortStage },
+            { $skip: skip },
+            { $limit: limit },
+            // { $project: { _id: 0 } },
+          ],
+          totalCount: [
+            { $count: 'count' },
+          ],
+        },
       }
     ];
-    // const rides = await CreateRide.find().populate('userId', ['name', 'profile']).populate('cityId', 'city').populate({ path: 'vehicleId', populate: { path: 'vehicleId', select: 'vehicleType' } }).populate('driverId')
-    const rides = await createRideModel.aggregate(aggregationPipeline).exec()
-    // console.log(rides);
-    res.send(rides)
+    
+    
+    const result = await createRideModel.aggregate(aggregationPipeline).exec();
+    const totalCount = result[0]?.totalCount[0]?.count || 0;
+    const totalPages = Math.ceil(totalCount / limit);
+    const rides = result[0]?.rides || [];
+    
+    if (page > totalPages) {
+      page = totalPages;
+      skip = (page - 1) * limit;
+    }
+
+    // console.log(
+    //   "count:",totalCount, 
+    //   "limit:",limit, 
+    //   "page:",page,
+    //   "totalpages:",totalPages);
+
+    res.send({ rides, page, limit, totalPages, totalCount });
+
   } catch (error) {
     console.log(error);
-    res.status(500).send(error)
+    res.status(500).send(error);
   }
-})
+});
+
 
 // // ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE + STATUS TRUE------------------------------------//
 // confirmRideRouter.post('/assigneddriverdata', async (req, res) => {

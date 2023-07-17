@@ -1,3 +1,18 @@
+<div class="container">
+    <div class="filter-section">
+      <select id="filter-dropdown">
+        <option value="">All</option>
+        <option value="status">Status</option>
+        <option value="serviceType">Service Type</option>
+      </select>
+      <input type="text" id="search-input" placeholder="Search...">
+      <button id="search-button">Search</button>
+    </div>
+    <div class="results-section">
+      <!-- Result items will be displayed here -->
+    </div>
+  </div>
+
 <div class="parentFormContainer">
     <div id="tableContainer">
         <div class="table-responsive">
@@ -17,8 +32,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let ride of ridesArray">
-                        <!-- *ngFor="let ride of ridesArray| paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index"> -->
+                    <tr *ngFor="let ride of ridesArray| paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index">
+                        
 
                         <td>{{ ride._id }}</td>
                         <td>{{ ride.userId }}</td>
@@ -61,7 +76,7 @@
 
 <!-- ---------------------------------------------PAGINATION USING NGX-------------------------------------------- ----- -->
 <div class="d-flex justify-content-center">
-    <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5"
-        [responsive]="true"></pagination-controls>
+    <pagination-controls  (pageChange)="onPageChange($event)" [maxSize]="5"
+        [responsive]="true" ></pagination-controls>
 </div>
   
