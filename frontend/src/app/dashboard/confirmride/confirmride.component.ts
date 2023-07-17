@@ -14,7 +14,7 @@ import { SocketService } from 'src/app/Service/socket.service';
 })
 export class ConfirmrideComponent {
   ridesArray: any[] =[]
-  limit: number = 1;
+  limit: number = 5;
   currentPage: number = 1;
   totalPages: number = 0;
   count: any
@@ -44,9 +44,11 @@ export class ConfirmrideComponent {
   getrideData() {
     this._confirmride.getride(this.currentPage, this.limit, this.search).subscribe({
       next: (response: any) => {
-        console.log(response)
+        // console.log(response)
         this.ridesArray = response.rides;
-        
+        this.totalPages = response.totalPages;
+        this.count = response.totalCount;
+
       },
       error: (error: any) => {
         console.log(error);

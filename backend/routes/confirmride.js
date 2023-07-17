@@ -27,7 +27,7 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
     // let sortOrder = req.body.sortOrder || "desc";
     let skip = (page - 1) * limit;
 
-    console.log(req.body);
+    // console.log(req.body);
 
     const matchStage = { status: 0 };
     if (search) {
@@ -41,6 +41,8 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
       matchStage.$or = [
         { 'userDetails.username': { $regex: search, $options: 'i' } },
         { 'userDetails.userphone': { $regex: search, $options: 'i' } },
+        { startLocation: { $regex: search, $options: 'i' } },
+        { endLocation: { $regex: search, $options: 'i' } },
         { _id: searchObjectId },
         { rideDate: { $regex: search, $options: 'i' } },
       ];

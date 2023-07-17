@@ -1,4 +1,39 @@
-<div class="container">
+<div class="container_top">
+  <div class="filter-section">
+    <select id="filter-dropdown">
+      <option value="0">PENDING</option>
+      <option value="1">ASSIGNING</option>
+      <option value="2">ASSIGNING</option>
+      <option value="3">CANCELLED</option>
+      <option value="4">ACCEPTED</option>
+      <option value="5">ARRIVED</option>
+      <option value="6">STARTED</option>
+      <option value="7">COMPLETED</option>
+    </select>
+
+    <select id="filter-dropdown">
+      <option value="status">Auto-Rickshaw</option>
+    </select>
+    
+    <input type="text" id="search-input" placeholder="Search by Req. ID, Name, Phone, Pick up Date..." [(ngModel)]="search" (input)="getRideHistory()">
+    <input type="date" id="search-input" [(ngModel)]="search" (input)="getRideHistory()">
+    <!-- <button id="search-button">Search</button> -->
+    <div class="custom-select" >
+      <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
+        <option value="">Select Page</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+
+<div class="container mt-4">
     <!-- ----------------------------------------TABLE------------------------------------------------- -->
     <div class="parentFormContainer p-4
      border rounded">
@@ -18,8 +53,7 @@
               </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let ride of ridesArray">
-                    <!-- *ngFor="let ride of ridesArray| paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index"> -->
+                <tr *ngFor="let ride of ridesArray |  paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index">
 
                     <td>{{ ride._id }}</td>
                     <td>{{ ride.userId }}</td>
@@ -41,3 +75,10 @@
     </div>
   </div>
   
+
+  <!-- ---------------------------------------------PAGINATION USING NGX-------------------------------------------- ----- -->
+  <div class="d-flex justify-content-center mt-4">
+    <pagination-controls  (pageChange)="onPageChange($event)" [maxSize]="5"
+        [responsive]="true"></pagination-controls>
+  </div>
+

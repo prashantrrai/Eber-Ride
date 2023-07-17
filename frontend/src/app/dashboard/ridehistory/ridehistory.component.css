@@ -24,3 +24,39 @@
     color: white;
   }
   
+
+
+
+
+.container_top {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.filter-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#filter-dropdown {
+  padding: 5px;
+}
+#pageSize{
+  padding: 5px;
+}
+#search-input {
+  flex-grow: 1;
+  padding: 5px;
+}
+
+#search-button {
+  padding: 10px 15px;
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+

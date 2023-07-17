@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { RidehistoryRoutingModule } from './ridehistory-routing.module';
 import { RidehistoryComponent } from './ridehistory.component';
 import { RouterModule, Routes } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [  
   { path: '', component: RidehistoryComponent, pathMatch: 'full' }
@@ -17,7 +19,10 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RidehistoryRoutingModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    NgxPaginationModule,
+    FormsModule,
+    ReactiveFormsModule,
 
   ]
 })

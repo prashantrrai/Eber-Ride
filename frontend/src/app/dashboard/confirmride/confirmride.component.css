@@ -56,12 +56,14 @@ pre{
 }
 
 #filter-dropdown {
-  padding: 10px;
+  padding: 5px;
 }
-
+#pageSize{
+  padding: 5px;
+}
 #search-input {
   flex-grow: 1;
-  padding: 10px;
+  padding: 5px;
 }
 
 #search-button {

@@ -1,17 +1,38 @@
 <div class="container">
     <div class="filter-section">
       <select id="filter-dropdown">
-        <option value="">All</option>
-        <option value="status">Status</option>
-        <option value="serviceType">Service Type</option>
+        <option value="0">PENDING</option>
+        <option value="1">ASSIGNING</option>
+        <option value="2">ASSIGNING</option>
+        <option value="3">CANCELLED</option>
+        <option value="4">ACCEPTED</option>
+        <option value="5">ARRIVED</option>
+        <option value="6">STARTED</option>
+        <option value="7">COMPLETED</option>
       </select>
-      <input type="text" id="search-input" placeholder="Search...">
-      <button id="search-button">Search</button>
-    </div>
-    <div class="results-section">
-      <!-- Result items will be displayed here -->
+
+      <select id="filter-dropdown">
+        <option value="status">Auto-Rickshaw</option>
+      </select>
+      
+      <input type="text" id="search-input" placeholder="Search by Req. ID, Name, Phone, Pick up Date..." [(ngModel)]="search" (input)="getrideData()">
+      <input type="date" id="search-input" [(ngModel)]="search" (input)="getrideData()">
+      <!-- <button id="search-button">Search</button> -->
+      <div class="custom-select" >
+        <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
+          <option value="">Select Page</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+        </select>
+      </div>
     </div>
   </div>
+
+  
 
 <div class="parentFormContainer">
     <div id="tableContainer">
@@ -77,6 +98,6 @@
 <!-- ---------------------------------------------PAGINATION USING NGX-------------------------------------------- ----- -->
 <div class="d-flex justify-content-center">
     <pagination-controls  (pageChange)="onPageChange($event)" [maxSize]="5"
-        [responsive]="true" ></pagination-controls>
+        [responsive]="true"></pagination-controls>
 </div>
   

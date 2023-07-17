@@ -21,6 +21,14 @@ export class RidehistoryComponent implements OnInit {
     // 6: 'Started',
     7: 'Completed',
   };
+  limit: number = 1;
+  totalPages: number = 0;
+  currentPage: number = 1;
+  paginatedRideData: any[] = [];
+  count: any;
+  search: String = '';
+
+
   
   constructor(private _ridehistroy: RidehistoryService, private _confirmride: ConfirmrideService, private _runningrequest: RunningrequestService){}
 
@@ -36,9 +44,33 @@ export class RidehistoryComponent implements OnInit {
     this._ridehistroy.listenridehistory('ridehistorydata').subscribe((data: any) => {
       // console.log(data);
       this.ridesArray = data.ridesdata;
-      
+      this.totalPages = data.totalPages;
+      this.count = data.totalCount;
     });
   }
+  onPageSizeChange(event: any): void {
+    this.limit = parseInt(event.target.value);
+    console.log(this.limit);
+    
+    this.currentPage = 1;
+    this.updatePaginatedDrivers();
+    this.getRideHistory();
+  }
+
+  onPageChange(pageNumber: number) {
+    console.log(pageNumber);
+    if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+      this.currentPage = pageNumber;
+      this.updatePaginatedDrivers();
+      this.getRideHistory(); 
+    }
+  }
+  updatePaginatedDrivers() {
+    const startIndex = (this.currentPage - 1) * this.limit;
+    const endIndex = startIndex + this.limit;
+    this.paginatedRideData = this.ridesArray.slice(startIndex, endIndex);
+  }
+
 
   aftercancelrideinrealtime(){
     this._confirmride.listencancelride('cancelridedata').subscribe((ridedata: any) => {
