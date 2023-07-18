@@ -21,7 +21,7 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
     let page = +req.body.page || 1;
     let limit = +req.body.limit || 5;
     let search = req.body.search;
-    let statusfilter = req.body.statusfilter;
+    let statusfilter = +req.body.statusfilter;
     let vehiclefilter = req.body.vehiclefilter;
     // let sortBy = req.body.sortBy || "username";
     // let sortOrder = req.body.sortOrder || "desc";
@@ -29,11 +29,9 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
 
     console.log(req.body);
 
-    // const  defaultStatus = { status : 0 }
     const matchStage = {};
     if (search) {
       var searchObjectId;
-      // const searchRegex = new RegExp(search, 'i');
 
       if (search.length == 24) {
         searchObjectId = new mongoose.Types.ObjectId(search);
@@ -50,24 +48,19 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
     }
 
     const matchCriteria = [];
-    console.log("matchcriteria:", matchCriteria);
-    console.log(statusfilter);  
+    
     if (statusfilter !== -1) {
       matchCriteria.push({ status: { $in: [statusfilter] } });
-      console.log("in status filtyer");
     }else if (statusfilter === -1) {
       matchCriteria.push({ status: { $nin: [3, 7] } });
-      console.log("in else status filtyer");
     }
     
     if (vehiclefilter && vehiclefilter.length > 0) {
       matchCriteria.push({ serviceType: { $in: [vehiclefilter] } });
-      console.log("in vehicle filtyer");
     }
     
     if (matchCriteria.length === 0) {
-      matchCriteria.push({ });
-      console.log("in default");
+      matchCriteria.push({});
     }
     
     // const sortField = sortBy || 'username';

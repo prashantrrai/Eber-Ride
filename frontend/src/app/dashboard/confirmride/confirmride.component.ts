@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/Service/auth.service';
 import { InfoDialogComponent } from 'src/app/shared/info-dialog/info-dialog.component';
 import { AssignDriverComponent } from 'src/app/shared/assign-driver/assign-driver.component';
 import { SocketService } from 'src/app/Service/socket.service';
+import { VehicleService } from 'src/app/Service/vehicle.service';
 
 @Component({
   selector: 'app-confirmride',
@@ -28,26 +29,28 @@ export class ConfirmrideComponent {
   rideId: any;
   statusfilter: Number = -1;
   vehiclefilter: String = '';
+  filteredVehicles: string[] = [];
 
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
     private _confirmride: ConfirmrideService,
     private dialog: MatDialog,
-    private _socket: SocketService
-
+    private _socket: SocketService,
+    private _vehicleservice: VehicleService
   ){}
 
   ngOnInit(): void{
     this.getrideData()
+    this.getVehicle()
   }
 
-  //-------------------------------------------- GET RIDE DATA ---------------------------------------------
+  //-------------------------------------------- GET RIDE DATA with SEARCH, PAGINATION, FILTER   ---------------------------------------------
   getrideData() {
     this._confirmride.getride(this.currentPage, this.limit, this.search, this.statusfilter , this.vehiclefilter).subscribe({
       next: (response: any) => {
-        console.log(response)
-        this.ridesArray = response.newride;
+        // console.log(response)
+        this.ridesArray = response.rides;
         this.totalPages = response.totalPages;
         this.count = response.totalCount;
 
@@ -79,6 +82,43 @@ export class ConfirmrideComponent {
     const startIndex = (this.currentPage - 1) * this.limit;
     const endIndex = startIndex + this.limit;
     this.paginatedRideData = this.ridesArray.slice(startIndex, endIndex);
+  }
+
+
+  //-----------------------------------GET VEHICLE ARRAY IN FILTER------------------------------//
+  getVehicle(){
+    this._vehicleservice.getvehicleData().subscribe(response => {
+      // console.log(response);
+      
+      this.filteredVehicles = response.data.map((vehicle: any) => vehicle.vehicleName);
+      // console.log(this.filteredVehicles);
+      
+    });
+  }
+
+  //-------------------------------------_FILTER DATA--------------------------------------//
+  // applyFilter() {
+  //   // console.log(this.statusfilter);
+  //   // console.log(this.vehiclefilter)
+  //   this._confirmride.getride(this.currentPage, this.limit, this.search, this.statusfilter, this.vehiclefilter).subscribe({
+  //     next: (response: any) => {
+  //       console.log(response);
+        
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error);
+        
+  //     }
+
+  //   })
+
+  // }
+
+  clearFilter() {
+    this.statusfilter = -1;
+    this.vehiclefilter = '';
+
+    this.getrideData()
   }
 
   // -------------------------------------DELETE RIDE------------------------------------------//

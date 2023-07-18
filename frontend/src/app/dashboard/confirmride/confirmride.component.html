@@ -1,14 +1,19 @@
 <div class="container">
     <div class="filter-section">
-      <select id="filter-dropdown">
-        <option value="0">PENDING</option>
-        <option value="1">ASSIGNING</option>
-        <option value="4">ACCEPTED</option>
+      <select id="filter-dropdown" [(ngModel)]="statusfilter">
+        <option value="-1">Select Status</option>
+        <option [value]="0">Pending</option>
+        <option [value]="1">Assigning</option>
+        <option [value]="4">Accepted</option>
       </select>
 
-      <select id="filter-dropdown">
-        <option value="status">Auto-Rickshaw</option>
+      <select id="filter-dropdown" [(ngModel)]="vehiclefilter" >
+        <option value="">Select a vehicle</option>
+        <option [value]="vehicle" *ngFor="let vehicle of filteredVehicles">{{vehicle}}</option>
       </select>
+
+      <button (click)="getrideData()">Apply Filter</button>
+      <button (click)="clearFilter()">Clear Filter</button>
       
       <input type="text" id="search-input" placeholder="Search by Req. ID, Name, Phone, Pick up Date..." [(ngModel)]="search" (input)="getrideData()">
       <input type="date" id="search-input" [(ngModel)]="search" (input)="getrideData()">
@@ -16,12 +21,12 @@
       <div class="custom-select" >
         <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
           <option value="">Select Page</option>
-          <option value="1">1</option>
           <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
           <option value="5">5</option>
           <option value="10">10</option>
+          <option value="25">25/option>
+          <option value="50">50</option>
+          <option value="100">100</option>
         </select>
       </div>
     </div>
@@ -58,18 +63,13 @@
                         <td class="fixed-width">{{ ride.startLocation }}</td>
                         <td class="fixed-width">{{ ride.endLocation }}</td>
                         <td>{{ ride.serviceType }}</td>
-                        <td [ngSwitch]="rideStatus">
-                            <span class="badge statusbadge" *ngSwitchCase="'Accepted'">Accepted</span>
-                            <span class="badge statusbadge" *ngSwitchCase="'Arrived'">Arrived</span>
-                            <span class="badge statusbadge" *ngSwitchCase="'Picked'">Picked</span>
-                            <span class="badge statusbadge" *ngSwitchCase="'Started'">Started</span>
-                            <span class="badge statusbadge" *ngSwitchCase="'Completed'">Completed</span>
-                            <span class="badge statusbadge"  style="font-size: 14px;" *ngSwitchDefault>Pending</span>
+                        <td [ngSwitch]="ride.status">
+                            <span class="statusbadge" *ngSwitchCase="1" [ngClass]="{'badge-info': ride.status === 1}">Assigning</span>
+                            <span class="statusbadge" *ngSwitchCase="4" [ngClass]="{'badge-success': ride.status === 4}">Accepted</span>
+                            <span class="statusbadge" [ngClass]="{'badge-warning': ride.status === 0}" *ngSwitchDefault>Pending</span>
+                            <!-- <span class="statusbadge" [ngClass]="{'badge-warning': [1, 4].indexOf(ride.status) === -1}" *ngSwitchDefault>Pending</span> -->
                         </td>
-                        <!-- <td>
-                            <button color="accent"
-                                mat-button (click)="openInfoDialog(ride)"><mat-icon>info</mat-icon></button>
-                        </td>                         -->
+                          
                         <td>
                             <button class="btn btn-primary" *ngIf="assignedDriverName">{{ assignedDriverName }}</button>
                             <button class="btn btn-primary"  (click)="openAssignDriverDialog(ride)" *ngIf="!assignedDriverName">Assign Driver</button>

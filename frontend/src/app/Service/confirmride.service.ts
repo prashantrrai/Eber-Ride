@@ -19,6 +19,8 @@ export class ConfirmrideService {
   //   return this.http.get(`${this.serverUrl}/ridedata`);
   // }
   getride(page: Number, limit: Number, search: String, statusfilter: Number, vehiclefilter: String): Observable<any>{
+    // console.log(statusfilter, vehiclefilter);
+    
     return this.http.post(`${this.serverUrl}/ridesinfo`,{page, limit, search, statusfilter, vehiclefilter});
   }
 
@@ -33,9 +35,7 @@ export class ConfirmrideService {
   //   return this.http.delete<any>(`${this.serverUrl}/ridesinfo/${rideid}`)
   // }
 
-  cancelride(){
 
-  }
   //--------------------------CANCEL RIDE BY USER------------------------------//
   listencancelride(cancelridedata: string): Observable<any>  {
 
@@ -53,4 +53,10 @@ export class ConfirmrideService {
     // console.log(rideId);
     this.socket.emit(cancelride, rideId)
   }
+
+
+  // //-----------------__FILTER DATA------------------------//
+  // getfilterdata(){
+    
+  // }
 }
