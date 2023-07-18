@@ -18,10 +18,11 @@ export class ConfirmrideService {
   // getride(): Observable<any>{
   //   return this.http.get(`${this.serverUrl}/ridedata`);
   // }
-  getride(page: Number, limit: Number, search: String, statusfilter: Number, vehiclefilter: String): Observable<any>{
+  getride(page: Number, limit: Number, search: String, statusfilter: Number, vehiclefilter: String, sortOrder: String): Observable<any>{
     // console.log(statusfilter, vehiclefilter);
+    console.log(sortOrder);
     
-    return this.http.post(`${this.serverUrl}/ridesinfo`,{page, limit, search, statusfilter, vehiclefilter});
+    return this.http.post(`${this.serverUrl}/ridesinfo`,{page, limit, search, statusfilter, vehiclefilter, sortOrder});
   }
 
   getMatchedDriverdata(data: any): Observable<any> {

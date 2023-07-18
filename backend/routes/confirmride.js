@@ -64,14 +64,12 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
 
     let sortCriteria = {};
 
-    if (sortOrder === "asc") {
-      sortCriteria = {  "userDetails.username": 1 };
-    } else if (sortOrder === "desc") {
+    if (sortOrder === "desc") {
       sortCriteria = {  "userDetails.username": -1 };
     } else {
       sortCriteria = {  "userDetails.username": 1 };
     }
-
+    console.log(sortCriteria);
     
     const aggregationPipeline = [
       // {
@@ -164,7 +162,6 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
     ];
 
     const result = await createRideModel.aggregate(aggregationPipeline).exec();
-    console.log(result);
     const rides = result[0]?.rides || [];
 
     const totalCount = result[0]?.totalCount[0]?.count || 0;

@@ -32,6 +32,7 @@ export class ConfirmrideComponent {
   filteredVehicles: string[] = [];
   searchText: any;
   searchDate: any;
+  sortOrder: String = 'desc';
 
   constructor(
     private authService: AuthService,
@@ -50,7 +51,7 @@ export class ConfirmrideComponent {
   //-------------------------------------------- GET RIDE DATA with SEARCH, PAGINATION, FILTER   ---------------------------------------------
   getrideData() {
     this.search = this.searchText || this.searchDate;
-    this._confirmride.getride(this.currentPage, this.limit, this.search, this.statusfilter , this.vehiclefilter).subscribe({
+    this._confirmride.getride(this.currentPage, this.limit, this.search, this.statusfilter , this.vehiclefilter, this.sortOrder).subscribe({
       next: (response: any) => {
         // console.log(response)
         this.ridesArray = response.rides;
@@ -116,6 +117,12 @@ export class ConfirmrideComponent {
   //   })
 
   // }
+
+  sortingApply(){
+    console.log(this.sortOrder)
+    // this.sortOrder = 'asc'
+    this.getrideData()
+  }
 
   clearFilter() {
     this.statusfilter = -1;

@@ -29,6 +29,12 @@
           <option value="100">100</option>
         </select>
       </div>
+
+      <select id="filter-dropdown" [(ngModel)]="sortOrder" (input)="sortingApply()">
+        <option value="desc">Sorting Order</option>
+        <option value="desc">Ascending</option>
+        <option value="asc">Descending</option>
+      </select>
     </div>
   </div>
 

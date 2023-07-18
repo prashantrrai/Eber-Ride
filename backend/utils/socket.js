@@ -320,6 +320,8 @@ async function initializeSocket(server) {
         // ------------------------------------------------GET DATA in RIDE-HISTORY TABLE-----------------------------------------------//
         socket.on("ridehistory", async () => {
 
+
+          
           try {
 
             const aggregationPipeline = [
