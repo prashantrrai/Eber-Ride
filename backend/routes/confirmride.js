@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const confirmRideRouter = new express.Router();
-const createRideModel = require('../models/createride');
-const driverModel = require('../models/driver')
-const mongoose = require('mongoose');
+const createRideModel = require("../models/createride");
+const driverModel = require("../models/driver");
+const mongoose = require("mongoose");
 
 // ------------------------------GET RIDE DATA-----------------------------------------//
 // confirmRideRouter.get('/ridedata', async (req, res) => {
@@ -14,15 +14,14 @@ const mongoose = require('mongoose');
 //     }
 //   })
 
-
 // --------------------------------------------GET CONFIRM-RIDE DATA---------------------------------------------//
-confirmRideRouter.post('/ridesinfo', async (req, res) => {
+confirmRideRouter.post("/ridesinfo", async (req, res) => {
   try {
     // const { search, sortBy, sortOrder, page, limit } = req.body;
     let page = +req.body.page || 1;
     let limit = +req.body.limit || 5;
     let search = req.body.search;
-    let statusfilter = req.body.statusfilter ;
+    let statusfilter = req.body.statusfilter;
     let vehiclefilter = req.body.vehiclefilter;
     // let sortBy = req.body.sortBy || "username";
     // let sortOrder = req.body.sortOrder || "desc";
@@ -30,108 +29,127 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
 
     console.log(req.body);
 
+    // const  defaultStatus = { status : 0 }
     const matchStage = {};
     if (search) {
-      var searchObjectId
+      var searchObjectId;
       // const searchRegex = new RegExp(search, 'i');
 
-      if(search.length==24){
+      if (search.length == 24) {
         searchObjectId = new mongoose.Types.ObjectId(search);
       }
-      
+
       matchStage.$or = [
-        { 'userDetails.username': { $regex: search, $options: 'i' } },
-        { 'userDetails.userphone': { $regex: search, $options: 'i' } },
-        { startLocation: { $regex: search, $options: 'i' } },
-        { endLocation: { $regex: search, $options: 'i' } },
+        { "userDetails.username": { $regex: search, $options: "i" } },
+        { "userDetails.userphone": { $regex: search, $options: "i" } },
+        { startLocation: { $regex: search, $options: "i" } },
+        { endLocation: { $regex: search, $options: "i" } },
         { _id: searchObjectId },
-        { rideDate: { $regex: search, $options: 'i' } },
+        { rideDate: { $regex: search, $options: "i" } },
       ];
     }
 
-
-    // matchStage.$or = [];
-    
-    
-    if (statusfilter != -1 || vehiclefilter != "") {
-      matchStage.$and = [];
-    
-      if (statusfilter != -1) {
-        matchStage.$and.push({ status: statusfilter });
-      }
-    
-      // Add additional conditions for vehiclefilter if provided
-      if (vehiclefilter != "") {
-        matchStage.$and.push({ serviceType: vehiclefilter });
-      }
+    const matchCriteria = [];
+    console.log("matchcriteria:", matchCriteria);
+    console.log(statusfilter);  
+    if (statusfilter !== -1) {
+      matchCriteria.push({ status: { $in: [statusfilter] } });
+      console.log("in status filtyer");
+    }else if (statusfilter === -1) {
+      matchCriteria.push({ status: { $nin: [3, 7] } });
+      console.log("in else status filtyer");
     }
-
-    // if(statusvalue){
-    //   // matchStage.$or.push([{status: [0,1,4]}])
-    //   matchStage.$or.push({status: 0})
-    //   console.log("389")
-    // }
-
-
-
-
+    
+    if (vehiclefilter && vehiclefilter.length > 0) {
+      matchCriteria.push({ serviceType: { $in: [vehiclefilter] } });
+      console.log("in vehicle filtyer");
+    }
+    
+    if (matchCriteria.length === 0) {
+      matchCriteria.push({ });
+      console.log("in default");
+    }
+    
     // const sortField = sortBy || 'username';
     // const sortOrderValue = sortOrder && sortOrder.toLowerCase() === 'desc' ? -1 : 1;
     // const sortStage = { [sortField]: sortOrderValue };
     // console.log(sortStage);
 
     const aggregationPipeline = [
+      // {
+      //   $match: {
+      //     $or: [
+      //       {
+      //         $and: [
+      //           { status: { $in: [statusfilter] } },
+      //           { serviceType: { $in: [vehiclefilter] } }
+      //         ]
+      //       },
+      //       {
+      //         $and: [
+      //           { status: { $exists: false } },
+      //           { serviceType: { $exists: false } }
+      //         ]
+      //       }
+      //     ]
+      //   }
+      // },
       {
-        $lookup: {
-          from: 'usermodels',
-          localField: 'userId',
-          foreignField: '_id',
-          as: 'userDetails',
+        $match: {
+          $and: matchCriteria,
         },
       },
-      { $unwind: '$userDetails' },
       {
         $lookup: {
-          from: 'citymodels',
-          localField: 'cityId',
-          foreignField: '_id',
-          as: 'cityDetails',
+          from: "usermodels",
+          localField: "userId",
+          foreignField: "_id",
+          as: "userDetails",
         },
       },
-      { $unwind: '$cityDetails' },
+      { $unwind: "$userDetails" },
       {
         $lookup: {
-          from: 'countrymodels',
-          localField: 'cityDetails.country_id',
-          foreignField: '_id',
-          as: 'countryDetails',
+          from: "citymodels",
+          localField: "cityId",
+          foreignField: "_id",
+          as: "cityDetails",
         },
       },
-      { $unwind: '$countryDetails' },
+      { $unwind: "$cityDetails" },
       {
         $lookup: {
-          from: 'vehiclemodels',
-          localField: 'serviceId',
-          foreignField: '_id',
-          as: 'vehicleDetails',
+          from: "countrymodels",
+          localField: "cityDetails.country_id",
+          foreignField: "_id",
+          as: "countryDetails",
         },
       },
-      { $unwind: '$vehicleDetails' },
+      { $unwind: "$countryDetails" },
       {
         $lookup: {
-          from: 'drivermodels',
-          localField: 'driverId',
-          foreignField: '_id',
-          as: 'driverDetails',
+          from: "vehiclemodels",
+          localField: "serviceId",
+          foreignField: "_id",
+          as: "vehicleDetails",
+        },
+      },
+      { $unwind: "$vehicleDetails" },
+      {
+        $lookup: {
+          from: "drivermodels",
+          localField: "driverId",
+          foreignField: "_id",
+          as: "driverDetails",
         },
       },
       {
         $unwind: {
-          path: '$driverDetails',
+          path: "$driverDetails",
           preserveNullAndEmptyArrays: true,
         },
       },
-      { $match: matchStage },
+      // { $match: matchStage },
 
       {
         $facet: {
@@ -141,52 +159,47 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
             { $limit: limit },
             // { $project: { _id: 0 } },
           ],
-          totalCount: [
-            { $count: 'count' },
-          ],
+          totalCount: [{ $count: "count" }],
         },
-      }
+      },
     ];
-    
-    
+
     const result = await createRideModel.aggregate(aggregationPipeline).exec();
+    console.log(result);
     const rides = result[0]?.rides || [];
 
-    let newride = [];
-    for(let i=0;i<rides.length;i++){
-      if(rides[i].status==0 || rides[i].status==1 || rides[i].status==4){
-        newride.push(rides[i]);
-      }
-    }
+    // let newride = [];
+    // for(let i=0;i<rides.length;i++){
+    //   if(rides[i].status!=3 || rides[i].status!=7){
+    //     newride.push(rides[i]);
+    //   }
+    // }
 
-    // const totalCount = result[0]?.totalCount[0]?.count || 0;
-    const totalCount = newride.length || 0;
-    console.log(totalCount);
+    const totalCount = result[0]?.totalCount[0]?.count || 0;
+    // const totalCount = newride.length || 0;
+    // console.log(totalCount);
     const totalPages = Math.ceil(totalCount / limit);
-    
+
     if (page > totalPages) {
       page = totalPages;
       skip = (page - 1) * limit;
     }
 
     // console.log(
-    //   "count:",totalCount, 
-    //   "limit:",limit, 
+    //   "count:",totalCount,
+    //   "limit:",limit,
     //   "page:",page,
     //   "totalpages:",totalPages);
 
     // console.log(rides);
 
-
     // console.log(newride)
-    res.send({ newride, page, limit, totalPages, totalCount });
-
+    res.send({ rides, page, limit, totalPages, totalCount });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
   }
 });
-
 
 // // ------------------------------------------------DRIVERS OF PARTICULAR CITY AND SERVICE + STATUS TRUE------------------------------------//
 // confirmRideRouter.post('/assigneddriverdata', async (req, res) => {
@@ -194,7 +207,7 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
 //   try {
 //     // const { cityId, serviceId } = req.body;
 //     const cityId = new mongoose.Types.ObjectId(req.body.cityId);
-//     const serviceId = new mongoose.Types.ObjectId(req.body.serviceId); //vehicle id 
+//     const serviceId = new mongoose.Types.ObjectId(req.body.serviceId); //vehicle id
 //     // console.log(req.body);
 //     // const driverdatta = await driverModel.find({ city: cityId, servicetype: serviceId })
 //     // console.log(driverdatta);
@@ -244,7 +257,6 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
 //   }
 // })
 
-
 // -----------------------------------------CANCEL RIDE DELETE API---------------------------------------//
 // confirmRideRouter.delete('/ridesinfo/:rideid', async(req, res) => {
 //   const rideid = req.params.rideid
@@ -261,6 +273,5 @@ confirmRideRouter.post('/ridesinfo', async (req, res) => {
 //     res.status(500).json({success: false, message: error})
 //   }
 // })
-
 
 module.exports = confirmRideRouter;
