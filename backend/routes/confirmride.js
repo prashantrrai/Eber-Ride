@@ -40,8 +40,8 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
       matchStage.$or = [
         { "userDetails.username": { $regex: search, $options: "i" } },
         { "userDetails.userphone": { $regex: search, $options: "i" } },
-        { startLocation: { $regex: search, $options: "i" } },
-        { endLocation: { $regex: search, $options: "i" } },
+        // { startLocation: { $regex: search, $options: "i" } },
+        // { endLocation: { $regex: search, $options: "i" } },
         { _id: searchObjectId },
         { rideDate: { $regex: search, $options: "i" } },
       ];
@@ -87,11 +87,7 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
       //     ]
       //   }
       // },
-      {
-        $match: {
-          $and: matchCriteria,
-        },
-      },
+
       {
         $lookup: {
           from: "usermodels",
@@ -143,6 +139,11 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
         },
       },
       // { $match: matchStage },
+      {
+        $match: {
+          $and: [...matchCriteria, matchStage],
+        },
+      },
 
       {
         $facet: {

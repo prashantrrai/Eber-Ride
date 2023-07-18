@@ -30,6 +30,8 @@ export class ConfirmrideComponent {
   statusfilter: Number = -1;
   vehiclefilter: String = '';
   filteredVehicles: string[] = [];
+  searchText: any;
+  searchDate: any;
 
   constructor(
     private authService: AuthService,
@@ -47,6 +49,7 @@ export class ConfirmrideComponent {
 
   //-------------------------------------------- GET RIDE DATA with SEARCH, PAGINATION, FILTER   ---------------------------------------------
   getrideData() {
+    this.search = this.searchText || this.searchDate;
     this._confirmride.getride(this.currentPage, this.limit, this.search, this.statusfilter , this.vehiclefilter).subscribe({
       next: (response: any) => {
         // console.log(response)
