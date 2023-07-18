@@ -1,4 +1,4 @@
-<div class="container_top">
+<!-- <div class="container_top">
   <div class="filter-section">
     <select id="filter-dropdown">
       <option value="0">PENDING</option>
@@ -17,7 +17,7 @@
     
     <input type="text" id="search-input" placeholder="Search by Req. ID, Name, Phone, Pick up Date..." [(ngModel)]="search" (input)="getRideHistory()">
     <input type="date" id="search-input" [(ngModel)]="search" (input)="getRideHistory()">
-    <!-- <button id="search-button">Search</button> -->
+
     <div class="custom-select" >
       <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
         <option value="">Select Page</option>
@@ -30,7 +30,7 @@
       </select>
     </div>
   </div>
-</div>
+</div> -->
 
 
 <div class="container mt-4">
@@ -48,7 +48,7 @@
                 <th>Pick up Time</th>
                 <th>Pick up Address</th>
                 <th>Drop off Address</th>
-                <th>Driver Name</th>
+                <!-- <th>Driver Name</th> -->
                 <th>Service Type</th>
                 <th>Status</th>
               </tr>
@@ -62,7 +62,7 @@
                     <td>{{ ride.rideDate }}</td>
                     <td class="fixed-width">{{ ride.startLocation }}</td>
                     <td class="fixed-width">{{ ride.endLocation }}</td>
-                    <td>{{ ride.driverDetails.drivername}}</td>
+                    <!-- <td>{{ ride.driverDetails.drivername}}</td> -->
                     <td>{{ ride.serviceType }}</td>
 
                     <td class="badge" [ngClass]="{'badge-success': ride.status === 7, 'badge-danger': ride.status === 3}">

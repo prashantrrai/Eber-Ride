@@ -21,9 +21,9 @@ export class RidehistoryComponent implements OnInit {
     // 6: 'Started',
     7: 'Completed',
   };
-  limit: number = 1;
-  totalPages: number = 0;
   currentPage: number = 1;
+  limit: number = 5;
+  totalPages: number = 0;
   paginatedRideData: any[] = [];
   count: any;
   search: String = '';

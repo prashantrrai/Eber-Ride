@@ -24,7 +24,7 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
     let statusfilter = +req.body.statusfilter;
     let vehiclefilter = req.body.vehiclefilter;
     // let sortBy = req.body.sortBy || "username";
-    // let sortOrder = req.body.sortOrder || "desc";
+    let sortOrder = req.body.sortOrder || "desc";
     let skip = (page - 1) * limit;
 
     console.log(req.body);
@@ -40,8 +40,6 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
       matchStage.$or = [
         { "userDetails.username": { $regex: search, $options: "i" } },
         { "userDetails.userphone": { $regex: search, $options: "i" } },
-        // { startLocation: { $regex: search, $options: "i" } },
-        // { endLocation: { $regex: search, $options: "i" } },
         { _id: searchObjectId },
         { rideDate: { $regex: search, $options: "i" } },
       ];
@@ -63,11 +61,18 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
       matchCriteria.push({});
     }
     
-    // const sortField = sortBy || 'username';
-    // const sortOrderValue = sortOrder && sortOrder.toLowerCase() === 'desc' ? -1 : 1;
-    // const sortStage = { [sortField]: sortOrderValue };
-    // console.log(sortStage);
 
+    let sortCriteria = {};
+
+    if (sortOrder === "asc") {
+      sortCriteria = {  "userDetails.username": 1 };
+    } else if (sortOrder === "desc") {
+      sortCriteria = {  "userDetails.username": -1 };
+    } else {
+      sortCriteria = {  "userDetails.username": 1 };
+    }
+
+    
     const aggregationPipeline = [
       // {
       //   $match: {
@@ -148,7 +153,7 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
       {
         $facet: {
           rides: [
-            // { $sort: sortStage },
+            { $sort: sortCriteria },
             { $skip: skip },
             { $limit: limit },
             // { $project: { _id: 0 } },
