@@ -118,18 +118,20 @@ export class ConfirmrideComponent {
 
   // }
 
-  sortingApply(){
-    console.log(this.sortOrder)
-    // this.sortOrder = 'asc'
-    this.getrideData()
-  }
-
   clearFilter() {
     this.statusfilter = -1;
     this.vehiclefilter = '';
 
     this.getrideData()
   }
+
+
+  //-----------------------SORTING ORDER OPTION----------------------//
+  sortingApply(){
+    console.log(this.sortOrder)
+    this.getrideData()
+  }
+
 
   // -------------------------------------DELETE RIDE------------------------------------------//
   // deleteRide(rideid: string) {

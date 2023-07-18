@@ -20,7 +20,7 @@ export class ConfirmrideService {
   // }
   getride(page: Number, limit: Number, search: String, statusfilter: Number, vehiclefilter: String, sortOrder: String): Observable<any>{
     // console.log(statusfilter, vehiclefilter);
-    console.log(sortOrder);
+    // console.log(sortOrder);
     
     return this.http.post(`${this.serverUrl}/ridesinfo`,{page, limit, search, statusfilter, vehiclefilter, sortOrder});
   }
