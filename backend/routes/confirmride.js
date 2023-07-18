@@ -168,16 +168,7 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
     console.log(result);
     const rides = result[0]?.rides || [];
 
-    // let newride = [];
-    // for(let i=0;i<rides.length;i++){
-    //   if(rides[i].status!=3 || rides[i].status!=7){
-    //     newride.push(rides[i]);
-    //   }
-    // }
-
     const totalCount = result[0]?.totalCount[0]?.count || 0;
-    // const totalCount = newride.length || 0;
-    // console.log(totalCount);
     const totalPages = Math.ceil(totalCount / limit);
 
     if (page > totalPages) {
@@ -185,15 +176,6 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
       skip = (page - 1) * limit;
     }
 
-    // console.log(
-    //   "count:",totalCount,
-    //   "limit:",limit,
-    //   "page:",page,
-    //   "totalpages:",totalPages);
-
-    // console.log(rides);
-
-    // console.log(newride)
     res.send({ rides, page, limit, totalPages, totalCount });
   } catch (error) {
     console.log(error);
