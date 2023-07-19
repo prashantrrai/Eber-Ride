@@ -335,7 +335,7 @@ async function initializeSocket(server) {
             let statusfilter = +filterdata.status;
             let skip = (page - 1) * limit;
 
-            console.log(filterdata);
+            // console.log(filterdata);
 
 
             const matchCriteria = [];
@@ -379,7 +379,7 @@ async function initializeSocket(server) {
                 }
               });
             }
-            console.log(matchCriteria);
+            // console.log(matchCriteria);
 
             if (matchCriteria.length === 0) {
               matchCriteria.push({});
@@ -472,7 +472,7 @@ async function initializeSocket(server) {
             const ridesdata = await createrideModel.aggregate(aggregationPipeline).exec()
             // console.log(ridesdata);
             const myridehistory = ridesdata[0]?.ridehistory || [];
-            console.log(myridehistory);
+            // console.log(myridehistory);
 
             const totalCount = ridesdata[0]?.totalCount[0]?.count || 0;
             const totalPages = Math.ceil(totalCount / limit);
