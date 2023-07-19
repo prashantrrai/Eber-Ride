@@ -65,9 +65,9 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
     let sortCriteria = {};
 
     if (sortOrder === "desc") {
-      sortCriteria = {  "userDetails.username": -1 };
+      sortCriteria = {  createdAt: -1 };
     } else {
-      sortCriteria = {  "userDetails.username": 1 };
+      sortCriteria = {  createdAt: 1 };
     }
     console.log(sortCriteria);
     

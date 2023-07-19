@@ -32,7 +32,7 @@ export class ConfirmrideComponent {
   filteredVehicles: string[] = [];
   searchText: any;
   searchDate: any;
-  sortOrder: String = 'desc';
+  sortOrder: any = 'desc';
 
   constructor(
     private authService: AuthService,
@@ -121,16 +121,17 @@ export class ConfirmrideComponent {
   clearFilter() {
     this.statusfilter = -1;
     this.vehiclefilter = '';
+    this.sortOrder = 'asc'
 
     this.getrideData()
   }
 
 
   //-----------------------SORTING ORDER OPTION----------------------//
-  sortingApply(){
-    console.log(this.sortOrder)
-    this.getrideData()
-  }
+  // sortingApply(value:any){
+  //   console.log(value)
+  //   this.getrideData()
+  // }
 
 
   // -------------------------------------DELETE RIDE------------------------------------------//
