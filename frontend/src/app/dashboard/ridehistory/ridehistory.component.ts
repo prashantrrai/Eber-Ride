@@ -26,8 +26,14 @@ export class RidehistoryComponent implements OnInit {
   totalPages: number = 0;
   paginatedRideData: any[] = [];
   count: any;
-  search: String = '';
 
+  startlocation: any = '';
+  endlocation: any = '';
+  paymentmode: any = '';
+  Fromdate: any = '';
+  Todate: any= '';
+  status: Number = -1;
+  
 
   
   constructor(private _ridehistroy: RidehistoryService, private _confirmride: ConfirmrideService, private _runningrequest: RunningrequestService){}
@@ -37,20 +43,37 @@ export class RidehistoryComponent implements OnInit {
     this.aftercancelrideinrealtime()
     this.afteracceptrideinrealtime()
   }
+
+
+
   getRideHistory() {
+
+    const filterdata = {
+      "page": this.currentPage,
+      "limit": this.limit,
+      "payment": this.paymentmode,
+      "fromdate": this.Fromdate,
+      "todate": this.Todate,
+      "status": this.status,
+      "startlocationsearch": this.startlocation,
+      "endlocationsearch": this.endlocation,
+  }
+  
+    console.log(filterdata);
+
     
-    this._ridehistroy.emitridehistory('ridehistory')
+    this._ridehistroy.emitridehistory('ridehistory', filterdata)
 
     this._ridehistroy.listenridehistory('ridehistorydata').subscribe((data: any) => {
       // console.log(data);
-      this.ridesArray = data.ridesdata;
+      this.ridesArray = data.myridehistory;
       this.totalPages = data.totalPages;
       this.count = data.totalCount;
     });
   }
   onPageSizeChange(event: any): void {
     this.limit = parseInt(event.target.value);
-    console.log(this.limit);
+    // console.log(this.limit);
     
     this.currentPage = 1;
     this.updatePaginatedDrivers();
@@ -58,7 +81,7 @@ export class RidehistoryComponent implements OnInit {
   }
 
   onPageChange(pageNumber: number) {
-    console.log(pageNumber);
+    // console.log(pageNumber);
     if (pageNumber >= 1 && pageNumber <= this.totalPages) {
       this.currentPage = pageNumber;
       this.updatePaginatedDrivers();
@@ -71,14 +94,29 @@ export class RidehistoryComponent implements OnInit {
     this.paginatedRideData = this.ridesArray.slice(startIndex, endIndex);
   }
 
+  clearFilter() {
+    this.status = -1;
+    this.paymentmode = '';
+    this.startlocation = ''
+    this.endlocation = ''
+    this.Fromdate = ''
+    this.Todate = ''
 
+
+    this.getRideHistory()
+  }
+
+
+
+
+  //----------------AFTER CANCEL RIDE IN REAL-TIME----------------//
   aftercancelrideinrealtime(){
     this._confirmride.listencancelride('cancelridedata').subscribe((ridedata: any) => {
       this.getRideHistory()
     })
   }
 
-
+  //----------------AFTER ACCEPT RIDE IN REAL-TIME----------------//
   afteracceptrideinrealtime(){
     this._runningrequest.listenacceptrunningrequest('acceptedrunningrequestdata').subscribe((ridedata: any) => {
       this.getRideHistory()

@@ -1,36 +1,47 @@
-<!-- <div class="container_top">
+<div class="container">
   <div class="filter-section">
-    <select id="filter-dropdown">
-      <option value="0">PENDING</option>
-      <option value="1">ASSIGNING</option>
-      <option value="2">ASSIGNING</option>
-      <option value="3">CANCELLED</option>
-      <option value="4">ACCEPTED</option>
-      <option value="5">ARRIVED</option>
-      <option value="6">STARTED</option>
-      <option value="7">COMPLETED</option>
-    </select>
-
-    <select id="filter-dropdown">
-      <option value="status">Auto-Rickshaw</option>
-    </select>
     
-    <input type="text" id="search-input" placeholder="Search by Req. ID, Name, Phone, Pick up Date..." [(ngModel)]="search" (input)="getRideHistory()">
-    <input type="date" id="search-input" [(ngModel)]="search" (input)="getRideHistory()">
+    <select id="filter-dropdown" [(ngModel)]="status">
+      <option value="-1">Select Status</option>
+      <option [value]="3">Cancelled</option>
+      <option [value]="7">Completed</option>
+    </select>
 
+    <select id="filter-dropdown" [(ngModel)]="paymentmode">
+      <option value="">Select Payment</option>
+      <option value="cash">Cash</option>
+      <option value="card">Card</option>
+    </select>
+
+    
+    <input type="date" id="search-input" [(ngModel)]="Fromdate" >
+    <input type="date" id="search-input" [(ngModel)]="Todate">
+
+    <input type="text" id="search-input" placeholder="Start Location..." [(ngModel)]="startlocation" >
+    <input type="text" id="search-input" placeholder="End Location..." [(ngModel)]="endlocation" >
+
+    
     <div class="custom-select" >
       <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
-        <option value="">Select Page</option>
+        <option value="5">Select Page</option>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="4">4</option>
         <option value="5">5</option>
         <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
       </select>
     </div>
+    
+    <button (click)="getRideHistory()">Apply Filter</button>
+    <button (click)="clearFilter()">Clear Filter</button>
+
   </div>
-</div> -->
+</div>
+
 
 
 <div class="container mt-4">
@@ -45,11 +56,12 @@
                 <th>Req. ID</th>
                 <!-- <th>User ID</th> -->
                 <th>Username</th>
-                <th>Pick up Time</th>
+                <th>Pick up Date</th>
                 <th>Pick up Address</th>
                 <th>Drop off Address</th>
                 <!-- <th>Driver Name</th> -->
                 <th>Service Type</th>
+                <th>Payment</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -64,6 +76,7 @@
                     <td class="fixed-width">{{ ride.endLocation }}</td>
                     <!-- <td>{{ ride.driverDetails.drivername}}</td> -->
                     <td>{{ ride.serviceType }}</td>
+                    <td>{{ ride.paymentOption }}</td>
 
                     <td class="badge" [ngClass]="{'badge-success': ride.status === 7, 'badge-danger': ride.status === 3}">
                     {{ statusLabels[ride.status] || 'unknown' }}

@@ -14,14 +14,14 @@ export class RidehistoryService {
   }
 
   // --------------------------To GET RIDE-HISTORY DATA---------------------------------//
-  emitridehistory(ridehistory: string){
-    this.socket.emit(ridehistory)
+  emitridehistory(ridehistory: string, filterdata: any){
+    this.socket.emit(ridehistory, filterdata)
   }
 
   listenridehistory(ridehistorydata: string): Observable<any> {
     return new Observable(observer => {
       this.socket.on(ridehistorydata, (data: any) => {
-        console.log(data)
+        // console.log(data)
 
         observer.next(data)
       })

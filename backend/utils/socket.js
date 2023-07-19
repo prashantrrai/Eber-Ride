@@ -1,7 +1,9 @@
 const  socketio  = require('socket.io');
-const { mongoose } = require('mongoose')
+// const { mongoose } = require('mongoose')
 const driverModel = require('../models/driver')
 const createrideModel = require("../models/createride")
+const mongoose = require("mongoose");
+
 
 async function initializeSocket(server) {
     const io = socketio(server, {cors: {origin: ["http://localhost:4200"]}});
@@ -184,6 +186,7 @@ async function initializeSocket(server) {
       socket.on("runningrequest", async() => {
 
         try {
+
           // const driverdata = await driverModel.find({ assign: "1" });
           // const ridedata = await createrideModel.find({  driverId: { $exists: true } });
 
@@ -318,18 +321,73 @@ async function initializeSocket(server) {
 
 
         // ------------------------------------------------GET DATA in RIDE-HISTORY TABLE-----------------------------------------------//
-        socket.on("ridehistory", async () => {
+        socket.on("ridehistory", async (filterdata) => {
 
-
-          
           try {
 
+            let page = +filterdata.page || 1;
+            let limit = +filterdata.limit || 5;
+            let paymentFilter = filterdata.payment;
+            let fromdate = filterdata.fromdate;
+            let todate = filterdata.todate;
+            let startLocationSearch = filterdata.startlocationsearch;
+            let endLocationSearch = filterdata.endlocationsearch;
+            let statusfilter = +filterdata.status;
+            let skip = (page - 1) * limit;
+
+            console.log(filterdata);
+
+
+            const matchCriteria = [];
+            
+            if (statusfilter !== -1) {
+              matchCriteria.push({ status: { $in: [statusfilter] } });
+            }else if (statusfilter === -1) {
+              matchCriteria.push({ status: { $nin: [1,2,4,5,6] } });
+            }
+
+            if (paymentFilter !== '') {
+              matchCriteria.push({ paymentOption: paymentFilter });
+            }
+
+
+
+            if (startLocationSearch || endLocationSearch) {
+              const matchStage = {};
+            
+              if (startLocationSearch && endLocationSearch) {
+                matchStage.$and = [
+                  { startLocation: { $regex: startLocationSearch, $options: "i" } },
+                  { endLocation: { $regex: endLocationSearch, $options: "i" } }
+                ];
+              } else if (startLocationSearch) {
+                matchStage.startLocation = { $regex: startLocationSearch, $options: "i" };
+              } else if (endLocationSearch) {
+                matchStage.endLocation = { $regex: endLocationSearch, $options: "i" };
+              }
+            
+              matchCriteria.push(matchStage);
+            }
+
+            // Date range filter logic
+            if (fromdate && todate) {
+            
+              matchCriteria.push({
+                rideDate: {
+                  $gte: fromdate,
+                  $lte: todate
+                }
+              });
+            }
+            console.log(matchCriteria);
+
+            if (matchCriteria.length === 0) {
+              matchCriteria.push({});
+            }
+            
+ 
             const aggregationPipeline = [
-              {
-                $match: {
-                  status: { $in: [3, 7] } // Filter by status field values 3 and 7
-                } 
-              },
+
               {
                 $lookup: {
                   from: 'usermodels',
@@ -387,12 +445,44 @@ async function initializeSocket(server) {
                   path: "$driverDetails",
                   preserveNullAndEmptyArrays: true
                 }
-              }
+              },
+              {
+                $match: {
+                  $and: [
+                    ...matchCriteria,
+                    // matchStage,
+                    {
+                      status: { $in: [3, 7] }
+                    }
+                  ]
+                },
+              },
+        
+              {
+                $facet: {
+                  ridehistory: [
+                    { $skip: skip },
+                    { $limit: limit },
+                  ],
+                  totalCount: [{ $count: "count" }],
+                },
+              },
             ];
 
             const ridesdata = await createrideModel.aggregate(aggregationPipeline).exec()
-            console.log(ridesdata);
-            io.emit('ridehistorydata', { success: true, message: "Ride History Data Found", ridesdata });
+            // console.log(ridesdata);
+            const myridehistory = ridesdata[0]?.ridehistory || [];
+            console.log(myridehistory);
+
+            const totalCount = ridesdata[0]?.totalCount[0]?.count || 0;
+            const totalPages = Math.ceil(totalCount / limit);
+        
+            if (page > totalPages) {
+              page = totalPages;
+              skip = (page - 1) * limit;
+            }
+        
+            io.emit('ridehistorydata', { success: true, message: "Ride History Data Found", myridehistory, page, limit, totalPages, totalCount });
 
           } catch (error) {
             console.error(error);

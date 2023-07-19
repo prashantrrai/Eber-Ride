@@ -1,7 +1,6 @@
 const express = require("express");
 const confirmRideRouter = new express.Router();
 const createRideModel = require("../models/createride");
-const driverModel = require("../models/driver");
 const mongoose = require("mongoose");
 
 // ------------------------------GET RIDE DATA-----------------------------------------//
@@ -17,7 +16,7 @@ const mongoose = require("mongoose");
 // --------------------------------------------GET CONFIRM-RIDE DATA---------------------------------------------//
 confirmRideRouter.post("/ridesinfo", async (req, res) => {
   try {
-    // const { search, sortBy, sortOrder, page, limit } = req.body;
+    
     let page = +req.body.page || 1;
     let limit = +req.body.limit || 5;
     let search = req.body.search;
