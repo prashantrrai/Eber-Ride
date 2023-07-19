@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmrideService } from 'src/app/Service/confirmride.service';
 import { RidehistoryService } from 'src/app/Service/ridehistory.service';
 import { RunningrequestService } from 'src/app/Service/runningrequest.service';
+// import { createObjectCsvWriter } from 'csv-writer';
 
 @Component({
   selector: 'app-ridehistory',
@@ -36,7 +37,12 @@ export class RidehistoryComponent implements OnInit {
   
 
   
-  constructor(private _ridehistroy: RidehistoryService, private _confirmride: ConfirmrideService, private _runningrequest: RunningrequestService){}
+  constructor(
+    private _ridehistroy: RidehistoryService, 
+    private _confirmride: ConfirmrideService, 
+    private _runningrequest: RunningrequestService,
+    // private csvParser: NgxCsvParser
+    ){}
 
   ngOnInit(){
     this.getRideHistory()
@@ -59,7 +65,7 @@ export class RidehistoryComponent implements OnInit {
       "endlocationsearch": this.endlocation,
   }
   
-    console.log(filterdata);
+    // console.log(filterdata);
 
     
     this._ridehistroy.emitridehistory('ridehistory', filterdata)
@@ -108,7 +114,6 @@ export class RidehistoryComponent implements OnInit {
 
 
 
-
   //----------------AFTER CANCEL RIDE IN REAL-TIME----------------//
   aftercancelrideinrealtime(){
     this._confirmride.listencancelride('cancelridedata').subscribe((ridedata: any) => {
@@ -123,4 +128,35 @@ export class RidehistoryComponent implements OnInit {
     })
   }
 
+  //----------------------DOWNLAOD RIDE-HISTORY DATA---------------------//
+  downlaodallData(){
+    const alldataatonce = {
+      "payment": this.paymentmode,
+      "fromdate": this.Fromdate,
+      "todate": this.Todate,
+      "status": this.status,
+      "startlocationsearch": this.startlocation,
+      "endlocationsearch": this.endlocation,
+    }
+
+    // console.log(alldataatonce);
+
+
+    this._ridehistroy.downlaodallData(alldataatonce).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        // const csvWriter = createObjectCsvWriter({
+        //   path: 'data.csv',
+        //   header: ['First Name', 'Last Name'], // Modify headers based on your data structure
+        // });
+      },
+      error: (error: any) => {
+        console.log(error.error.message);
+      },
+    });
+  }
+
+  downloadDataAsCSV(){
+    this.downlaodallData()
+  }
 }

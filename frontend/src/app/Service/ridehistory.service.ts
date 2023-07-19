@@ -15,11 +15,10 @@ export class RidehistoryService {
   }
 
   //----------------------DOWNLAOD RIDE-HISTORY DATA---------------------//
-  getride(filterdata: any): Observable<any>{
-    // console.log(statusfilter, vehiclefilter);
-    // console.log(sortOrder);
+  downlaodallData(alldataatonce: any): Observable<any>{
+    // console.log(alldataatonce);
     
-    return this.http.post(`${this.url}/downloadridehistory`,{filterdata});
+    return this.http.post(`${this.url}/downloadridehistory`,{alldataatonce});
   }
 
   // --------------------------To GET RIDE-HISTORY DATA---------------------------------//

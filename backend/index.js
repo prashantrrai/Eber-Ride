@@ -39,6 +39,7 @@ const pricingRoutes = require("./routes/pricing");
 const settingRouter = require("./routes/setting");
 const createRideRoutes = require("./routes/createride");
 const confirmRideRouter = require("./routes/confirmride");
+const ridehistoryRouter = require("./routes/ridehistory")
 
 app.use(fetchAdmin);
 app.use(loginRoutes);
@@ -54,6 +55,7 @@ app.use(pricingRoutes);
 app.use(settingRouter)
 app.use(createRideRoutes);
 app.use(confirmRideRouter);
+app.use(ridehistoryRouter)
 
 app.get("/", async (req, res) => {
   res.json({
