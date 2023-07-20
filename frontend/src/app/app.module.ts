@@ -35,6 +35,7 @@ import { AssignDriverComponent } from './shared/assign-driver/assign-driver.comp
     ToastrModule.forRoot(),
     DashboardModule,
     AuthModule,
+    
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}, AuthService],
   bootstrap: [AppComponent]

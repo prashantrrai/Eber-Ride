@@ -6,6 +6,7 @@ import { RidehistoryComponent } from './ridehistory.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxCsvParserModule } from 'ngx-csv-parser';
 
 const routes: Routes = [  
   { path: '', component: RidehistoryComponent, pathMatch: 'full' }
@@ -23,8 +24,10 @@ const routes: Routes = [
     NgxPaginationModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxCsvParserModule
     // MatIconModule,
-    // NgxCsvParserModule
+    
+    
   ]
 })
 export class RidehistoryModule { }
