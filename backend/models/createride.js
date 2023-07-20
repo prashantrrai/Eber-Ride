@@ -49,6 +49,9 @@ const createRideSchema = mongoose.Schema(
       enum: [0, 1, 2, 3, 4, 5, 6, 7],
       default: 0,
     },
+    assigningTime: {
+      type: Date
+    },
     
     nearest: {
       type: String,

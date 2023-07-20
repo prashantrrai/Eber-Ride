@@ -3,6 +3,8 @@ const  socketio  = require('socket.io');
 const driverModel = require('../models/driver')
 const createrideModel = require("../models/createride")
 const mongoose = require("mongoose");
+const cron = require('node-cron');
+
 
 
 async function initializeSocket(server) {
@@ -104,7 +106,7 @@ async function initializeSocket(server) {
         
         try {
           const driver =  await driverModel.findByIdAndUpdate(driverId, { assign: "1" }, { new: true });
-          const updatedRide = await  createrideModel.updateMany({ _id: rideId }, { $set: { driverId: driverId, status: 1 } }, { new: true })
+          const updatedRide = await  createrideModel.updateMany({ _id: rideId }, { $set: { driverId: driverId, status: 1, assigningTime: Date.now() } }, { new: true })
 
           const alldata = await createrideModel.aggregate([
             {
@@ -490,16 +492,23 @@ async function initializeSocket(server) {
           }
         });
 
-
-
-      socket.on("disconnect", () => {
+        
+        
+        socket.on("disconnect", () => {
           console.log("client Disconnected");
+        });
+        
+        
       });
-
-    
-    });
+      cron.schedule('*/10 * * * * *', myTask);
+      function myTask() {
+          console.log('Task executed at: ', new Date().toLocaleString());
+        }
 };
 
+
+
+// i want to use findquery inside this cron to check any update if in my db, like if my driver is assigned then its assign field value will change from 0 to 1 and by detecting that change through find query I want to send the request to driver in running request compoennt where driver have option to accept or reject ride if no resposne within a particular time interval by driver then timeout will happen and ride will be again send to confirm ride component by changing the status field value  from 1 to 0 and by also setting the drievrId to null and changing driver collection also setting the assign field value from now 1 to 0 again to make the driver free again
 
 
 module.exports = initializeSocket;

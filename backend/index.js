@@ -6,6 +6,11 @@ const PORT = process.env.PORT || 8080;
 const http = require('http').Server(app);
 const initializeSocket = require("./utils/socket")
 
+// const cronJob = require('./utils/cron');
+// cronJob.start();
+
+// console.log(Date.now());
+// console.log(new Date().getTime());
 
 const cors = require("cors");
 app.use(cors());
