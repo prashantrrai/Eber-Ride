@@ -3,6 +3,9 @@ import { ConfirmrideService } from 'src/app/Service/confirmride.service';
 import { RidehistoryService } from 'src/app/Service/ridehistory.service';
 import { RunningrequestService } from 'src/app/Service/runningrequest.service';
 import { Papa } from 'ngx-papaparse';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AuthService } from 'src/app/Service/auth.service';
+import { RidehistorydialogComponent } from 'src/app/shared/ridehistorydialog/ridehistorydialog.component';
 
 // import { createObjectCsvWriter } from 'csv-writer';
 
@@ -43,7 +46,9 @@ export class RidehistoryComponent implements OnInit {
     private _ridehistroy: RidehistoryService, 
     private _confirmride: ConfirmrideService, 
     private _runningrequest: RunningrequestService,
-    private papa: Papa
+    private papa: Papa,
+    private dialog: MatDialog,
+    private authService: AuthService,
     ){}
 
   ngOnInit(){
@@ -203,105 +208,24 @@ export class RidehistoryComponent implements OnInit {
     const csv = this.papa.unparse(csvData);
     return csv;
   }
-}
-
-  // downloadDataAsCSV(){
-  //   this.downlaodallData()
-  // }
-  // ... (existing code)
 
 
-
-
-
-
-
-
-
-
-
-  // downlaodallData() {
-  //   const alldataatonce = {
-  //     "payment": this.paymentmode,
-  //     "fromdate": this.Fromdate,
-  //     "todate": this.Todate,
-  //     "status": this.status,
-  //     "startlocationsearch": this.startlocation,
-  //     "endlocationsearch": this.endlocation,
-  //   };
-  
-  //   this._ridehistroy.downlaodallData(alldataatonce).subscribe(
-  //     (response: any) => {
-  //       console.log(response.myridehistory);
-  //       const data = response.myridehistory;
-  
-  //       if (!data || data.length === 0) {
-  //         console.log('No data to convert.');
-  //         return;
-  //       }
-  
-  //       this.ngxCsvParser.parse(data, { header: false, delimiter: ',' }).pipe(
-  //         catchError((error: NgxCSVParserError) => {
-  //           console.log('Error during parsing:', error.message);
-  //           return throwError('Error parsing CSV data.');
-  //         })
-  //       ).subscribe(
-  //         (parsedData: any) => {
-  //           console.log(parsedData);
-  
-  //           const csvData = this.convertToCSV(parsedData);
-  //           console.log(csvData);
-  
-  //           this.downloadCSVFile(csvData); // Trigger the file download
-  //         },
-  //         (error: any) => {
-  //           console.log('Error in parsing subscription:', error);
-  //         }
-  //       );
-  //     },
-  //     (error: any) => {
-  //       console.log('Error in fetching data:', error.error.message);
-  //     }
-  //   );
-  // }
-  
-  // convertToCSV(data: any[]) {
-  //   // Define the CSV header with column names
-  //   const csvHeader = 'ID,Payment Option,Ride Time,Service Type,Ride Date';
-  
-  //   // Convert each object to a CSV row
-  //   const csvRows = data.map(item => {
-  //     // Convert date object to string (if applicable)
-  //     const rideDate = item.rideDate instanceof Date ? item.rideDate.toISOString() : item.rideDate;
-  //     console.log(rideDate);
+    //--------------------------------------RIDE-HISTORY INFO DIALOG REF CODE---------------------------------------------//
+    openInfoDialog(ride: any): void {
+      // console.log(ride)
+      const dialogConfig = new MatDialogConfig();
       
-  //     const rowValues = [
-  //       item._id,
-  //       item.paymentOption,
-  //       item.rideTime,
-  //       item.serviceType,
-  //       rideDate
-  //     ];
-  
-  //     return rowValues.join(',');
-  //   });
-  
-  //   // Combine the header and rows with newline characters to create the CSV content
-  //   return csvHeader + '\n' + csvRows.join('\n');
-  // }
-  
-  
-  
-  // downloadCSVFile(csvData: string) {
-  //   // Create a blob containing the CSV data
-  //   const blob = new Blob([csvData], { type: 'text/csv' });
-  
-  //   // Generate a unique filename for the CSV file
-  //   const fileName = 'data_' + new Date().getTime() + '.csv';
-  
-  //   // Trigger the file download by creating a link element
-  //   const link = document.createElement('a');
-  //   link.href = window.URL.createObjectURL(blob);
-  //   link.download = fileName;
-  //   link.click();
-  // }
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true; 
+      dialogConfig.width = '600px'; 
+      dialogConfig.data = ride; 
+      
+      const dialogRef = this.dialog.open(RidehistorydialogComponent, dialogConfig);
+      
+    }
+
+    // ---------------------------------------EXTRA COMMON CODE--------------------------------------------//
+    resetTimer() {
+      this.authService.resetInactivityTimer();
+    }
+}

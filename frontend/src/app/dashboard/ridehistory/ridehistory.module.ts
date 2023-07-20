@@ -24,8 +24,9 @@ const routes: Routes = [
     NgxPaginationModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxCsvParserModule
+    // NgxCsvParserModule
     // MatIconModule,
+    
     
     
   ]

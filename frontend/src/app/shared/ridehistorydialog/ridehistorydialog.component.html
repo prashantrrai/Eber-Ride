@@ -1,0 +1,78 @@
+<div class="info-component">
+    <div class="ride-details-dialog">
+      <h2>Ride Details</h2>
+  
+      <div class="ride-details row align-items-center">
+        <span class="details-key col-sm-3 text-end">Request ID :</span>
+        <span class="details-value col-sm-3  text-start">{{data._id}}</span>
+      </div>
+  
+      <div class="ride-details row align-items-center">
+        <span class="details-key col-sm-3 text-end">User ID :</span>
+        <span class="details-value col-sm-3  text-start">{{data.userId}}</span>
+      </div>
+  
+      <div class="ride-details row align-items-center">
+        <span class="details-key col-sm-3 text-end">User Name :</span>
+        <span class="details-value col-sm-3  text-start">{{ data.userDetails.username }}</span>
+        <img class="details-key col-sm-3 fit-image" src= "http://localhost:4000/{{ data.userDetails.profile }}" alt="user-profile">
+
+      </div>
+
+      <div class="ride-details row align-items-center">
+        <span class="details-key col-sm-3 text-end">Pickup Location:</span>
+        <span class="details-value col-sm-3 text-start">{{data.startLocation}}</span>
+      </div>
+  
+      <div class="ride-details row align-items-center">
+        <span class="details-key col-sm-3 text-end">Drop-off Location:</span>
+        <span class="details-value col-sm-3 text-start">{{data.endLocation}}</span>
+      </div>
+  
+      <div class="ride-details row align-items-center">
+        <span class="details-key col-sm-3 text-end">Way Point :</span>
+        <span class="details-value col-sm-3 text-start" *ngIf="data.wayPoints && data.wayPoints.length > 0; else noWayPoints">{{ data.wayPoints }}</span>
+        <ng-template #noWayPoints>
+          <span class="details-value col-sm-3 text-start">No way point</span>
+        </ng-template>
+      </div>
+  
+      <div class="ride-details row align-items-center">
+        <span class="details-key col-sm-3 text-end">Service Type :</span>
+        <span class="details-value col-sm-3  text-start">{{data.serviceType}}</span>
+        <img class="details-key col-sm-3 fit-image" src= "http://localhost:4000/{{ data.vehicleDetails.vehicleImage }}" alt="service-photo">
+
+      </div>
+
+      <div class="ride-details row align-items-center">
+        <span class="details-key col-sm-3 text-end">Total Distance :</span>
+        <span class="details-value col-sm-3  text-start">{{data.totalDistance}} Km</span>
+      </div>
+  
+      <div class="ride-details row align-items-center">
+        <span class="details-key col-sm-3 text-end">Estimatetd Time :</span>
+        <span class="details-value col-sm-3  text-start">{{data.estimateTime}}</span>
+      </div>
+  
+      <div class="ride-details row align-items-center">
+        <span class="details-key col-sm-3 text-end">Estimated Fare :</span>
+        <span class="details-value col-sm-3  text-start">₹ {{data.estimateFare}}</span>
+      </div>
+      
+
+  
+      
+      <div class="map-container border">
+        <div id="map"></div>
+      </div>
+
+
+      <!-- Add more ride details here -->
+    </div>
+    
+    <div mat-dialog-actions>
+      <button class="info-button" mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+    </div>
+  </div>
+
+

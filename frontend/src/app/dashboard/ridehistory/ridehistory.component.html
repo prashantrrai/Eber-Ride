@@ -67,21 +67,21 @@
               </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let ride of ridesArray |  paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index">
+              <tr *ngFor="let ride of ridesArray |  paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index" (click)="openInfoDialog(ride)">
 
-                    <td>{{ ride._id }}</td>
-                    <!-- <td>{{ ride.userId }}</td> -->
-                    <td>{{ ride.userDetails.username }}</td>
-                    <td>{{ ride.rideDate }}</td>
-                    <td class="fixed-width">{{ ride.startLocation }}</td>
-                    <td class="fixed-width">{{ ride.endLocation }}</td>
-                    <!-- <td>{{ ride.driverDetails.drivername}}</td> -->
-                    <td>{{ ride.serviceType }}</td>
-                    <td>{{ ride.paymentOption }}</td>
+                  <td>{{ ride._id }}</td>
+                  <!-- <td>{{ ride.userId }}</td> -->
+                  <td>{{ ride.userDetails.username }}</td>
+                  <td>{{ ride.rideDate }}</td>
+                  <td class="fixed-width">{{ ride.startLocation }}</td>
+                  <td class="fixed-width">{{ ride.endLocation }}</td>
+                  <!-- <td>{{ ride.driverDetails.drivername}}</td> -->
+                  <td>{{ ride.serviceType }}</td>
+                  <td>{{ ride.paymentOption }}</td>
 
-                    <td class="badge" [ngClass]="{'badge-success': ride.status === 7, 'badge-danger': ride.status === 3}">
-                    {{ statusLabels[ride.status] || 'unknown' }}
-                    </td>
+                  <td class="badge" [ngClass]="{'badge-success': ride.status === 7, 'badge-danger': ride.status === 3}">
+                  {{ statusLabels[ride.status] || 'unknown' }}
+                  </td>
                       
               </tr>
             </tbody>

@@ -16,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
 import { SuccessDialogComponent } from './shared/success-dialog/success-dialog.component';
 import { InfoDialogComponent } from './shared/info-dialog/info-dialog.component';
 import { AssignDriverComponent } from './shared/assign-driver/assign-driver.component';
+import { RidehistorydialogComponent } from './shared/ridehistorydialog/ridehistorydialog.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AssignDriverComponent } from './shared/assign-driver/assign-driver.comp
     SuccessDialogComponent,
     InfoDialogComponent,
     AssignDriverComponent,
+    RidehistorydialogComponent,
   ],
   imports: [
     BrowserModule,
