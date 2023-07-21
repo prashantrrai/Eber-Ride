@@ -4,7 +4,7 @@ const driverModel = require('../models/driver')
 const createrideModel = require("../models/createride")
 const mongoose = require("mongoose");
 const cron = require('node-cron');
-
+let AssignedDriverData = []
 
 
 async function initializeSocket(server) {
@@ -88,7 +88,7 @@ async function initializeSocket(server) {
     
         ];
         const driverdata = await driverModel.aggregate(aggregationPipeline).exec()
-        console.log(driverdata , "driverdataresponse");
+        // console.log(driverdata , "driverdataresponse");
 
         io.emit('driverdata', driverdata , {success: true, message: "Driver Data Patched in Assign Dialog Box", driverdata});
         
@@ -96,17 +96,17 @@ async function initializeSocket(server) {
           console.log(error);
           io.emit('driverdata', { success: false,  message: "Driver Data Not Patched in Assign Dialog Box", error: error.message });
       }
-    })
+      })
 
       // ------------------------------------------------SHOW DRIVER DATA AFTER ASSIGN-----------------------------------------------//
       socket.on("AssignedData", async(data) => {
         const rideId = data.rideId
         const driverId = data.driverId
-        console.log(data);
-        
+        // console.log(data);
         try {
           const driver =  await driverModel.findByIdAndUpdate(driverId, { assign: "1" }, { new: true });
-          const updatedRide = await  createrideModel.updateMany({ _id: rideId }, { $set: { driverId: driverId, status: 1, assigningTime: Date.now() } }, { new: true })
+          const updatedRide = await  createrideModel.findByIdAndUpdate({ _id: rideId }, { $set: { driverId: driverId, status: 1, assigningTime: Date.now() } }, { new: true })
+          // console.log("ndkfnkjnsjkn",updatedRide);
 
           const alldata = await createrideModel.aggregate([
             {
@@ -169,13 +169,16 @@ async function initializeSocket(server) {
             {
               $unwind: "$vehicleDetails"
             },
-          ]);
-        
+       
+          ]); 
 
-          console.log(alldata);
+          // console.log(alldata);
+
+          AssignedDriverData.push(alldata);
+          // console.log(AssignedDriverData);
 
           io.emit('data', { success: true, message: 'Driver Assigned Successfully.', alldata});
-          
+
         } catch (error) {
             console.log(error);
             io.emit('data', { success: false, message: 'Sorry Driver Not Assigned', error: error.message });
@@ -188,9 +191,6 @@ async function initializeSocket(server) {
       socket.on("runningrequest", async() => {
 
         try {
-
-          // const driverdata = await driverModel.find({ assign: "1" });
-          // const ridedata = await createrideModel.find({  driverId: { $exists: true } });
 
           const alldata = await createrideModel.aggregate([
             {
@@ -275,7 +275,7 @@ async function initializeSocket(server) {
 
           try {
 
-            const ridedata = await createrideModel.updateMany({ driverId: data.driverId },  { $unset: { driverId: "" }, $set: { status: 0 } });
+            const ridedata = await createrideModel.updateMany({ driverId: data.driverId },  { $unset: { driverId: "" , assigningTime: ""}, $set: { status: 0 } });
             const driverdata = await driverModel.updateMany({ _id: data.driverId }, { $set: { assign: "0" } });
         
         
@@ -307,7 +307,7 @@ async function initializeSocket(server) {
       
         // ------------------------------------------------RIDE CANCEL CONFIRM-RIDE TABLE-----------------------------------------------//
         socket.on("cancelride", async (rideId) => {
-          console.log(rideId);
+          // console.log(rideId);
 
           try {
 
@@ -500,13 +500,40 @@ async function initializeSocket(server) {
         
         
       });
-      cron.schedule('*/10 * * * * *', myTask);
-      function myTask() {
-          console.log('Task executed at: ', new Date().toLocaleString());
+
+      
+      // let previousRideData = null;
+
+      cron.schedule(" * * * * *", async () => {
+        await myTask();
+      });
+
+
+      async function myTask() {
+        try {
+
+          for (let data of AssignedDriverData) {
+            console.log(data);
+
+            let currenttime = Date.now()
+            let assignedTime = Date.now()
+            let updatedTime = assignedTime - 5000;
+            ridetimeout = currenttime - updatedTime
+
+
+            // if (ridetimeout <= 10000) {
+            //   const ridenewdata = await createrideModel.updateMany({},  { $unset: { driverId: "" , assigningTime: ""}, $set: { status: 0 } })
+            //   const drivernewdata = await driverModel.updateMany({}, { $set: { assign: "0" } })
+
+            //   console.log("hii");
+            // }
+          }
+        } catch (error) {
+          console.error("Error in myTask:", error);
         }
-};
+      };
 
-
+}
 
 // i want to use findquery inside this cron to check any update if in my db, like if my driver is assigned then its assign field value will change from 0 to 1 and by detecting that change through find query I want to send the request to driver in running request compoennt where driver have option to accept or reject ride if no resposne within a particular time interval by driver then timeout will happen and ride will be again send to confirm ride component by changing the status field value  from 1 to 0 and by also setting the drievrId to null and changing driver collection also setting the assign field value from now 1 to 0 again to make the driver free again
 

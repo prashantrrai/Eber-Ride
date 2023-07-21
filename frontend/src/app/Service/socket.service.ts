@@ -76,7 +76,7 @@ export class SocketService implements OnDestroy{
     onFinalassignedDriverData(data: String): Observable<any> {
       return new Observable((observer) => {
         this.socket.on('data', (data: any) => {
-          console.log(data);
+          console.log("ichsohiedkvhhedhocvhwsfi",data);
   
           observer.next(data);
         });

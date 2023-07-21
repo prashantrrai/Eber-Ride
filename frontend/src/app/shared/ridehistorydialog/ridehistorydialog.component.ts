@@ -102,7 +102,7 @@ export class RidehistorydialogComponent implements OnInit {
       geodesic: true,
       strokeColor: '#0048ff',
       strokeOpacity: 1.0,
-      strokeWeight: 2,
+      strokeWeight: 3,
     };
 
     // Draw the polyline on the map
@@ -118,12 +118,6 @@ export class RidehistorydialogComponent implements OnInit {
     this.addMarker(startLatLng, 'Start Location');
     this.addMarker(endLatLng, 'End Location');
 
-    // if (this.data.wayPoints && this.data.wayPoints.length > 0) {
-    //   this.data.wayPoints.forEach((waypoint: any) => {
-    //     const waypointLatLng = new google.maps.LatLng(waypoint.lat, waypoint.lng);
-    //     this.addMarker(waypointLatLng, 'Waypoint');
-    //   });
-    // }
   }
 
 

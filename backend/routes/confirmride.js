@@ -26,7 +26,7 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
     let sortOrder = req.body.sortOrder || "desc";
     let skip = (page - 1) * limit;
 
-    console.log(req.body);
+    // console.log(req.body);
 
     const matchStage = {};
     if (search) {
@@ -68,7 +68,7 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
     } else {
       sortCriteria = {  createdAt: 1 };
     }
-    console.log(sortCriteria);
+    // console.log(sortCriteria);
     
     const aggregationPipeline = [
       // {

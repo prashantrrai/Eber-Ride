@@ -182,7 +182,7 @@ export class RidehistoryComponent implements OnInit {
 
   convertToCSV(data: any[]) {
       const csvData = [
-        ['id','Username', 'User Email', 'Start Location', 'End Location', 'Way Points', 'Ride Date', 'Ride Time', 'Time', 'Service Type', 'Payment Option', 'Estimate Time', 'Estimate Fare' , 'Status']
+        ['Req. Id','Username', 'User Email', 'Start Location', 'End Location', 'Way Points', 'Ride Date', 'Ride Time', 'Time', 'Service Type', 'Payment Option', 'Estimate Time', 'Estimate Fare' , 'Status']
       ];
     
 
