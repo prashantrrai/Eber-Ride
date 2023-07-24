@@ -35,7 +35,7 @@ export class RunningrequestService {
 
 
     //--------------------------REJECT RIDE BY DRIVER------------------------------//
-    listenrejectRunningRequest(notrunningdata: string, data: any): Observable<any>  {
+    listenrejectRunningRequest(notrunningdata: string): Observable<any>  {
 
       return new Observable(observer => {
         this.socket.on(notrunningdata, (data: any) => {
@@ -73,4 +73,32 @@ export class RunningrequestService {
       console.log(data);
       this.socket.emit(acceptrunningreuest, data)
     }
+
+
+    //------------TIMEOUT RUNNING REQUEST--------------------//
+    listeningrunningtimeoutinRR(){
+      return new Observable(observer => {
+        this.socket.on("timeoutdata", (data: any) => {
+          console.log(data)
+
+          observer.next(data)
+        })
+      })
+    }
+
+
+    //------------TIMEOUT RUNNING REQUEST--------------------//
+    listeningtimeoutstatusinCFR(){
+      return new Observable(observer => {
+        this.socket.on("timeoutdata", (data: any) => {
+          console.log(data)
+
+          observer.next(data)
+        })
+      })
+    }
+
+
+
+
 }

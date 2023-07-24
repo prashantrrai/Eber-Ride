@@ -3,6 +3,8 @@ const app = express();
 require("dotenv").config();
 const PORT = process.env.PORT || 8080;
 
+const SettingModel = require('./models/setting');
+
 const http = require('http').Server(app);
 const initializeSocket = require("./utils/socket")
 
@@ -29,6 +31,9 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+const fs = require('fs');
+const { promisify } = require('util');
+const writeFileAsync = promisify(fs.writeFile);
 
 const fetchAdmin = require("./routes/adminfetch");
 const loginRoutes = require("./routes/adminlogin");
@@ -69,6 +74,30 @@ app.get("/", async (req, res) => {
     "Vehicle Data": `http:localhost:4000/vehicledata`,
   });
 });
+
+// --------------------------------------------GET SETTING DATA API---------------------------------------------
+// app.get('/', async (req, res) => {
+//   try {
+//       const settingData = await SettingModel.find();
+//       // console.log(settingData);
+
+//       if (settingData.length > 0) {
+//         const { ridetimeout } = settingData[0].ridetimeout;
+//         await writeFileAsync('.env', `RIDETIMEOUT=${ridetimeout}\n`, { flag: 'a' });
+//         // dotenv.config(); 
+//       }
+
+//       res.status(200).json({
+//           success: true,
+//           message: "Setting Data Found Successfully",
+//           settingData,
+//           });
+//   } catch (error) {
+//       console.log(error);
+//       res.status(500).json({ success: false, message: error });
+//   }
+// })
+// console.log(process.env.RIDETIMEOUT);
 
 // io.on('connection', (socket) => {
 //   console.log('a user connected');

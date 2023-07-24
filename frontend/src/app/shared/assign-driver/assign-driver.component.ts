@@ -26,6 +26,7 @@ export class AssignDriverComponent implements OnInit {
   cityId: any;
   serviceId: any;
   rejectdriver:any;
+  driver: any
 
   constructor(
     public dialog: MatDialog,
@@ -64,7 +65,7 @@ export class AssignDriverComponent implements OnInit {
         this._socketService.getAssignedDriverData(this.cityId, this.serviceId)
 
         this._socketService.onAssignedDriverData().subscribe((driverData) => {
-          // console.log(driverData);
+          console.log(driverData);
           if (driverData) {
 
             this.driverArray = driverData;
@@ -85,6 +86,7 @@ export class AssignDriverComponent implements OnInit {
 
         this.driverArray = driverData;
         // console.log(this.driverArray);
+        this.driver = driverData
 
       } else {
         console.log('Error retrieving assigned driver data:', driverData);
@@ -147,7 +149,7 @@ export class AssignDriverComponent implements OnInit {
 
   //when data driver is free then that time this process run 
   gettingrejectrunningrequestdata(){
-  this._runningRequestService.listenrejectRunningRequest('notrunningdata',this.rejectdriver).subscribe((response: any)=> {
+  this._runningRequestService.listenrejectRunningRequest('notrunningdata').subscribe((response: any)=> {
     // Handle successful response coming from backend that is ON
 
     this.getDriverData();
@@ -155,5 +157,14 @@ export class AssignDriverComponent implements OnInit {
   );
   }
 
+  NearestDriver(driver: any) {
+    console.log(driver);
+    const alldata = {
+      ridedata : this.data,
+      driverdata : driver
+     }
+
+    this.dialogRef.close(alldata);
+  }
   
 }

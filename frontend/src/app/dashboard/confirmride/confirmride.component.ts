@@ -7,6 +7,7 @@ import { InfoDialogComponent } from 'src/app/shared/info-dialog/info-dialog.comp
 import { AssignDriverComponent } from 'src/app/shared/assign-driver/assign-driver.component';
 import { SocketService } from 'src/app/Service/socket.service';
 import { VehicleService } from 'src/app/Service/vehicle.service';
+import { RunningrequestService } from 'src/app/Service/runningrequest.service';
 
 @Component({
   selector: 'app-confirmride',
@@ -40,12 +41,16 @@ export class ConfirmrideComponent {
     private _confirmride: ConfirmrideService,
     private dialog: MatDialog,
     private _socket: SocketService,
-    private _vehicleservice: VehicleService
+    private _vehicleservice: VehicleService,
+    private _running : RunningrequestService
   ){}
 
   ngOnInit(): void{
     this.getrideData()
     this.getVehicle()
+    this.gettingstatusafterassigninCFR()
+    this.gettingstatusafterrejectinCFR()
+    this.gettingstatusafterTimeout()
   }
 
   //-------------------------------------------- GET RIDE DATA with SEARCH, PAGINATION, FILTER   ---------------------------------------------
@@ -192,12 +197,37 @@ export class ConfirmrideComponent {
 
     // console.log("Driver ID:",this.driverId,"RIDE ID:",this.rideId);
     //==========emit wala function=============
+    
     this._socket.FinalassignedDriver(this.driverId  , this.rideId)
-
-    });
-
-  }
+    
+  });
   
+}
+
+  //-----------------SHOW UPDATED STATUS IN CFR AFTER ASSIGN BUTTON CLICK-------------------------//
+  gettingstatusafterassigninCFR(){
+    this._socket.onFinalassignedDriverData('data').subscribe((response: any)=> {
+
+      this.getrideData();
+    })
+  }
+
+    //-----------------SHOW UPDATED STATUS IN CFR AFTER REJECT BUTTON CLICK-------------------------//
+    gettingstatusafterrejectinCFR(){
+      this._running.listenrejectRunningRequest('notrunningdata').subscribe((response: any)=> {
+
+        this.getrideData();
+      })
+    }
+
+    //-----------------SHOW UPDATED STATUS IN CFR AFTER TIME-OUT-------------------------//
+    gettingstatusafterTimeout(){
+      this._running.listeningtimeoutstatusinCFR().subscribe((response: any)=> {
+
+        this.getrideData();
+      })
+    }
+      
 
   //--------------------------------CANCEL RIDE------------------------------------------//
   cancelride(rideId: any){

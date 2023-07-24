@@ -1,8 +1,10 @@
+require('dotenv').config()
+const RideTimeOut = process.env.RIDETIMEOUT 
+console.log(RideTimeOut);
 const  socketio  = require('socket.io');
-// const { mongoose } = require('mongoose')
+const mongoose = require("mongoose");
 const driverModel = require('../models/driver')
 const createrideModel = require("../models/createride")
-const mongoose = require("mongoose");
 const cron = require('node-cron');
 let AssignedDriverData = []
 
@@ -105,6 +107,7 @@ async function initializeSocket(server) {
         // console.log(data);
         try {
           const driver =  await driverModel.findByIdAndUpdate(driverId, { assign: "1" }, { new: true });
+          await driver.save()
           const updatedRide = await  createrideModel.findByIdAndUpdate({ _id: rideId }, { $set: { driverId: driverId, status: 1, assigningTime: Date.now() } }, { new: true })
           // console.log("ndkfnkjnsjkn",updatedRide);
 
@@ -174,7 +177,7 @@ async function initializeSocket(server) {
 
           // console.log(alldata);
 
-          AssignedDriverData.push(alldata);
+          // AssignedDriverData.push(alldata);
           // console.log(AssignedDriverData);
 
           io.emit('data', { success: true, message: 'Driver Assigned Successfully.', alldata});
@@ -492,19 +495,10 @@ async function initializeSocket(server) {
           }
         });
 
-        
-        
-        socket.on("disconnect", () => {
-          console.log("client Disconnected");
-        });
-        
-        
-      });
 
-      
-      // let previousRideData = null;
-
-      cron.schedule(" * * * * *", async () => {
+      cron.schedule("* * * * * *", async () => {
+          // let crontime = Date.now()
+          // console.log(crontime);
         await myTask();
       });
 
@@ -512,26 +506,40 @@ async function initializeSocket(server) {
       async function myTask() {
         try {
 
-          for (let data of AssignedDriverData) {
-            console.log(data);
-
-            let currenttime = Date.now()
-            let assignedTime = Date.now()
-            let updatedTime = assignedTime - 5000;
-            ridetimeout = currenttime - updatedTime
+          const asigningrides = await createrideModel.find({ status:1 })
+          // console.log(asigningrides);
 
 
-            // if (ridetimeout <= 10000) {
-            //   const ridenewdata = await createrideModel.updateMany({},  { $unset: { driverId: "" , assigningTime: ""}, $set: { status: 0 } })
-            //   const drivernewdata = await driverModel.updateMany({}, { $set: { assign: "0" } })
+          if (asigningrides.length>0){
+            for (let data of asigningrides) {
+              // console.log("515",data);
 
-            //   console.log("hii");
-            // }
+              let currenttime = Date.now()
+              let assignedTime = data.assigningTime
+              resulttimeout = currenttime/1000 - assignedTime/1000
+              // console.log("515ttttttttttt", resulttimeout);
+  
+  
+              if (resulttimeout >= RideTimeOut) {
+                // console.log(resulttimeout ,"resultttttt");
+                const ridenewdata = await createrideModel.findByIdAndUpdate(data._id ,  { $unset: { driverId: "" , assigningTime: ""}, $set: { status: 0 } })
+                const drivernewdata = await driverModel.findByIdAndUpdate( data.driverId, { $set: { assign: "0" } })
+  
+                io.emit('timeoutdata', { success: true, message: 'Sorry Time Out.', ridenewdata, drivernewdata});
+              }
+            }
           }
         } catch (error) {
           console.error("Error in myTask:", error);
         }
       };
+        
+        socket.on("disconnect", () => {
+          console.log("client Disconnected");
+        });
+        
+      });
+
 
 }
 

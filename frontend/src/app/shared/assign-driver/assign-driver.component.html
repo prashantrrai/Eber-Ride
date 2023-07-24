@@ -27,11 +27,13 @@
           <td *ngIf="driver.servicetype != null">{{driver.serviceDetails.vehicleName}}</td>
           <td> 
               <button class="btn btn-primary" (click)="assignDriver(driver)" >Assign Driver</button>
+              <!-- <button class="btn btn-primary" (click)="NearestDriver(driver)" >Nearest Driver</button> -->
           </td>
         </tr>
         </tbody>
       </table>
     </div>
+
 
     <!-- ------------------------------------------RIDE DETAILS------------------------------------------------- -->
     <div class="info-component">
@@ -110,7 +112,7 @@
 
       <div mat-dialog-actions>
         <button class="info-button" mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
-        <button class="info-button nearest-driver-button" mat-button mat-dialog-close cdkFocusInitial >Nearest Driver</button>
+        <button class="info-button nearest-driver-button" mat-button mat-dialog-close cdkFocusInitial (click)="NearestDriver(driver)">Nearest Driver</button>
       </div>
     </div>
 </div>

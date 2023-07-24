@@ -77,8 +77,8 @@
                         </td>
                           
                         <td>
-                            <button class="btn btn-primary" *ngIf="assignedDriverName">{{ assignedDriverName }}</button>
-                            <button class="btn btn-primary"  (click)="openAssignDriverDialog(ride)" *ngIf="!assignedDriverName">Assign Driver</button>
+                            <button class="btn btn-success" *ngIf="ride.driverId">{{ ride.driverDetails.drivername }}</button>
+                            <button class="btn btn-primary"  (click)="openAssignDriverDialog(ride)" *ngIf="!ride.driverId">Assign Driver</button>
                         </td>
                         <td>
                             <button [matMenuTriggerFor]="lvl2master" color="accent"

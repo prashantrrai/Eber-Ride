@@ -2,6 +2,11 @@ const express = require('express');
 const settingRouter = express.Router();
 const SettingModel = require('../models/setting');
 
+require("dotenv").config();
+
+const fs = require('fs');
+const { promisify } = require('util');
+const writeFileAsync = promisify(fs.writeFile);
 
 
 // --------------------------------------------POST SETTING DATA API---------------------------------------------
@@ -34,6 +39,7 @@ settingRouter.get('/settingdata', async (req, res) => {
     try {
         const settingData = await SettingModel.find();
         // console.log(settingData);
+        
         res.status(200).json({
             success: true,
             message: "Setting Data Found Successfully",
@@ -64,6 +70,19 @@ settingRouter.put("/updatesetting", async (req, res) => {
 
       await settingdata.save()
       console.log(settingdata)
+
+      if (settingdata) {
+        const ridetimeout = settingdata.ridetimeout;
+        
+        const existingEnvFile = fs.readFileSync('.env', 'utf-8');
+        // const newline = existingEnvFile.endsWith('\n') ? '' : '\n';
+        const updatedEnvFile = existingEnvFile.replace(/RIDETIMEOUT=\d+/, `RIDETIMEOUT=${ridetimeout}`);
+        await writeFileAsync('.env', updatedEnvFile);
+        // await writeFileAsync('.env', `RIDETIMEOUT=${ridetimeout}\n`, { flag: 'a' });
+        // dotenv.config(); 
+      }
+
+      
       res.status(200).json({
           success: true,
           message: "Setting Data Updated Successfully",
@@ -71,7 +90,7 @@ settingRouter.put("/updatesetting", async (req, res) => {
         });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ success: false, message: error });
+      res.status(500).json({ success: false, message: error, error: error.message });
     }
   });
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { RunningrequestService } from 'src/app/Service/runningrequest.service';
 import { SocketService } from 'src/app/Service/socket.service';
 
@@ -15,7 +16,9 @@ export class RunningrequestComponent {
 
   constructor(
     private _socketservice: SocketService,
-    private _runningRequestService: RunningrequestService
+    private _runningRequestService: RunningrequestService,
+    private toastr: ToastrService,
+
   ) { }
 
   ngOnInit() {
@@ -23,7 +26,7 @@ export class RunningrequestComponent {
     this.assigneddriverfromAssignDialogBox();
     this.afterrejectrunningrequest();
     this.afteracceptrunningrequest()
-
+    this.timeoutrunningreq()
   }
 
   getRunningData() {
@@ -87,11 +90,11 @@ export class RunningrequestComponent {
 
     // AFTER REJECTING RIDE
   afterrejectrunningrequest() {
-    const data = {
-      rideId: this.rideId,
-      driverId: this.driverId
-    }
-    this._runningRequestService.listenrejectRunningRequest('notrunningdata', data).subscribe((response: any) => {
+    // const data = {
+    //   rideId: this.rideId,
+    //   driverId: this.driverId
+    // }
+    this._runningRequestService.listenrejectRunningRequest('notrunningdata').subscribe((response: any) => {
       this.getRunningData()
     }
     );
@@ -100,7 +103,7 @@ export class RunningrequestComponent {
     // AFTER ACCEPTING RIDE
     afteracceptrunningrequest() {
 
-      this._runningRequestService.listenacceptrunningrequest('notrunningdata').subscribe((response: any) => {
+      this._runningRequestService.listenacceptrunningrequest('acceptedrunningrequestdata').subscribe((response: any) => {
         this.getRunningData()
       }
       );
@@ -114,6 +117,15 @@ export class RunningrequestComponent {
     })
   }
 
+  //------------TIMEOUT RUNNING REQUEST--------------------//
+  timeoutrunningreq() {
+    this._runningRequestService.listeningrunningtimeoutinRR().subscribe((res: any) => {
+      console.log("socket called", res);
+      
+      this.getRunningData()
+      this.toastr.success("Sorry! Ride Timeout")
+    })
+  }
 
 
 }

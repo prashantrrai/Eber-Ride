@@ -50,7 +50,7 @@ const createRideSchema = mongoose.Schema(
       default: 0,
     },
     assigningTime: {
-      type: Date
+      type: Number
     },
     
     nearest: {

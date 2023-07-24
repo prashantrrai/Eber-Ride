@@ -19,7 +19,7 @@
             <div class="form-group row align-items-center mb-2">
                 <label class="col-sm-3 col-form-label text-end">Stop</label>
                 <div class="col-sm-9 form-custom-select">
-                  <select class="form-control" id="timeout" name="stop" #stop (change)="onSelectedStop(stop.value)" formControlName="stop">
+                  <select class="form-control" id="stop" name="stop" #stop (change)="onSelectedStop(stop.value)" formControlName="stop">
                     <option value="">Select Stop</option>
                     <option [value]="stop" *ngFor="let stop of stopArray">{{stop}}</option>
                   </select>
