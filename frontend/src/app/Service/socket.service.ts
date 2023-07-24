@@ -84,6 +84,23 @@ export class SocketService implements OnDestroy{
     }
 
 
+    //-----------------------------------NEAREST DRIVER FROM DIALOG REF BUTTON-------------------------------------//
+    emitnearestdriver( driverId: string , rideId: string ): void {
+      // console.log(driverId, rideId);
+
+      this.socket.emit("nearestdata", {driverId, rideId});   
+    }
+
+    listeningnearestdriver(): Observable<any> {
+      return new Observable((observer) => {
+        this.socket.on('data', (data: any) => {
+          console.log(data);
+  
+          observer.next(data);
+        });
+      });
+    }
+
 
 
 
