@@ -8,3 +8,32 @@ img{
 .container{
     width: 100%;
 }
+
+.statusbadge{
+    /* background-color: #009900; */
+    /* background-color: #00b200; */
+    font-size: 14px;
+    padding: 5px;
+    border-radius: 3px;
+    font-weight: 900;
+  }
+  
+  .badge-success {
+    background-color: rgb(73, 182, 0);
+    color: white;
+  }
+  .badge-info {
+    background-color: rgb(194, 0, 184);
+    color: rgb(255, 255, 255);
+  }
+  .badge-warning {
+    background-color: rgb(228, 102, 0);
+    color: rgb(255, 255, 255);
+  }
+  .infobadge{
+    box-shadow: inset 2px 2px 4px 2px rgb(109, 98, 250);
+    border: none;
+    font-size: 16px;
+    color: black;
+    font-weight: 700;
+  }

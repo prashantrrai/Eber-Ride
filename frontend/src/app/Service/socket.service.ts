@@ -67,7 +67,7 @@ export class SocketService implements OnDestroy{
 
 
     //-----------------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-------------------------------------//
-    FinalassignedDriver( driverId: string , rideId: string ): void {
+    emitassignedDriver( driverId: string , rideId: string ): void {
       // console.log(driverId, rideId);
 
       this.socket.emit("AssignedData", {driverId, rideId});   

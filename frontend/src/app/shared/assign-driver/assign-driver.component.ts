@@ -166,5 +166,10 @@ export class AssignDriverComponent implements OnInit {
 
     this.dialogRef.close(alldata);
   }
+
+    // --------------------------NEAREST ASSIGN DRIVER FROM DIALOG REF BUTTON-----------------------//
+    nearestassigndriverdata(){
+      
+    }
   
 }

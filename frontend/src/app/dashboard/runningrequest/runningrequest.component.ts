@@ -120,7 +120,7 @@ export class RunningrequestComponent {
   //------------TIMEOUT RUNNING REQUEST--------------------//
   timeoutrunningreq() {
     this._runningRequestService.listeningrunningtimeoutinRR().subscribe((res: any) => {
-      console.log("socket called", res);
+      // console.log("socket called", res);
       
       this.getRunningData()
       this.toastr.success("Sorry! Ride Timeout")

@@ -196,10 +196,10 @@ export class ConfirmrideComponent {
     this.rideId = this.driverdataArray.ridedata._id
 
     // console.log("Driver ID:",this.driverId,"RIDE ID:",this.rideId);
-    //==========emit wala function=============
-    
-    this._socket.FinalassignedDriver(this.driverId  , this.rideId)
-    
+
+    //==========emit data into socket.js when dialog box close=============
+    this._socket.emitassignedDriver(this.driverId  , this.rideId)
+    this._socket.emitnearestdriver(this.driverId  , this.rideId)
   });
   
 }
@@ -212,21 +212,21 @@ export class ConfirmrideComponent {
     })
   }
 
-    //-----------------SHOW UPDATED STATUS IN CFR AFTER REJECT BUTTON CLICK-------------------------//
-    gettingstatusafterrejectinCFR(){
-      this._running.listenrejectRunningRequest('notrunningdata').subscribe((response: any)=> {
+  //-----------------SHOW UPDATED STATUS IN CFR AFTER REJECT BUTTON CLICK-------------------------//
+  gettingstatusafterrejectinCFR(){
+    this._running.listenrejectRunningRequest('notrunningdata').subscribe((response: any)=> {
 
-        this.getrideData();
-      })
-    }
+      this.getrideData();
+    })
+  }
 
-    //-----------------SHOW UPDATED STATUS IN CFR AFTER TIME-OUT-------------------------//
-    gettingstatusafterTimeout(){
-      this._running.listeningtimeoutstatusinCFR().subscribe((response: any)=> {
+  //-----------------SHOW UPDATED STATUS IN CFR AFTER TIME-OUT-------------------------//
+  gettingstatusafterTimeout(){
+    this._running.listeningtimeoutstatusinCFR().subscribe((response: any)=> {
 
-        this.getrideData();
-      })
-    }
+      this.getrideData();
+    })
+  }
       
 
   //--------------------------------CANCEL RIDE------------------------------------------//
