@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config()
-console.log(process.env.EMAIL_USER);
+// console.log(process.env.EMAIL_USER);
 
 
 // Nodemailer configuration using Gmail SMTP

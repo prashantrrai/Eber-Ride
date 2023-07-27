@@ -9,6 +9,10 @@ const cron = require("node-cron");
 let AssignedDriverData = [];
 const transporter = require("./nodemailer");
 // const email = require('./email')
+const sendSMS = require('./twilio')
+
+
+
 
 async function initializeSocket(server) {
   const io = socketio(server, { cors: { origin: ["http://localhost:4200"] } });
@@ -453,13 +457,8 @@ async function initializeSocket(server) {
       // const driverId = data.driverId;
 
       try {
-        const ridedata = await createrideModel.findByIdAndUpdate( data.rideId ,
-          { $set: { status: 7 } }
-        );
-        const driverdata = await driverModel.findByIdAndUpdate(data.driverId ,
-          { $set: { assign: "0" } }
-        );
-        // console.log("462",ridedata, driverdata);
+        const ridedata = await createrideModel.findByIdAndUpdate( data.rideId , { $set: { status: 7 }},{ new: true } );
+        const driverdata = await driverModel.findByIdAndUpdate(data.driverId , { $set: { assign: "0" } }, {new: true});
 
         io.emit("acceptedrunningrequestdata",{ ridedata, driverdata }, { success: true, message: "Ride Request Accepted" } );
 
@@ -467,8 +466,12 @@ async function initializeSocket(server) {
 
 
         const userEmail = "prashant.elluminatiinc@gmail.com";
-        console.log(userEmail);
         transporter.sendWelcomeEmail(userEmail, tripDetails);
+
+        let toPhoneNumber = '+917359030960'
+        let status  = ridedata.status
+        sendSMS(toPhoneNumber, status)
+
 
       } catch (error) {
         console.error(error);

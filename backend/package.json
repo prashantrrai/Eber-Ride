@@ -24,6 +24,7 @@
     "node-cron": "^3.0.2",
     "nodemailer": "^6.9.4",
     "nodemon": "^2.0.22",
-    "socket.io": "^4.7.1"
+    "socket.io": "^4.7.1",
+    "twilio": "^4.14.1"
   }
 }
