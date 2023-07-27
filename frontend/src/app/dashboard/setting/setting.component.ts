@@ -17,6 +17,7 @@ export class SettingComponent {
   selectedStop: any;
   setting: any=[];
   id: any;
+  credentials: any[] = [];
 
   constructor(
     private _setting: SettingService,
@@ -27,6 +28,7 @@ export class SettingComponent {
 
   ngOnInit(): void {
     this.getsettingData()
+    this.getCredentials()
 
     this.settingForm = this.formBuilder.group({
       ridetimeout: ["", [Validators.required]],
@@ -105,6 +107,27 @@ export class SettingComponent {
 
   // --------------------------------------------UPDATE TIMEOUT FXN---------------------------------------------//
 
+
+
+
+  //----------------------------------GET CREDENTIALS FROM ENV--------------------------------------//
+  getCredentials(){
+    this._setting.getEnvData().subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.credentials = response
+        console.log(typeof(this.credentials));
+        
+        
+        
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+    });
+  }
+
+  //-------------------------------EXTRA COMMON CODE------------------------------------//
   resetTimer() {
     this.authService.resetInactivityTimer();
   }

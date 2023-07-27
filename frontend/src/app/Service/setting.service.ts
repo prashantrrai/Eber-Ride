@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class SettingService {
   updateSetting(formValues: any) {
     // console.log(formValues)
     return this.http.put<any>(`${this.serverUrl}/updatesetting`, formValues);
+  }
+
+  getEnvData(): Observable<any> {
+    return this.http.get<any>(`${this.serverUrl}/env`);
   }
 
 }
