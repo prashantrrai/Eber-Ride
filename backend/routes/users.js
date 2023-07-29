@@ -5,21 +5,23 @@ const userModel = require("../models/users");
 const multer = require('multer');
 const path = require('path');
 const profile_path = path.join(__dirname, "../Public/Profile");
+const transporter = require("../utils/nodemailer");
+const client = require('../utils/twilio')
 
 
   //---------------------------------------MULTER CODE FOR IMAGE UPLOAD---------------------------------------//
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      console.log(file)
+      // console.log(file)
       cb(null, profile_path);
     },
     
     filename: function (req, file, cb) {
       const ext = path.extname(file.originalname);
-      console.log(file)
+      // console.log(file)
       let fileName = file.fieldname + '-' + Date.now() + ext;
       req.body.profile = fileName
-      console.log(req.body.profile);
+      // console.log(req.body.profile);
       cb(null, fileName);
     
     }
@@ -66,19 +68,30 @@ const profile_path = path.join(__dirname, "../Public/Profile");
         newUser = new userModel({ username: username, useremail: useremail, countrycode: countrycode, userphone: userphone });
       }else{
         const profile = req.file.filename;
-        console.log(profile);
+        // console.log(profile);
         newUser = new userModel({ profile: profile, username: username, useremail: useremail, countrycode: countrycode, userphone: userphone });
       }
 
       await newUser.save()
-      console.log(newUser)
+      console.log("newUser============",newUser)
+
+      const userEmail = newUser.useremail;
+      transporter.sendWelcomeEmail(userEmail);
+
+      console.log( `${newUser.countrycode}${newUser.userphone}`);
+
+      let toPhoneNumber = `${newUser.countrycode}${newUser.userphone}`
+      client.sendWelcomeSMS(toPhoneNumber)
+
+
       res.status(201).json({ success: true, message: 'User Added Successfully', newUser});
+
     } catch (error) {
       if(error.keyPattern){
         console.log(error)
-        return res.status(500).json({success: false, message: "User Already Exists"});
+        return res.status(500).json({success: false, message: "User Already Exists", error: error.message});
       }
-    res.status(500).json({ success: false, message: error});
+    res.status(500).json({ success: false,  error: error.message});
     }
   });
 

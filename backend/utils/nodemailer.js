@@ -15,7 +15,28 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-function sendWelcomeEmail(userEmail, tripDetails) {
+
+//-------------------------------SEND WELCOME EMAIL--------------------------------//
+function sendWelcomeEmail(userEmail) {
+  const mailOptions = {
+      from: "info@ethereal.email",
+      to: userEmail,
+      subject : "Account Created Successfully",
+      text: `Welcome to Eber Ride! \n Your Account has been Successfully Created.` 
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('Error sending email:', error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+}
+
+
+//-------------------------------SEND RIDE STATUS EMAIL--------------------------------//
+function sendRideStatus(userEmail, tripDetails) {
     const mailOptions = {
         from: "info@ethereal.email",
         to: userEmail,
@@ -32,6 +53,7 @@ function sendWelcomeEmail(userEmail, tripDetails) {
       });
 }
 
+//-------------------------------SEND INVOICE DETAILS EMAIL--------------------------------//
 
 // function sendInvoiceEmail(userEmail, tripDetails) {
 //     const mailOptions = {
@@ -52,4 +74,4 @@ function sendWelcomeEmail(userEmail, tripDetails) {
   
   
 
-module.exports = {transporter, sendWelcomeEmail};
+module.exports = {transporter, sendWelcomeEmail, sendRideStatus};

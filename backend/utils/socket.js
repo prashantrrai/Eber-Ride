@@ -5,11 +5,12 @@ const socketio = require("socket.io");
 const mongoose = require("mongoose");
 const driverModel = require("../models/driver");
 const createrideModel = require("../models/createride");
+const userModel = require('../models/users')
 const cron = require("node-cron");
 let AssignedDriverData = [];
 const transporter = require("./nodemailer");
 // const email = require('./email')
-const sendSMS = require('./twilio')
+const client = require('./twilio')
 
 
 
@@ -460,17 +461,19 @@ async function initializeSocket(server) {
         const ridedata = await createrideModel.findByIdAndUpdate( data.rideId , { $set: { status: 7 }},{ new: true } );
         const driverdata = await driverModel.findByIdAndUpdate(data.driverId , { $set: { assign: "0" } }, {new: true});
 
-        io.emit("acceptedrunningrequestdata",{ ridedata, driverdata }, { success: true, message: "Ride Request Accepted" } );
+        console.log(driverdata);
 
         const tripDetails = {ridedata, driverdata};
 
 
-        const userEmail = "prashant.elluminatiinc@gmail.com";
-        transporter.sendWelcomeEmail(userEmail, tripDetails);
+        const userEmail = driverdata.driveremail;
+        transporter.sendRideStatus(userEmail, tripDetails);
 
-        let toPhoneNumber = '+917359030960'
+        let toPhoneNumber = `${driverdata.countrycode}${driverdata.driverphone}`
         let status  = ridedata.status
-        sendSMS(toPhoneNumber, status)
+        client.sendRideSMS(toPhoneNumber, status)
+
+        io.emit("acceptedrunningrequestdata",{ ridedata, driverdata }, { success: true, message: "Ride Request Accepted" } );
 
 
       } catch (error) {

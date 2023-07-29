@@ -4,10 +4,9 @@ import { RidehistoryService } from 'src/app/Service/ridehistory.service';
 import { RunningrequestService } from 'src/app/Service/runningrequest.service';
 import { Papa } from 'ngx-papaparse';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { AuthService } from 'src/app/Service/auth.service';
+import * as authService_1 from 'src/app/Service/auth.service';
 import { RidehistorydialogComponent } from 'src/app/shared/ridehistorydialog/ridehistorydialog.component';
 
-// import { createObjectCsvWriter } from 'csv-writer';
 
 @Component({
   selector: 'app-ridehistory',
@@ -48,7 +47,7 @@ export class RidehistoryComponent implements OnInit {
     private _runningrequest: RunningrequestService,
     private papa: Papa,
     private dialog: MatDialog,
-    private authService: AuthService,
+    private authService: authService_1.AuthService,
     ){}
 
   ngOnInit(){

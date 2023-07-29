@@ -18,6 +18,11 @@ export class SettingComponent {
   setting: any=[];
   id: any;
   credentials: any[] = [];
+  EMAIL_PASSWORD: any;
+  EMAIL_USER: any;
+  accountSid: any;
+  authToken: any;
+  twilioPhoneNumber: any;
 
   constructor(
     private _setting: SettingService,
@@ -36,6 +41,7 @@ export class SettingComponent {
     });
   }
 
+  //---------------------UPDATE RIDE TIMEOUT----------------------//
   onSelectedRideTimeout(ridetimeout: any) {
     this.selectedTimeout = ridetimeout;
     // console.log(ridetimeout);
@@ -52,6 +58,8 @@ export class SettingComponent {
     });
   }
 
+
+  //---------------------UPDATE STOPS----------------------//
   onSelectedStop(stop: any) {
     this.selectedStop = stop;
     // console.log(this.id);
@@ -69,6 +77,7 @@ export class SettingComponent {
     });
   }
 
+  //---------------------GET SETTING DATA----------------------//
   getsettingData(){
     this._setting.getStops().subscribe({
       next: (response: any) => {
@@ -105,21 +114,19 @@ export class SettingComponent {
   //   }
   // }
 
-  // --------------------------------------------UPDATE TIMEOUT FXN---------------------------------------------//
 
 
-
-
-  //----------------------------------GET CREDENTIALS FROM ENV--------------------------------------//
+  //----------------------------------GET CREDENTIALS FROM .ENV--------------------------------------//
   getCredentials(){
     this._setting.getEnvData().subscribe({
       next: (response: any) => {
         console.log(response);
         this.credentials = response
-        console.log(typeof(this.credentials));
-        
-        
-        
+        this.EMAIL_USER = response.EMAIL_USER;
+        this.EMAIL_PASSWORD = response.EMAIL_PASSWORD;
+        this.accountSid = response.accountSid;
+        this.authToken = response.authToken;
+        this.twilioPhoneNumber = response.twilioPhoneNumber;
       },
       error: (error: any) => {
         console.log(error);

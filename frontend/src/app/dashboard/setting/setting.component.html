@@ -27,15 +27,50 @@
                 </div>
             </div>
 
-            <div *ngFor="let data of credentials">
+            <div>
               <div class="form-group row align-items-center mb-2">
-                <label class="col-sm-3 col-form-label text-end">Ehereal Username</label>
+                <label class="col-sm-3 col-form-label text-end">Ethereal Username</label>
                 <div class="col-sm-9 form-custom-select">
-                  <input type="text" class="form-control" [(ngModel)]="data.EMAIL_USER">
+                  <input type="text" class="form-control" [value]="EMAIL_USER">
                 </div>
               </div>
             </div>
 
+            <div>
+              <div class="form-group row align-items-center mb-2">
+                <label class="col-sm-3 col-form-label text-end">Ethereal Password</label>
+                <div class="col-sm-9 form-custom-select">
+                  <input type="text" class="form-control" [value]="EMAIL_PASSWORD">
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="form-group row align-items-center mb-2">
+                <label class="col-sm-3 col-form-label text-end">Account Sid</label>
+                <div class="col-sm-9 form-custom-select">
+                  <input type="text" class="form-control" [value]="accountSid">
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="form-group row align-items-center mb-2">
+                <label class="col-sm-3 col-form-label text-end">Auth Token</label>
+                <div class="col-sm-9 form-custom-select">
+                  <input type="text" class="form-control" [value]="authToken">
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="form-group row align-items-center mb-2">
+                <label class="col-sm-3 col-form-label text-end">Twilio Phone Number</label>
+                <div class="col-sm-9 form-custom-select">
+                  <input type="text" class="form-control" [value]="twilioPhoneNumber">
+                </div>
+              </div>
+            </div>
 
           </form>
           <div class="d-flex justify-content-around bg-dark p-2 rounded mt-4 text-light">

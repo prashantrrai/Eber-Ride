@@ -121,12 +121,12 @@ export class UsersComponent {
           this.toastr.success(resp.message);
         },
         error: (error: any) => {
-          console.log(error.error.message);
-          this.toastr.error(error.message);
+          console.log(error);
+          this.toastr.warning(error.error.message);
         },
       });
     } else {
-      this.toastr.warning("All Fields are Required");
+      this.toastr.info("All Fields are Required");
     }
   }
 
