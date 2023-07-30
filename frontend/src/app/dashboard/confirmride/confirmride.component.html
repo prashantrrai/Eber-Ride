@@ -11,9 +11,6 @@
         <option value="">Select a vehicle</option>
         <option [value]="vehicle" *ngFor="let vehicle of filteredVehicles">{{vehicle}}</option>
       </select>
-
-      <button (click)="getrideData()">Apply Filter</button>
-      <button (click)="clearFilter()">Clear Filter</button>
       
       <input type="text" id="search-input" placeholder="Search by Req. ID, Name, Phone, Pick up Date..." [(ngModel)]="searchText" (input)="getrideData()">
       <input type="date" id="search-input" [(ngModel)]="searchDate" (input)="getrideData()">
@@ -35,6 +32,9 @@
         <option value="asc">Ascending</option>
         <option value="desc">Descending</option>
       </select>
+
+      <button (click)="getrideData()">Apply Filter</button>
+      <button (click)="clearFilter()">Clear Filter</button>
     </div>
   </div>
 
