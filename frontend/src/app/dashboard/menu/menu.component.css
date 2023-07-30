@@ -5,6 +5,15 @@ img{
   width: 100%;
 }
 
+.large-button {
+  font-size: 20px;
+  background-color: rgb(179, 176, 255);
+}
+.icon{
+    font-size: 24px;
+
+
+}
 
 .bell-icon-container {
   position: relative;

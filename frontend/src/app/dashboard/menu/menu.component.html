@@ -7,8 +7,8 @@
       <img src="../../../assets/images/frontal-taxi-cab.png" alt="Logo"> 
     </div>
     <!-- <span>Eber Ride</span> -->
-    <div>
-      
+
+    <div >
       <!-- <button (click)="showDummyNotification()">Show Dummy Notification</button> -->
 
       <div class="bell-icon-container mx-5">
@@ -16,14 +16,29 @@
         <span class="notification-badge">{{ notificationCounter }}</span>
       </div>
 
-      <!-- <button [matMenuTriggerFor]="lvl1master" mat-button>Master</button> -->
-      <button class="btn btn-danger" (click)="onLogout()">
+      <!-- <button class="btn btn-danger" (click)="onLogout()">
         <i class="fa fa-lock" aria-hidden="true"></i> &nbsp; Logout
-      </button>
+      </button> -->
+
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="large-button mx-3">
+          <!-- <mat-icon >account_circle</mat-icon> -->
+          <span class="material-icons icon">account_circle</span>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>account_circle</mat-icon>
+            <span>Prashant</span>
+          </button>
+          <button mat-menu-item (click)="onLogout()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
       
     </div>
   </div>
-  </mat-toolbar>
+</mat-toolbar>
+
 
 
 

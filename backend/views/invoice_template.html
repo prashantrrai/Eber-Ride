@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Invoice Template</title>
+  <link rel="stylesheet" href="../Public/css/style.css">
+</head>
+<body>
+  <div class="invoice">
+    <div class="header">
+      <h1>Invoice</h1>
+      <div class="invoice-info">
+        <p>Invoice #INV001</p>
+        <p>Date: July 30, 2023</p>
+      </div>
+    </div>
+    <div class="company-info">
+      <h2>Your Company Name</h2>
+      <p>Address: 123 Main Street, City, Country</p>
+      <p>Email: info@yourcompany.com</p>
+    </div>
+    <div class="client-info">
+      <h2>Client Name</h2>
+      <p>Address: 456 Client Avenue, City, Country</p>
+      <p>Email: client@example.com</p>
+    </div>
+    <table class="invoice-items">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Description</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Item 1</td>
+          <td>Item 1 Description</td>
+          <td>2</td>
+          <td>$50.00</td>
+          <td>$100.00</td>
+        </tr>
+        <tr>
+          <td>Item 2</td>
+          <td>Item 2 Description</td>
+          <td>1</td>
+          <td>$75.00</td>
+          <td>$75.00</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" class="text-right">Subtotal:</td>
+          <td>$175.00</td>
+        </tr>
+        <tr>
+          <td colspan="4" class="text-right">Tax (10%):</td>
+          <td>$17.50</td>
+        </tr>
+        <tr>
+          <td colspan="4" class="text-right">Total:</td>
+          <td>$192.50</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</body>
+</html>

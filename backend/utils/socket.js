@@ -9,7 +9,6 @@ const userModel = require('../models/users')
 const cron = require("node-cron");
 let AssignedDriverData = [];
 const transporter = require("./nodemailer");
-// const email = require('./email')
 const client = require('./twilio')
 let notificationCounter = 0;
 
@@ -462,14 +461,19 @@ async function initializeSocket(server) {
       try {
         const ridedata = await createrideModel.findByIdAndUpdate( data.rideId , { $set: { status: 7 }},{ new: true } );
         const driverdata = await driverModel.findByIdAndUpdate(data.driverId , { $set: { assign: "0" } }, {new: true});
+        // console.log(ridedata.userId);
+        const userdata = await userModel.findById(ridedata.userId)
 
-        console.log(driverdata);
+        // console.log(userdata);
 
-        const tripDetails = {ridedata, driverdata};
+        const tripDetails = {ridedata, driverdata, userdata};
 
+        // console.log(tripDetails);
 
-        const userEmail = driverdata.driveremail;
+        const userEmail = userdata.useremail;
         transporter.sendRideStatus(userEmail, tripDetails);
+
+        transporter.sendInvoiceEmail(userEmail, tripDetails)
 
         let toPhoneNumber = `${driverdata.countrycode}${driverdata.driverphone}`
         let status  = ridedata.status
