@@ -105,8 +105,7 @@ export class RunningrequestComponent {
 
       this._runningRequestService.listenacceptrunningrequest('acceptedrunningrequestdata').subscribe((response: any) => {
         this.getRunningData()
-      }
-      );
+      } );
     }
 
 

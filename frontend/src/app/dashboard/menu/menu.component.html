@@ -9,8 +9,10 @@
     <!-- <span>Eber Ride</span> -->
     <div>
       
+      <!-- <button (click)="showDummyNotification()">Show Dummy Notification</button> -->
+
       <div class="bell-icon-container mx-5">
-        <i class="fa-regular fa-bell"></i>
+        <i class="fa-regular fa-bell" (click)="checkNotificationSupport()"></i>
         <span class="notification-badge">{{ notificationCounter }}</span>
       </div>
 

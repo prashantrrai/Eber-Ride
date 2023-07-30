@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../Service/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { NotificationsService } from 'src/app/Service/notifications.service';
 
 
 @Component({
@@ -10,13 +11,19 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  notificationCounter = 0;
-
+  notificationCounter: any;
+  // notificationCounter = 0;
   
-  constructor(private router: Router,  private authService: AuthService, private toastr: ToastrService){}
+  constructor(
+    private router: Router,  
+    private authService: AuthService, 
+    private toastr: ToastrService,
+    private _notification: NotificationsService
+    ){}
 
   ngOnInit(): void {
     this.authService.startInactivityTimer();
+    this.showDummyNotification()
   }
 
 
@@ -35,6 +42,42 @@ export class MenuComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  //---------------------TO CHECK NOTIFICATION--------------------------------//
+  checkNotificationSupport(): void {
+    const isSupported = this._notification.checkNotificationSupport();
+    if (isSupported) {
+      console.log('Notifications are supported in this browser.');
+    } else {
+      console.log('Notifications are not supported in this browser.');
+    }
+  }
 
+
+  //-----------------------------------------TO SHOW NOTIFICATION ON CLICK----------------------------------------//
+  showDummyNotification(): void {
+    this.sendNotificationRequest()
+    
+    this.listenNotificationRequest()
+  }
+
+
+
+  //-------------------------------EMIT OR SEND NOTIFICATION REQUEST--------------------------//
+  sendNotificationRequest(): void {
+    this._notification.requestNotificationPermission().then((permission) => {
+      if (permission === 'granted') {
+        this._notification.emitnotification();
+      }
+    });
+  }
+
+  //-------------------------------LISTEN OR RECEIVE NOTIFICATION REQUEST--------------------------//
+  listenNotificationRequest(): void {
+    this._notification.listeningnotification().subscribe((data: any) => {
+      console.log(data);
+      
+      this.notificationCounter = data.notificationCounter
+    });
+  }
 
 }

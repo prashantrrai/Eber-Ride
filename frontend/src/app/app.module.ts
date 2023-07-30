@@ -17,6 +17,7 @@ import { SuccessDialogComponent } from './shared/success-dialog/success-dialog.c
 import { InfoDialogComponent } from './shared/info-dialog/info-dialog.component';
 import { AssignDriverComponent } from './shared/assign-driver/assign-driver.component';
 import { RidehistorydialogComponent } from './shared/ridehistorydialog/ridehistorydialog.component';
+import { NotificationsService } from './Service/notifications.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { RidehistorydialogComponent } from './shared/ridehistorydialog/ridehisto
     AuthModule,
     
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}, AuthService],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}, AuthService, NotificationsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

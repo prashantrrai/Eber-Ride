@@ -11,7 +11,7 @@ let AssignedDriverData = [];
 const transporter = require("./nodemailer");
 // const email = require('./email')
 const client = require('./twilio')
-
+let notificationCounter = 0;
 
 
 
@@ -729,6 +729,24 @@ async function initializeSocket(server) {
       }
     });
 
+    //-----------------------------------------------SHOW PUSH NOTIFICATION---------------------------------------------//
+    // socket.on("notification", async () => {
+    //   try {
+    //     notificationCounter++;
+
+    //     const notificationMessage = 'Sorry Ride Timeout! Driver Not Found Try Again';
+    //     io.emit("pushnotification", { success: true, message: notificationMessage, notificationCounter  });
+
+    //   } catch (error) {
+    //     console.log(error);
+    //     io.emit("pushnotification", { success: false, error: error.message });
+    //   }
+    // })
+
+
+
+
+
     cron.schedule("* * * * * *", async () => {
       await myTask();
     });
@@ -736,27 +754,21 @@ async function initializeSocket(server) {
     async function myTask() {
       try {
         const asigningrides = await createrideModel.find({ status: 1 });
-        // console.log(asigningrides);
 
         const driverdata = await driverModel.find({ status: 1 });
 
         const nearestdrivers = driverdata.map((driver) =>
           driver._id.toString()
         );
-        // console.log("631",nearestdrivers.length);
 
-        // console.log(asigningrides.length);
         if (asigningrides.length > 0) {
           for (let data of asigningrides) {
-            // console.log("515",data);
 
             let currenttime = Date.now();
             let assignedTime = data.assigningTime;
             resulttimeout = currenttime / 1000 - assignedTime / 1000;
-            // console.log("515ttttttttttt", resulttimeout);
 
             if (resulttimeout >= RideTimeOut) {
-              // console.log(resulttimeout ,"resultttttt");
               const ridenewdata = await createrideModel.findByIdAndUpdate(
                 data._id,
                 {
@@ -769,11 +781,32 @@ async function initializeSocket(server) {
                 { $set: { assign: "0" } }
               );
 
+
+              // const notificationMessage = 'Sorry Ride Timeout! Driver Not Found Try Again';
+
+              // io.emit("timeoutdata", {
+              //   success: true,
+              //   message: notificationMessage,
+              //   ridenewdata,
+              //   drivernewdata, notificationCounter
+              // });
+
+              notificationCounter++;
+
+
+              const notificationMessage = 'Sorry Ride Timeout! Driver Not Found Try Again';
+              io.emit("pushnotification", {
+                success: true,
+                message: notificationMessage,
+                notificationCounter // Include the notification counter here
+              });
+    
               io.emit("timeoutdata", {
                 success: true,
-                message: "Sorry Time Out.",
+                message: notificationMessage,
                 ridenewdata,
                 drivernewdata,
+                notificationCounter
               });
             }
           }
