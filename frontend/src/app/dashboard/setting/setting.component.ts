@@ -23,6 +23,8 @@ export class SettingComponent {
   accountSid: any;
   authToken: any;
   twilioPhoneNumber: any;
+  STRIPE_Publishable_key: any;
+  STRIPE_Secret_key: any;
 
   constructor(
     private _setting: SettingService,
@@ -127,6 +129,8 @@ export class SettingComponent {
         this.accountSid = response.accountSid;
         this.authToken = response.authToken;
         this.twilioPhoneNumber = response.twilioPhoneNumber;
+        this.STRIPE_Publishable_key = response.STRIPE_Publishable_key;
+        this.STRIPE_Secret_key = response.STRIPE_Secret_key;
       },
       error: (error: any) => {
         console.log(error);

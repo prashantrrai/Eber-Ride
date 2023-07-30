@@ -72,6 +72,24 @@
               </div>
             </div>
 
+            <div>
+              <div class="form-group row align-items-center mb-2">
+                <label class="col-sm-3 col-form-label text-end">STRIPE Publishable Key </label>
+                <div class="col-sm-9 form-custom-select">
+                  <input type="text" class="form-control" [value]="STRIPE_Publishable_key">
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="form-group row align-items-center mb-2">
+                <label class="col-sm-3 col-form-label text-end">STRIPE Secret Key</label>
+                <div class="col-sm-9 form-custom-select">
+                  <input type="text" class="form-control" [value]="STRIPE_Secret_key">
+                </div>
+              </div>
+            </div>
+
           </form>
           <div class="d-flex justify-content-around bg-dark p-2 rounded mt-4 text-light">
             <span>Ride Timeout:   {{setting.ridetimeout}}</span>

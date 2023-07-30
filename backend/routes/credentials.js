@@ -7,7 +7,9 @@ credentials.get('/env', (req, res) => {
     EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
     accountSid: process.env.accountSid,
     authToken: process.env.authToken,
-    twilioPhoneNumber: process.env.twilioPhoneNumber
+    twilioPhoneNumber: process.env.twilioPhoneNumber,
+    STRIPE_Secret_key: process.env.STRIPE_Secret_key,
+    STRIPE_Publishable_key: process.env.STRIPE_Publishable_key
   };
   res.json(envData);
 });
