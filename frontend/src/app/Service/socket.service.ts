@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
+import { NotificationsService } from './notifications.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class SocketService implements OnDestroy{
   url = 'http://localhost:4000'
 
 
-  constructor() {
+  constructor(private _notification: NotificationsService) {
      this.socket = io(this.url); 
     }
 
@@ -167,7 +168,7 @@ export class SocketService implements OnDestroy{
       })
     }
 
-    //------------TIMEOUT RUNNING REQUEST--------------------//
+    //------------TIMEOUT RUNNING REQUEST in CFR--------------------//
     listeningtimeoutstatusinCFR(){
       return new Observable(observer => {
         this.socket.on("timeoutdata", (data: any) => {
@@ -215,8 +216,8 @@ export class SocketService implements OnDestroy{
     return new Observable((observer) => {
       this.socket.on('pushnotification', (data: any) => {
       // console.log(data);
-      // this.showDummyNotification(data);
-
+      this._notification.showDummyNotification(data)
+      
       observer.next(data);
       });
     });
