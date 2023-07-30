@@ -31,16 +31,16 @@ export class SocketService implements OnDestroy{
     });
   }
 
-  // -----------------------------ASSIGNED DRIVER UPDATE-----------------------------//
+    // ----------------------SHOW DRIVER DATA OF PARTICULAR CITY AND SERVICE ,STATUS TRUE--------------------------/
   getAssignedDriverData(cityId: string, serviceId: string): void {
     // console.log(cityId, serviceId);
-    this.socket.emit('driverdata', { cityId, serviceId });
+    this.socket.emit('showdriverdata', { cityId, serviceId });
     
   }
 
   onAssignedDriverData(): Observable<any> {
     return new Observable((observer) => {
-      this.socket.on('driverdata', (data) => {
+      this.socket.on('availabledriverdata', (data) => {
         // console.log(data);
         
         observer.next(data);
@@ -75,8 +75,8 @@ export class SocketService implements OnDestroy{
 
     onFinalassignedDriverData(data: String): Observable<any> {
       return new Observable((observer) => {
-        this.socket.on('data', (data: any) => {
-          console.log("ichsohiedkvhhedhocvhwsfi",data);
+        this.socket.on('newdata', (data: any) => {
+          // console.log("ichsohiedkvhhedhocvhwsfi",data);
   
           observer.next(data);
         });
@@ -93,7 +93,7 @@ export class SocketService implements OnDestroy{
 
     listeningnearestdriver(): Observable<any> {
       return new Observable((observer) => {
-        this.socket.on('data', (data: any) => {
+        this.socket.on('datanearest', (data: any) => {
           console.log(data);
   
           observer.next(data);
@@ -102,8 +102,136 @@ export class SocketService implements OnDestroy{
     }
 
 
+    //--------------------------------RUNNING REQUEST DRIVER-----------------------------------------//
+    listenGetRunning(): Observable<any> {
+      return new Observable(observer => {
+        this.socket.on('runningdata', (data: any) => {
+          // console.log(data)
+
+          observer.next(data)
+        })
+      })
+    }
+
+    emitRunningData() {
+      this.socket.emit('runningrequest')
+    }
 
 
+    //--------------------------REJECT RIDE BY DRIVER------------------------------//
+    listenrejectRunningRequest(): Observable<any>  {
+
+      return new Observable(observer => {
+        this.socket.on('runningrequestreject', (data: any) => {
+          //data coming from backend response ater emiting data in backend from frontend i.e, ON
+          console.log(data)
+
+          observer.next(data)
+        })
+      })
+    }
+
+    emitrejectRunningRequest(data: any){
+      console.log(data);
+      //sending data to backend from frontend using emit
+      this.socket.emit('Rejectrunningrequest', data)
+    }
+
+
+    //--------------------------ACCEPT RIDE BY DRIVER------------------------------//
+    listenacceptrunningrequest(): Observable<any>  {
+
+      return new Observable(observer => {
+        this.socket.on("runningrequestaccept", (data: any) => {
+          console.log(data)
+
+          observer.next(data)
+        })
+      })
+    }
+
+    emitacceptrunningrequest(data: any){
+      console.log(data);
+      this.socket.emit("acceptrunningreuest", data)
+    }
+
+
+    //------------TIMEOUT RUNNING REQUEST--------------------//
+    listeningrunningtimeoutinRR(){
+      return new Observable(observer => {
+        this.socket.on("timeoutdata", (data: any) => {
+          console.log(data)
+
+          observer.next(data)
+        })
+      })
+    }
+
+    //------------TIMEOUT RUNNING REQUEST--------------------//
+    listeningtimeoutstatusinCFR(){
+      return new Observable(observer => {
+        this.socket.on("timeoutdata", (data: any) => {
+          console.log(data)
+
+          observer.next(data)
+        })
+      })
+    }
+
+
+    //--------------------------CANCEL RIDE BY USER------------------------------//
+    listencancelride(): Observable<any>  {
+
+      return new Observable(observer => {
+        this.socket.on('cancelridedata', (ridedata: any) => {
+          // console.log(ridedata)
+
+          observer.next(ridedata)
+        })
+      })
+    }
+
+    emitcancelride( rideId: any){
+      this.socket.emit('cancelride', rideId)
+    }
+
+    // --------------------------To GET RIDE-HISTORY DATA---------------------------------//
+    listenridehistory(): Observable<any> {
+      return new Observable(observer => {
+        this.socket.on('ridehistorydata', (data: any) => {
+          // console.log(data)
+  
+          observer.next(data)
+        })
+      })
+    }
+
+    emitridehistory(filterdata: any){
+      this.socket.emit('ridehistory', filterdata)
+    }
+
+  //-------------------------Listening and Emiting data from Socket.IO------------------------//
+  listeningnotification(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('pushnotification', (data: any) => {
+      // console.log(data);
+      // this.showDummyNotification(data);
+
+      observer.next(data);
+      });
+    });
+  }
+
+  emitnotification(): void {
+    this.socket.emit('notification');
+  }
+
+
+
+
+
+
+    
     ngOnDestroy() {
       if (this.socket) {
         this.socket.disconnect();

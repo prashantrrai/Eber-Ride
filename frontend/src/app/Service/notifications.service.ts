@@ -1,22 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Socket, io } from 'socket.io-client';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationsService {
-  private socket: Socket;
   url = 'http://localhost:4000'
 
 
-  constructor() {
-    this.socket = io(this.url); 
-
-    // this.socket.on('pushnotification', (data) => {
-    //   this.showDummyNotification(data);
-    // });
-   }
+  constructor() { }
 
   //-----------------------TO CHECK NOTIFICATION IS SUPPORTED OR NOT--------------------------------//
   checkNotificationSupport(): boolean {
@@ -43,24 +34,6 @@ export class NotificationsService {
         const notification = new Notification('Eber Ride', options);
       }
     }
-  }
-
-
-  //-------------------------Listening and Emiting data from Socket.IO------------------------//
-  listeningnotification(): Observable<any> {
-    return new Observable((observer) => {
-      this.socket.on('pushnotification', (data: any) => {
-      // console.log(data);
-      this.showDummyNotification(data);
-
-      
-      observer.next(data);
-      });
-    });
-  }
-
-  emitnotification(): void {
-    this.socket.emit('notification');
   }
 
 

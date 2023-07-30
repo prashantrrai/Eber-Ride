@@ -214,7 +214,7 @@ export class ConfirmrideComponent {
 
   //-----------------SHOW UPDATED STATUS IN CFR AFTER REJECT BUTTON CLICK-------------------------//
   gettingstatusafterrejectinCFR(){
-    this._running.listenrejectRunningRequest('notrunningdata').subscribe((response: any)=> {
+    this._socket.listenrejectRunningRequest().subscribe((response: any)=> {
 
       this.getrideData();
     })
@@ -222,7 +222,7 @@ export class ConfirmrideComponent {
 
   //-----------------SHOW UPDATED STATUS IN CFR AFTER TIME-OUT-------------------------//
   gettingstatusafterTimeout(){
-    this._running.listeningtimeoutstatusinCFR().subscribe((response: any)=> {
+    this._socket.listeningtimeoutstatusinCFR().subscribe((response: any)=> {
 
       this.getrideData();
     })
@@ -232,9 +232,9 @@ export class ConfirmrideComponent {
   //--------------------------------CANCEL RIDE------------------------------------------//
   cancelride(rideId: any){
     console.log(rideId);
-    this._confirmride.emitcancelride('cancelride', rideId)
+    this._socket.emitcancelride(rideId)
 
-    this._confirmride.listencancelride('cancelridedata').subscribe((ridedata: any) => {
+    this._socket.listencancelride().subscribe((ridedata: any) => {
       console.log(ridedata);
       this.getrideData()
     })

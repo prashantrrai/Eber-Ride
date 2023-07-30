@@ -6,6 +6,7 @@ import { Papa } from 'ngx-papaparse';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import * as authService_1 from 'src/app/Service/auth.service';
 import { RidehistorydialogComponent } from 'src/app/shared/ridehistorydialog/ridehistorydialog.component';
+import { SocketService } from 'src/app/Service/socket.service';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class RidehistoryComponent implements OnInit {
     private _ridehistroy: RidehistoryService, 
     private _confirmride: ConfirmrideService, 
     private _runningrequest: RunningrequestService,
+    private _socket: SocketService,
     private papa: Papa,
     private dialog: MatDialog,
     private authService: authService_1.AuthService,
@@ -74,9 +76,9 @@ export class RidehistoryComponent implements OnInit {
     // console.log(filterdata);
 
     
-    this._ridehistroy.emitridehistory('ridehistory', filterdata)
+    this._socket.emitridehistory(filterdata)
 
-    this._ridehistroy.listenridehistory('ridehistorydata').subscribe((data: any) => {
+    this._socket.listenridehistory().subscribe((data: any) => {
       // console.log(data);
       this.ridesArray = data.myridehistory;
       this.totalPages = data.totalPages;
@@ -123,14 +125,14 @@ export class RidehistoryComponent implements OnInit {
 
   //----------------AFTER CANCEL RIDE IN REAL-TIME----------------//
   aftercancelrideinrealtime(){
-    this._confirmride.listencancelride('cancelridedata').subscribe((ridedata: any) => {
+    this._socket.listencancelride().subscribe((ridedata: any) => {
       this.getRideHistory()
     })
   }
 
   //----------------AFTER ACCEPT RIDE IN REAL-TIME----------------//
   afteracceptrideinrealtime(){
-    this._runningrequest.listenacceptrunningrequest('acceptedrunningrequestdata').subscribe((ridedata: any) => {
+    this._socket.listenacceptrunningrequest().subscribe((ridedata: any) => {
       this.getRideHistory()
     })
   }

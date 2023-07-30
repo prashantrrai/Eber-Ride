@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { RunningrequestService } from 'src/app/Service/runningrequest.service';
 import { SocketService } from 'src/app/Service/socket.service';
 
 @Component({
@@ -16,7 +15,6 @@ export class RunningrequestComponent {
 
   constructor(
     private _socketservice: SocketService,
-    private _runningRequestService: RunningrequestService,
     private toastr: ToastrService,
 
   ) { }
@@ -30,9 +28,9 @@ export class RunningrequestComponent {
   }
 
   getRunningData() {
-    this._runningRequestService.emitRunningData('runningrequest')
+    this._socketservice.emitRunningData()
 
-    this._runningRequestService.listenGetRunning('runningdata').subscribe((data: any) => {
+    this._socketservice.listenGetRunning().subscribe((data: any) => {
       // console.log(data);
       this.assignedArray = data.alldata;
       // console.log(this.assignedArray);
@@ -61,7 +59,7 @@ export class RunningrequestComponent {
       driverId: driverId
     }
 
-    this._runningRequestService.emitrejectRunningRequest('Rejectrunningrequest', data)
+    this._socketservice.emitrejectRunningRequest(data)
     this.getRunningData()
   }
 
@@ -84,7 +82,7 @@ export class RunningrequestComponent {
       driverId: driverId
     }
     
-    this._runningRequestService.emitacceptrunningrequest('acceptrunningreuest', data)
+    this._socketservice.emitacceptrunningrequest( data)
     this.getRunningData()
   }
 
@@ -94,7 +92,7 @@ export class RunningrequestComponent {
     //   rideId: this.rideId,
     //   driverId: this.driverId
     // }
-    this._runningRequestService.listenrejectRunningRequest('notrunningdata').subscribe((response: any) => {
+    this._socketservice.listenrejectRunningRequest().subscribe((response: any) => {
       this.getRunningData()
     }
     );
@@ -103,7 +101,7 @@ export class RunningrequestComponent {
     // AFTER ACCEPTING RIDE
     afteracceptrunningrequest() {
 
-      this._runningRequestService.listenacceptrunningrequest('acceptedrunningrequestdata').subscribe((response: any) => {
+      this._socketservice.listenacceptrunningrequest().subscribe((response: any) => {
         this.getRunningData()
       } );
     }
@@ -118,7 +116,7 @@ export class RunningrequestComponent {
 
   //------------TIMEOUT RUNNING REQUEST--------------------//
   timeoutrunningreq() {
-    this._runningRequestService.listeningrunningtimeoutinRR().subscribe((res: any) => {
+    this._socketservice.listeningrunningtimeoutinRR().subscribe((res: any) => {
       // console.log("socket called", res);
       
       this.getRunningData()

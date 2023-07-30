@@ -149,7 +149,7 @@ export class AssignDriverComponent implements OnInit {
 
   //when data driver is free then that time this process run 
   gettingrejectrunningrequestdata(){
-  this._runningRequestService.listenrejectRunningRequest('notrunningdata').subscribe((response: any)=> {
+  this._socketService.listenrejectRunningRequest().subscribe((response: any)=> {
     // Handle successful response coming from backend that is ON
 
     this.getDriverData();

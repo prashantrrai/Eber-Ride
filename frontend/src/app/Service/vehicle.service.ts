@@ -9,12 +9,6 @@ export class VehicleService {
 
   private serverUrl = 'http://localhost:4000';
 
-  // vehicleaddAPI = 'http://localhost:4000/vehicleadd'
-  // getVehicleAPI = 'http://localhost:4000/vehicledata'
-  // updateVehicleAPI = 'http://localhost:4000/updateVehicle'
-
-  
-
   constructor(private http:HttpClient) { }
 
   registerVehicle(vehicleData: FormData): Observable<any> {

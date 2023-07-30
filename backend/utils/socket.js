@@ -1,7 +1,7 @@
+const socketio = require("socket.io");
 require("dotenv").config();
 const RideTimeOut = process.env.RIDETIMEOUT;
 // console.log(RideTimeOut);
-const socketio = require("socket.io");
 const mongoose = require("mongoose");
 const driverModel = require("../models/driver");
 const createrideModel = require("../models/createride");
@@ -16,10 +16,12 @@ let notificationCounter = 0;
 
 
 async function initializeSocket(server) {
+
   const io = socketio(server, { cors: { origin: ["http://localhost:4200"] } });
 
   io.on("connection", (socket) => {
     console.log("Socket is Running.");
+
 
     // --------------------------------------------------------DRIVER STATUS UPDATE --------------------------------------------------------//
     socket.on("driverstatus", async (data) => {
@@ -64,7 +66,7 @@ async function initializeSocket(server) {
     });
 
     // ------------------------------------------------SHOW DRIVER DATA OF PARTICULAR CITY AND SERVICE ,STATUS TRUE------------------------------------//
-    socket.on("driverdata", async (data) => {
+    socket.on("showdriverdata", async (data) => {
       // console.log(data , "assigndriverdata");
 
       try {
@@ -111,14 +113,14 @@ async function initializeSocket(server) {
           .exec();
         // console.log(driverdata , "driverdataresponse");
 
-        io.emit("driverdata", driverdata, {
+        io.emit("availabledriverdata", driverdata, {
           success: true,
           message: "Driver Data Patched in Assign Dialog Box",
           driverdata,
         });
       } catch (error) {
         console.log(error);
-        io.emit("driverdata", {
+        io.emit("availabledriverdata", {
           success: false,
           message: "Driver Data Not Patched in Assign Dialog Box",
           error: error.message,
@@ -215,14 +217,14 @@ async function initializeSocket(server) {
         // AssignedDriverData.push(alldata);
         // console.log(AssignedDriverData);
 
-        io.emit("data", {
+        io.emit("newdata", {
           success: true,
           message: "Driver Assigned Successfully.",
           alldata,
         });
       } catch (error) {
         console.log(error);
-        io.emit("data", {
+        io.emit("newdata", {
           success: false,
           message: "Sorry Driver Not Assigned",
           error: error.message,
@@ -323,14 +325,14 @@ async function initializeSocket(server) {
         // AssignedDriverData.push(alldata);
         // console.log(AssignedDriverData);
 
-        io.emit("data", {
+        io.emit("datanearest", {
           success: true,
           message: "Nearest Driver Assigned Successfully.",
           alldata,
         });
       } catch (error) {
         console.log(error);
-        io.emit("data", {
+        io.emit("datanearest", {
           success: false,
           message: "Sorry Nearest Driver Not Assigned",
           error: error.message,
@@ -438,13 +440,13 @@ async function initializeSocket(server) {
         );
 
         io.emit(
-          "notrunningdata",
+          "runningrequestreject",
           { ridedata, driverdata },
-          { success: true, message: "Running Request Reject Data" }
+          { success: true, message: "Running Request Rejected" }
         );
       } catch (error) {
         console.error(error);
-        io.emit("notrunningdata", {
+        io.emit("runningrequestreject", {
           success: false,
           message: "Ride Not Rejected",
           error: error.message,
@@ -473,12 +475,12 @@ async function initializeSocket(server) {
         let status  = ridedata.status
         client.sendRideSMS(toPhoneNumber, status)
 
-        io.emit("acceptedrunningrequestdata",{ ridedata, driverdata }, { success: true, message: "Ride Request Accepted" } );
+        io.emit("runningrequestaccept",{ ridedata, driverdata }, { success: true, message: "Ride Request Accepted" } );
 
 
       } catch (error) {
         console.error(error);
-        io.emit("acceptedrunningrequestdata", {
+        io.emit("runningrequestaccept", {
           success: false,
           message: "Ride Not Accepted",
           error: error.message,
@@ -729,27 +731,10 @@ async function initializeSocket(server) {
       }
     });
 
-    //-----------------------------------------------SHOW PUSH NOTIFICATION---------------------------------------------//
-    // socket.on("notification", async () => {
-    //   try {
-    //     notificationCounter++;
-
-    //     const notificationMessage = 'Sorry Ride Timeout! Driver Not Found Try Again';
-    //     io.emit("pushnotification", { success: true, message: notificationMessage, notificationCounter  });
-
-    //   } catch (error) {
-    //     console.log(error);
-    //     io.emit("pushnotification", { success: false, error: error.message });
-    //   }
-    // })
 
 
 
 
-
-    cron.schedule("* * * * * *", async () => {
-      await myTask();
-    });
 
     async function myTask() {
       try {
@@ -833,6 +818,13 @@ async function initializeSocket(server) {
         console.error("Error in myTask:", error);
       }
     }
+
+
+    //----------------------------------------HANDLE CRON------------------------------------------//
+    cron.schedule("* * * * * *", async () => {
+      await myTask();
+    });
+    
 
     socket.on("disconnect", () => {
       console.log("client Disconnected");

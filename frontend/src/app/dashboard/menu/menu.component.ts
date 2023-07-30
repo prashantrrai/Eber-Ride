@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../Service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { NotificationsService } from 'src/app/Service/notifications.service';
+import { SocketService } from 'src/app/Service/socket.service';
 
 
 @Component({
@@ -11,14 +12,14 @@ import { NotificationsService } from 'src/app/Service/notifications.service';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  notificationCounter: any;
-  // notificationCounter = 0;
+  notificationCounter = 0;
   
   constructor(
     private router: Router,  
     private authService: AuthService, 
     private toastr: ToastrService,
-    private _notification: NotificationsService
+    private _notification: NotificationsService,
+    private _socket: SocketService
     ){}
 
   ngOnInit(): void {
@@ -66,14 +67,14 @@ export class MenuComponent implements OnInit {
   sendNotificationRequest(): void {
     this._notification.requestNotificationPermission().then((permission) => {
       if (permission === 'granted') {
-        this._notification.emitnotification();
+        this._socket.emitnotification();
       }
     });
   }
 
   //-------------------------------LISTEN OR RECEIVE NOTIFICATION REQUEST--------------------------//
   listenNotificationRequest(): void {
-    this._notification.listeningnotification().subscribe((data: any) => {
+    this._socket.listeningnotification().subscribe((data: any) => {
       console.log(data);
       
       this.notificationCounter = data.notificationCounter
