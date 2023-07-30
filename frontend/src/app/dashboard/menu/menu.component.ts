@@ -19,12 +19,15 @@ export class MenuComponent implements OnInit {
     this.authService.startInactivityTimer();
   }
 
+
+  //-------------------------------------ON MOUSE MOVE RESET TIMER---------------------------------//
   @HostListener('window:mousemove') // Add this event listener to the component
   onWindowMouseMove(): void {
     this.authService.resetInactivityTimer();
   }
 
   
+  //---------------------------ON LOGOUT CLICK--------------------------------//
   onLogout() {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
