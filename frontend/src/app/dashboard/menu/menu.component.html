@@ -4,10 +4,16 @@
   </button>
   <div class="d-flex align-items-center justify-content-between w-100">
     <div class="example-spacer">
-      <span>Eber Ride</span>
-      <!-- <img src="../../assets/images/eber logo.png" alt="Logo">  -->
+      <img src="../../../assets/images/frontal-taxi-cab.png" alt="Logo"> 
     </div>
-    <div >
+    <!-- <span>Eber Ride</span> -->
+    <div>
+      
+      <div class="bell-icon-container mx-5">
+        <i class="fa-regular fa-bell"></i>
+        <span class="notification-badge">{{ notificationCounter }}</span>
+      </div>
+
       <!-- <button [matMenuTriggerFor]="lvl1master" mat-button>Master</button> -->
       <button class="btn btn-danger" (click)="onLogout()">
         <i class="fa fa-lock" aria-hidden="true"></i> &nbsp; Logout
@@ -21,6 +27,9 @@
 
 <mat-drawer-container autosize >
   <mat-drawer class="bg-dark"  #drawer opened="false" mode="side" position="start" >
+    <h2 class="text-center text-light my-3">Eber Ride</h2>
+
+
   <mat-nav-list >
       <mat-list-item >
           <button  color="accent" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>

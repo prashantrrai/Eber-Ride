@@ -1,6 +1,6 @@
 require("dotenv").config();
 const RideTimeOut = process.env.RIDETIMEOUT;
-console.log(RideTimeOut);
+// console.log(RideTimeOut);
 const socketio = require("socket.io");
 const mongoose = require("mongoose");
 const driverModel = require("../models/driver");
@@ -729,7 +729,7 @@ async function initializeSocket(server) {
       }
     });
 
-    cron.schedule("*/30 * * * * *", async () => {
+    cron.schedule("* * * * * *", async () => {
       await myTask();
     });
 

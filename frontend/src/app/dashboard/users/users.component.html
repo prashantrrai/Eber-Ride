@@ -1,25 +1,39 @@
-<button class="mt-4 btn btn-primary" id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp; Add Users</button>
-
 <!-- ---------------------------PAGINATION, SEARCH, SORT-------------------------------- -->
-<div class="mt-2">
-  <div class="d-flex justify-content-center align-items-center">
-  <label for="pageSize">Show Data :</label>
-  <div class="custom-select">
-    <select class="form-control m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
-      <option [ngValue]="null">Select Page</option>
+<div class="container">
+  <div class="filter-section">
+    <input type="text" id="search-input" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="search" (input)="getUserData()">
+    
+    <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
+      <option value="5">Select Page</option>
       <option value="1">1</option>
       <option value="2">2</option>
       <option value="3">3</option>
       <option value="4">4</option>
       <option value="5">5</option>
       <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
     </select>
-    <i class="fas fa-chevron-down dropdown-icon"></i>
-  </div>
-  <input type="text" class="form-control w-25 m-4 p-2" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="search" (input)="getUserData()">
+
+    <select id="filter-dropdown" [(ngModel)]="selectedSortBy" (change)="getUserData()">
+      <option value="name">Name</option>
+      <option value="email">Email</option>
+      <option value="phone">Phone</option>
+    </select>
+
+    <select id="filter-dropdown"  [(ngModel)]="selectedSortOrder" (change)="getUserData()">
+      <option value="desc">Sorting Order</option>
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+    
+    <button class="" id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp; Add Users</button>
   </div>
 </div>
 
+
+<!-- 
 <div>
   <div class="d-flex justify-content-center align-items-center">
 
@@ -48,7 +62,7 @@
     
   </div>
 </div>
-
+ -->
 
 
 <!-- <button (click)="getSortedData()">Sort</button> -->

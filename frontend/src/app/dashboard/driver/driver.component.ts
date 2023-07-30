@@ -31,8 +31,8 @@ export class DriverComponent {
   serviceForm!: FormGroup;
   selectedVehicle: any;
   count: any;
-  selectedSortBy!: string;
-  selectedSortOrder!: string;
+  selectedSortBy: string = 'name';
+  selectedSortOrder: string = 'desc';
 
   constructor(
     private _driver: DriverService,

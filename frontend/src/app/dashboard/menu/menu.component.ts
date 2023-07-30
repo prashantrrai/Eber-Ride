@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
+  notificationCounter = 0;
+
   
   constructor(private router: Router,  private authService: AuthService, private toastr: ToastrService){}
 

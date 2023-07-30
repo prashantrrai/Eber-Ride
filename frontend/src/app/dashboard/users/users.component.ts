@@ -25,8 +25,8 @@ export class UsersComponent {
   currentPage = 1
   limit = 5; 
   totalPages = 0; 
-  selectedSortBy!: string;
-  selectedSortOrder!: string;
+  selectedSortBy: string = 'name';
+  selectedSortOrder: string = 'desc';
 
   constructor(
     private _users: UsersService,
