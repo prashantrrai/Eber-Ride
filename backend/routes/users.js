@@ -7,6 +7,7 @@ const path = require('path');
 const profile_path = path.join(__dirname, "../Public/Profile");
 const transporter = require("../utils/nodemailer");
 const client = require('../utils/twilio')
+const stripe = require('stripe')(process.env.STRIPE_Secret_key)
 
 
   //---------------------------------------MULTER CODE FOR IMAGE UPLOAD---------------------------------------//
@@ -306,6 +307,97 @@ userRoutes.post('/userdata/number', async (req, res) => {
     res.status(500).send(error)
   }
 })
+
+
+
+//------------------------------------------STRIPE-----------------------------------------// 
+userRoutes.post('/createcustomerandaddcard/:id', async (req, res) => {
+  try {
+    const id = new mongoose.Types.ObjectId(req.params.id);
+    const user = await userModel.findById(id);
+    console.log(user.username);
+
+    if (!user.customer_id) {
+      const customer = await stripe.customers.create({
+        name: user.username,
+        email: user.useremail,
+      });
+      console.log("325",customer.id);
+      user.customer_id = customer.id;
+      await user.save();
+    }
+
+    console.log("330",req.body.token.id);
+    const card = await stripe.customers.createSource(user.customer_id, {
+      source: `${req.body.token.id}`
+    });
+
+    console.log("334",card);
+    res.status(200).json({success: true, message: "Customer ID Generated Successfully", card});
+
+  }catch (error) {
+    console.error(error);
+    res.status(400).json({success: false, error: error.message});
+  }
+});
+
+  userRoutes.get('/getcard/:id', async (req, res) => {
+    console.log("hii");
+    console.log(req.params.id);
+    try {
+      const id = req.params.id;
+      const user = await userModel.findById(id);
+      if (!user.customer_id) {
+        return res.status(400).json({ success:true , error: 'User does not have a Stripe customer ID' });
+      }
+      const customer = await stripe.customers.retrieve(user.customer_id);
+      console.log("354", customer);
+      const  defaultCardId = customer.default_source;
+        console.log(defaultCardId);
+        const paymentMethods = await stripe.paymentMethods.list({
+          customer: user.customer_id,
+          type: 'card',
+        });
+
+      const paymentMethodsData = paymentMethods.data.map((card) => ({
+        ...card,
+        isdefalut : card.id  == defaultCardId  
+      }));
+      console.log(paymentMethodsData);
+
+      res.json({ success:true , paymentMethodsData});
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ success:false ,  message: 'Failed to retrieve card details', error: error.message });
+      }
+  });
+
+  // userRoutes.delete('/deletecard/:id', async (req, res) => {
+  //   try {
+  //     const deletedCard = await stripe.paymentMethods.detach(req.params.id);
+  //     res.status(200).json({success:true ,  message: 'Delete Card successfully' });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(400).json({ error: error });
+  //   }
+  // });
+
+  // userRoutes.patch('/default-card/:customerId', async (req, res) => {
+
+  //   try {
+  //     const cardId = req.body.cardId;
+  //     const customerId = req.params.customerId;
+  //     console.log(cardId);
+  //     await stripe.customers.update(customerId, {
+  //       default_source: cardId
+  //     });
+  
+  //     res.status(200).json({ message: 'Default card set successfully' });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(400).json({ error: 'Failed to set default card' });
+  //   }
+  // });
 
 module.exports = userRoutes;
 

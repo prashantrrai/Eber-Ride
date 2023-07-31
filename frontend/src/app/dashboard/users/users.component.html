@@ -211,6 +211,9 @@
                   <mat-menu #lvl2master="matMenu">
                       <button mat-menu-item id="updatebtn" (click)="updateBtnClick(user)"><mat-icon>update</mat-icon>Update</button>
                       <button mat-menu-item id="deletebtn" (click)="deleteUser(user._id)"><mat-icon>delete_forever</mat-icon>Delete</button>
+                      <button mat-raised-button  (click)="openDialog(user)" >
+                        <mat-icon>credit_card</mat-icon> Add Card
+                      </button>
                   </mat-menu>
                 </td>
               </tr>

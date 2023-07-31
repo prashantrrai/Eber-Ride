@@ -1,8 +1,10 @@
 import { AuthService } from "./../../Service/auth.service";
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { UsersService } from "src/app/Service/users.service";
+import { StripeComponent, userdata } from "../stripe/stripe.component";
 
 @Component({
   selector: "app-users",
@@ -32,7 +34,9 @@ export class UsersComponent {
     private _users: UsersService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog,
+
   ) {}
 
   ngOnInit(): void {
@@ -225,6 +229,36 @@ export class UsersComponent {
       },
     });
   }
+
+
+  //-------------------------------------STRIPE--------------------------------------//
+  openDialog(val: any) {
+    // console.log(val);
+    // console.log(val._id);
+    // this._id = val._id
+
+    const dialogData: userdata = {
+      userdata: val,
+    };
+
+    const dialogRef: MatDialogRef<StripeComponent> = this.dialog.open(
+      StripeComponent,
+      {
+        width: '600px',
+        data: dialogData,
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((data: string) => {
+      console.log(data);
+      // console.log(this._id);
+      // this.assignServices = data;
+      // console.log(this.assignServices);
+    });
+  }
+
+
+
 
 
   // --------------------------------------------CUSTOM BUTTON---------------------------------------------

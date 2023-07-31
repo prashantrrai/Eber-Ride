@@ -25,9 +25,11 @@ const routes: Routes = [
       {path:'confirmride',loadChildren:()=>import('./confirmride/confirmride.module').then(m=>m.ConfirmrideModule)},
       {path: "runningrequest", loadChildren:() => import('./runningrequest/runningrequest.module').then(m=>m.RunningrequestModule)},
       { path: 'ridehistory', loadChildren: () => import('./ridehistory/ridehistory.module').then(m => m.RidehistoryModule) },
-      {path: 'payment' , loadChildren: () => import('./trip-end/trip-end.module').then(m => m.TripEndModule)}
+      {path: 'payment' , loadChildren: () => import('./trip-end/trip-end.module').then(m => m.TripEndModule)},
+      { path: 'stripe', loadChildren: () => import('./stripe/stripe.module').then(m => m.StripeModule) },
     ]
   },
+
 
 
 ];

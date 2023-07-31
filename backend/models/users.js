@@ -23,7 +23,10 @@ const user_Schema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-  }
+  },
+  customer_id:{
+    type: String 
+ }
 });
 
 const userModel = mongoose.model("userModel", user_Schema);

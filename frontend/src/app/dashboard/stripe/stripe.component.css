@@ -1,0 +1,10 @@
+.default {
+    background-color: green;
+    color: white;
+  }
+  
+  /* Style for the non-default button */
+  .non-default {
+    background-color: blue;
+    color: white;
+  }
