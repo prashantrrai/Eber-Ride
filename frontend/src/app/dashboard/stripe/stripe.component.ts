@@ -24,7 +24,7 @@ export class StripeComponent {
   addcard: any;
   userid: any;
   userdata: any;
-  carddata: any;
+  carddata: any[] = [];
   isDefault: any;
 
   
@@ -33,14 +33,14 @@ export class StripeComponent {
 
 
     async ngOnInit() {
-      console.log(this.data);
+      // console.log(this.data);
   
   
       this.userdata = this.data.userdata;
       this.userid = this.userdata._id
-      console.log(this.userdata);
+      // console.log(this.userdata);
   
-      this.stripe = await loadStripe('pk_test_51NTisDLigteWfcRnZkQoTywuss8lTd3CUnil3xexs59lKQIlJcgEeJWCiMuExlDGlmtazauK0nBRj1hk6HoZOx9Q00Wt2DV8X0');
+      this.stripe = await loadStripe('pk_test_51NZeiUANXK9scyulUjawM5Gzvx6F6MOm8nzHj96fghdbp1d6bOwX6ttQBrtNXXHAi5S5ga7RH7MHyRwpqUXFSJ6Q00kvn8Jkgu');
       this.elements = this.stripe.elements();
   
   
@@ -55,6 +55,8 @@ export class StripeComponent {
     //   this.isDefault = !this.isDefault;
     // }
   
+
+    //------------------------------------------ADD CARD STRIPE-----------------------------------------//  
     async addCard(id: any) {
       console.log(id);
   
@@ -63,6 +65,8 @@ export class StripeComponent {
         );
         const token = await paymentMethod.token
         console.log('succes: ',await  paymentMethod.token);
+        // console.log("Token:", token);
+        
   
         const response = await fetch(`http://localhost:4000/createcustomerandaddcard/${id}`, {
           method: 'POST',
@@ -76,12 +80,14 @@ export class StripeComponent {
   
     }
   
+
+    //------------------------------------------GET CARD STRIPE-----------------------------------------// 
     getCard(id: any) {
       const userid = id
       
       this._stripeService.getcard(id).subscribe({
-        next: (res: any) => {
-          this.carddata = res;
+        next: (response: any) => {
+          this.carddata = response.paymentMethodsData;
           console.log(this.carddata);
   
   

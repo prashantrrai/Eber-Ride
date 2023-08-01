@@ -244,7 +244,7 @@ export class UsersComponent {
     const dialogRef: MatDialogRef<StripeComponent> = this.dialog.open(
       StripeComponent,
       {
-        width: '600px',
+        width: '650px',
         data: dialogData,
       }
     );

@@ -7,7 +7,7 @@ const path = require('path');
 const profile_path = path.join(__dirname, "../Public/Profile");
 const transporter = require("../utils/nodemailer");
 const client = require('../utils/twilio')
-const stripe = require('stripe')(process.env.STRIPE_Secret_key)
+const stripe = require('stripe')('sk_test_51NZeiUANXK9scyulpxLuZ2UL5HvCqJBALzHeOfXQxDljxeroEWHfM9Gz9ZhdOau5mV9tyHQx36q5g6HcVPAvlXiA00iaZTcfFv')
 
 
   //---------------------------------------MULTER CODE FOR IMAGE UPLOAD---------------------------------------//
@@ -310,27 +310,31 @@ userRoutes.post('/userdata/number', async (req, res) => {
 
 
 
-//------------------------------------------STRIPE-----------------------------------------// 
+//------------------------------------------ADD CARD STRIPE-----------------------------------------// 
 userRoutes.post('/createcustomerandaddcard/:id', async (req, res) => {
   try {
     const id = new mongoose.Types.ObjectId(req.params.id);
     const user = await userModel.findById(id);
-    console.log(user.username);
+    // console.log(user.username);
 
     if (!user.customer_id) {
       const customer = await stripe.customers.create({
         name: user.username,
         email: user.useremail,
       });
-      console.log("325",customer.id);
+      // console.log("325",customer.id);
       user.customer_id = customer.id;
       await user.save();
     }
-
+    // console.log(user.customer_id);
     console.log("330",req.body.token.id);
+
+
+
     const card = await stripe.customers.createSource(user.customer_id, {
       source: `${req.body.token.id}`
     });
+
 
     console.log("334",card);
     res.status(200).json({success: true, message: "Customer ID Generated Successfully", card});
@@ -341,36 +345,40 @@ userRoutes.post('/createcustomerandaddcard/:id', async (req, res) => {
   }
 });
 
-  userRoutes.get('/getcard/:id', async (req, res) => {
-    console.log("hii");
-    console.log(req.params.id);
-    try {
-      const id = req.params.id;
-      const user = await userModel.findById(id);
-      if (!user.customer_id) {
-        return res.status(400).json({ success:true , error: 'User does not have a Stripe customer ID' });
-      }
-      const customer = await stripe.customers.retrieve(user.customer_id);
-      console.log("354", customer);
-      const  defaultCardId = customer.default_source;
-        console.log(defaultCardId);
-        const paymentMethods = await stripe.paymentMethods.list({
-          customer: user.customer_id,
-          type: 'card',
-        });
 
-      const paymentMethodsData = paymentMethods.data.map((card) => ({
-        ...card,
-        isdefalut : card.id  == defaultCardId  
-      }));
-      console.log(paymentMethodsData);
+//------------------------------------------GET CARD STRIPE-----------------------------------------// 
+userRoutes.get('/getcard/:id', async (req, res) => {
+  console.log("hii");
+  // console.log(req.params.id);
+  try {
+    const id = req.params.id;
+    const user = await userModel.findById(id);
+    if (!user.customer_id) {
+      return res.status(400).json({ success:true , message: 'User does not have a Stripe customer ID'});
+    }
+    const customer = await stripe.customers.retrieve(user.customer_id);
+    console.log("354", customer);
+    const  defaultCardId = customer.default_source;
 
-      res.json({ success:true , paymentMethodsData});
-    } catch (error) {
-        console.error(error);
-        res.status(400).json({ success:false ,  message: 'Failed to retrieve card details', error: error.message });
-      }
-  });
+      console.log("363",defaultCardId);
+
+      const paymentMethods = await stripe.paymentMethods.list({
+        customer: user.customer_id,
+        type: 'card',
+      });
+
+    const paymentMethodsData = paymentMethods.data.map((card) => ({
+      ...card,
+      isdefalut : card.id  == defaultCardId  
+    }));
+    console.log("374",paymentMethodsData);
+
+    res.json({ success:true , paymentMethodsData});
+  } catch (error) {
+      console.error(error);
+      res.status(400).json({ success:false ,  message: 'Failed to retrieve card details', error: error.message });
+    }
+});
 
   // userRoutes.delete('/deletecard/:id', async (req, res) => {
   //   try {

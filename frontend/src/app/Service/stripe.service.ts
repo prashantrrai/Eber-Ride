@@ -11,7 +11,7 @@ export class StripeService {
 
   getcard(id:any ){
     // console.log(id);
-    return this.http.get(`${this.url}/getcard` + id)
+    return this.http.get(`${this.url}/getcard/` + id)
   }
 
   deletecard(id:any){
