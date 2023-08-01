@@ -322,6 +322,7 @@ userRoutes.post('/addcard/:id', async (req, res) => {
         name: user.username,
         email: user.useremail,
       });
+      
       // console.log("325",customer.id);
       user.customer_id = customer.id;
       await user.save();

@@ -34,6 +34,8 @@ export class ConfirmrideComponent {
   searchText: any;
   searchDate: any;
   sortOrder: any = 'desc';
+  cityId: any;
+  serviceId: any;
 
   constructor(
     private authService: AuthService,
@@ -192,14 +194,16 @@ export class ConfirmrideComponent {
     // console.log(data);
     this.driverdataArray = data
     // console.log("Assigned Driver Id:  ",this.driverdataArray.driverdata._id);  
-    this.driverId = this.driverdataArray.driverdata._id
+    // this.driverId = this.driverdataArray.driverdata._id
     this.rideId = this.driverdataArray.ridedata._id
+    this.cityId = this.driverdataArray.ridedata.cityId
+    this.serviceId = this.driverdataArray.ridedata.serviceId
 
     // console.log("Driver ID:",this.driverId,"RIDE ID:",this.rideId);
 
     //==========emit data into socket.js when dialog box close=============
     this._socket.emitassignedDriver(this.driverId  , this.rideId)
-    this._socket.emitnearestdriver(this.driverId  , this.rideId)
+    this._socket.emitnearestdriver(this.rideId, this.cityId, this.serviceId)
   });
   
 }

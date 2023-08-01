@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 import { NotificationsService } from './notifications.service';
 
@@ -9,7 +9,7 @@ import { NotificationsService } from './notifications.service';
 export class SocketService implements OnDestroy{
   private socket: Socket;
   url = 'http://localhost:4000'
-
+  // private errorSub: Subscription = new Subscription()
 
   constructor(private _notification: NotificationsService) {
      this.socket = io(this.url); 
@@ -86,10 +86,10 @@ export class SocketService implements OnDestroy{
 
 
     //-----------------------------------NEAREST DRIVER FROM DIALOG REF BUTTON-------------------------------------//
-    emitnearestdriver( driverId: string , rideId: string ): void {
+    emitnearestdriver( rideId: string, cityId: string, serviceId: string ): void {
       // console.log(driverId, rideId);
 
-      this.socket.emit("nearestdata", {driverId, rideId});   
+      this.socket.emit("nearestdata", {rideId, cityId, serviceId});   
     }
 
     listeningnearestdriver(): Observable<any> {
@@ -233,10 +233,10 @@ export class SocketService implements OnDestroy{
 
 
     
-    ngOnDestroy() {
-      if (this.socket) {
-        this.socket.disconnect();
-      }
-    }
+  ngOnDestroy(): void {
+    // this.errorSub.unsubscribe();
+    // this.driverNotFoundSub.unsubscribe();
+    // this.decreaseCountSub.unsubscribe();
+  }
 
 }

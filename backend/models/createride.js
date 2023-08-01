@@ -54,17 +54,16 @@ const createRideSchema = mongoose.Schema(
     },
     
     nearest: {
-      type: String,
-      validate: {
-        validator: function (status) {
-          const statusRegex = /^[0-1]$/;
-          return statusRegex.test(status);
-        },
-        message: "Invalid status code enter 0 or 1",
-      },
-      trim: true,
-      default: "0",
+      type: Boolean,
+      default: false,
+    },    
+    restart: {
+      type: Boolean,
+      default: false,
     },
+    nearestArray: {
+      type: Array
+    }
   },
   {
     timestamps: true,
