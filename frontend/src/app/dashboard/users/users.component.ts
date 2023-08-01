@@ -233,10 +233,6 @@ export class UsersComponent {
 
   //-------------------------------------STRIPE--------------------------------------//
   openDialog(val: any) {
-    // console.log(val);
-    // console.log(val._id);
-    // this._id = val._id
-
     const dialogData: userdata = {
       userdata: val,
     };
@@ -251,9 +247,6 @@ export class UsersComponent {
 
     dialogRef.afterClosed().subscribe((data: string) => {
       console.log(data);
-      // console.log(this._id);
-      // this.assignServices = data;
-      // console.log(this.assignServices);
     });
   }
 
@@ -261,7 +254,7 @@ export class UsersComponent {
 
 
 
-  // --------------------------------------------CUSTOM BUTTON---------------------------------------------
+  // --------------------------------------------CUSTOM CODE---------------------------------------------//
   updateCancel() {
     this.updateForm = !this.updateForm;
   }

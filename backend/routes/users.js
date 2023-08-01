@@ -311,7 +311,7 @@ userRoutes.post('/userdata/number', async (req, res) => {
 
 
 //------------------------------------------ADD CARD STRIPE-----------------------------------------// 
-userRoutes.post('/createcustomerandaddcard/:id', async (req, res) => {
+userRoutes.post('/addcard/:id', async (req, res) => {
   try {
     const id = new mongoose.Types.ObjectId(req.params.id);
     const user = await userModel.findById(id);
@@ -373,39 +373,44 @@ userRoutes.get('/getcard/:id', async (req, res) => {
     }));
     console.log("374",paymentMethodsData);
 
-    res.json({ success:true , paymentMethodsData});
+    res.status(200).json({ success:true , paymentMethodsData});
   } catch (error) {
       console.error(error);
       res.status(400).json({ success:false ,  message: 'Failed to retrieve card details', error: error.message });
     }
 });
 
-  // userRoutes.delete('/deletecard/:id', async (req, res) => {
-  //   try {
-  //     const deletedCard = await stripe.paymentMethods.detach(req.params.id);
-  //     res.status(200).json({success:true ,  message: 'Delete Card successfully' });
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(400).json({ error: error });
-  //   }
-  // });
 
-  // userRoutes.patch('/default-card/:customerId', async (req, res) => {
+//------------------------------------------DELETE CARD STRIPE-----------------------------------------// 
+  userRoutes.delete('/deletecard/:id', async (req, res) => {
+    try {
+      const deletedCard = await stripe.paymentMethods.detach(req.params.id);
+      res.status(200).json({success:true ,  message: 'Card Deleted successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(400).json({ error: error });
+    }
+  });
 
-  //   try {
-  //     const cardId = req.body.cardId;
-  //     const customerId = req.params.customerId;
-  //     console.log(cardId);
-  //     await stripe.customers.update(customerId, {
-  //       default_source: cardId
-  //     });
+
+
+//------------------------------------------UPDATE CARD STRIPE-----------------------------------------// 
+  userRoutes.patch('/setdefaultcard/:customerId', async (req, res) => {
+
+    try {
+      const cardId = req.body.cardId;
+      const customerId = req.params.customerId;
+      console.log(cardId);
+      await stripe.customers.update(customerId, {
+        default_source: cardId
+      });
   
-  //     res.status(200).json({ message: 'Default card set successfully' });
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(400).json({ error: 'Failed to set default card' });
-  //   }
-  // });
+      res.status(200).json({ message: 'Default card set successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(400).json({ error: 'Failed to set default card' });
+    }
+  });
 
 module.exports = userRoutes;
 

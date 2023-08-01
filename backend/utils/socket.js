@@ -11,6 +11,7 @@ let AssignedDriverData = [];
 const transporter = require("./nodemailer");
 const client = require('./twilio')
 let notificationCounter = 0;
+const stripe = require('stripe')('sk_test_51NZeiUANXK9scyulpxLuZ2UL5HvCqJBALzHeOfXQxDljxeroEWHfM9Gz9ZhdOau5mV9tyHQx36q5g6HcVPAvlXiA00iaZTcfFv')
 
 
 
@@ -478,6 +479,25 @@ async function initializeSocket(server) {
         let toPhoneNumber = `${driverdata.countrycode}${driverdata.driverphone}`
         let status  = ridedata.status
         client.sendRideSMS(toPhoneNumber, status)
+
+        //-------------------STRIPE PAYMENT CUT------------------------//
+        exchangeRate = 82.28
+        const customer = await stripe.customers.retrieve(userdata.customer_id);
+        // console.log("485",customer );
+        const defaultCardId = customer.default_source;
+        // console.log("487",defaultCardId);
+
+        const estimatePriceUSD = ridedata.estimateFare / exchangeRate;
+        const amountInCents = Math.round(estimatePriceUSD * 100);
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount: amountInCents,
+          currency: 'usd',
+          customer: userdata.customer_id,
+          payment_method: defaultCardId,
+          off_session: true,
+          confirm: true
+        });
+        // console.log("487", paymentIntent);
 
         io.emit("runningrequestaccept",{ ridedata, driverdata }, { success: true, message: "Ride Request Accepted" } );
 

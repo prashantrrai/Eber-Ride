@@ -1,24 +1,47 @@
   <mat-dialog-content>
-    <div id="card-element"></div>
 
-    <div class="card m-2">
-      <div *ngIf="carddata" class="m-2">
-        <div *ngFor="let card of carddata; let i = index" class="d-flex align-items-center text-center" >
-          <span >{{ i + 1}}.</span>
-          <img src="../../../assets/images/visa-card-logo-9.png" style="height: 15px;" class="ms-3">
-          <div class="ms-5">**** **** **** {{card.card.last4}}</div>
-          <div class="ms-5">{{card.card.exp_month}} / {{card.card.exp_year}}</div>
-          <div>
-            <button class="deletecard ms-5" (click)="deleteCard(card.id)" >Delete</button>
-          </div>
-          <span class="defaultcard"  *ngIf="card.isdefalut==true" >Default</span>
-          <button class="setdefaultcard" *ngIf="card.isdefalut==false" (click)="SetDefault(card.customer, card.id)" >Set Default</button>
+    <div class="container">
+      <div class="circles">
+          <div class="circle circle-1"></div>
+          <div class="circle circle-2"></div>
         </div>
+        
+      <div class="cardtemplate">
+          <div class="visa_logo">
+              <img src="https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/visa.png" alt="">
+          </div>
+          <div class="visa_info">
+              <img src="https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/chip.png" alt="">
+              <p>4586 7985 9271 6388</p>
+          </div>
+          <div class="visa_crinfo">
+              <p>07/23</p>
+              <p>Prashant Rai</p>
+          </div>
+      </div>
+  </div>
+
+
+    <div id="card-element" class="stripecard"></div>
+
+  <div>
+    <div *ngIf="carddata" class="m-2">
+      <div *ngFor="let card of carddata; let i = index" class="d-flex align-items-center text-center border p-2 rounded mb-2" >
+        <span >{{ i + 1}}.</span>
+        <img src="../../../assets/images/visa-card-logo-9.png" style="height: 15px;" class="ms-3">
+        <div class="ms-5">**** **** **** {{card.card.last4}}</div>
+        <div class="ms-5">{{card.card.exp_month}} / {{card.card.exp_year}}</div>
+        <div>
+          <button class="deletecard ms-5" (click)="deleteCard(card.id)" >Delete</button>
+        </div>
+        <span class="defaultcard"  *ngIf="card.isdefalut==true" >Default</span>
+        <button class="setdefaultcard" *ngIf="card.isdefalut==false" (click)="setdefaultCard(card.customer, card.id)" >Set Default</button>
       </div>
     </div>
+  </div>
 
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button id="submit" class="m-2" mat-raised-button color="accent" (click)="addCard(userid)">Add Card</button>
-    <button mat-raised-button (click)="closeDialog()">Cancel</button>
+    <button id="submit" mat-raised-button  class="addcardbtn"(click)="addCard(userid)">Add Card</button>
+    <button mat-raised-button class="cancelbtn mx-4" (click)="closeDialog()">Cancel</button>
   </mat-dialog-actions>

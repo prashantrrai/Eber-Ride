@@ -58,7 +58,7 @@ export class StripeComponent {
 
     //------------------------------------------ADD CARD STRIPE-----------------------------------------//  
     async addCard(id: any) {
-      console.log(id);
+      // console.log(id);
   
         const paymentMethod = await this.stripe.createToken(
           this.cardElement,
@@ -68,7 +68,7 @@ export class StripeComponent {
         // console.log("Token:", token);
         
   
-        const response = await fetch(`http://localhost:4000/createcustomerandaddcard/${id}`, {
+        const response = await fetch(`http://localhost:4000/addcard/${id}`, {
           method: 'POST',
           headers: {
             'Content-type': 'Application/json'
@@ -99,11 +99,12 @@ export class StripeComponent {
     }
   
   
-  
+  //------------------------------------------DELETE CARD STRIPE-----------------------------------------// 
    deleteCard(id: any) {
-    console.log(id); //  get a card id
-      // const confirmDelete = confirm("Are you sure you want to delete this card?");
-      // if (confirmDelete) {
+    console.log(id);
+
+    // const confirmDelete = confirm("Are you sure you want to delete this card?");
+    // if (confirmDelete) {
         this._stripeService.deletecard(id).subscribe({
           next: (res: any) => {
             this.toster.success(res.message)
@@ -116,11 +117,11 @@ export class StripeComponent {
       // }
     }
   
-    async SetDefault(customerId: any,cardId: any) {
+    async setdefaultCard(customerId: any,cardId: any) {
       console.log(customerId);
       console.log(cardId);
       this.http
-        .patch(`http://localhost:4000/default-card/${customerId}`, { cardId })
+        .patch(`http://localhost:4000/setdefaultcard/${customerId}`, { cardId })
         .subscribe(
           (data:any) => {
             console.log(data);
