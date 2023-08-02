@@ -833,11 +833,7 @@ async function initializeSocket(server) {
 
         //----------------For Single Assign Driver----------------------//
         if (asigningrides.length > 0) {
-<<<<<<< HEAD
           console.log("Hii");
-=======
-          console.log("aA");
->>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
           for (let data of asigningrides) {
 
             let currenttime = Date.now();
@@ -877,7 +873,6 @@ async function initializeSocket(server) {
             }
           }
         }
-<<<<<<< HEAD
         else if (nearestdriversArray.length>0){
           console.log("else Hii");
           for (let data of nearestrides) {
@@ -892,25 +887,6 @@ async function initializeSocket(server) {
               const driver_data = await driverModel.findByIdAndUpdate( data.nearestArray[0], { $set: { assign: "0" } })
 
               io.emit('timeoutdata', { success: true, message: 'Sorry Time Out.', ride_data, driver_data});
-=======
-        //----------------For Nearest Assign Driver----------------------//
-        else if (nearestdriversArray.length>0){
-          console.log("Hii");
-          for (let data of nearestdriversArray) {
-            // console.log("827",data);
-
-            let currenttime = Date.now()
-            let assignedTime = data.assigningTime
-            resulttimeout = currenttime/1000 - assignedTime/1000
-            // console.log("832", assignedTime);
-
-            if (resulttimeout >= RideTimeOut) {
-              // console.log("835",resulttimeout);
-              const nearestridenewdata = await createrideModel.findByIdAndUpdate(data._id ,  { $unset: { driverId: "" , assigningTime: "", nearestArray: ""}, $set: { ridestatus: 0 } })
-              const nearestdrivernewdata = await driverModel.findByIdAndUpdate( data, { $set: { assign: "0" } })
-              console.log("853", nearestdrivernewdata);
-              io.emit('timeoutdata', { success: true, message: 'Sorry Time Out.', nearestridenewdata, nearestdrivernewdata});
->>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
             }
           }
         }
