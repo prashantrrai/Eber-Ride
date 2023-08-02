@@ -232,8 +232,16 @@ export class SocketService implements OnInit, OnDestroy{
   }
 
 
-
-
+  //---------------------------Listening emitted data  from Timeout in myTask()--------------------------//
+  listeningmytaskfunc(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('pushnotification', (data: any) => {
+      console.log(data);
+      
+      observer.next(data);
+      });
+    });
+  }
 
 
     

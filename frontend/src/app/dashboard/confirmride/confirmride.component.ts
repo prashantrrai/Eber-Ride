@@ -203,6 +203,10 @@ export class ConfirmrideComponent {
     //==========emit data into socket.js when dialog box close=============
     this._socket.emitassignedDriver(this.driverId  , this.rideId)
     this._socket.emitnearestdriver(this.rideId, this.cityId, this.serviceId)
+    this._socket.listeningmytaskfunc().subscribe((response: any)=> {
+
+      this.getrideData();
+    })
   });
   
 }
