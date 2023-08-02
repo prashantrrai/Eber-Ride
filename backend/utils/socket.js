@@ -11,7 +11,7 @@ let AssignedDriverData = [];
 const transporter = require("./nodemailer");
 const client = require('./twilio')
 let notificationCounter = 0;
-const stripe = require('stripe')('sk_test_51NZeiUANXK9scyulpxLuZ2UL5HvCqJBALzHeOfXQxDljxeroEWHfM9Gz9ZhdOau5mV9tyHQx36q5g6HcVPAvlXiA00iaZTcfFv')
+const stripe = require('stripe')(process.env.STRIPE_Secret_key)
 
 
 
@@ -235,7 +235,6 @@ async function initializeSocket(server) {
     // ------------------------------------------------SHOW NEAREST DRIVER ASSIGN-----------------------------------------------//
     socket.on("nearestdata", async (data) => {
       const rideId = data.rideId;
-      const driverId = data.driverId;
       const cityId = new mongoose.Types.ObjectId(data.cityId);
       const serviceId = new mongoose.Types.ObjectId(data.serviceId);
       // console.log("196", data);
@@ -771,9 +770,22 @@ async function initializeSocket(server) {
 
     async function myTask() {
       try {
-        const asigningrides = await createrideModel.find({ ridestatus: 1 });
+        const asigningrides = await createrideModel.find({ ridestatus: 1 , nearest: false});
+        const getdata = await createrideModel.find({ridestatus: 1, nearest: true});
+        // console.log(getdata[0].cityId);
+        const driverdata = await driverModel.find({ status: true, city: getdata[0].cityId, servicetype: getdata[0].serviceId, assign: "0"});
 
-        const driverdata = await driverModel.find({ status: true });
+        console.log(driverdata.length);
+        const nearestArray = driverdata.map((driver) => driver._id);
+        // console.log(nearestArray);
+
+        const updatedRide = await createrideModel.findByIdAndUpdate(getdata[0]._id, {
+          $addToSet: { nearestArray: { $each: nearestArray } },
+        });
+
+        // console.log(driverdata);
+
+
 
         //----------------For Single Assign Driver----------------------//
         if (asigningrides.length > 0) {
@@ -817,20 +829,31 @@ async function initializeSocket(server) {
             }
           }
         }
-        else if (asigningrides.length>0){
+        else if (driverdata.length>0){
           console.log("else Hii");
-          for (let data of nearestrides) {
-            // console.log("832", data);
+          for (let data of getdata) {
+            console.log("832", data._id);
             let currenttime = Date.now()
             let assignedTime = data.assigningTime
             resulttimeout = currenttime/1000 - assignedTime/1000
 
             if (resulttimeout >= RideTimeOut) {
-
-              const ride_data = await createrideModel.findByIdAndUpdate(data._id ,  { $unset: { driverId: "" , assigningTime: ""}, $set: { status: 0 } })
+              // console.log("836",data.nearestArray[0]);
+              const ride_data = await createrideModel.findByIdAndUpdate(data._id ,  { $unset: { driverId: "" , assigningTime: ""}, $set: { ridestatus: 0 } })
               const driver_data = await driverModel.findByIdAndUpdate( data.nearestArray[0], { $set: { assign: "0" } })
 
-              io.emit('timeoutdata', { success: true, message: 'Sorry Time Out.', ride_data, driver_data});
+              notificationCounter++;
+
+
+              const notificationMessage = 'Sorry Driver Not Free';
+              io.emit("pushnotification", {
+                success: true,
+                message: notificationMessage,
+                notificationCounter 
+              });
+
+
+              io.emit('timeoutdata', { success: true, message: 'Sorry Time Out.', ride_data, driver_data, notificationCounter});
             }
           }
         }
