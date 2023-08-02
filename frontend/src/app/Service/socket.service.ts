@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Injectable, OnDestroy } from '@angular/core';
+=======
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
+>>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
 import { Observable, Subscription } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 import { NotificationsService } from './notifications.service';
@@ -6,15 +10,23 @@ import { NotificationsService } from './notifications.service';
 @Injectable({
   providedIn: 'root'
 })
-export class SocketService implements OnDestroy{
+export class SocketService implements OnInit, OnDestroy{
   private socket: Socket;
   url = 'http://localhost:4000'
+<<<<<<< HEAD
   // private errorSub: Subscription = new Subscription()
+=======
+  private runningreqemitdata: Subscription = new Subscription();
+
+>>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
 
   constructor(private _notification: NotificationsService) {
      this.socket = io(this.url); 
     }
 
+  ngOnInit(): void{
+  }
+    
 
   // -----------------------------DRIVER STATUS UPDATE-----------------------------//
   updatedriverStatus(driverId: string, status: boolean) : void {
@@ -69,7 +81,7 @@ export class SocketService implements OnDestroy{
 
     //-----------------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-------------------------------------//
     emitassignedDriver( driverId: string , rideId: string ): void {
-      // console.log(driverId, rideId);
+      console.log(driverId, rideId);
 
       this.socket.emit("AssignedData", {driverId, rideId});   
     }
@@ -86,10 +98,17 @@ export class SocketService implements OnDestroy{
 
 
     //-----------------------------------NEAREST DRIVER FROM DIALOG REF BUTTON-------------------------------------//
+<<<<<<< HEAD
     emitnearestdriver( rideId: string, cityId: string, serviceId: string ): void {
       // console.log(driverId, rideId);
 
       this.socket.emit("nearestdata", {rideId, cityId, serviceId});   
+=======
+    emitnearestdriver( driverId: string , rideId: string, cityId: string, serviceId: string ): void {
+      console.log(driverId, rideId, cityId, serviceId);
+
+      this.socket.emit("nearestdata", {driverId, rideId, cityId, serviceId});   
+>>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
     }
 
     listeningnearestdriver(): Observable<any> {
@@ -124,7 +143,6 @@ export class SocketService implements OnDestroy{
 
       return new Observable(observer => {
         this.socket.on('runningrequestreject', (data: any) => {
-          //data coming from backend response ater emiting data in backend from frontend i.e, ON
           console.log(data)
 
           observer.next(data)
@@ -134,7 +152,6 @@ export class SocketService implements OnDestroy{
 
     emitrejectRunningRequest(data: any){
       console.log(data);
-      //sending data to backend from frontend using emit
       this.socket.emit('Rejectrunningrequest', data)
     }
 
@@ -161,7 +178,7 @@ export class SocketService implements OnDestroy{
     listeningrunningtimeoutinRR(){
       return new Observable(observer => {
         this.socket.on("timeoutdata", (data: any) => {
-          console.log(data)
+          // console.log(data)
 
           observer.next(data)
         })
@@ -172,7 +189,7 @@ export class SocketService implements OnDestroy{
     listeningtimeoutstatusinCFR(){
       return new Observable(observer => {
         this.socket.on("timeoutdata", (data: any) => {
-          console.log(data)
+          // console.log(data)
 
           observer.next(data)
         })
@@ -233,10 +250,16 @@ export class SocketService implements OnDestroy{
 
 
     
+<<<<<<< HEAD
   ngOnDestroy(): void {
     // this.errorSub.unsubscribe();
     // this.driverNotFoundSub.unsubscribe();
     // this.decreaseCountSub.unsubscribe();
+=======
+
+  ngOnDestroy(): void {
+    this.runningreqemitdata.unsubscribe();
+>>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
   }
 
 }

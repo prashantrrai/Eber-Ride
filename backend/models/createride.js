@@ -55,12 +55,21 @@ const createRideSchema = mongoose.Schema(
     
     nearest: {
       type: Boolean,
+<<<<<<< HEAD
       default: false,
     },    
     restart: {
       type: Boolean,
       default: false,
     },
+=======
+      default: false
+    },
+    restart: {
+      type: Boolean,
+      default: false
+    },
+>>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
     nearestArray: {
       type: Array
     }

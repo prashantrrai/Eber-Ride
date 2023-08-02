@@ -39,7 +39,8 @@ const driver_Schema = new mongoose.Schema({
   assign: {
     type: String,
     default: "0"
-  }
+  },
+
 });
 
 const driverModel = mongoose.model("driverModel", driver_Schema);

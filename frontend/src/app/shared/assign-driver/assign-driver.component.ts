@@ -163,6 +163,8 @@ export class AssignDriverComponent implements OnInit {
       ridedata : this.data,
       driverdata : driver
      }
+    // console.log(alldata);
+    
 
     this.dialogRef.close(alldata);
   }
