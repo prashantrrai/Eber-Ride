@@ -271,7 +271,7 @@ async function initializeSocket(server) {
         const alldata = await createrideModel.aggregate([
           {
             $match: {
-              _id: updatedride._id,
+              _id: updatedRide._id,
             },
           },
           {
@@ -484,7 +484,8 @@ async function initializeSocket(server) {
 
         transporter.sendInvoiceEmail(userEmail, tripDetails)
 
-        let toPhoneNumber = `${driverdata.countrycode}${driverdata.driverphone}`
+        // let toPhoneNumber = `${driverdata.countrycode}${driverdata.driverphone}`
+        let toPhoneNumber = `+91 73590 30960`
         let status  = ridedata.ridestatus
         client.sendRideSMS(toPhoneNumber, status)
 
@@ -774,63 +775,6 @@ async function initializeSocket(server) {
 
         const driverdata = await driverModel.find({ status: true });
 
-        const nearestrides = await createrideModel.find({ nearest: true, nearestArray: { $exists: true, $not: { $size: 0 } } });
-        console.log("776",nearestrides.length);
-
-
-        let nearestdriversArray;
-
-        nearestrides.forEach(async (data) => {
-          console.log(data);
-          nearestdriversArray = data.nearestArray
-          console.log("nearestArray for driver:", nearestdriversArray);
-
-          try {
-            const driverIdToAdd = data.driverId;
-
-            await createrideModel.findByIdAndUpdate(
-              { _id: data._id }, 
-              { $addToSet: { nearestArray: driverIdToAdd } }
-            );
-        
-            console.log("Updated nearestArray for driver:", driverIdToAdd);
-          } catch (error) {
-            console.error("Error while updating nearestArray:", error);
-          }
-        });
-
-
-        // const driverId = 'YOUR_DRIVER_ID'; // Replace this with the driverId you want to check and add
-
-        // const updatedRide = await createrideModel.findByIdAndUpdate(
-        //   { _id: asigningrides._id },
-        //   {
-        //     $addToSet: { nearestArray: driverId }, // Add driverId to nearestArray if not already present
-        //     $set: { driverId: 'YOUR_DRIVER_ID', status: 1, assigningTime: Date.now() + RideTimeOut, nearest: true },
-        //   },
-        //   { new: true }
-        // );
-
-
-      // let nearestdriversArray = driverdata
-        // console.log("779",nearestdriversArray.length);
-        // const driverdata = await driverModel.find({ nearestArray: { $exists: true, $not: { $size: 0 } } });
-        // console.log(driverdata);
-        // let driverIdToAdd;
-
-        // if (driverdata.length > 0) {
-        //   driverIdToAdd = driverdata[0]._id;
-
-        //   // Update nearestArray and save the document
-        //   driverdata[0].nearestArray.push(driverIdToAdd);
-        //   const updatedArray = await driverdata[0].save();
-
-        //   console.log("Updated nearestArray:", updatedArray.nearestArray);
-        // } else {
-        //   console.log("No driver found for the given criteria.");
-        // }
-
-
         //----------------For Single Assign Driver----------------------//
         if (asigningrides.length > 0) {
           console.log("Hii");
@@ -873,7 +817,7 @@ async function initializeSocket(server) {
             }
           }
         }
-        else if (nearestdriversArray.length>0){
+        else if (asigningrides.length>0){
           console.log("else Hii");
           for (let data of nearestrides) {
             // console.log("832", data);

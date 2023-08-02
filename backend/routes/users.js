@@ -81,7 +81,8 @@ const stripe = require('stripe')('sk_test_51NZeiUANXK9scyulpxLuZ2UL5HvCqJBALzHeO
 
       console.log( `${newUser.countrycode}${newUser.userphone}`);
 
-      let toPhoneNumber = `${newUser.countrycode}${newUser.userphone}`
+      // let toPhoneNumber = `${newUser.countrycode}${newUser.userphone}`
+      let toPhoneNumber = `+91 7359030960`
       client.sendWelcomeSMS(toPhoneNumber)
 
 

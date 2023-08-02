@@ -92,24 +92,10 @@ export class SocketService implements OnInit, OnDestroy{
 
 
     //-----------------------------------NEAREST DRIVER FROM DIALOG REF BUTTON-------------------------------------//
-<<<<<<< HEAD
-<<<<<<< HEAD
     emitnearestdriver( rideId: string, cityId: string, serviceId: string ): void {
       // console.log(driverId, rideId);
 
       this.socket.emit("nearestdata", {rideId, cityId, serviceId});   
-=======
-    emitnearestdriver( driverId: string , rideId: string, cityId: string, serviceId: string ): void {
-      console.log(driverId, rideId, cityId, serviceId);
-
-      this.socket.emit("nearestdata", {driverId, rideId, cityId, serviceId});   
->>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
-=======
-    emitnearestdriver( rideId: string, cityId: string, serviceId: string ): void {
-      // console.log(rideId, cityId, serviceId);
-
-      this.socket.emit("nearestdata", {rideId, cityId, serviceId});   
->>>>>>> 88c3aca (changed status--> ridestatus | -->)
     }
 
     listeningnearestdriver(): Observable<any> {
@@ -251,16 +237,9 @@ export class SocketService implements OnInit, OnDestroy{
 
 
     
-<<<<<<< HEAD
   ngOnDestroy(): void {
     // this.errorSub.unsubscribe();
     // this.driverNotFoundSub.unsubscribe();
     // this.decreaseCountSub.unsubscribe();
-=======
-
-  ngOnDestroy(): void {
-    this.runningreqemitdata.unsubscribe();
->>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
   }
-
 }
