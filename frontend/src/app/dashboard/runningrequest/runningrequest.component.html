@@ -36,11 +36,11 @@
               <td>{{data.serviceType}}</td>
               <td><img src="http://localhost:4000/{{data.vehicleDetails.vehicleImage}}" alt="vehicle-image"></td>
               <!-- <td>{{data.status}}</td> -->
-              <td [ngSwitch]="data.status">
-                <span class="statusbadge" *ngSwitchCase="4" [ngClass]="{'badge-success': data.status === 4}">Accepted</span>
-                <span class="statusbadge" *ngSwitchCase="5" [ngClass]="{'badge-success': data.status === 5}">Arrived</span>
-                <span class="statusbadge" *ngSwitchCase="6" [ngClass]="{'badge-success': data.status === 6}">Started</span>
-                <span class="statusbadge" [ngClass]="{'badge-warning': data.status === 1}" *ngSwitchDefault>Assigning</span>
+              <td [ngSwitch]="data.ridestatus">
+                <span class="statusbadge" *ngSwitchCase="4" [ngClass]="{'badge-success': data.ridestatus === 4}">Accepted</span>
+                <span class="statusbadge" *ngSwitchCase="5" [ngClass]="{'badge-success': data.ridestatus === 5}">Arrived</span>
+                <span class="statusbadge" *ngSwitchCase="6" [ngClass]="{'badge-success': data.ridestatus === 6}">Started</span>
+                <span class="statusbadge" [ngClass]="{'badge-warning': data.ridestatus === 1}" *ngSwitchDefault>Assigning</span>
             </td>
               <!-- <td>{{data.estimateFare}}</td> -->
               <td class="d-flex gap-3">

@@ -79,8 +79,8 @@
                   <td>{{ ride.serviceType }}</td>
                   <td>{{ ride.paymentOption }}</td>
 
-                  <td class="badge" [ngClass]="{'badge-success': ride.status === 7, 'badge-danger': ride.status === 3}">
-                  {{ statusLabels[ride.status] || 'unknown' }}
+                  <td class="badge" [ngClass]="{'badge-success': ride.ridestatus === 7, 'badge-danger': ride.ridestatus === 3}">
+                  {{ statusLabels[ride.ridestatus] || 'unknown' }}
                   </td>
                       
               </tr>

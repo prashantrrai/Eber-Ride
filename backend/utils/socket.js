@@ -144,7 +144,7 @@ async function initializeSocket(server) {
         const updatedRide = await createrideModel.findByIdAndUpdate(
           { _id: rideId },
           {
-            $set: { driverId: driverId, status: 1, assigningTime: Date.now() },
+            $set: { driverId: driverId, ridestatus: 1, assigningTime: Date.now() },
           },
           { new: true }
         );
@@ -232,11 +232,7 @@ async function initializeSocket(server) {
       }
     });
 
-<<<<<<< HEAD
-    //------------------------------------------------SHOW DRIVER DATA AFTER NEAREST ASSIGN-----------------------------------------------//
-=======
     // ------------------------------------------------SHOW NEAREST DRIVER ASSIGN-----------------------------------------------//
->>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
     socket.on("nearestdata", async (data) => {
       const rideId = data.rideId;
       const driverId = data.driverId;
@@ -245,46 +241,23 @@ async function initializeSocket(server) {
       // console.log("196", data);
 
       try {
-<<<<<<< HEAD
-        const driverdata = await driverModel.find({ status: 1, city: data.cityId, servicetype: data.serviceId });
-        console.log("200",driverdata);
-
-        let driverIdToAdd;
-        let updatedride;
-
-        if (driverdata.length > 0) {
-          driverIdToAdd = driverdata[0]._id;
-        
-          updatedride =  await createrideModel.findByIdAndUpdate(
-            { _id: rideId },
-            { $push: { nearestArray: driverIdToAdd }, $set: { driverId: driverIdToAdd, status: 1, assigningTime: Date.now(), nearest: true } },
-            { new: true }
-          );
-        
-          console.log("Updated nearestArray:", updatedride);
-        } else {
-          console.log("No driver found for the given criteria.");
-        }
-        
-        const driver =  await driverModel.findByIdAndUpdate(driverIdToAdd, { assign: "1" }, { new: true });
-        console.log("261",driver);
-
-=======
 
 
-        const driverdata = await driverModel.find({ status: 1, city: data.cityId, servicetype: data.serviceId });
+        const driverdata = await driverModel.find({ status: true, city: data.cityId, servicetype: data.serviceId });
         let driverIdToAdd;
         let updatedRide
 
         if (driverdata.length > 0) {
           driverIdToAdd = driverdata[0]._id;
 
-
           updatedRide = await createrideModel.findByIdAndUpdate(
             { _id: rideId },
-            { $push: { nearestArray: driverIdToAdd }, $set: { driverId: driverIdToAdd, status: 1, assigningTime: Date.now(), nearest: true } },
+            {
+              $addToSet: { nearestArray: driverIdToAdd },
+              $set: { driverId: driverIdToAdd, ridestatus: 1, assigningTime: Date.now(), nearest: true }
+            },
             { new: true }
-          );  
+          );
         
 
           // console.log("Updated nearestArray:", updatedRide);
@@ -293,7 +266,6 @@ async function initializeSocket(server) {
         }
 
         const updateddriver =  await driverModel.findByIdAndUpdate(driverdata[0]._id, { assign: "1" }, { new: true });
->>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
 
 
         const alldata = await createrideModel.aggregate([
@@ -382,7 +354,7 @@ async function initializeSocket(server) {
         const alldata = await createrideModel.aggregate([
           {
             $match: {
-              status: 1,
+              ridestatus: 1,
             },
           },
           {
@@ -468,7 +440,7 @@ async function initializeSocket(server) {
       try {
         const ridedata = await createrideModel.updateMany(
           { driverId: data.driverId },
-          { $unset: { driverId: "", assigningTime: "" }, $set: { status: 0 } }
+          { $unset: { driverId: "", assigningTime: "" }, $set: { ridestatus: 0 } }
         );
         const driverdata = await driverModel.updateMany(
           { _id: data.driverId },
@@ -496,7 +468,7 @@ async function initializeSocket(server) {
       // const driverId = data.driverId;
 
       try {
-        const ridedata = await createrideModel.findByIdAndUpdate( data.rideId , { $set: { status: 7 }},{ new: true } );
+        const ridedata = await createrideModel.findByIdAndUpdate( data.rideId , { $set: { ridestatus: 7 }},{ new: true } );
         const driverdata = await driverModel.findByIdAndUpdate(data.driverId , { $set: { assign: "0" } }, {new: true});
         // console.log(ridedata.userId);
         const userdata = await userModel.findById(ridedata.userId)
@@ -513,7 +485,7 @@ async function initializeSocket(server) {
         transporter.sendInvoiceEmail(userEmail, tripDetails)
 
         let toPhoneNumber = `${driverdata.countrycode}${driverdata.driverphone}`
-        let status  = ridedata.status
+        let status  = ridedata.ridestatus
         client.sendRideSMS(toPhoneNumber, status)
 
         //-------------------STRIPE PAYMENT CUT------------------------//
@@ -529,7 +501,7 @@ async function initializeSocket(server) {
           amount: amountInCents,
           currency: 'usd',
           customer: userdata.customer_id,
-          payment_method: defaultCardId,
+          // payment_method: "Card",
           off_session: true,
           confirm: true
         });
@@ -594,7 +566,7 @@ async function initializeSocket(server) {
       try {
         const ridedata = await createrideModel.findByIdAndUpdate(
           { _id: rideId },
-          { status: 3 },
+          { ridestatus: 3 },
           { new: true }
         );
         // console.log(ridedata);
@@ -631,9 +603,9 @@ async function initializeSocket(server) {
         const matchCriteria = [];
 
         if (statusfilter !== -1) {
-          matchCriteria.push({ status: { $in: [statusfilter] } });
+          matchCriteria.push({ ridestatus: { $in: [statusfilter] } });
         } else if (statusfilter === -1) {
-          matchCriteria.push({ status: { $nin: [1, 2, 4, 5, 6] } });
+          matchCriteria.push({ ridestatus: { $nin: [1, 2, 4, 5, 6] } });
         }
 
         if (paymentFilter !== "") {
@@ -743,7 +715,7 @@ async function initializeSocket(server) {
                 ...matchCriteria,
                 // matchStage,
                 {
-                  status: { $in: [3, 7] },
+                  ridestatus: { $in: [3, 7] },
                 },
               ],
             },
@@ -798,11 +770,10 @@ async function initializeSocket(server) {
 
     async function myTask() {
       try {
-        // const driverdata = await driverModel.find({ nearestArray: { $exists: true, $not: { $size: 0 } } });
+        const asigningrides = await createrideModel.find({ ridestatus: 1 });
 
-        const asigningrides = await createrideModel.find({ nearest: false, status: 1 });
+        const driverdata = await driverModel.find({ status: true });
 
-<<<<<<< HEAD
         const nearestrides = await createrideModel.find({ nearest: true, nearestArray: { $exists: true, $not: { $size: 0 } } });
         console.log("776",nearestrides.length);
 
@@ -839,13 +810,10 @@ async function initializeSocket(server) {
         //   },
         //   { new: true }
         // );
-=======
-        let nearestdriversArray = driverdata
-        console.log("779",nearestdriversArray.length);
->>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
 
 
-
+      // let nearestdriversArray = driverdata
+        // console.log("779",nearestdriversArray.length);
         // const driverdata = await driverModel.find({ nearestArray: { $exists: true, $not: { $size: 0 } } });
         // console.log(driverdata);
         // let driverIdToAdd;
@@ -881,7 +849,7 @@ async function initializeSocket(server) {
                 data._id,
                 {
                   $unset: { driverId: "", assigningTime: "" },
-                  $set: { status: 0, nearest: false },
+                  $set: { ridestatus: 0, nearest: false },
                 }
               );
               const drivernewdata = await driverModel.findByIdAndUpdate(
@@ -938,7 +906,7 @@ async function initializeSocket(server) {
 
             if (resulttimeout >= RideTimeOut) {
               // console.log("835",resulttimeout);
-              const nearestridenewdata = await createrideModel.findByIdAndUpdate(data._id ,  { $unset: { driverId: "" , assigningTime: "", nearestArray: ""}, $set: { status: 0 } })
+              const nearestridenewdata = await createrideModel.findByIdAndUpdate(data._id ,  { $unset: { driverId: "" , assigningTime: "", nearestArray: ""}, $set: { ridestatus: 0 } })
               const nearestdrivernewdata = await driverModel.findByIdAndUpdate( data, { $set: { assign: "0" } })
               console.log("853", nearestdrivernewdata);
               io.emit('timeoutdata', { success: true, message: 'Sorry Time Out.', nearestridenewdata, nearestdrivernewdata});

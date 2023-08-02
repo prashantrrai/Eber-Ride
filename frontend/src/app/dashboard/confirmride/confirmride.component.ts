@@ -209,9 +209,13 @@ export class ConfirmrideComponent {
     //==========emit data into socket.js when dialog box close=============
     this._socket.emitassignedDriver(this.driverId  , this.rideId)
 <<<<<<< HEAD
+<<<<<<< HEAD
     this._socket.emitnearestdriver(this.rideId, this.cityId, this.serviceId)
 =======
     this._socket.emitnearestdriver(this.driverId  , this.rideId, this.cityId, this.serviceId)
+=======
+    this._socket.emitnearestdriver( this.rideId, this.cityId, this.serviceId)
+>>>>>>> 88c3aca (changed status--> ridestatus | -->)
     
 >>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
   });

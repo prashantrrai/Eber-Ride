@@ -1,8 +1,7 @@
-<<<<<<< HEAD
-import { Injectable, OnDestroy } from '@angular/core';
-=======
+
+
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
->>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
+
 import { Observable, Subscription } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 import { NotificationsService } from './notifications.service';
@@ -13,12 +12,7 @@ import { NotificationsService } from './notifications.service';
 export class SocketService implements OnInit, OnDestroy{
   private socket: Socket;
   url = 'http://localhost:4000'
-<<<<<<< HEAD
   // private errorSub: Subscription = new Subscription()
-=======
-  private runningreqemitdata: Subscription = new Subscription();
-
->>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
 
   constructor(private _notification: NotificationsService) {
      this.socket = io(this.url); 
@@ -81,7 +75,7 @@ export class SocketService implements OnInit, OnDestroy{
 
     //-----------------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-------------------------------------//
     emitassignedDriver( driverId: string , rideId: string ): void {
-      console.log(driverId, rideId);
+      // console.log(driverId, rideId);
 
       this.socket.emit("AssignedData", {driverId, rideId});   
     }
@@ -99,6 +93,7 @@ export class SocketService implements OnInit, OnDestroy{
 
     //-----------------------------------NEAREST DRIVER FROM DIALOG REF BUTTON-------------------------------------//
 <<<<<<< HEAD
+<<<<<<< HEAD
     emitnearestdriver( rideId: string, cityId: string, serviceId: string ): void {
       // console.log(driverId, rideId);
 
@@ -109,6 +104,12 @@ export class SocketService implements OnInit, OnDestroy{
 
       this.socket.emit("nearestdata", {driverId, rideId, cityId, serviceId});   
 >>>>>>> e732e0c (Crone Nearest Assign | First Driver pushed in nearestArray and free in 30sec)
+=======
+    emitnearestdriver( rideId: string, cityId: string, serviceId: string ): void {
+      // console.log(rideId, cityId, serviceId);
+
+      this.socket.emit("nearestdata", {rideId, cityId, serviceId});   
+>>>>>>> 88c3aca (changed status--> ridestatus | -->)
     }
 
     listeningnearestdriver(): Observable<any> {

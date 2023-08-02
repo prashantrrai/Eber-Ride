@@ -47,9 +47,9 @@ confirmRideRouter.post("/ridesinfo", async (req, res) => {
     const matchCriteria = [];
     
     if (statusfilter !== -1) {
-      matchCriteria.push({ status: { $in: [statusfilter] } });
+      matchCriteria.push({ ridestatus: { $in: [statusfilter] } });
     }else if (statusfilter === -1) {
-      matchCriteria.push({ status: { $nin: [3, 7] } });
+      matchCriteria.push({ ridestatus: { $nin: [3, 7] } });
     }
     
     if (vehiclefilter && vehiclefilter.length > 0) {

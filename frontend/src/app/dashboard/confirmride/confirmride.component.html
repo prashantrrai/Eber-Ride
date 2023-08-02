@@ -69,11 +69,9 @@
                         <td class="fixed-width">{{ ride.startLocation }}</td>
                         <td class="fixed-width">{{ ride.endLocation }}</td>
                         <td>{{ ride.serviceType }}</td>
-                        <td [ngSwitch]="ride.status">
-                            <span class="statusbadge" *ngSwitchCase="1" [ngClass]="{'badge-info': ride.status === 1}">Assigning</span>
-                            <!-- <span class="statusbadge" *ngSwitchCase="4" [ngClass]="{'badge-success': ride.status === 4}">Accepted</span> -->
-                            <span class="statusbadge" [ngClass]="{'badge-warning': ride.status === 0}" *ngSwitchDefault>Pending</span>
-                            <!-- <span class="statusbadge" [ngClass]="{'badge-warning': [1, 4].indexOf(ride.status) === -1}" *ngSwitchDefault>Pending</span> -->
+                        <td [ngSwitch]="ride.ridestatus">
+                            <span class="statusbadge" *ngSwitchCase="1" [ngClass]="{'badge-info': ride.ridestatus === 1}">Assigning</span>
+                            <span class="statusbadge" [ngClass]="{'badge-warning': ride.ridestatus === 0}" *ngSwitchDefault>Pending</span>
                         </td>
                           
                         <td>
