@@ -244,7 +244,7 @@ async function initializeSocket(server) {
 
         const driverdata = await driverModel.find({ status: true, city: data.cityId, servicetype: data.serviceId, assign: "0" });
         const firstdriver = driverdata[0]
-        console.log("247",firstdriver);
+        console.log("247",firstdriver.drivername);
 
         const driver = await driverModel.findByIdAndUpdate(firstdriver._id, { assign: "1" }, { new: true });
         const ride = await createrideModel.findByIdAndUpdate(rideId, { driverId: firstdriver._id, ridestatus: 1, nearest: true, nearestArray: firstdriver._id, assigningTime: Date.now() }, { new: true })
@@ -778,12 +778,6 @@ async function initializeSocket(server) {
         const asigningrides = await createrideModel.find({ ridestatus: 1 , nearest: false});
         const nearestridedata = await createrideModel.find({ridestatus: 1, nearest: true});
         // console.log(nearestridedata);
-        // const driverdata = await driverModel.find({ status: true, city: nearestridedata[0].cityId, servicetype: nearestridedata[0].serviceId, assign: "0"});
-
-        // const nearestArray = driverdata.map((driver) => driver._id);
-        // // console.log(nearestArray);
-        // console.log("780", nearestArray.length);
-
 
         //----------------For Single Assign Driver----------------------//
         if (asigningrides.length > 0) {
@@ -845,6 +839,7 @@ async function initializeSocket(server) {
             resulttimeout = Math.floor((currenttime - assignedTime)/1000)
             
             if (resulttimeout >= RideTimeOut) {
+              console.log("848", "If");
               const city_id = new mongoose.Types.ObjectId(data.cityId);
               const vehicle_id = new mongoose.Types.ObjectId(data.serviceId);
               const nearestdriversArray = [...new Set(data.nearestArray)];
@@ -862,30 +857,42 @@ async function initializeSocket(server) {
                 },
               ]);
 
-              const pendingdriver = await nonassigndriverdata.exec();
-              console.log("865",pendingdriver.length);
-              if (pendingdriver.length > 0) {
-                const randomIndex = Math.floor(Math.random() * pendingdriver.length);
-                const randomdriver = pendingdriver[randomIndex];
+              const pendingdrivertoassign = await nonassigndriverdata.exec();
+              console.log("865",pendingdrivertoassign);
 
-                const olddriver = await driverModel.findByIdAndUpdate(data.driverId, { assign: "0" }, { new: true });
+              if (pendingdrivertoassign.length > 0) {
+                console.log("870", "If");
+
+                const randomIndex = Math.floor(Math.random() * pendingdrivertoassign.length);
+                const randomdriver = pendingdrivertoassign[randomIndex];
+                // console.log("870",randomdriver);
+
+                const olddriver = await driverModel.findByIdAndUpdate(data.driverId, {$set: { assign: "0" }}, { new: true });
                 // console.log("olddriver", olddriver);
-                const newdriver = await driverModel.findByIdAndUpdate(randomdriver._id, { assign: "1" }, { new: true });
+                const newdriver = await driverModel.findByIdAndUpdate(randomdriver._id, {$set: { assign: "1" }}, { new: true });
                 // console.log("newdriver", newdriver);
 
-                const result = await createrideModel.findByIdAndUpdate(data._id, { $addToSet: { nearestdriversArray: randomdriver._id }, assigningTime: Date.now(), driverId: randomdriver._id }, { new: true });
-                // io.emit('afterselectdriver', olddriver, newdriver, result)
 
+
+                const finalresult = await createrideModel.findByIdAndUpdate({ _id: data._id }, {
+                  $addToSet: { nearestArray: randomdriver._id },
+                  $set: {
+                    assigningTime: Date.now(),
+                    driverId: randomdriver._id
+                  }
+                }, { new: true });
+                
                 notificationCounter++;
                 const notificationMessage = 'Sorry Driver Not Free';
                 io.emit("pushnotification", {
                   success: true,
                   message: notificationMessage,
                   notificationCounter,
-                  olddriver, newdriver, result
+                  olddriver, newdriver, finalresult
                 });
               }
               else{
+                console.log("894", "Else");
                 const city_id = new mongoose.Types.ObjectId(data.cityId);
                 const vehicle_id = new mongoose.Types.ObjectId(data.serviceId);
                 
@@ -904,14 +911,16 @@ async function initializeSocket(server) {
                 const assignedList = await assigndriverdata.exec();
 
                 if (assignedList.length > 0) {
-                  const driverdata = await driverModel.findByIdAndUpdate(data.driverId, { assign: "0" }, { new: true });
-                  const result = await createrideModel.findByIdAndUpdate(data._id, { assigningTime: Date.now(), driverId: null }, { new: true });
-                  io.emit('timeoutdata', driverdata ,result)
+                  console.log("910");
+                  const driverdata = await driverModel.findByIdAndUpdate(data.driverId, {$set: { assign: "0" }}, { new: true });
+                  const finalresult = await createrideModel.findByIdAndUpdate(data._id, { $set: { assigningTime: Date.now()}, $unset: {driverId: ""} }, { new: true });
+                  io.emit('timeoutdata', driverdata ,finalresult)
       
                 } else {
-                  const driverdata = await driverModel.findByIdAndUpdate(data.driverId, { assign: "0" }, { new: true });
-                  const result = await createrideModel.findByIdAndUpdate(data._id, { assigningTime: Date.now(), nearest: false, ridestatus: 0, driverId: null , nearestArray : [] }, { new: true });
-                  io.emit('timeoutdata', driverdata, result)
+                  console.log("912");
+                  const driverdata = await driverModel.findByIdAndUpdate(data.driverId, { $set: { assign: "0" }}, { new: true });
+                  const finalresult = await createrideModel.findByIdAndUpdate(data._id, { $set: {nearest: false, ridestatus: 0}, $unset: {driverId: "" , nearestArray : "", assigningTime: "" } }, { new: true });
+                  io.emit('timeoutdata', driverdata, finalresult)
                 }
               }
 
