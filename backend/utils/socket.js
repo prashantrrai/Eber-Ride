@@ -923,13 +923,13 @@ async function initializeSocket(server) {
                   console.log("910");
                   const driverdata = await driverModel.findByIdAndUpdate(data.driverId, {$set: { assign: "0" }}, { new: true });
                   const finalresult = await createrideModel.findByIdAndUpdate(data._id, { $set: { assigningTime: Date.now()}, $unset: {driverId: ""} }, { new: true });
-                  io.emit('timeoutdata', driverdata ,finalresult)
+                  io.emit('crontimeoutdata', driverdata ,finalresult)
       
                 } else {
                   console.log("912");
                   const driverdata = await driverModel.findByIdAndUpdate(data.driverId, { $set: { assign: "0" }}, { new: true });
                   const finalresult = await createrideModel.findByIdAndUpdate(data._id, { $set: {nearest: false, ridestatus: 0}, $unset: {driverId: "" , nearestArray : "", assigningTime: "" } }, { new: true });
-                  io.emit('timeoutdata', driverdata, finalresult)
+                  io.emit('crontimeoutdata', driverdata, finalresult)
                 }
               }
 
@@ -945,7 +945,7 @@ async function initializeSocket(server) {
 
 
     //----------------------------------------HANDLE CRON------------------------------------------//
-    const job = cron.schedule("*/30 * * * * *", async () => {
+    const job = cron.schedule("*/5 * * * * *", async () => {
       await myTask();
     });
     

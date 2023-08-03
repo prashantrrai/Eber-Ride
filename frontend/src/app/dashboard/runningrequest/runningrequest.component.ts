@@ -16,7 +16,7 @@ export class RunningrequestComponent {
   constructor(
     private _socketservice: SocketService,
     private toastr: ToastrService,
-
+    private _socket: SocketService,
   ) { }
 
   ngOnInit() {
@@ -25,6 +25,10 @@ export class RunningrequestComponent {
     this.afterrejectrunningrequest();
     this.afteracceptrunningrequest()
     this.timeoutrunningreq()
+    this._socket.listeningmytaskfunc().subscribe((response: any)=> {
+
+      this.getRunningData();
+    })
   }
 
   getRunningData() {
