@@ -132,7 +132,7 @@ export class RidehistoryComponent implements OnInit {
 
   //----------------AFTER ACCEPT RIDE IN REAL-TIME----------------//
   afteracceptrideinrealtime(){
-    this._socket.listenacceptrunningrequest().subscribe((ridedata: any) => {
+    this._socket.listeningrideupdates().subscribe((ridedata: any) => {
       this.getRideHistory()
     })
   }

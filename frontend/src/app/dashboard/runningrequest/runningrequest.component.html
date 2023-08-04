@@ -6,12 +6,12 @@
         <table class="table">
           <thead class="bg-light text-dark">
             <tr>
-              <th>Driver Profile</th>
-              <th>Driver Name</th>
-              <th>Driver Phone</th>
-              <th>Ride ID</th> 
+              <th>User Profile</th>
               <th>User Name</th>
               <th>User Phone</th>
+              <th>Ride ID</th> 
+              <th>Driver Name</th>
+              <th>Driver Phone</th>
               <th>Pick up Time</th>
               <th>Pick up Address</th>
               <th>Drop off Address</th>
@@ -24,12 +24,12 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of assignedArray">
-              <td><img src="http://localhost:4000/{{data.driverDetails.profile}}" alt="driver-profile"></td>
+              <td><img src="http://localhost:4000/{{data.userDetails.profile}}" alt="driver-profile"></td>
+              <td>{{data.userDetails.username}}</td>
+              <td>{{data._id}}</td>
+              <td>{{data.userDetails.userphone}}</td>
               <td>{{data.driverDetails.drivername}}</td>
               <td>{{data.driverDetails.driverphone}}</td>
-              <td>{{data._id}}</td>
-              <td>{{data.userDetails.username}}</td>
-              <td>{{data.userDetails.userphone}}</td>
               <td>{{data.rideDate + "    " +data.time }}</td>
               <td class="fixed-width">{{data.startLocation}}</td>
               <td class="fixed-width">{{data.endLocation}}</td>
@@ -39,6 +39,7 @@
               <td [ngSwitch]="data.ridestatus">
                 <span class="statusbadge" *ngSwitchCase="4" [ngClass]="{'badge-success': data.ridestatus === 4}">Accepted</span>
                 <span class="statusbadge" *ngSwitchCase="5" [ngClass]="{'badge-success': data.ridestatus === 5}">Arrived</span>
+                <span class="statusbadge" *ngSwitchCase="9" [ngClass]="{'badge-success': data.ridestatus === 9}">Picked</span>
                 <span class="statusbadge" *ngSwitchCase="6" [ngClass]="{'badge-success': data.ridestatus === 6}">Started</span>
                 <span class="statusbadge" [ngClass]="{'badge-warning': data.ridestatus === 1}" *ngSwitchDefault>Assigning</span>
             </td>

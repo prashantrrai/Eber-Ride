@@ -167,6 +167,7 @@ async function initializeSocket(server) {
             const elapsedTimeInSeconds = Math.floor((currentTime.getTime() - data.created) / 1000);
             // console.log(elapsedTimeInSeconds);
             if (elapsedTimeInSeconds >= 30) {
+
               const result1 = await driverModel.findByIdAndUpdate(data.driver_id, { assign: "0" }, { new: true });
               io.emit('cronedata', result1);
 
@@ -220,6 +221,7 @@ async function initializeSocket(server) {
               io.emit('afterselectdriver', driverdata, driver, result)
             }
             else {
+              //when driver is on hold
               const city_id = new mongoose.Types.ObjectId(data.city_id);
               const vehicle_id = new mongoose.Types.ObjectId(data.vehicle_id);
               

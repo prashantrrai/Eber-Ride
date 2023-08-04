@@ -41,7 +41,7 @@ export class AssignDriverComponent implements OnInit {
     this.getDriverData()
     this.assigndriverdata()
     this.gettingrejectrunningrequestdata();
-
+    this.listenassignrejected()
 
     this.dataArray = this.data;
     // console.log(this.data);
@@ -117,7 +117,7 @@ export class AssignDriverComponent implements OnInit {
 
   // --------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-----------------------//
   assigndriverdata(){
-    this._socketService.onFinalassignedDriverData("Assigned Data").subscribe({
+    this._socketService.onFinalassignedDriverData('data').subscribe({
       next: (response) => {
         // console.log("New Assigned Driver Details:    ",response);
 
@@ -146,17 +146,6 @@ export class AssignDriverComponent implements OnInit {
     this.dialogRef.close(alldata);
   }
 
-
-  //when data driver is free then that time this process run 
-  gettingrejectrunningrequestdata(){
-  this._socketService.listenrejectRunningRequest().subscribe((response: any)=> {
-    // Handle successful response coming from backend that is ON
-
-    this.getDriverData();
-  }
-  );
-  }
-
   NearestDriver(driver: any) {
     console.log(driver);
     const alldata = {
@@ -169,9 +158,27 @@ export class AssignDriverComponent implements OnInit {
     this.dialogRef.close(alldata);
   }
 
-    // --------------------------NEAREST ASSIGN DRIVER FROM DIALOG REF BUTTON-----------------------//
-    nearestassigndriverdata(){
-      
+
+
+  //when data driver is free then that time this process run 
+  gettingrejectrunningrequestdata(){
+    this._socketService.listenrejectRunningRequest().subscribe((response: any)=> {
+
+      this.getDriverData();
     }
+    );
+  }
+
+  //when data driver is free then that time this process run 
+  listenassignrejected(){
+      this._socketService.listenassignrejected().subscribe((response: any)=> {
+
+        this.getDriverData();
+      }
+    );
+  }
+    
+
+
   
 }

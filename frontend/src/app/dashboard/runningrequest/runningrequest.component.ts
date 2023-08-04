@@ -23,12 +23,12 @@ export class RunningrequestComponent {
     this.getRunningData();
     this.assigneddriverfromAssignDialogBox();
     this.afterrejectrunningrequest();
+    this.listenassignrejected()
     this.afteracceptrunningrequest()
     this.timeoutrunningreq()
-    this._socket.listeningmytaskfunc().subscribe((response: any)=> {
-
-      this.getRunningData();
-    })
+    this.listeningwhendriverisnearest()
+    this.listeningmytaskfunc()
+    this.listennearestassignbuttonclick()
   }
 
   getRunningData() {
@@ -86,17 +86,53 @@ export class RunningrequestComponent {
       driverId: driverId
     }
     
-    this._socketservice.emitacceptrunningrequest( data)
+    // this._socketservice.emitacceptrunningrequest( data)
+    this._socketservice.emitaccept( data)
+    this.getRunningData()
+  }
+  arrivedrunningrequest(driverId: string, rideId: string) {
+    // console.log(rideId, driverId);
+    const data = {
+      rideId: rideId,
+      driverId: driverId
+    }
+  
+    this._socketservice.emitarrived( data)
+    this.getRunningData()
+  }
+  pickedrunningrequest(driverId: string, rideId: string) {
+    // console.log(rideId, driverId);
+    const data = {
+      rideId: rideId,
+      driverId: driverId
+    }
+    
+    this._socketservice.emitpicked( data)
     this.getRunningData()
   }
 
-    // AFTER REJECTING RIDE
+  startedrunningrequest(driverId: string, rideId: string) {
+    // console.log(rideId, driverId);
+    const data = {
+      rideId: rideId,
+      driverId: driverId
+    }
+    
+    this._socketservice.emitstarted( data)
+    this.getRunningData()
+  }
+
+    // AFTER REJECTING RIDE ASSIGN ONE
   afterrejectrunningrequest() {
-    // const data = {
-    //   rideId: this.rideId,
-    //   driverId: this.driverId
-    // }
     this._socketservice.listenrejectRunningRequest().subscribe((response: any) => {
+      this.getRunningData()
+    }
+    );
+  }
+
+  //-----------------REJECT NEAREST ASSIGN RIDE------------------//
+  listenassignrejected() {
+    this._socketservice.listenassignrejected().subscribe((response: any) => {
       this.getRunningData()
     }
     );
@@ -105,7 +141,7 @@ export class RunningrequestComponent {
     // AFTER ACCEPTING RIDE
     afteracceptrunningrequest() {
 
-      this._socketservice.listenacceptrunningrequest().subscribe((response: any) => {
+      this._socketservice.listeningrideupdates().subscribe((response: any) => {
         this.getRunningData()
       } );
     }
@@ -118,13 +154,36 @@ export class RunningrequestComponent {
     })
   }
 
+  //---------------------WHEN NEAREST ASSIGN CLICKED--------------------//
+  listennearestassignbuttonclick() {
+    this._socketservice.listeningnearestdriver().subscribe((res: any) => {
+      this.getRunningData()
+    })
+  }
+
   //------------TIMEOUT RUNNING REQUEST--------------------//
   timeoutrunningreq() {
     this._socketservice.listeningrunningtimeoutinRR().subscribe((res: any) => {
       // console.log("socket called", res);
       
       this.getRunningData()
-      this.toastr.success("Sorry! Ride Timeout")
+      // this.toastr.success("Sorry! Ride Timeout")
+    })
+  }
+
+    //------------TIMEOUT RUNNING REQUEST--------------------//
+    listeningmytaskfunc(){
+      this._socket.listeningmytaskfunc().subscribe((response: any)=> {
+
+        this.getRunningData();
+      })
+    }
+  
+  //------------TIMEOUT RUNNING REQUEST--------------------//
+  listeningwhendriverisnearest(){
+    this._socket.listeningwhendriverisnearest().subscribe((response: any)=> {
+
+      this.getRunningData();
     })
   }
 

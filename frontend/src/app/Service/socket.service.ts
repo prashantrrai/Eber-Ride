@@ -75,7 +75,7 @@ export class SocketService implements OnInit, OnDestroy{
 
     //-----------------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-------------------------------------//
     emitassignedDriver( driverId: string , rideId: string ): void {
-      // console.log(driverId, rideId);
+      console.log(driverId, rideId);
 
       this.socket.emit("AssignedData", {driverId, rideId});   
     }
@@ -83,7 +83,7 @@ export class SocketService implements OnInit, OnDestroy{
     onFinalassignedDriverData(data: String): Observable<any> {
       return new Observable((observer) => {
         this.socket.on('newdata', (data: any) => {
-          // console.log("ichsohiedkvhhedhocvhwsfi",data);
+          console.log("ichsohiedkvhhedhocvhwsfi",data);
   
           observer.next(data);
         });
@@ -125,7 +125,7 @@ export class SocketService implements OnInit, OnDestroy{
     }
 
 
-    //--------------------------REJECT RIDE BY DRIVER------------------------------//
+    //--------------------------REJECT RIDE BY DRIVER ASSIGN ONE------------------------------//
     listenrejectRunningRequest(): Observable<any>  {
 
       return new Observable(observer => {
@@ -142,12 +142,11 @@ export class SocketService implements OnInit, OnDestroy{
       this.socket.emit('Rejectrunningrequest', data)
     }
 
-
-    //--------------------------ACCEPT RIDE BY DRIVER------------------------------//
-    listenacceptrunningrequest(): Observable<any>  {
+    //--------------------------REJECT RIDE BY DRIVER NEAREST ASSIGN------------------------------//
+    listenassignrejected(): Observable<any>  {
 
       return new Observable(observer => {
-        this.socket.on("runningrequestaccept", (data: any) => {
+        this.socket.on('assignrejected', (data: any) => {
           console.log(data)
 
           observer.next(data)
@@ -155,109 +154,160 @@ export class SocketService implements OnInit, OnDestroy{
       })
     }
 
-    emitacceptrunningrequest(data: any){
-      console.log(data);
-      this.socket.emit("acceptrunningreuest", data)
-    }
+    //--------------------------ACCEPT RIDE BY DRIVER------------------------------//
+    // listenacceptrunningrequest(): Observable<any>  {
 
+    //   return new Observable(observer => {
+    //     this.socket.on("runningrequestaccept", (data: any) => {
+    //       console.log(data)
 
-    //------------TIMEOUT RUNNING REQUEST--------------------//
-    listeningrunningtimeoutinRR(){
-      return new Observable(observer => {
-        this.socket.on("timeoutdata", (data: any) => {
-          // console.log(data)
+    //       observer.next(data)
+    //     })
+    //   })
+    // }
+      
+      // emitacceptrunningrequest(data: any){
+      //   console.log(data);
+      //   this.socket.emit("acceptrunningreuest", data)
+      // }
+      
+      
+      //------------TIMEOUT RUNNING REQUEST--------------------//
+      listeningrunningtimeoutinRR(){
+        return new Observable(observer => {
+          this.socket.on("timeoutdata", (data: any) => {
+            // console.log(data)
 
           observer.next(data)
         })
       })
     }
-
+    
     //------------TIMEOUT RUNNING REQUEST in CFR--------------------//
     listeningtimeoutstatusinCFR(){
       return new Observable(observer => {
-        this.socket.on("timeoutdata", (data: any) => {
+        this.socket.on("crontimeoutdata", (data: any) => {
           // console.log(data)
-
+          
           observer.next(data)
         })
       })
     }
-
-
+    
+    
     //--------------------------CANCEL RIDE BY USER------------------------------//
     listencancelride(): Observable<any>  {
-
+      
       return new Observable(observer => {
         this.socket.on('cancelridedata', (ridedata: any) => {
           // console.log(ridedata)
-
+          
           observer.next(ridedata)
         })
       })
     }
-
+    
     emitcancelride( rideId: any){
       this.socket.emit('cancelride', rideId)
     }
-
+    
     // --------------------------To GET RIDE-HISTORY DATA---------------------------------//
     listenridehistory(): Observable<any> {
       return new Observable(observer => {
         this.socket.on('ridehistorydata', (data: any) => {
           // console.log(data)
-  
+          
           observer.next(data)
         })
       })
     }
-
+    
     emitridehistory(filterdata: any){
       this.socket.emit('ridehistory', filterdata)
     }
-
-  //-------------------------Listening and Emiting data from Socket.IO------------------------//
-  listeningnotification(): Observable<any> {
-    return new Observable((observer) => {
-      this.socket.on('pushnotification', (data: any) => {
-      // console.log(data);
-      this._notification.showDummyNotification(data)
-      
-      observer.next(data);
-      });
+    
+    //-------------------------Listening and Emiting data from Socket.IO------------------------//
+    listeningnotification(): Observable<any> {
+      return new Observable((observer) => {
+        this.socket.on('pushnotification', (data: any) => {
+          // console.log(data);
+          this._notification.showDummyNotification(data)
+          
+          observer.next(data);
+        });
     });
   }
-
+  
   emitnotification(): void {
     this.socket.emit('notification');
   }
-
-
+  
+  
   //---------------------------Listening emitted data  from Timeout in myTask()--------------------------//
   listeningmytaskfunc(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on('pushnotification', (data: any) => {
-      console.log(data);
-      
-      observer.next(data);
+        console.log(data);
+        
+        observer.next(data);
       });
     });
   }
 
   //---------------------------Listening emitted data  from Timeout in myTask()--------------------------//
-  listeningcronetimeout(): Observable<any> {
-    return new Observable((observer) => {
-      this.socket.on('crontimeoutdata', (data: any) => {
-      console.log(data);
+  // listeningcronetimeout(): Observable<any> {
+    //   return new Observable((observer) => {
+      //     this.socket.on('crontimeoutdata', (data: any) => {
+        //     console.log(data);
+        
+        //     observer.next(data);
+        //     });
+        //   });
+        // }
+        //---------------------------Listening emitted data  from Timeout in myTask()--------------------------//
+        listeningwhendriverisnearest(): Observable<any> {
+          return new Observable((observer) => {
+            this.socket.on('whendriverisnearest', (data: any) => {
+              console.log(data);
+              
+              observer.next(data);
+            });
+          });
+        }
+        
+      //--------------------------RIDE STATUS UPDATES FROM SOCKET------------------------------//
+      listeningrideupdates(): Observable<any>  {
       
-      observer.next(data);
-      });
-    });
-  }
+        return new Observable(observer => {
+          this.socket.on("rideupdates", (data: any) => {
+            console.log(data)
+      
+            observer.next(data)
+          })
+        })
+      }
 
-    
-  ngOnDestroy(): void {
-    // this.errorSub.unsubscribe();
-    // this.driverNotFoundSub.unsubscribe();
-    // this.decreaseCountSub.unsubscribe();
+      //--------------------------RIDE ACCEPT STATUS------------------------------//
+      emitaccept(data: any): void {
+        this.socket.emit('rideaccepted', data);
+      }
+      //--------------------------RIDE ARRIVED STATUS------------------------------//
+      emitarrived(data: any): void {
+        this.socket.emit('ridearrived', data);
+      }
+      //--------------------------RIDE PICKED STATUS------------------------------//
+      emitpicked(data: any): void {
+        this.socket.emit('ridepicked', data);
+      }
+      //--------------------------RIDE STARTED STATUS------------------------------//
+      emitstarted(data: any): void {
+        this.socket.emit('ridestarted', data);
+      }
+      
+        
+        ngOnDestroy(): void {
+          // this.errorSub.unsubscribe();
+          // this.driverNotFoundSub.unsubscribe();
+          // this.decreaseCountSub.unsubscribe();
   }
 }

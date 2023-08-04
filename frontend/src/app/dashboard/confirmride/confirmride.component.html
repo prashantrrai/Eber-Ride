@@ -71,6 +71,8 @@
                         <td>{{ ride.serviceType }}</td>
                         <td [ngSwitch]="ride.ridestatus">
                             <span class="statusbadge" *ngSwitchCase="1" [ngClass]="{'badge-info': ride.ridestatus === 1}">Assigning</span>
+                            <span class="statusbadge" *ngSwitchCase="2" [ngClass]="{'badge-danger': ride.ridestatus === 2}">Rejected</span>
+                            <span class="statusbadge" *ngSwitchCase="8" [ngClass]="{'badge-light': ride.ridestatus === 8}">Hold</span>
                             <span class="statusbadge" [ngClass]="{'badge-warning': ride.ridestatus === 0}" *ngSwitchDefault>Pending</span>
                         </td>
                           

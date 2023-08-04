@@ -44,7 +44,14 @@ pre{
   background-color: rgb(228, 102, 0);
   color: rgb(255, 255, 255);
 }
-
+.badge-danger {
+  background-color: rgb(228, 34, 0);
+  color: rgb(255, 255, 255);
+}
+.badge-light {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+}
 
 .infobadge{
   box-shadow: inset 2px 2px 4px 2px rgb(109, 98, 250);

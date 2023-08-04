@@ -7,8 +7,10 @@ const Status = {
   CANCELLED: 3,
   ACCEPTED: 4,
   ARRIVED: 5,
+  PICKED: 9,
   STARTED: 6,
   COMPLETED: 7,
+  HOLD: 8
 };
 
 const createRideSchema = mongoose.Schema(
@@ -46,7 +48,7 @@ const createRideSchema = mongoose.Schema(
     },
     ridestatus: {
       type: Number,
-      enum: [0, 1, 2, 3, 4, 5, 6, 7],
+      enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       default: 0,
     },
     assigningTime: {
@@ -57,10 +59,6 @@ const createRideSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },    
-    restart: {
-      type: Boolean,
-      default: false,
-    },
     nearestArray: {
       type: Array
     }
