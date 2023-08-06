@@ -55,7 +55,7 @@ export class RidehistoryComponent implements OnInit {
   ngOnInit(){
     this.getRideHistory()
     this.aftercancelrideinrealtime()
-    this.afteracceptrideinrealtime()
+    this.ridestatusupates()
   }
 
 
@@ -131,7 +131,7 @@ export class RidehistoryComponent implements OnInit {
   }
 
   //----------------AFTER ACCEPT RIDE IN REAL-TIME----------------//
-  afteracceptrideinrealtime(){
+  ridestatusupates(){
     this._socket.listeningrideupdates().subscribe((ridedata: any) => {
       this.getRideHistory()
     })

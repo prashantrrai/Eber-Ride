@@ -44,10 +44,16 @@
                 <span class="statusbadge" [ngClass]="{'badge-warning': data.ridestatus === 1}" *ngSwitchDefault>Assigning</span>
             </td>
               <!-- <td>{{data.estimateFare}}</td> -->
-              <td class="d-flex gap-3">
-                <button class="btn btn-success" (click)="acceptRide(data)">Accept Ride</button>
-                <button class="btn btn-warning" (click)="rejectRide(data)">Reject Ride</button>
+              <td class="d-flex gap-3" [ngSwitch]="data.ridestatus">
+                <button class="btn btn-light border" *ngSwitchCase="1" (click)="acceptRide(data)">Accept Ride</button>
+                <button class="btn btn-light border" *ngSwitchCase="4" (click)="arriveRide(data)">Arrive</button>
+                <button class="btn btn-light border" *ngSwitchCase="5" (click)="pickRide(data)">Pick Up</button>
+                <button class="btn btn-light border" *ngSwitchCase="9" (click)="startRide(data)">Start</button>
+                <button class="btn btn-light border" *ngSwitchCase="6" (click)="completeRide(data)">Complete</button>
+                <button class="btn btn-danger" (click)="rejectRide(data)">Reject Ride</button>
               </td>
+              
+
             </tr>
           </tbody>
         </table>

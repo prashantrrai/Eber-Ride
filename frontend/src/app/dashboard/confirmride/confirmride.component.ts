@@ -56,6 +56,7 @@ export class ConfirmrideComponent {
     this.listeningwhendriverisnearest()
     this.listenassignrejected()
     this.listennearestassignbuttonclick()
+    this.ridestatusupates()
   }
 
   //-------------------------------------------- GET RIDE DATA with SEARCH, PAGINATION, FILTER   ---------------------------------------------
@@ -205,7 +206,7 @@ export class ConfirmrideComponent {
       // console.log("Driver ID:",this.driverId,"RIDE ID:",this.rideId);
 
       //==========emit data into socket.js when dialog box close=============
-      console.log(this.driverdataArray.ridedata.nearest);
+      // console.log(this.driverdataArray.ridedata.nearest);
       
       if(this.driverdataArray.ridedata.nearest == false){
         console.log("if");
@@ -266,6 +267,14 @@ export class ConfirmrideComponent {
       this.getrideData()
     })
   }
+
+  //----------------AFTER ACCEPT RIDE IN REAL-TIME STATUS UPDATES----------------//
+  ridestatusupates(){
+    this._socket.listeningrideupdates().subscribe((ridedata: any) => {
+      this.getrideData()
+    })
+  }
+  
      
   //--------------------------------CANCEL RIDE------------------------------------------//
   cancelride(rideId: any){

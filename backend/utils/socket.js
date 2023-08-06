@@ -514,103 +514,6 @@ async function initializeSocket(server) {
       }
     });
 
-    // ------------------------------------------------RIDE ACCEPTED REQUEST TABLE-----------------------------------------------//
-    socket.on("acceptrunningreuest", async (data) => {
-      console.log(data);
-      // const driverId = data.driverId;
-
-      try {
-        const driverdata = await driverModel.findByIdAndUpdate(data.driverId , { $set: { assign: "0" } }, {new: true});
-        const ridedata = await createrideModel.findByIdAndUpdate( data.rideId , { $set: { ridestatus: 7 }},{ new: true } );
-        const userdata = await userModel.findById(ridedata.userId)
-
-
-        const tripDetails = {ridedata, driverdata, userdata};
-
-        // console.log(tripDetails);
-
-        const userEmail = userdata.useremail;
-        transporter.sendRideStatus(userEmail, tripDetails);
-
-        transporter.sendInvoiceEmail(userEmail, tripDetails)
-
-        // let toPhoneNumber = `${driverdata.countrycode}${driverdata.driverphone}`
-        let toPhoneNumber = `+91 73590 30960`
-        let status  = ridedata.ridestatus
-        client.sendRideSMS(toPhoneNumber, status)
-
-        //-------------------STRIPE PAYMENT CUT------------------------//
-        exchangeRate = 82.28
-        const customer = await stripe.customers.retrieve(userdata.customer_id);
-        // console.log("485",customer );
-        const defaultCardId = customer.default_source;
-        // console.log("487",defaultCardId);
-
-        const estimatePriceUSD = ridedata.estimateFare / exchangeRate;
-        const amountInCents = Math.round(estimatePriceUSD * 100);
-        const paymentIntent = await stripe.paymentIntents.create({
-          amount: amountInCents,
-          currency: 'usd',
-          customer: userdata.customer_id,
-          // payment_method: "Card",
-          off_session: true,
-          confirm: true
-        });
-        // console.log("487", paymentIntent);
-
-        io.emit("runningrequestaccept",{ ridedata, driverdata }, { success: true, message: "Ride Request Accepted" } );
-
-
-      } catch (error) {
-        console.error(error);
-        io.emit("runningrequestaccept", {
-          success: false,
-          message: "Ride Not Accepted",
-          error: error.message,
-        });
-      }
-    });
-
-    // socket.on("acceptrunningreuest", async (data) => {
-    //   // console.log(data);
-    //   // const driverId = data.driverId;
-
-    //   try {
-
-    //     const statuswaladata = await createrideModel.find({driverId: data.driverId});
-    //     const statusval = statuswaladata.map((data) => data.status);
-
-    //     console.log(statusval[0]);
-
-    //     let ridedata;
-    //     let driverdata;
-
-    //     if(statusval[0] == 1){
-    //        ridedata = await createrideModel.findByIdAndUpdate({ driverId: data.driverId },  { $set: { status: 4 } });
-    //     }
-    //     else if(data.status == 4){
-    //        ridedata = await createrideModel.findByIdAndUpdate({ driverId: data.driverId },  { $set: { status: 5 } });
-
-    //     }
-    //     else if(data.status == 5){
-    //        ridedata = await createrideModel.findByIdAndUpdate({ driverId: data.driverId },  { $set: { status: 6 } });
-
-    //     }
-    //     else if(data.status == 6){
-    //        ridedata = await createrideModel.findByIdAndUpdate({ driverId: data.driverId },  { $set: { status: 7 } });
-    //        driverdata = await driverModel.findByIdAndUpdate({ _id: data.driverId }, { $set: { assign: "0" } });
-    //       // console.log(ridedata, driverdata);
-
-    //     }
-
-    //     io.emit('acceptedrunningrequestdata', { ridedata, driverdata }, { success: true, message: "Ride Request Accepted" });
-    //   } catch (error) {
-    //     console.error(error);
-    //     io.emit('acceptedrunningrequestdata', { success: false, message: "Ride Not Accepted", error: error.message });
-    //   }
-    // });
-
-
     //--------------------------------------------RIDE ACCEPTED----------------------------------------------------//
     socket.on('rideaccepted', async (data) => {
       console.log("612",data);
@@ -618,6 +521,7 @@ async function initializeSocket(server) {
       const rideId = data.rideId;
       try {
         const ride = await createrideModel.findByIdAndUpdate(rideId, { driverId: driverId, ridestatus: 4 }, { new: true })
+        const userdata = await userModel.findById(ride.userId)
         io.emit('rideupdates', ride);
         // sendmessage(ride.status);
       } catch (error) {
@@ -631,8 +535,7 @@ async function initializeSocket(server) {
       const rideId = data.rideId;
       try {
         const ride = await createrideModel.findByIdAndUpdate(rideId, { ridestatus: 5 }, { new: true })
-        await ride.save()
-        io.emit('updateride', ride);
+        io.emit('rideupdates', ride);
       } catch (error) {
         console.log(error);
       }
@@ -645,8 +548,7 @@ async function initializeSocket(server) {
       const rideId = data.rideId;
       try {
         const ride = await createrideModel.findByIdAndUpdate(rideId, {ridestatus: 9 }, { new: true })
-        await ride.save()
-        io.emit('updateride', ride);
+        io.emit('rideupdates', ride);
       } catch (error) {
         console.log(error);
       }
@@ -659,8 +561,7 @@ async function initializeSocket(server) {
       const rideId = data.rideId;
       try {
         const ride = await createrideModel.findByIdAndUpdate(rideId, { ridestatus: 6 }, { new: true })
-        await ride.save()
-        io.emit('updateride', ride);
+        io.emit('rideupdates', ride);
         // sendmessage(ride.status);
       } catch (error) {
         console.log(error);
@@ -705,7 +606,7 @@ async function initializeSocket(server) {
   
         }
         
-        io.emit("updateride", ridedata, driverdata );
+        io.emit("rideupdates", ridedata, driverdata );
 
         const tripDetails = {ridedata, driverdata, userdata};
         const userEmail = userdata.useremail;

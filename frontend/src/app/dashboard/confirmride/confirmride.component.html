@@ -72,6 +72,10 @@
                         <td [ngSwitch]="ride.ridestatus">
                             <span class="statusbadge" *ngSwitchCase="1" [ngClass]="{'badge-info': ride.ridestatus === 1}">Assigning</span>
                             <span class="statusbadge" *ngSwitchCase="2" [ngClass]="{'badge-danger': ride.ridestatus === 2}">Rejected</span>
+                            <span class="statusbadge" *ngSwitchCase="4" [ngClass]="{'badge-success': ride.ridestatus === 4}">Accepted</span>
+                            <span class="statusbadge" *ngSwitchCase="5" [ngClass]="{'badge-success': ride.ridestatus === 5}">Arrived</span>
+                            <span class="statusbadge" *ngSwitchCase="9" [ngClass]="{'badge-success': ride.ridestatus === 9}">Picked</span>
+                            <span class="statusbadge" *ngSwitchCase="6" [ngClass]="{'badge-success': ride.ridestatus === 6}">Started</span>
                             <span class="statusbadge" *ngSwitchCase="8" [ngClass]="{'badge-light': ride.ridestatus === 8}">Hold</span>
                             <span class="statusbadge" [ngClass]="{'badge-warning': ride.ridestatus === 0}" *ngSwitchDefault>Pending</span>
                         </td>

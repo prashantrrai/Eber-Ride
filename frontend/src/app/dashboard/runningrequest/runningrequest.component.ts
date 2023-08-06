@@ -24,7 +24,7 @@ export class RunningrequestComponent {
     this.assigneddriverfromAssignDialogBox();
     this.afterrejectrunningrequest();
     this.listenassignrejected()
-    this.afteracceptrunningrequest()
+    this.ridestatusupates()
     this.timeoutrunningreq()
     this.listeningwhendriverisnearest()
     this.listeningmytaskfunc()
@@ -44,11 +44,6 @@ export class RunningrequestComponent {
 
   //---------------ON REJECT RIDE REQUEST BUTTON CLICK--------------------//
   rejectRide(data: any) {
-    // console.log(data);
-
-    // console.log("rideId", data._id);
-    // console.log("driverId", data.driverId);
-
     this.rideId = data._id
     this.driverId = data.driverId
 
@@ -78,6 +73,37 @@ export class RunningrequestComponent {
     this.acceptrunningrequest(this.driverId, this.rideId);
   }
 
+  //---------------ON ACCEPT RIDE REQUEST BUTTON CLICK--------------------//
+  arriveRide(data: any){
+    this.rideId = data._id
+
+    this.arrivedrunningrequest(this.driverId, this.rideId);
+  }
+
+  //---------------ON ACCEPT RIDE REQUEST BUTTON CLICK--------------------//
+  pickRide(data: any){
+    this.rideId = data._id
+
+    this.pickedrunningrequest(this.driverId, this.rideId);
+  }
+
+  //---------------ON ACCEPT RIDE REQUEST BUTTON CLICK--------------------//
+  startRide(data: any){
+    this.rideId = data._id
+
+    this.startedrunningrequest(this.driverId, this.rideId);
+  }
+  
+  
+  //---------------ON ACCEPT RIDE REQUEST BUTTON CLICK--------------------//
+  completeRide(data: any){
+    // console.log(data);
+    this.rideId = data._id
+    this.driverId = data.driverId
+
+    this.completedrunningrequest(this.driverId, this.rideId);
+  }
+
   //------------------------------ACCEPT REQUEST REJECT------------------------------------//
   acceptrunningrequest(driverId: string, rideId: string) {
     // console.log(rideId, driverId);
@@ -86,10 +112,10 @@ export class RunningrequestComponent {
       driverId: driverId
     }
     
-    // this._socketservice.emitacceptrunningrequest( data)
     this._socketservice.emitaccept( data)
     this.getRunningData()
   }
+  
   arrivedrunningrequest(driverId: string, rideId: string) {
     // console.log(rideId, driverId);
     const data = {
@@ -122,6 +148,24 @@ export class RunningrequestComponent {
     this.getRunningData()
   }
 
+  completedrunningrequest(driverId: string, rideId: string) {
+    // console.log(rideId, driverId);
+    const data = {
+      rideId: rideId,
+      driverId: driverId
+    }
+    
+    this._socketservice.emitcompleted( data)
+    this.getRunningData()
+  }
+
+  //--------------------AFTER ACCEPTING RIDE-----------------------//
+  ridestatusupates() {
+    this._socketservice.listeningrideupdates().subscribe((response: any) => {
+      this.getRunningData()
+    } );
+  }
+
   
   //-------------------AFTER REJECTING RIDE ASSIGN ONE-------------------------//
   listenassignrejected() {
@@ -138,14 +182,7 @@ export class RunningrequestComponent {
     }
     );
   }
-  
-    // AFTER ACCEPTING RIDE
-    afteracceptrunningrequest() {
 
-      this._socketservice.listeningrideupdates().subscribe((response: any) => {
-        this.getRunningData()
-      } );
-    }
 
 
   //  when the assign the driver data that time show a running requeszt data 

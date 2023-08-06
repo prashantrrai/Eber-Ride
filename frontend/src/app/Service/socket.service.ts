@@ -154,24 +154,6 @@ export class SocketService implements OnInit, OnDestroy{
       })
     }
 
-    //--------------------------ACCEPT RIDE BY DRIVER------------------------------//
-    // listenacceptrunningrequest(): Observable<any>  {
-
-    //   return new Observable(observer => {
-    //     this.socket.on("runningrequestaccept", (data: any) => {
-    //       console.log(data)
-
-    //       observer.next(data)
-    //     })
-    //   })
-    // }
-      
-      // emitacceptrunningrequest(data: any){
-      //   console.log(data);
-      //   this.socket.emit("acceptrunningreuest", data)
-      // }
-      
-      
       //------------TIMEOUT RUNNING REQUEST--------------------//
       listeningrunningtimeoutinRR(){
         return new Observable(observer => {
@@ -254,60 +236,56 @@ export class SocketService implements OnInit, OnDestroy{
     });
   }
 
-  //---------------------------Listening emitted data  from Timeout in myTask()--------------------------//
-  // listeningcronetimeout(): Observable<any> {
-    //   return new Observable((observer) => {
-      //     this.socket.on('crontimeoutdata', (data: any) => {
-        //     console.log(data);
-        
-        //     observer.next(data);
-        //     });
-        //   });
-        // }
-        //---------------------------Listening emitted data  from Timeout in myTask()--------------------------//
-        listeningwhendriverisnearest(): Observable<any> {
-          return new Observable((observer) => {
-            this.socket.on('whendriverisnearest', (data: any) => {
-              console.log(data);
-              
-              observer.next(data);
-            });
-          });
-        }
-        
-      //--------------------------RIDE STATUS UPDATES FROM SOCKET------------------------------//
-      listeningrideupdates(): Observable<any>  {
-      
-        return new Observable(observer => {
-          this.socket.on("rideupdates", (data: any) => {
-            console.log(data)
-      
-            observer.next(data)
-          })
-        })
-      }
 
-      //--------------------------RIDE ACCEPT STATUS------------------------------//
-      emitaccept(data: any): void {
-        this.socket.emit('rideaccepted', data);
-      }
-      //--------------------------RIDE ARRIVED STATUS------------------------------//
-      emitarrived(data: any): void {
-        this.socket.emit('ridearrived', data);
-      }
-      //--------------------------RIDE PICKED STATUS------------------------------//
-      emitpicked(data: any): void {
-        this.socket.emit('ridepicked', data);
-      }
-      //--------------------------RIDE STARTED STATUS------------------------------//
-      emitstarted(data: any): void {
-        this.socket.emit('ridestarted', data);
-      }
-      
+  //---------------------------Listening emitted data  from Timeout in myTask()--------------------------//
+  listeningwhendriverisnearest(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('whendriverisnearest', (data: any) => {
+        console.log(data);
         
-        ngOnDestroy(): void {
-          // this.errorSub.unsubscribe();
-          // this.driverNotFoundSub.unsubscribe();
-          // this.decreaseCountSub.unsubscribe();
+        observer.next(data);
+      });
+    });
+  }
+    
+  //--------------------------RIDE STATUS UPDATES FROM SOCKET------------------------------//
+  listeningrideupdates(): Observable<any>  {
+  
+    return new Observable(observer => {
+      this.socket.on("rideupdates", (data: any) => {
+        console.log(data)
+  
+        observer.next(data)
+      })
+    })
+  }
+
+  //--------------------------RIDE ACCEPT STATUS------------------------------//
+  emitaccept(data: any): void {
+    this.socket.emit('rideaccepted', data);
+  }
+  //--------------------------RIDE ARRIVED STATUS------------------------------//
+  emitarrived(data: any): void {
+    this.socket.emit('ridearrived', data);
+  }
+  //--------------------------RIDE PICKED STATUS------------------------------//
+  emitpicked(data: any): void {
+    this.socket.emit('ridepicked', data);
+  }
+  //--------------------------RIDE STARTED STATUS------------------------------//
+  emitstarted(data: any): void {
+    this.socket.emit('ridestarted', data);
+  }
+  //--------------------------RIDE STARTED STATUS------------------------------//
+  emitcompleted(data: any): void {
+    this.socket.emit('ridecompleted', data);
+  }
+
+  
+        
+  ngOnDestroy(): void {
+    // this.errorSub.unsubscribe();
+    // this.driverNotFoundSub.unsubscribe();
+    // this.decreaseCountSub.unsubscribe();
   }
 }
