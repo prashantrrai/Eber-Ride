@@ -1052,7 +1052,7 @@ async function initializeSocket(server) {
                 const assignedList = await assigndriverdata.exec();
 
                 if (assignedList.length > 0) {
-                  // console.log("910");
+                  console.log("910", assignedList);
                   // const driverdata = await driverModel.findByIdAndUpdate(data.driverId, {$set: { assign: "0" }}, { new: true });
                   const finalresult = await createrideModel.findByIdAndUpdate(data._id, { $set: { assigningTime: Date.now(), ridestatus: 8}, $unset: {driverId: ""} }, { new: true });
                   // io.emit('timeoutdata',finalresult)

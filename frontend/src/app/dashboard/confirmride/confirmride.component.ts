@@ -55,6 +55,7 @@ export class ConfirmrideComponent {
     this.listeningtimeoutstatusinCFR()
     this.listeningwhendriverisnearest()
     this.listenassignrejected()
+    this.listennearestassignbuttonclick()
   }
 
   //-------------------------------------------- GET RIDE DATA with SEARCH, PAGINATION, FILTER   ---------------------------------------------
@@ -207,10 +208,12 @@ export class ConfirmrideComponent {
       this._socket.emitassignedDriver(this.driverId  , this.rideId)
     }else{
       this._socket.emitnearestdriver(this.rideId, this.cityId, this.serviceId)
-      // this._socket.listeningmytaskfunc().subscribe((response: any)=> {
+      this._socket.listeningmytaskfunc().subscribe((response: any)=> {
         
-      //   this.getrideData();
-      // })
+        this.getrideData();
+      })
+
+      
     }
   });
 
@@ -251,6 +254,13 @@ export class ConfirmrideComponent {
     this._socket.listeningwhendriverisnearest().subscribe((response: any)=> {
 
       this.getrideData();
+    })
+  }
+
+  //---------------------WHEN NEAREST ASSIGN CLICKED--------------------//
+  listennearestassignbuttonclick() {
+    this._socket.listeningnearestdriver().subscribe((res: any) => {
+      this.getrideData()
     })
   }
      

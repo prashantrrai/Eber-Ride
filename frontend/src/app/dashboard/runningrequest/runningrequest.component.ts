@@ -157,6 +157,8 @@ export class RunningrequestComponent {
   //---------------------WHEN NEAREST ASSIGN CLICKED--------------------//
   listennearestassignbuttonclick() {
     this._socketservice.listeningnearestdriver().subscribe((res: any) => {
+      console.log(res);
+      
       this.getRunningData()
     })
   }
