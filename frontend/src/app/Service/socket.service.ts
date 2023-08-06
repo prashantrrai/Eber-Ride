@@ -75,7 +75,7 @@ export class SocketService implements OnInit, OnDestroy{
 
     //-----------------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-------------------------------------//
     emitassignedDriver( driverId: string , rideId: string ): void {
-      console.log(driverId, rideId);
+      console.log("driverId:",driverId,  "rideId:",rideId);
 
       this.socket.emit("AssignedData", {driverId, rideId});   
     }
@@ -243,7 +243,7 @@ export class SocketService implements OnInit, OnDestroy{
   }
   
   
-  //---------------------------Listening emitted data  from Timeout in myTask()--------------------------//
+  //---------------------------Listening emitted data from Timeout in myTask()--------------------------//
   listeningmytaskfunc(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on('pushnotification', (data: any) => {

@@ -194,29 +194,32 @@ export class ConfirmrideComponent {
     const dialogRef = this.dialog.open(AssignDriverComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((data: any) => {
-    console.log(data);
-    this.driverdataArray = data
-    // console.log("Assigned Driver Id:  ",this.driverdataArray.driverdata._id);  
-    this.driverId = this.driverdataArray.driverdata._id
-    this.rideId = this.driverdataArray.ridedata._id
-    this.cityId = this.driverdataArray.ridedata.cityId
-    this.serviceId = this.driverdataArray.ridedata.serviceId
-    // console.log("Driver ID:",this.driverId,"RIDE ID:",this.rideId);
-
-    //==========emit data into socket.js when dialog box close=============
-    if(this.driverdataArray.driverdata.nearest == false){
-      this._socket.emitassignedDriver(this.driverId  , this.rideId)
-    }else{
-      this._socket.emitnearestdriver(this.rideId, this.cityId, this.serviceId)
-      this._socket.listeningmytaskfunc().subscribe((response: any)=> {
-        
-        this.getrideData();
-      })
-
+      console.log(data);
+      this.driverdataArray = data
       
-    }
-  });
+      // console.log("Assigned Driver Id:  ",this.driverdataArray.driverdata._id);  
+      this.driverId = this.driverdataArray.driverdata._id
+      this.rideId = this.driverdataArray.ridedata._id
+      this.cityId = this.driverdataArray.ridedata.cityId
+      this.serviceId = this.driverdataArray.ridedata.serviceId
+      // console.log("Driver ID:",this.driverId,"RIDE ID:",this.rideId);
 
+      //==========emit data into socket.js when dialog box close=============
+      console.log(this.driverdataArray.ridedata.nearest);
+      
+      if(this.driverdataArray.ridedata.nearest == false){
+        console.log("if");
+        this._socket.emitassignedDriver(this.driverId  , this.rideId)
+      }else{
+        console.log("else");
+        this._socket.emitnearestdriver(this.rideId, this.cityId, this.serviceId)
+
+        //--------------SENDING PUSH NOTIFICATION DRIVER NOT FOUND-----------------//
+        this._socket.listeningmytaskfunc().subscribe((response: any)=> {
+          this.getrideData();
+        })
+      }
+    });
   }
 
   //-----------------SHOW UPDATED STATUS IN CFR AFTER ASSIGN BUTTON CLICK-------------------------//
@@ -227,15 +230,15 @@ export class ConfirmrideComponent {
     })
   }
 
-  //-----------------SHOW UPDATED STATUS IN CFR AFTER REJECT BUTTON CLICK-------------------------//
-  gettingstatusafterrejectinCFR(){
-    this._socket.listenrejectRunningRequest().subscribe((response: any)=> {
-
+  //-----------------SHOW UPDATED STATUS IN CFR AFTER REJECT BUTTON CLICK (BOTH Single and Nearest)-------------------------//
+  listenassignrejected(){
+    this._socket.listenassignrejected().subscribe((response: any)=> {
+      
       this.getrideData();
     })
   }
-  listenassignrejected(){
-    this._socket.listenassignrejected().subscribe((response: any)=> {
+  gettingstatusafterrejectinCFR(){
+    this._socket.listenrejectRunningRequest().subscribe((response: any)=> {
 
       this.getrideData();
     })

@@ -137,30 +137,42 @@ export class AssignDriverComponent implements OnInit {
 
 
   assignDriver(driver: any) {
-    console.log(driver);
+    // console.log(driver);
     const alldata = {
       ridedata : this.data,
       driverdata : driver
      }
 
     this.dialogRef.close(alldata);
+    // this.dialogRef.close(driver);
   }
 
   NearestDriver(driver: any) {
-    console.log(driver);
+    this.data.nearest = true
+    console.log(this.data.nearest);
+    
+    console.log(this.data);
     const alldata = {
       ridedata : this.data,
       driverdata : driver
      }
-    // console.log(alldata);
+    console.log(alldata);
     
 
     this.dialogRef.close(alldata);
   }
 
 
+  //--------------------(REJECT SINGLE)when data driver is free then that time this process run-----------------------//
+  listenassignrejected(){
+    this._socketService.listenassignrejected().subscribe((response: any)=> {
 
-  //when data driver is free then that time this process run 
+      this.getDriverData();
+    }
+  );
+}
+
+  //-----------------(REJECT NEAREST)when data driver is free then that time this process run---------------------//
   gettingrejectrunningrequestdata(){
     this._socketService.listenrejectRunningRequest().subscribe((response: any)=> {
 
@@ -169,16 +181,4 @@ export class AssignDriverComponent implements OnInit {
     );
   }
 
-  //when data driver is free then that time this process run 
-  listenassignrejected(){
-      this._socketService.listenassignrejected().subscribe((response: any)=> {
-
-        this.getDriverData();
-      }
-    );
-  }
-    
-
-
-  
 }

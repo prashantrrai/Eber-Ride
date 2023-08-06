@@ -122,15 +122,8 @@ export class RunningrequestComponent {
     this.getRunningData()
   }
 
-    // AFTER REJECTING RIDE ASSIGN ONE
-  afterrejectrunningrequest() {
-    this._socketservice.listenrejectRunningRequest().subscribe((response: any) => {
-      this.getRunningData()
-    }
-    );
-  }
-
-  //-----------------REJECT NEAREST ASSIGN RIDE------------------//
+  
+  //-------------------AFTER REJECTING RIDE ASSIGN ONE-------------------------//
   listenassignrejected() {
     this._socketservice.listenassignrejected().subscribe((response: any) => {
       this.getRunningData()
@@ -138,6 +131,14 @@ export class RunningrequestComponent {
     );
   }
 
+  //-----------------REJECT NEAREST ASSIGN RIDE------------------//
+  afterrejectrunningrequest() {
+    this._socketservice.listenrejectRunningRequest().subscribe((response: any) => {
+      this.getRunningData()
+    }
+    );
+  }
+  
     // AFTER ACCEPTING RIDE
     afteracceptrunningrequest() {
 
