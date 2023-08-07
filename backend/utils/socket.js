@@ -481,6 +481,8 @@ async function initializeSocket(server) {
 
         if (!userdata.customer_id) {
           // return res.status(400).json({ error: 'User does not have a Stripe customer ID' });
+          console.log("User does not have a Stripe customer ID");
+          console.log("CASH Payment is Selected");
         }
         if(ridedata.paymentOption == "card"){
 

@@ -51,7 +51,7 @@ const createRideRoutes = require("./routes/createride");
 const confirmRideRouter = require("./routes/confirmride");
 const ridehistoryRouter = require("./routes/ridehistory")
 const credentials = require('./routes/credentials')
-
+const feedbackRoutes = require('./routes/feedback')
 
 
 app.use(fetchAdmin);
@@ -70,6 +70,7 @@ app.use(createRideRoutes);
 app.use(confirmRideRouter);
 app.use(ridehistoryRouter)
 app.use(credentials)
+app.use(feedbackRoutes)
 
 
 

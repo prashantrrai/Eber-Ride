@@ -75,7 +75,7 @@ export class SocketService implements OnInit, OnDestroy{
 
     //-----------------------------------ASSIGN DRIVER FROM DIALOG REF BUTTON-------------------------------------//
     emitassignedDriver( driverId: string , rideId: string ): void {
-      console.log("driverId:",driverId,  "rideId:",rideId);
+      // console.log("driverId:",driverId,  "rideId:",rideId);
 
       this.socket.emit("AssignedData", {driverId, rideId});   
     }
@@ -83,7 +83,7 @@ export class SocketService implements OnInit, OnDestroy{
     onFinalassignedDriverData(data: String): Observable<any> {
       return new Observable((observer) => {
         this.socket.on('newdata', (data: any) => {
-          console.log("ichsohiedkvhhedhocvhwsfi",data);
+          // console.log("ichsohiedkvhhedhocvhwsfi",data);
   
           observer.next(data);
         });
@@ -253,7 +253,7 @@ export class SocketService implements OnInit, OnDestroy{
   
     return new Observable(observer => {
       this.socket.on("rideupdates", (data: any) => {
-        console.log(data)
+        // console.log(data)
   
         observer.next(data)
       })

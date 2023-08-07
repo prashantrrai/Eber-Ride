@@ -18,6 +18,7 @@ import { InfoDialogComponent } from './shared/info-dialog/info-dialog.component'
 import { AssignDriverComponent } from './shared/assign-driver/assign-driver.component';
 import { RidehistorydialogComponent } from './shared/ridehistorydialog/ridehistorydialog.component';
 import { NotificationsService } from './Service/notifications.service';
+import { FeedbackComponent } from './shared/feedback/feedback.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NotificationsService } from './Service/notifications.service';
     InfoDialogComponent,
     AssignDriverComponent,
     RidehistorydialogComponent,
+    FeedbackComponent,
   ],
   imports: [
     BrowserModule,

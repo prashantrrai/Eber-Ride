@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { SocketService } from 'src/app/Service/socket.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
 
 @Component({
   selector: 'app-runningrequest',
@@ -17,6 +19,7 @@ export class RunningrequestComponent {
     private _socketservice: SocketService,
     private toastr: ToastrService,
     private _socket: SocketService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -111,6 +114,22 @@ export class RunningrequestComponent {
     this.driverId = data.driverId
 
     this.freerideanddriverrunningrequest(this.driverId, this.rideId);
+
+
+    const dialogConfig = new MatDialogConfig();
+    
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true; 
+    dialogConfig.width = '650px'; 
+    dialogConfig.height = '700px'; 
+    dialogConfig.data = data; 
+
+    const dialogRef = this.dialog.open(FeedbackComponent, dialogConfig);
+  
+    // Handle dialog close events if needed
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed with result:', result);
+    });
   }
 
   //------------------------------ACCEPT REQUEST REJECT------------------------------------//
@@ -244,6 +263,24 @@ export class RunningrequestComponent {
 
       this.getRunningData();
     })
+  }
+
+  //---------------------------OPEN FEEDBACK FORM------------------------------//
+  openDialog(): void {
+
+    const dialogConfig = new MatDialogConfig();
+    
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true; 
+    dialogConfig.width = '1000px'; 
+    // dialogConfig.data = ride; 
+
+    const dialogRef = this.dialog.open(FeedbackComponent, dialogConfig);
+  
+    // Handle dialog close events if needed
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed with result:', result);
+    });
   }
 
 

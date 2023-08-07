@@ -195,7 +195,7 @@ export class ConfirmrideComponent {
     const dialogRef = this.dialog.open(AssignDriverComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((data: any) => {
-      console.log(data);
+      // console.log(data);
       this.driverdataArray = data
       
       // console.log("Assigned Driver Id:  ",this.driverdataArray.driverdata._id);  
@@ -209,10 +209,10 @@ export class ConfirmrideComponent {
       // console.log(this.driverdataArray.ridedata.nearest);
       
       if(this.driverdataArray.ridedata.nearest == false){
-        console.log("if");
+        // console.log("if");
         this._socket.emitassignedDriver(this.driverId  , this.rideId)
       }else{
-        console.log("else");
+        // console.log("else");
         this._socket.emitnearestdriver(this.rideId, this.cityId, this.serviceId)
 
         //--------------SENDING PUSH NOTIFICATION DRIVER NOT FOUND-----------------//

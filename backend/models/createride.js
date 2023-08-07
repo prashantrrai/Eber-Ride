@@ -61,6 +61,9 @@ const createRideSchema = mongoose.Schema(
     },    
     nearestArray: {
       type: Array
+    },
+    feedback: {
+      type: String
     }
   },
   {
