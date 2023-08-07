@@ -12,9 +12,9 @@ const createrideModel = require('../models/createride')
         let todate = req.body.alldataatonce.todate;
         let startLocationSearch = req.body.alldataatonce.startlocationsearch;
         let endLocationSearch = req.body.alldataatonce.endlocationsearch;
-        let statusfilter = +req.body.alldataatonce.ridestatus;
+        let statusfilter = +req.body.alldataatonce.status;
 
-        // console.log(req.body);
+        console.log(req.body);
 
       try {
 
@@ -23,7 +23,7 @@ const createrideModel = require('../models/createride')
         if (statusfilter !== -1) {
           matchStage.ridestatus = { $in: [statusfilter] };
         } else if (statusfilter === -1) {
-          matchStage.ridestatus = { $nin: [1, 2, 4, 5, 6] };
+          matchStage.ridestatus = { $nin: [0, 1, 2, 4, 5, 6, 9, 8] };
         }
     
         if (paymentFilter !== "") {

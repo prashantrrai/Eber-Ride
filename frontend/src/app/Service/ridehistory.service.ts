@@ -14,6 +14,8 @@ export class RidehistoryService {
 
   //----------------------DOWNLAOD RIDE-HISTORY DATA---------------------//
   downlaodallData(alldataatonce: any): Observable<any>{
+    // console.log(alldataatonce);
+    
     return this.http.post(`${this.url}/downloadridehistory`,{alldataatonce});
   }
 

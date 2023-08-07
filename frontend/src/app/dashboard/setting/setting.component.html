@@ -5,25 +5,31 @@
           <h2 class="mb-3">Add Timer and Stop</h2>
           <form class="container" [formGroup]="settingForm">
 
-            <div class="form-group row align-items-center mb-2">
+            <div class="form-group row align-items-center mb-2 d-flex">
               <label class="col-sm-3 col-form-label text-end">Ride Timeout</label>
-              <div class="col-sm-9 form-custom-select">
-                <select class="form-control" id="timeout" name="timeout" #timeout (change)="onSelectedRideTimeout(timeout.value)" formControlName="ridetimeout">
+              <div class="col-sm-9 form-custom-select w-50">
+                <select class="form-control" id="timeout" name="timeout" #timeout formControlName="ridetimeout">
                   <option value="">Select Ride Timeout</option>
                   <option [value]="timeout" *ngFor="let timeout of timeoutArray">{{timeout}}</option>
                 </select>
                 <i class="fas fa-chevron-down form-dropdown-icon"></i>
               </div>
+              <div class="w-25">
+                <button class="btn btn-info" (click)="onSelectedRideTimeout(timeout.value)">Update</button>
+              </div>
             </div>
       
-            <div class="form-group row align-items-center mb-2">
+            <div class="form-group row align-items-center mb-2 d-flex">
                 <label class="col-sm-3 col-form-label text-end">Stop</label>
-                <div class="col-sm-9 form-custom-select">
-                  <select class="form-control" id="stop" name="stop" #stop (change)="onSelectedStop(stop.value)" formControlName="stop">
+                <div class="col-sm-9 form-custom-select w-50">
+                  <select class="form-control" id="stop" name="stop" #stop formControlName="stop">
                     <option value="">Select Stop</option>
                     <option [value]="stop" *ngFor="let stop of stopArray">{{stop}}</option>
                   </select>
                 <i class="fas fa-chevron-down form-dropdown-icon"></i>
+                </div>
+                <div class="w-25">
+                  <button class="btn btn-warning" (click)="onSelectedStop(stop.value)">Update</button>
                 </div>
             </div>
 
@@ -31,7 +37,7 @@
               <div class="form-group row align-items-center mb-2">
                 <label class="col-sm-3 col-form-label text-end">Ethereal Username</label>
                 <div class="col-sm-9 form-custom-select">
-                  <input type="text" class="form-control" [value]="EMAIL_USER">
+                  <input type="text" class="form-control" [value]="EMAIL_USER" disabled>
                 </div>
               </div>
             </div>
@@ -40,7 +46,7 @@
               <div class="form-group row align-items-center mb-2">
                 <label class="col-sm-3 col-form-label text-end">Ethereal Password</label>
                 <div class="col-sm-9 form-custom-select">
-                  <input type="text" class="form-control" [value]="EMAIL_PASSWORD">
+                  <input type="text" class="form-control" [value]="EMAIL_PASSWORD" disabled>
                 </div>
               </div>
             </div>
@@ -49,7 +55,7 @@
               <div class="form-group row align-items-center mb-2">
                 <label class="col-sm-3 col-form-label text-end">Account Sid</label>
                 <div class="col-sm-9 form-custom-select">
-                  <input type="text" class="form-control" [value]="accountSid">
+                  <input type="text" class="form-control" [value]="accountSid" disabled>
                 </div>
               </div>
             </div>
@@ -58,7 +64,7 @@
               <div class="form-group row align-items-center mb-2">
                 <label class="col-sm-3 col-form-label text-end">Auth Token</label>
                 <div class="col-sm-9 form-custom-select">
-                  <input type="text" class="form-control" [value]="authToken">
+                  <input type="text" class="form-control" [value]="authToken" disabled>
                 </div>
               </div>
             </div>
@@ -67,7 +73,7 @@
               <div class="form-group row align-items-center mb-2">
                 <label class="col-sm-3 col-form-label text-end">Twilio Phone Number</label>
                 <div class="col-sm-9 form-custom-select">
-                  <input type="text" class="form-control" [value]="twilioPhoneNumber">
+                  <input type="text" class="form-control" [value]="twilioPhoneNumber" disabled>
                 </div>
               </div>
             </div>
@@ -76,7 +82,7 @@
               <div class="form-group row align-items-center mb-2">
                 <label class="col-sm-3 col-form-label text-end">STRIPE Publishable Key </label>
                 <div class="col-sm-9 form-custom-select">
-                  <input type="text" class="form-control" [value]="STRIPE_Publishable_key">
+                  <input type="text" class="form-control" [value]="STRIPE_Publishable_key" disabled>
                 </div>
               </div>
             </div>
@@ -85,7 +91,7 @@
               <div class="form-group row align-items-center mb-2">
                 <label class="col-sm-3 col-form-label text-end">STRIPE Secret Key</label>
                 <div class="col-sm-9 form-custom-select">
-                  <input type="text" class="form-control" [value]="STRIPE_Secret_key">
+                  <input type="text" class="form-control" [value]="STRIPE_Secret_key" disabled>
                 </div>
               </div>
             </div>

@@ -38,7 +38,7 @@ export class RidehistoryComponent implements OnInit {
   paymentmode: any = '';
   Fromdate: any = '';
   Todate: any= '';
-  status: Number = -1;
+  ridestatus: Number = -1;
   
 
   
@@ -55,7 +55,7 @@ export class RidehistoryComponent implements OnInit {
   ngOnInit(){
     this.getRideHistory()
     this.aftercancelrideinrealtime()
-    this.ridestatusupates()
+    this.ridestatusupdates()
   }
 
 
@@ -68,7 +68,7 @@ export class RidehistoryComponent implements OnInit {
       "payment": this.paymentmode,
       "fromdate": this.Fromdate,
       "todate": this.Todate,
-      "status": this.status,
+      "status": this.ridestatus,
       "startlocationsearch": this.startlocation,
       "endlocationsearch": this.endlocation,
   }
@@ -109,7 +109,7 @@ export class RidehistoryComponent implements OnInit {
   }
 
   clearFilter() {
-    this.status = -1;
+    this.ridestatus = -1;
     this.paymentmode = '';
     this.startlocation = ''
     this.endlocation = ''
@@ -131,7 +131,7 @@ export class RidehistoryComponent implements OnInit {
   }
 
   //----------------AFTER ACCEPT RIDE IN REAL-TIME----------------//
-  ridestatusupates(){
+  ridestatusupdates(){
     this._socket.listeningrideupdates().subscribe((ridedata: any) => {
       this.getRideHistory()
     })
@@ -143,17 +143,18 @@ export class RidehistoryComponent implements OnInit {
       "payment": this.paymentmode,
       "fromdate": this.Fromdate,
       "todate": this.Todate,
-      "status": this.status,
+      "status": this.ridestatus,
       "startlocationsearch": this.startlocation,
       "endlocationsearch": this.endlocation,
     };
-
+    // console.log("150", this.ridestatus);
+    
     // Make an API request to get the data
     this._ridehistroy.downlaodallData(alldataatonce).subscribe({
       next: (response: any) => {
         // console.log(response);
         const data = response.myridehistory;
-        console.log(data);
+        // console.log("156",data);
         
         // const username = data[0].userDetails?.username || '';
         // console.log(username);
@@ -183,7 +184,7 @@ export class RidehistoryComponent implements OnInit {
 
   convertToCSV(data: any[]) {
       const csvData = [
-        ['Req. Id','Username', 'User Email', 'Start Location', 'End Location', 'Way Points', 'Ride Date', 'Ride Time', 'Time', 'Service Type', 'Payment Option', 'Estimate Time', 'Estimate Fare' , 'Status']
+        ['Req. Id','Username', 'User Email', 'Start Location', 'End Location', 'Way Points', 'Ride Date', 'Ride Time', 'Time', 'Service Type', 'Payment Option', 'Estimate Time', 'Estimate Fare' , 'Ride Status']
       ];
     
 
@@ -201,7 +202,7 @@ export class RidehistoryComponent implements OnInit {
         const paymentoption = item.paymentOption
         const estimateTime = item.estimateTime
         const estimateFare = item.estimateFare || '';
-        const status = item.status || '';
+        const status = item.ridestatus || '';
       
         csvData.push([id, username, useremail, startLocation, endLocation, waypoints, rideDate, rideTime, time, servicetype, paymentoption, estimateTime, estimateFare, status]);
       });

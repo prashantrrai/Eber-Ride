@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/Service/auth.service";
@@ -36,7 +36,8 @@ export class PricingComponent {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private _pricing: PricingService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private cd : ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -44,12 +45,12 @@ export class PricingComponent {
     this.searchPrice();
 
     this.pricingForm = this.formBuilder.group({
-      country: [""],
-      city: [""],
-      service: [""],
+      country: ["", [Validators.required]],
+      city: ["", [Validators.required]],
+      service: ["", [Validators.required]],
       driverprofit: ["", [Validators.required]],
       minfare: ["", [Validators.required]],
-      distancebaseprice: [""],
+      distancebaseprice: ["", [Validators.required]],
       baseprice: ["", [Validators.required]],
       ppudist: ["", [Validators.required]],
       pputime: ["", [Validators.required]],
@@ -93,7 +94,7 @@ export class PricingComponent {
   onSelectedCity(city: any) {
     this.selectedCity = city;
     console.log(city);
-    this.getService()
+    this.getService() 
   }
 
   // -----------------GET SERVICE DATA---------------
@@ -157,7 +158,7 @@ export class PricingComponent {
         },
         error: (error: any) => {
           console.log(error.error.message);
-          this.toastr.error(error.error.message);
+          this.toastr.warning(error.message);
         },
       });
     } else {
@@ -227,28 +228,44 @@ export class PricingComponent {
   editbtn(values: any) {
     this.isEditMode = true;
     this.addForm = true;
-    console.log(this.valueArray)
+    console.log("231",this.valueArray)
     this.id = values._id;
     console.log(values);
-    this.onSelectedCountry(values.country)
+    // this.onSelectedCountry(values.country)
 
-    this.spinner.show();
-    setTimeout(() => {
-      this.pricingForm.patchValue({
-        country: values.country,
-        city: values.city,
-        service: values.service,
-        driverprofit: values.driverprofit,
-        minfare: values.minfare,
-        distancebaseprice: values.distancebaseprice,
-        baseprice: values.baseprice,
-        ppudist: values.ppudist,
-        pputime: values.pputime,
-        maxspace: values.maxspace,
-      });
-  
-      this.spinner.hide();
-    }, 2000);
+    // this.spinner.show();
+    console.log("values",values.city);
+    
+    this.pricingForm.patchValue({
+      country: values.country,
+      city: values.city,
+      service: values.service,
+      driverprofit: values.driverprofit,
+      minfare: values.minfare,
+      distancebaseprice: values.distancebaseprice,
+      baseprice: values.baseprice,
+      ppudist: values.ppudist,
+      pputime: values.pputime,
+      maxspace: values.maxspace,
+    });
+      this.cd.detectChanges()
+
+
+
+    // setTimeout(() => {
+    //   this.pricingForm.patchValue({
+    //     city: values.city,    
+    //   });
+    // }, 0);
+
+    // setTimeout(() => {
+    //   this.pricingForm.patchValue({
+    //     service: values.service,
+    //   });
+    //   this.cd.detectChanges()
+    //   this.spinner.hide();
+    // }, 0);
+
   }
   UpdatePricing() {
     const data = this.pricingForm.value;
