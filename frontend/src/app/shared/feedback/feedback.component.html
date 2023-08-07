@@ -31,14 +31,14 @@
                     <input class="app-form-control" placeholder="EMAIL" formControlName="email">
                 </div>
                 <div class="app-form-group">
-                    <input class="app-form-control" placeholder="CONTACT NO" formControlName="phone">
+                    <input class="app-form-control" maxlength="10" placeholder="CONTACT NO" formControlName="phone"> 
                 </div>
                 <div class="app-form-group message">
                     <input class="app-form-control" placeholder="MESSAGE" formControlName="message">
                 </div>
                 <div class="app-form-group buttons">
                     <button class="app-form-button" type="button" (click)="resetForm()">CANCEL</button>
-                    <button class="app-form-button" type="submit">SEND</button>
+                    <button class="app-form-button info-button" type="submit" mat-button mat-dialog-close cdkFocusInitial>SEND</button>
                 </div>
             </form>
             </div>

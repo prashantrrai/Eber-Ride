@@ -52,7 +52,7 @@
                 <button class="btn btn-light border" *ngSwitchCase="9" (click)="startRide(data)">Start</button>
                 <button class="btn btn-light border" *ngSwitchCase="6" (click)="completeRide(data)">Complete</button>
                 <button class="btn btn-light border" *ngSwitchCase="7" (click)="freerideanddriver(data)">Feedback</button>
-                <button class="btn btn-danger" (click)="rejectRide(data)">Reject Ride</button>
+                <button class="btn btn-danger"  *ngIf="data.ridestatus === 1 || data.ridestatus === 4 || data.ridestatus === 5 || data.ridestatus === 9" (click)="rejectRide(data)">Reject Ride</button>
               </td>
               
 
