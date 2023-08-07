@@ -336,7 +336,7 @@ async function initializeSocket(server) {
         const alldata = await createrideModel.aggregate([
           {
             $match: {
-              ridestatus: { $in: [1, 4, 5, 6, 7, 8] },
+              ridestatus: { $in: [1, 4, 5, 9, 6, 7, 8] },
             },
           },
           {
@@ -412,6 +412,128 @@ async function initializeSocket(server) {
         });
       }
     });
+
+    //--------------------------------------------RIDE ACCEPTED----------------------------------------------------//
+    socket.on('rideaccepted', async (data) => {
+      console.log("612",data);
+      const driverId = data.driverId
+      const rideId = data.rideId;
+      try {
+        const ride = await createrideModel.findByIdAndUpdate(rideId, { driverId: driverId, ridestatus: 4 }, { new: true })
+        const userdata = await userModel.findById(ride.userId)
+        io.emit('rideupdates', ride);
+        // sendmessage(ride.status);
+      } catch (error) {
+        console.log(error);
+      }
+    })
+
+    //--------------------------------------------RIDE ARRIVED----------------------------------------------------//
+    socket.on('ridearrived', async (data) => {
+      console.log("626",data);
+      const rideId = data.rideId;
+      try {
+        const ride = await createrideModel.findByIdAndUpdate(rideId, { ridestatus: 5 }, { new: true })
+        io.emit('rideupdates', ride);
+      } catch (error) {
+        console.log(error);
+      }
+    })
+
+    //--------------------------------------------RIDE PICKED----------------------------------------------------//
+    socket.on('ridepicked', async (data) => {
+      console.log("639",data);
+
+      const rideId = data.rideId;
+      try {
+        const ride = await createrideModel.findByIdAndUpdate(rideId, {ridestatus: 9 }, { new: true })
+        io.emit('rideupdates', ride);
+      } catch (error) {
+        console.log(error);
+      }
+    })
+
+    //--------------------------------------------RIDE STARTED----------------------------------------------------//
+    socket.on('ridestarted', async (data) => {
+      console.log("653",data);
+
+      const rideId = data.rideId;
+      try {
+        const ride = await createrideModel.findByIdAndUpdate(rideId, { ridestatus: 6 }, { new: true })
+        io.emit('rideupdates', ride);
+        // sendmessage(ride.status);
+      } catch (error) {
+        console.log(error);
+      }
+    })
+
+    //--------------------------------------------RIDE COMPLETED----------------------------------------------------//
+    socket.on('ridecompleted', async (data) => {
+      const rideId = data.rideId;
+      const driverId = data.driverId
+      console.log("474",data);
+      
+      try {
+        const driverdata = await driverModel.findById(driverId)
+        const ridedata = await createrideModel.findByIdAndUpdate(rideId, { $set: { ridestatus: 7 }},{ new: true } );
+        const userdata = await userModel.findById(ridedata.userId)
+
+
+        if (!userdata.customer_id) {
+          // return res.status(400).json({ error: 'User does not have a Stripe customer ID' });
+        }
+        if(ridedata.paymentOption == "card"){
+
+          exchangeRate = 82.28
+          const customer = await stripe.customers.retrieve(userdata.customer_id);
+          // console.log("485",customer );
+          const defaultCardId = customer.default_source;
+          // console.log("487",defaultCardId);
+  
+          const estimatePriceUSD = ridedata.estimateFare / exchangeRate;
+          const amountInCents = Math.round(estimatePriceUSD * 100);
+          const paymentIntent = await stripe.paymentIntents.create({
+            amount: amountInCents,
+            currency: 'usd',
+            customer: userdata.customer_id,
+            // payment_method: "Card",
+            off_session: true,
+            confirm: true
+          });
+          // console.log("487", paymentIntent);
+  
+        }
+        
+        io.emit("rideupdates", ridedata, driverdata );
+
+        const tripDetails = {ridedata, driverdata, userdata};
+        const userEmail = userdata.useremail;
+        transporter.sendRideStatus(userEmail, tripDetails);
+        transporter.sendInvoiceEmail(userEmail, tripDetails)
+
+        // let toPhoneNumber = `${driverdata.countrycode}${driverdata.driverphone}`
+        let toPhoneNumber = `+91 73590 30960`
+        let status  = ridedata.ridestatus
+        client.sendRideSMS(toPhoneNumber, status)
+
+      } catch (error) {
+        console.log(error);
+      }
+    })
+
+    //--------------------------------------------FREE DRIVER AFTER RIDE COMPLETE----------------------------------------------------//
+    socket.on('driverfree', async (data) => {
+      console.log("526",data);
+      const driverId = data.driverId
+      const rideId = data.rideId;
+      try {
+        const driverdata = await driverModel.findByIdAndUpdate(driverId, { $set: { assign: "0" } }, {new: true});
+        const ride = await createrideModel.findByIdAndUpdate(rideId, { $unset: {driverId: "", assigningTime: ""}}, { new: true })
+        io.emit('rideupdates', ride, driverdata);
+      } catch (error) {
+        console.log(error);
+      }
+    })
 
     // ------------------------------------------------RIDE REJECTED REQUEST TABLE-----------------------------------------------//
     socket.on("Rejectrunningrequest", async (data) => {
@@ -514,116 +636,6 @@ async function initializeSocket(server) {
       }
     });
 
-    //--------------------------------------------RIDE ACCEPTED----------------------------------------------------//
-    socket.on('rideaccepted', async (data) => {
-      console.log("612",data);
-      const driverId = data.driverId
-      const rideId = data.rideId;
-      try {
-        const ride = await createrideModel.findByIdAndUpdate(rideId, { driverId: driverId, ridestatus: 4 }, { new: true })
-        const userdata = await userModel.findById(ride.userId)
-        io.emit('rideupdates', ride);
-        // sendmessage(ride.status);
-      } catch (error) {
-        console.log(error);
-      }
-    })
-
-    //--------------------------------------------RIDE ARRIVED----------------------------------------------------//
-    socket.on('ridearrived', async (data) => {
-      console.log("626",data);
-      const rideId = data.rideId;
-      try {
-        const ride = await createrideModel.findByIdAndUpdate(rideId, { ridestatus: 5 }, { new: true })
-        io.emit('rideupdates', ride);
-      } catch (error) {
-        console.log(error);
-      }
-    })
-
-    //--------------------------------------------RIDE PICKED----------------------------------------------------//
-    socket.on('ridepicked', async (data) => {
-      console.log("639",data);
-
-      const rideId = data.rideId;
-      try {
-        const ride = await createrideModel.findByIdAndUpdate(rideId, {ridestatus: 9 }, { new: true })
-        io.emit('rideupdates', ride);
-      } catch (error) {
-        console.log(error);
-      }
-    })
-
-    //--------------------------------------------RIDE STARTED----------------------------------------------------//
-    socket.on('ridestarted', async (data) => {
-      console.log("653",data);
-
-      const rideId = data.rideId;
-      try {
-        const ride = await createrideModel.findByIdAndUpdate(rideId, { ridestatus: 6 }, { new: true })
-        io.emit('rideupdates', ride);
-        // sendmessage(ride.status);
-      } catch (error) {
-        console.log(error);
-      }
-    })
-
-    //--------------------------------------------RIDE COMPLETED----------------------------------------------------//
-    socket.on('ridecompleted', async (data) => {
-      const rideId = data.rideId;
-      const driverId = data.driverId
-      // console.log(data , " complted data ");
-      const ridedata = data.ridedata;
-      
-      try {
-        const driverdata = await driverModel.findByIdAndUpdate(driverId, { $set: { assign: "0" } }, {new: true});
-        const ridedata = await createrideModel.findByIdAndUpdate(rideId, { $set: {  driverId: driverId, ridestatus: 7 }},{ new: true } );
-        const userdata = await userModel.findById(ridedata.userId)
-
-
-        if (!userdata.customer_id) {
-          return res.status(400).json({ error: 'User does not have a Stripe customer ID' });
-        }
-        if(ridedata.paymentOption == "card"){
-
-          exchangeRate = 82.28
-          const customer = await stripe.customers.retrieve(userdata.customer_id);
-          // console.log("485",customer );
-          const defaultCardId = customer.default_source;
-          // console.log("487",defaultCardId);
-  
-          const estimatePriceUSD = ridedata.estimateFare / exchangeRate;
-          const amountInCents = Math.round(estimatePriceUSD * 100);
-          const paymentIntent = await stripe.paymentIntents.create({
-            amount: amountInCents,
-            currency: 'usd',
-            customer: userdata.customer_id,
-            // payment_method: "Card",
-            off_session: true,
-            confirm: true
-          });
-          // console.log("487", paymentIntent);
-  
-        }
-        
-        io.emit("rideupdates", ridedata, driverdata );
-
-        const tripDetails = {ridedata, driverdata, userdata};
-        const userEmail = userdata.useremail;
-        transporter.sendRideStatus(userEmail, tripDetails);
-        transporter.sendInvoiceEmail(userEmail, tripDetails)
-
-        // let toPhoneNumber = `${driverdata.countrycode}${driverdata.driverphone}`
-        let toPhoneNumber = `+91 73590 30960`
-        let status  = ridedata.ridestatus
-        client.sendRideSMS(toPhoneNumber, status)
-
-      } catch (error) {
-        // console.log(error);
-      }
-    })
-
-    
     // ------------------------------------------------RIDE CANCEL CONFIRM-RIDE TABLE-----------------------------------------------//
     socket.on("cancelride", async (rideId) => {
       // console.log(rideId);
@@ -999,7 +1011,7 @@ async function initializeSocket(server) {
 
 
     //----------------------------------------HANDLE CRON------------------------------------------//
-    const job = cron.schedule("*/10 * * * * *", async () => {
+    const job = cron.schedule("*/30 * * * * *", async () => {
       await myTask();
     });
     

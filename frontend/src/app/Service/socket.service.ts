@@ -276,9 +276,13 @@ export class SocketService implements OnInit, OnDestroy{
   emitstarted(data: any): void {
     this.socket.emit('ridestarted', data);
   }
-  //--------------------------RIDE STARTED STATUS------------------------------//
+  //--------------------------RIDE COMPLETED STATUS------------------------------//
   emitcompleted(data: any): void {
     this.socket.emit('ridecompleted', data);
+  }
+  //--------------------------RIDE and DRIVER FREE STATUS------------------------------//
+  emitfree(data: any): void {
+    this.socket.emit('driverfree', data);
   }
 
   

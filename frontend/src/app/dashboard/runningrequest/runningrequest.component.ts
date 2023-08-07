@@ -104,6 +104,15 @@ export class RunningrequestComponent {
     this.completedrunningrequest(this.driverId, this.rideId);
   }
 
+  //---------------ON ACCEPT RIDE REQUEST BUTTON CLICK--------------------//
+  freerideanddriver(data: any){
+    // console.log(data);
+    this.rideId = data._id
+    this.driverId = data.driverId
+
+    this.freerideanddriverrunningrequest(this.driverId, this.rideId);
+  }
+
   //------------------------------ACCEPT REQUEST REJECT------------------------------------//
   acceptrunningrequest(driverId: string, rideId: string) {
     // console.log(rideId, driverId);
@@ -159,6 +168,16 @@ export class RunningrequestComponent {
     this.getRunningData()
   }
 
+  freerideanddriverrunningrequest(driverId: string, rideId: string) {
+    // console.log(rideId, driverId);
+    const data = {
+      rideId: rideId,
+      driverId: driverId
+    }
+    
+    this._socketservice.emitfree( data)
+    this.getRunningData()
+  }
   //--------------------AFTER ACCEPTING RIDE-----------------------//
   ridestatusupates() {
     this._socketservice.listeningrideupdates().subscribe((response: any) => {

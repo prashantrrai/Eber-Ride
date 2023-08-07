@@ -76,6 +76,7 @@
                             <span class="statusbadge" *ngSwitchCase="5" [ngClass]="{'badge-success': ride.ridestatus === 5}">Arrived</span>
                             <span class="statusbadge" *ngSwitchCase="9" [ngClass]="{'badge-success': ride.ridestatus === 9}">Picked</span>
                             <span class="statusbadge" *ngSwitchCase="6" [ngClass]="{'badge-success': ride.ridestatus === 6}">Started</span>
+                            <span class="statusbadge" *ngSwitchCase="7" [ngClass]="{'badge-success': ride.ridestatus === 7}">Completed</span>
                             <span class="statusbadge" *ngSwitchCase="8" [ngClass]="{'badge-light': ride.ridestatus === 8}">Hold</span>
                             <span class="statusbadge" [ngClass]="{'badge-warning': ride.ridestatus === 0}" *ngSwitchDefault>Pending</span>
                         </td>
