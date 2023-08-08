@@ -21,14 +21,18 @@
   <div class="d-flex justify-content-center align-items-center">
     <label for="pageSize">Show Data :</label>
     <div class="custom-select">
+
       <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
-        <option [ngValue]="null">Select Page</option>
-        <option value="1">1</option>
+        <option value="5">Select Page</option>
+        <!-- <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
-        <option value="4">4</option>
+        <option value="4">4</option> -->
         <option value="5">5</option>
         <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
       </select>
     </div>
   </div>
@@ -61,5 +65,5 @@
 
   <!-- ---------------------------------------------PAGINATION USING NGX-------------------------------------------- ----- -->
   <div class="d-flex justify-content-center">
-    <pagination-controls previousLabel nextLabel (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true"></pagination-controls>
+    <pagination-controls (pageChange)="onPageChange($event)" [maxSize]="5" [responsive]="true"></pagination-controls>
   </div>

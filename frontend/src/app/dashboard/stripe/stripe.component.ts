@@ -65,7 +65,7 @@ export class StripeComponent {
         );
         const token = await paymentMethod.token
         console.log('succes: ',await  paymentMethod.token);
-        // console.log("Token:", token);
+        console.log("Token:", token);
         
   
         const response = await fetch(`http://localhost:4000/addcard/${id}`, {

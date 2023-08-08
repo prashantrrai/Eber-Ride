@@ -38,6 +38,9 @@
     border: none;
     cursor: pointer;
   }
+  #pageSize{
+    padding: 5px;
+  }
 
   #formContainer button:hover {
     background-color: #007806;

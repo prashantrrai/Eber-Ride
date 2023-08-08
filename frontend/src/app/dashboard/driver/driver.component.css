@@ -112,11 +112,19 @@
   
   #showbtn {
     padding: 6px;
-    background-color: #24ff24;
+    background-color: #00b900;
     color: #fff;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 3px;
+  }
+  #searchbtn{
+    padding: 6px;
+    background-color: #7200c4;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
   }
   
   

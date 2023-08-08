@@ -25,18 +25,28 @@
     margin: 40px;
   }
   
-  input {
+  /* input {
     width: 100%;
+    padding: 5px;
+  } */
+  #search-input {
+    flex-grow: 1;
     padding: 5px;
   }
   
   #showbtn {
-    /* padding: 10px; */
     border-radius: 5px;
     box-shadow: 2px 2px 2px rgb(67, 113, 228);
     border: 1px solid black;
   }
-  
+  #searchbtn{
+    padding: 6px;
+    background-color: #7200c4;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+  }
   #showbtn:hover {
     transform: scale(1.1);
     transition: all linear 200ms;

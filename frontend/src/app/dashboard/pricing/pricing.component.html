@@ -12,12 +12,12 @@
     <div class="custom-select">
       <select class="form-control m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
         <option [ngValue]="">Select Page</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
+        <!-- <option value="1">1</option> -->
         <option value="5">5</option>
         <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
       </select>
       <i class="fas fa-chevron-down dropdown-icon"></i>
     </div>
@@ -31,39 +31,51 @@
         <h2 class="mb-3">Add Vehicle Pricing</h2>
         <form class="container" [formGroup]="pricingForm"  (ngSubmit)="onSubmit()">
 
+
           <div class="form-group row align-items-center mb-2">
             <label class="col-sm-3 col-form-label text-end">Country</label>
-            <div class="col-sm-9 form-custom-select">
-              <select class="form-control" id="country-name" name="country" #country (change)="onSelectedCountry(country.value)" formControlName="country" [ngStyle]="{ 'color': isEditMode ? '#808080' : 'inherit' }">
+            <div class="col-sm-9 form-custom-select" *ngIf="!isEditMode">
+              <select class="form-control" id="country-name" name="country" #country (change)="onSelectedCountry(country.value)" formControlName="country">
                 <option value="">Select Country</option>
-                <option [value]="country._id" [disabled]="isEditMode"  *ngFor="let country of countriesname">{{country.countryName}}</option>
+                <option [value]="country._id" *ngFor="let country of countriesname">{{country.countryName}}</option>
               </select>
               <i class="fas fa-chevron-down form-dropdown-icon"></i>
             </div>
+            <div class="col-sm-9" *ngIf="isEditMode">
+              <input class="form-control" type="text" id="country-name" name="country" formControlName="country" [ngStyle]="{ 'background-color': '#e8e7e3' }" readonly>
+            </div>
           </div>
-    
+          
+
           <div class="form-group row align-items-center mb-2">
             <label class="col-sm-3 col-form-label text-end">City</label>
-            <div class="col-sm-9 form-custom-select">
-              <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
-              <select class="form-control" id="city-name" name="city" #city (change)="onSelectedCity(city.value)" formControlName="city"  [ngStyle]="{ 'color': isEditMode ? '#808080' : 'inherit' }">
+            <div class="col-sm-9 form-custom-select" *ngIf="!isEditMode">
+              <select class="form-control" id="city-name" name="city" #city (change)="onSelectedCity(city.value)" formControlName="city">
                 <option value="">Select City</option>
-                <option [value]="city._id" [disabled]="isEditMode"  *ngFor="let city of citiesname">{{city.city}}</option>
+                <option [value]="city._id" *ngFor="let city of citiesname">{{city.city}}</option>
               </select>
               <i class="fas fa-chevron-down form-dropdown-icon"></i>
             </div>
+            <div class="col-sm-9" *ngIf="isEditMode">
+              <input class="form-control" type="text" id="city-name" name="city" formControlName="city"  [ngStyle]="{ 'background-color': '#e8e7e3' }" readonly>
+            </div>
           </div>
-    
+          
+
           <div class="form-group row align-items-center mb-2">
             <label class="col-sm-3 col-form-label text-end">Type</label>
-            <div class="col-sm-9 form-custom-select">
-              <select class="form-control" name="service" #service (change)="onSelectedVehicle(service.value)" formControlName="service"  [ngStyle]="{ 'color': isEditMode ? '#808080' : 'inherit' }">
+            <div class="col-sm-9 form-custom-select" *ngIf="!isEditMode">
+              <select class="form-control" name="service" #service (change)="onSelectedVehicle(service.value)" formControlName="service">
                 <option value="">Select Service</option>
-                <option [value]="service._id" [disabled]="isEditMode"  *ngFor="let service of serviceData">{{service.vehicleName}}</option>
+                <option [value]="service._id" *ngFor="let service of serviceData">{{service.vehicleName}}</option>
               </select>
               <i class="fas fa-chevron-down form-dropdown-icon"></i>
             </div>
+            <div class="col-sm-9" *ngIf="isEditMode">
+              <input class="form-control" type="text" name="service" formControlName="service" [ngStyle]="{ 'background-color': '#e8e7e3' }" readonly>
+            </div>
           </div>
+          
     
           <div class="form-group row align-items-center mb-2">
             <label class="col-sm-3 col-form-label text-end">Driver's Profit</label>

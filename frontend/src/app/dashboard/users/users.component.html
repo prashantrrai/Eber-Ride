@@ -1,17 +1,19 @@
 <!-- ---------------------------PAGINATION, SEARCH, SORT-------------------------------- -->
 <div class="container">
   <div class="filter-section">
-    <input type="text" id="search-input" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="search" (input)="getUserData()">
+    <button id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp; Add Users</button>
     
+    <input type="text" id="search-input" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="search" >
+    <button id="searchbtn" (click)="getUserData()">Search</button>
     <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
       <option value="5">Select Page</option>
-      <option value="1">1</option>
+      <!-- <option value="1">1</option>
       <option value="2">2</option>
       <option value="3">3</option>
-      <option value="4">4</option>
+      <option value="4">4</option> -->
       <option value="5">5</option>
       <option value="10">10</option>
-      <option value="25">25</option>
+      <option value="20">20</option>
       <option value="50">50</option>
       <option value="100">100</option>
     </select>
@@ -28,46 +30,9 @@
       <option value="desc">Descending</option>
     </select>
     
-    <button class="" id="showbtn"(click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp; Add Users</button>
   </div>
 </div>
-
-
-<!-- 
-<div>
-  <div class="d-flex justify-content-center align-items-center">
-
-    <div class="sortby">
-      <label for="sortBy">Sort By:</label>
-      <div class="custom-select">
-        <select class="form-control mx-2" id="sortBy" [(ngModel)]="selectedSortBy" (change)="getUserData()">
-          <option value="name">Name</option>
-          <option value="email">Email</option>
-          <option value="phone">Phone</option>
-        </select>
-      <i class="fas fa-chevron-down dropdown-icon"></i>
-      </div>
-    </div>
-
-    <div class="sortorder">
-      <label for="sortOrder">Sort Order:</label>
-      <div class="custom-select">
-        <select class="form-control mx-2" id="sortOrder" [(ngModel)]="selectedSortOrder" (change)="getUserData()">
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
-      <i class="fas fa-chevron-down dropdown-icon"></i>
-      </div>
-    </div>
-    
-  </div>
-</div>
- -->
-
-
-<!-- <button (click)="getSortedData()">Sort</button> -->
-
-
+s
     <!-- ---------------------------------------------ADD FORM--------------------------------------------- -->
     <div class="parentFormContainer">
         <div id="formContainer" *ngIf="AddbuttonForm">

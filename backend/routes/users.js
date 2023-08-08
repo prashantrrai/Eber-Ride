@@ -324,11 +324,10 @@ userRoutes.post('/addcard/:id', async (req, res) => {
         email: user.useremail,
       });
       
-      // console.log("325",customer.id);
       user.customer_id = customer.id;
       await user.save();
     }
-    // console.log(user.customer_id);
+    console.log(user.customer_id);
     console.log("330",req.body.token.id);
 
 
@@ -356,6 +355,7 @@ userRoutes.get('/getcard/:id', async (req, res) => {
     const id = req.params.id;
     const user = await userModel.findById(id);
     if (!user.customer_id) {
+      console.log("User does not have a Stripe customer ID")
       return res.status(400).json({ success:true , message: 'User does not have a Stripe customer ID'});
     }
     const customer = await stripe.customers.retrieve(user.customer_id);

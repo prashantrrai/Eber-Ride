@@ -3,7 +3,8 @@
         (click)="toggleFormVisibility()">
         <mat-icon>add_circle</mat-icon> Add Country
   </button>
-  <input type="text" class="form-control m-4 w-25" id="search" placeholder="Search by Name..." [(ngModel)]="search" (input)="countrySearch()">
+  <input type="text" class="form-control m-4 w-25" id="search" placeholder="Search by Country Name..." [(ngModel)]="search">
+  <button id="searchbtn" (click)="countrySearch()">Search</button>
 
 </div>
 

@@ -12,7 +12,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class PricingComponent {
   showButton: boolean = true;
-  addForm: boolean = true;
+  addForm: boolean = false;
   pricingForm!: FormGroup;
   isEditMode: boolean = false;
   countriesname: any[] = [];
@@ -228,18 +228,19 @@ export class PricingComponent {
   editbtn(values: any) {
     this.isEditMode = true;
     this.addForm = true;
-    console.log("231",this.valueArray)
+
+    // console.log(values);
     this.id = values._id;
-    console.log(values);
+    // console.log("231",this.valueArray)
     // this.onSelectedCountry(values.country)
 
     // this.spinner.show();
-    console.log("values",values.city);
+    // console.log("values",values.city);
     
     this.pricingForm.patchValue({
-      country: values.country,
-      city: values.city,
-      service: values.service,
+      country: values.countryDetails.countryName,
+      city: values.cityDetails.city,
+      service:values.serviceDetails.vehicleName,
       driverprofit: values.driverprofit,
       minfare: values.minfare,
       distancebaseprice: values.distancebaseprice,
@@ -267,8 +268,19 @@ export class PricingComponent {
     // }, 0);
 
   }
+
   UpdatePricing() {
-    const data = this.pricingForm.value;
+    const data = {
+      driverprofit: this.pricingForm.value.driverprofit,
+      minfare: this.pricingForm.value.minfare,
+      distancebaseprice: this.pricingForm.value.distancebaseprice,
+      baseprice: this.pricingForm.value.baseprice,
+      ppudist: this.pricingForm.value.ppudist,
+      pputime: this.pricingForm.value.pputime,
+      maxspace: this.pricingForm.value.maxspace,
+    }
+    console.log(data);
+    
 
     this._pricing.UpdatePricing(this.id, data).subscribe({
       next: (response: any) => {
@@ -281,7 +293,7 @@ export class PricingComponent {
       },
       error: (error: any) => {
         console.log(error);
-        this.toastr.error(error.error.message);
+        this.toastr.warning(error.message);
       },
     });
   }

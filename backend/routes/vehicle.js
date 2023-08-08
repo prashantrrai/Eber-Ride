@@ -3,7 +3,7 @@
   const vehicleModel = require('../models/vehicle');
   const multer = require('multer');
   const path = require('path');
-const pricingModel = require("../models/pricing");
+  const pricingModel = require("../models/pricing");
   const img_path = path.join(__dirname, "../Public/Vehicle");
 
 
@@ -119,7 +119,44 @@ const pricingModel = require("../models/pricing");
 })
   
   // ----------------------------------------------UPDATE VEHICLE DATA-----------------------------------------------------------
-  VehicleRoutes.put('/updateVehicle/:id',upload.single('vehicleImage'), async (req, res) => {
+//   VehicleRoutes.put('/updateVehicle/:id',upload.single('vehicleImage'), async (req, res) => {
+//   //  console.log(req.file)
+//     try {
+//         const vehicleId = req.params.id;
+//         // console.log(vehicleId)
+//         let vehicle;
+
+//         if (!req.file) {
+//           vehicle =  await vehicleModel.findByIdAndUpdate(vehicleId, {
+//             vehicleName: req.body.vehicleName,
+//         },{new:true})
+//      }else{
+//       vehicle =  await vehicleModel.findByIdAndUpdate(vehicleId, {
+//         vehicleName: req.body.vehicleName,
+//         vehicleImage: req.file.filename
+//       },{new:true})
+//      }
+
+//     res.json({ success: true, message: "Vehicle Updated Successfully" ,vehicle});
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ success: false, message: "Vehicle Already Exists" });
+//   }
+// }); 
+ // ----------------------------------------------UPDATE VEHICLE DATA-----------------------------------------------------------
+  VehicleRoutes.put('/updateVehicle/:id',async (req, res, next) => {
+    upload.single('vehicleImage')(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ success: false, message: "File size exceeds the limit (2MB)." });
+        }
+        return res.status(400).json({ success: false, message: "Unexpected error while uploading the file." });
+      } else if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      next();
+    });
+  }, async (req, res) => {
   //  console.log(req.file)
     try {
         const vehicleId = req.params.id;

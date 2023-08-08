@@ -100,4 +100,27 @@ pre{
   border: none;
   cursor: pointer;
 }
-
+#searchbtn{
+  padding: 6px;
+  background-color: #7200c4;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+}
+#filterbtn{
+  padding: 6px;
+  background-color: #06c300;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+}
+#clearbtn{
+  padding: 6px;
+  background-color: #bf0000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+}

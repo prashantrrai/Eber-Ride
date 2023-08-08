@@ -1,17 +1,20 @@
 <!-- ---------------------------PAGINATION, SEARCH, SORT, LIMIT-------------------------------- -->
 <div class="container">
   <div class="filter-section">
-    <input type="text" id="search-input" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="search" (input)="getDriverData()">
+    <button class="" id="showbtn"  (click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"> </i>&nbsp;Add Driver</button>
+    
+    <input type="text" id="search-input" placeholder="Search by ID, Name, Email, Phone..." [(ngModel)]="search">
+    <button id="searchbtn" (click)="getDriverData()">Search</button>
     
     <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
       <option value="5">Select Page</option>
-      <option value="1">1</option>
+      <!-- <option value="1">1</option>
       <option value="2">2</option>
       <option value="3">3</option>
-      <option value="4">4</option>
+      <option value="4">4</option> -->
       <option value="5">5</option>
       <option value="10">10</option>
-      <option value="25">25</option>
+      <option value="20">20</option>
       <option value="50">50</option>
       <option value="100">100</option>
     </select>
@@ -28,7 +31,6 @@
       <option value="desc">Descending</option>
     </select>
     
-    <button class="" id="showbtn"  (click)="toggleFormVisibility()"><i class="fa fa-user-plus" aria-hidden="true"> </i>&nbsp;Driver</button>
   </div>
 </div>
 

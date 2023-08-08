@@ -4,7 +4,7 @@
         <option value="-1">Select Status</option>
         <option [value]="0">Pending</option>
         <option [value]="1">Assigning</option>
-        <option [value]="4">Accepted</option>
+        <option [value]="2">Rejected</option>
       </select>
 
       <select id="filter-dropdown" [(ngModel)]="vehiclefilter" >
@@ -12,16 +12,17 @@
         <option [value]="vehicle" *ngFor="let vehicle of filteredVehicles">{{vehicle}}</option>
       </select>
       
-      <input type="text" id="search-input" placeholder="Search by Req. ID, Name, Phone, Pick up Date..." [(ngModel)]="searchText" (input)="getrideData()">
-      <input type="date" id="search-input" [(ngModel)]="searchDate" (input)="getrideData()">
-      <!-- <button id="search-button">Search</button> -->
+      <input type="text" id="search-input" placeholder="Search by Req. ID, Name, Phone, Pick up Date..." [(ngModel)]="searchText">
+      <input type="date" id="search-input" [(ngModel)]="searchDate">
+      <button id="searchbtn" (click)="getrideData()">Search</button>
+
       <div class="custom-select" >
         <select class="m-2" id="pageSize" [(ngModel)]="limit" (change)="onPageSizeChange($event)">
           <option value="5">Select Page</option>
-          <option value="2">2</option>
+          <!-- <option value="2">2</option> -->
           <option value="5">5</option>
           <option value="10">10</option>
-          <option value="25">25</option>
+          <option value="20">20</option>
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
@@ -33,8 +34,8 @@
         <option value="desc">Descending</option>
       </select>
 
-      <button (click)="getrideData()">Apply Filter</button>
-      <button (click)="clearFilter()">Clear Filter</button>
+      <button id="filterbtn" (click)="getrideData()">Apply Filter</button>
+      <button id="clearbtn" (click)="clearFilter()">Clear Filter</button>
     </div>
   </div>
 
