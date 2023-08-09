@@ -2,7 +2,7 @@ const socketio = require("socket.io");
 require("dotenv").config();
 const RideTimeOut = process.env.RIDETIMEOUT;
 // const RideTimeOut = 5;
-// console.log(RideTimeOut);
+// console.log("5",RideTimeOut);
 const mongoose = require("mongoose");
 const driverModel = require("../models/driver");
 const createrideModel = require("../models/createride");
@@ -865,7 +865,7 @@ async function initializeSocket(server) {
               let currenttime = Date.now();
               let assignedTime = data.assigningTime;
               resulttimeout = Math.floor((currenttime - assignedTime) / 1000);
-
+              console.log(resulttimeout >= RideTimeOut);
               if (resulttimeout >= RideTimeOut) {
                 console.log("success");
                 const drivernewdata = await driverModel.findByIdAndUpdate(
@@ -892,7 +892,7 @@ async function initializeSocket(server) {
                 });
                 
               }else{
-                // console.log("failure");
+                console.log("failed to get inside if");
               }
             }
 
@@ -900,13 +900,13 @@ async function initializeSocket(server) {
         }
         
         if (nearestridedata.length>0){
-          console.log("988", "after rejected status");
+          // console.log("988", "after rejected status");
           for (const data of nearestridedata) {
             
             let currenttime = Date.now()
             let assignedTime = data.assigningTime
             resulttimeout = Math.floor((currenttime - assignedTime)/1000)
-            
+              console.log(RideTimeOut);
             if (resulttimeout >= RideTimeOut) {
               // console.log("848", "If");
               const city_id = new mongoose.Types.ObjectId(data.cityId);
@@ -1001,6 +1001,8 @@ async function initializeSocket(server) {
                 
               }
 
+            }else{
+              console.log("failed to get inside nearest if");
             }
           }
 
@@ -1013,7 +1015,7 @@ async function initializeSocket(server) {
 
 
     //----------------------------------------HANDLE CRON------------------------------------------//
-    const job = cron.schedule("*/30 * * * * *", async () => {
+    const job = cron.schedule("*/10 * * * * *", async () => {
       await myTask();
     });
     
