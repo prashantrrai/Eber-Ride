@@ -1,52 +1,7 @@
-<mat-toolbar color="light" class="mat-elevation-z8">
-  <button (click)="drawer.toggle()" mat-icon-button>
-    <mat-icon>menu</mat-icon>
-  </button>
-  <div class="d-flex align-items-center justify-content-between w-100">
-    <div class="example-spacer">
-      <img src="../../../assets/images/frontal-taxi-cab.png" alt="Logo"> 
-    </div>
-    <!-- <span>Eber Ride</span> -->
-
-    <div >
-      <!-- <button (click)="showDummyNotification()">Show Dummy Notification</button> -->
-
-      <div class="bell-icon-container mx-5">
-        <i class="fa-regular fa-bell" (click)="checkNotificationSupport()"></i>
-        <span class="notification-badge">{{ notificationCounter }}</span>
-      </div>
-
-      <!-- <button class="btn btn-danger" (click)="onLogout()">
-        <i class="fa fa-lock" aria-hidden="true"></i> &nbsp; Logout
-      </button> -->
-
-        <button mat-icon-button [matMenuTriggerFor]="menu" class="large-button mx-3">
-          <!-- <mat-icon >account_circle</mat-icon> -->
-          <span class="material-icons icon">account_circle</span>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item>
-            <mat-icon>account_circle</mat-icon>
-            <span>Prashant</span>
-          </button>
-          <button mat-menu-item (click)="onLogout()">
-            <mat-icon>exit_to_app</mat-icon>
-            <span>Logout</span>
-          </button>
-        </mat-menu>
-      
-    </div>
-  </div>
-</mat-toolbar>
-
-
-
-
+<!-- //--------------------------SIDE NAVBAR---------------------------// -->
 <mat-drawer-container autosize >
   <mat-drawer class="bg-dark"  #drawer opened="false" mode="side" position="start" >
     <h2 class="text-center text-light my-3">Eber Ride</h2>
-
-
   <mat-nav-list >
       <mat-list-item >
           <button  color="accent" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>

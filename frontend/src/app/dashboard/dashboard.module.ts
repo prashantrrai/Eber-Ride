@@ -10,6 +10,7 @@ import { MaterialModule } from '../material-module';
 import { FooterComponent } from './footer/footer.component';
 import { MenuComponent } from './menu/menu.component';
 import { RouterModule, Routes } from '@angular/router';
+import { HeaderComponent } from './header/header.component';
 
 const routes : Routes = [{ path : "" , component : DashboardComponent , pathMatch : "full"}]
 
@@ -19,6 +20,7 @@ const routes : Routes = [{ path : "" , component : DashboardComponent , pathMatc
     DashboardComponent,
     MenuComponent, 
     FooterComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,

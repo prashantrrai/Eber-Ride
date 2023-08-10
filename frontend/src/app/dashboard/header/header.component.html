@@ -1,0 +1,39 @@
+<!-- //-------------------------------TOP NAVBAR----------------------------------// -->
+<mat-toolbar id="header" class="mat-elevation-z8">
+    <button (click)="toggleDrawer()" mat-icon-button color="accent">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="d-flex align-items-center justify-content-between w-100">
+      <div class="example-spacer">
+        <img src="../../../assets/images/frontal-taxi-cab.png" alt="Logo"> 
+      </div>
+      <!-- <span class="text-light">Eber Ride</span> -->
+  
+      <div >
+        <div class="bell-icon-container mx-5" >
+          <i class="fa-regular fa-bell" (click)="checkNotificationSupport()"></i>
+          <span class="notification-badge">{{ notificationCounter }}</span>
+        </div>
+  
+        <!-- <button class="btn btn-danger" (click)="onLogout()">
+          <i class="fa fa-lock" aria-hidden="true"></i> &nbsp; Logout
+        </button> -->
+  
+          <button mat-icon-button [matMenuTriggerFor]="menu" class="large-button mx-3">
+            <span class="material-icons icon">account_circle</span>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>account_circle</mat-icon>
+              <span>Prashant</span>
+            </button>
+            <button mat-menu-item (click)="onLogout()">
+              <mat-icon>exit_to_app</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
+      </div>
+    </div>
+  </mat-toolbar>
+  
+  
