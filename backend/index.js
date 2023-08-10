@@ -82,37 +82,6 @@ app.get("/", async (req, res) => {
   });
 });
 
-// --------------------------------------------GET SETTING DATA API---------------------------------------------
-// app.get('/', async (req, res) => {
-//   try {
-//       const settingData = await SettingModel.find();
-//       // console.log(settingData);
-
-//       if (settingData.length > 0) {
-//         const { ridetimeout } = settingData[0].ridetimeout;
-//         await writeFileAsync('.env', `RIDETIMEOUT=${ridetimeout}\n`, { flag: 'a' });
-//         // dotenv.config(); 
-//       }
-
-//       res.status(200).json({
-//           success: true,
-//           message: "Setting Data Found Successfully",
-//           settingData,
-//           });
-//   } catch (error) {
-//       console.log(error);
-//       res.status(500).json({ success: false, message: error });
-//   }
-// })
-// console.log(process.env.RIDETIMEOUT);
-
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   }); 
-// });
-
 initializeSocket(http)
 http.listen(PORT, () => {
   // const today = new Date();
