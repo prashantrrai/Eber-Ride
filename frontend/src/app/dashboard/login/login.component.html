@@ -47,7 +47,7 @@
         <div class="shape"></div>
     </div>
     <form id="createForm" [formGroup]="loginForm" (ngSubmit)="onLogin()">
-        <h3>Login Here</h3>
+        <h3>Eber Taxi Login</h3>
 
         <label for="username">Username</label>
         <input type="email" class="form-control" placeholder="Email or Phone" formControlName="email"
@@ -75,7 +75,7 @@
           or
           <a routerLinkActive="active" routerLink="/signup">signup</a>
         </div>
-        <div class="social">
+        <div class="social d-flex justify-content-between">
           <div class="go d-flex justify-content-center align-items-center"><img src="../../../assets/images/google" alt="google" class="googleimg"> Google</div>
           <div class="fb d-flex justify-content-center align-items-center"><img src="../../../assets/images/apple-logo-transparent.png" alt="google" class="appleimg"> Apple</div>
         </div>

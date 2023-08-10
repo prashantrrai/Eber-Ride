@@ -68,7 +68,7 @@ input{
 }
 body{
     background-color: #5300da;
-    /* background-color: #ffffff; */
+    /* background-color: #b3b3b3; */
 }
 
 .background{
@@ -103,8 +103,8 @@ body{
     bottom: -80px;
 }
 form{
-    /* height: 520px;
-    width: 400px; */
+    /* height: 520px; */
+    width: 450px;
     background-color: rgba(255,255,255,0.13);
     /* background-color: #5300da; */
     position: absolute;
@@ -119,7 +119,7 @@ form{
 }
 form *{
     font-family: 'Poppins',sans-serif;
-    color: #ffffff;
+    /* color: #000000; */
     letter-spacing: 0.5px;
     outline: none;
     border: none;
@@ -150,13 +150,16 @@ input{
     font-weight: 300;
 }
 ::placeholder{
-    color: #868686;
+    color: #666666;
+}
+.feedback{
+  color: red;
 }
 button{
     margin-top: 50px;
     width: 100%;
     background-color: #000000;
-    color: #080710;
+    color: #ffffff;
     padding: 15px 0;
     font-size: 18px;
     font-weight: 600;
