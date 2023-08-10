@@ -1,8 +1,9 @@
 
-h1{
-  font-family: cursive;
-  padding: 40px;
-  color: white;
+.maindiv{
+  height: 100vh;
+  width: 100%;
+  /* background-color: #5600b8; */
+  background-color: #5600b8;
 }
 .parentFormContainer{
   display: flex;
@@ -10,13 +11,16 @@ h1{
   align-items: center;
   text-align: center;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 5%;
 }
 #formContainer{
   background-color: #ffffff;
   border-radius: 10px;
-  box-shadow: 4px 4px 16px #000000;
-  width: 40vw;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 40px rgba(8,7,16,0.6);
+  /* background-color: rgba(255,255,255,0.13); */
+  
+  width: 30vw;
   height: 50%;
   padding: 20px;
   margin: 40px;
@@ -24,6 +28,10 @@ h1{
 input{
   width: 100%;
   padding: 5PX;
+  background-color: rgba(136, 136, 136, 0.07);
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 300;
 }
 #login{
   padding-top: 10px;
@@ -32,6 +40,26 @@ input{
   color: tomato;
   text-decoration: none;
   cursor: pointer;
+}
+::placeholder{
+  color: #666666;
+}
+button{
+  margin-top: 10px;
+  width: 100%;
+  background-color: #000000;
+  color: #ffffff;
+  /* padding: 15px 0;
+  font-size: 18px; */
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+}
+button:hover{
+background-color: #ffffff;
+color: #000000;
+border: 1px solid black;
 }
 
 @media screen and (max-width: 480px) {
