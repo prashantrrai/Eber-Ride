@@ -9,7 +9,6 @@ import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
-    HeaderComponent
   ],
   imports: [
     CommonModule,

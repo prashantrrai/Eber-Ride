@@ -1,17 +1,29 @@
 import { Component, HostListener } from '@angular/core';
 import { AuthService } from '../Service/auth.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   
 })  
 export class DashboardComponent {
-  constructor(private authService: AuthService) {}
+  isDashboardRoute: boolean = false;
+
+  constructor(private authService: AuthService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.authService.startInactivityTimer();
   }
-
+  getroute(){
+    this.route.data.subscribe(data => {
+      this.isDashboardRoute = data['isDashboard'];
+      console.log('isDashboardRoute:', this.isDashboardRoute);
+    });
+  }
+  
+  isDashboardRouting(): boolean {
+    return this.route.snapshot.url[0].path === '/dashboard';
+  }
 
   
   //-------------------------------------ON MOUSE MOVE RESET TIMER---------------------------------//
