@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow&family=Fasthand&family=Noto+Sans+Vai&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sofia&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -201,14 +203,38 @@
     padding: 4rem 0;
   }
   .map-heading {
-    font-size: 2rem;
-    margin-bottom: 2rem;
+    font-size: 72px;
+    font-weight: bold;
+    margin-bottom: 4rem;
+    color: #000000; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* font-family: 'Barlow', sans-serif;
+    font-family: 'Fasthand', cursive;
+    font-family: 'Noto Sans Vai', sans-serif;
+    font-family: 'Poppins', sans-serif; */
+    font-family: 'Sofia', cursive;
   }
+  
   .map {
-    max-width: 800px;
+    max-width: 1000px;
     height: 400px;
     margin: 0 auto;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   }
-  
+  .customers-heading{
+    font-family: 'Fasthand', cursive;
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 4rem;
+    color: #000000; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  .service-heading{
+    /* font-family: 'Fasthand', cursive; */
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #000000; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
