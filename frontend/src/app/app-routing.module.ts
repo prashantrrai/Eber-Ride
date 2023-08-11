@@ -9,7 +9,7 @@ const routes: Routes = [
     pathMatch: "full",
   },
   {
-    path: "dashboard",
+    path: "app",
     canActivate: [authGuard],
     loadChildren: () =>
     import("./dashboard/dashboard.module").then((m) => m.DashboardModule),

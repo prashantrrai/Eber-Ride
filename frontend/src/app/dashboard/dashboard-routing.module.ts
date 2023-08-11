@@ -9,10 +9,11 @@ import { authGuard } from '../Service/auth.guard';
 const routes: Routes = [
 
   {
-    path: 'dashboard',
+    path: 'app',
     component: DashboardComponent,
     canActivateChild: [authGuard],
     children:[
+      {path:'dashboard',loadChildren:()=>import('./home/home.module').then(m=>m.HomeModule)},
       {path:'admin',loadChildren:()=>import('./admin/admin.module').then(m=>m.AdminModule)},
       {path:'city',loadChildren:()=>import('./city/city.module').then(m=>m.CityModule)},
       {path:'country',loadChildren:()=>import('./country/country.module').then(m=>m.CountryModule)},
