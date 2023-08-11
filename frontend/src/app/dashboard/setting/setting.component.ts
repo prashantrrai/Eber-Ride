@@ -52,42 +52,6 @@ export class SettingComponent {
     });
   }
 
-  //---------------------UPDATE RIDE TIMEOUT----------------------//
-  // onSelectedRideTimeout(ridetimeout: any) {
-  //   this.selectedTimeout = ridetimeout;
-  //   // console.log(ridetimeout);
-  //   this._setting.updateSetting({ridetimeout:ridetimeout, id:this.id}).subscribe({
-  //     next: (response: any) => {
-  //       // console.log(response.settingdata);
-  //       this.setting = response.settingdata;
-  //       this.toastr.success(response.message);
-  //     },
-  //     error: (error: any) => {
-  //       console.log(error);
-  //       this.toastr.error(error.error.message);
-  //     },
-  //   });
-  // }
-
-
-  //---------------------UPDATE STOPS----------------------//
-  // onSelectedStop(stop: any) {
-  //   this.selectedStop = stop;
-  //   // console.log(this.id);
-  //   this._setting.updateSetting({stop: stop, id:this.id}).subscribe({
-  //     next: (response: any) => {
-  //       // console.log(response.settingdata);
-  //       this.setting = response.settingdata;
-  //       // console.log(this.setting)
-  //       this.toastr.success(response.message);
-  //     },
-  //     error: (error: any) => {
-  //       console.log(error);
-  //       this.toastr.error(error.error.message);
-  //     },
-  //   });
-  // }
-
   //---------------------GET SETTING DATA----------------------//
   getsettingData(){
     this._setting.getStops().subscribe({
