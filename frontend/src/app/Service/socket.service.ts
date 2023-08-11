@@ -216,6 +216,7 @@ export class SocketService implements OnInit, OnDestroy{
           this._notification.showDummyNotification(data)
           
           observer.next(data);
+          
         });
     });
   }

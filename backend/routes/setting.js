@@ -34,6 +34,7 @@ const writeFileAsync = promisify(fs.writeFile);
 //     }
 // })
 
+
 // --------------------------------------------GET SETTING DATA API---------------------------------------------
 settingRouter.get('/settingdata', async (req, res) => {
     try {
@@ -54,16 +55,19 @@ settingRouter.get('/settingdata', async (req, res) => {
 // // --------------------------------------------UPDATE SETTING DATA API---------------------------------------------
 settingRouter.put("/updatesetting", async (req, res) => {
     try {
-      const {ridetimeout, stop} = req.body;
+      // const {ridetimeout, stop} = req.body;
       console.log(req.body);
-
-      id = req.body.id
-      console.log(id);
+      const id = req.body.id
+      const stop = req.body.settingdata.stop
+      const ridetimeout = req.body.settingdata.ridetimeout
+      console.log(stop, ridetimeout);
 
       if(stop){
         data = {stop: stop};
-      }else{
+      }else if(ridetimeout){
         data = {ridetimeout: ridetimeout};
+      }else{
+        data = {ridetimeout: ridetimeout, stop: stop}
       }
   
       let settingdata = await SettingModel.findByIdAndUpdate(id ,data, { new: true });
@@ -75,11 +79,8 @@ settingRouter.put("/updatesetting", async (req, res) => {
         const ridetimeout = settingdata.ridetimeout;
         
         const existingEnvFile = fs.readFileSync('.env', 'utf-8');
-        // const newline = existingEnvFile.endsWith('\n') ? '' : '\n';
         const updatedEnvFile = existingEnvFile.replace(/RIDETIMEOUT=\d+/, `RIDETIMEOUT=${ridetimeout}`);
         await writeFileAsync('.env', updatedEnvFile);
-        // await writeFileAsync('.env', `RIDETIMEOUT=${ridetimeout}\n`, { flag: 'a' });
-        // dotenv.config(); 
       }
 
       
@@ -94,25 +95,7 @@ settingRouter.put("/updatesetting", async (req, res) => {
     }
   });
 
+
+
 module.exports = settingRouter;
 
-
-
-// // --------------------------------------------DELETE SETTING DATA API---------------------------------------------
-// settingRouter.delete("/deletesetting/:id", async (req, res) => {
-//     try {
-//       const id = req.params.id;
-//       const settingData = await SettingModel.findByIdAndDelete(id);
-//       res.status(200).json({
-//           success: true,
-//           message: "Setting Data Deleted Successfully",
-//           settingData,
-//         });
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).json({ success: false, message: error });
-//     }
-//   });
-  
-
-  

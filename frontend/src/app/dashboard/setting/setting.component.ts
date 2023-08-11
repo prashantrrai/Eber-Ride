@@ -13,8 +13,8 @@ export class SettingComponent {
   settingForm!: FormGroup;
   timeoutArray: any[] = [10, 20, 30, 45, 60, 90, 120];
   stopArray: any[] = [1, 2, 3, 4, 5];
-  selectedTimeout: any;
-  selectedStop: any;
+  selectedTimeout: any =10 ;
+  selectedStop: any =2 ;
   setting: any=[];
   id: any;
   credentials: any[] = [];
@@ -31,7 +31,16 @@ export class SettingComponent {
     private toastr: ToastrService,
     private authService: AuthService,
     private formBuilder: FormBuilder
-  ) {}
+  ) {
+    this.settingForm = this.formBuilder.group({
+      ridetimeout: [''],
+      stop: ['']
+    });
+
+    this.settingForm.patchValue({
+      ridetimeout: this.setting.ridetimeout
+    });
+  }
 
   ngOnInit(): void {
     this.getsettingData()
@@ -44,40 +53,40 @@ export class SettingComponent {
   }
 
   //---------------------UPDATE RIDE TIMEOUT----------------------//
-  onSelectedRideTimeout(ridetimeout: any) {
-    this.selectedTimeout = ridetimeout;
-    // console.log(ridetimeout);
-    this._setting.updateSetting({ridetimeout:ridetimeout, id:this.id}).subscribe({
-      next: (response: any) => {
-        // console.log(response.settingdata);
-        this.setting = response.settingdata;
-        this.toastr.success(response.message);
-      },
-      error: (error: any) => {
-        console.log(error);
-        this.toastr.error(error.error.message);
-      },
-    });
-  }
+  // onSelectedRideTimeout(ridetimeout: any) {
+  //   this.selectedTimeout = ridetimeout;
+  //   // console.log(ridetimeout);
+  //   this._setting.updateSetting({ridetimeout:ridetimeout, id:this.id}).subscribe({
+  //     next: (response: any) => {
+  //       // console.log(response.settingdata);
+  //       this.setting = response.settingdata;
+  //       this.toastr.success(response.message);
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error);
+  //       this.toastr.error(error.error.message);
+  //     },
+  //   });
+  // }
 
 
   //---------------------UPDATE STOPS----------------------//
-  onSelectedStop(stop: any) {
-    this.selectedStop = stop;
-    // console.log(this.id);
-    this._setting.updateSetting({stop: stop, id:this.id}).subscribe({
-      next: (response: any) => {
-        // console.log(response.settingdata);
-        this.setting = response.settingdata;
-        // console.log(this.setting)
-        this.toastr.success(response.message);
-      },
-      error: (error: any) => {
-        console.log(error);
-        this.toastr.error(error.error.message);
-      },
-    });
-  }
+  // onSelectedStop(stop: any) {
+  //   this.selectedStop = stop;
+  //   // console.log(this.id);
+  //   this._setting.updateSetting({stop: stop, id:this.id}).subscribe({
+  //     next: (response: any) => {
+  //       // console.log(response.settingdata);
+  //       this.setting = response.settingdata;
+  //       // console.log(this.setting)
+  //       this.toastr.success(response.message);
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error);
+  //       this.toastr.error(error.error.message);
+  //     },
+  //   });
+  // }
 
   //---------------------GET SETTING DATA----------------------//
   getsettingData(){
@@ -94,28 +103,26 @@ export class SettingComponent {
     });
   }
 
-  // --------------------------------------------ADD TIMEOUT FXN---------------------------------------------
-  // onSubmit(){
-  //   const formValues = this.settingForm.value;
-  //   console.log(formValues);
 
-  //   if (this.settingForm.valid) {
-  //     this._setting.addSetting(formValues).subscribe({
-  //       next: (response: any) => {
-  //         console.log(response);
-  //         this.settingForm.reset();
-  //         this.toastr.success(response.message);
-  //       },
-  //       error: (error: any) => {
-  //         console.log(error.error.message);
-  //         this.toastr.error(error.error.message);
-  //       },
-  //     });
-  //   } else {
-  //     this.toastr.warning("All Fields are Required");
-  //   }
-  // }
+  //---------------------UPDATE RIDE TIMEOUT----------------------//
+  onSubmit() {
+    // this.selectedTimeout = ridetimeout;
+    // this.selectedStop = stop;
+    const formValues = {settingdata: this.settingForm.value, id:this.id};
+    console.log('Form values:', formValues);
 
+    this._setting.updateSetting(formValues).subscribe({
+      next: (response: any) => {
+        console.log(response.settingdata);
+        this.setting = response.settingdata;
+        this.toastr.success(response.message);
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.toastr.error(error.error.message);
+      },
+    });
+  }
 
 
   //----------------------------------GET CREDENTIALS FROM .ENV--------------------------------------//

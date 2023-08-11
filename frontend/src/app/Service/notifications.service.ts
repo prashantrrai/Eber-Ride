@@ -32,6 +32,7 @@ export class NotificationsService {
           // Add other notification options as needed
         };
         const notification = new Notification('Eber Ride', options);
+        
       }
     }
   }

@@ -1015,7 +1015,7 @@ async function initializeSocket(server) {
 
 
     //----------------------------------------HANDLE CRON------------------------------------------//
-    const job = cron.schedule("*/10 * * * * *", async () => {
+    const job = cron.schedule("*/30 * * * * *", async () => {
       await myTask();
     });
     
