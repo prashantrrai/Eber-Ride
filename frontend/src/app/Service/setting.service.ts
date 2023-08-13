@@ -15,7 +15,7 @@ export class SettingService {
   //   console.log(formValues)
   //   return this.http.post<any>(`${this.serverUrl}/setting`, formValues);
   // }
-  getStops() {
+  get_setting_data() {
     return this.http.get<any>(`${this.serverUrl}/settingdata`);
   }
   updateSetting(formValues: any) {

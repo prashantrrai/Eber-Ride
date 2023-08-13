@@ -43,3 +43,7 @@
     pointer-events: none;
   }
 
+.note{
+  color: red;
+  font-weight: bold;
+}

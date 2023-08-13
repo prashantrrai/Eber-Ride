@@ -8,6 +8,14 @@ const settingSchema = new mongoose.Schema({
     stop: { 
         type: Number
     },
+    EMAIL_USER: {},
+    EMAIL_PASSWORD: {},
+    accountSid: {},
+    authToken: {},
+    twilioPhoneNumber: {},
+    STRIPE_Secret_key: {},
+    STRIPE_Publishable_key: {}
+
 })
 
 const SettingModel = mongoose.model('SettingModel', settingSchema);

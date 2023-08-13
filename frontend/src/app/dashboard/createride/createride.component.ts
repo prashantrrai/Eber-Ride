@@ -164,13 +164,13 @@ export class CreaterideComponent {
 
   //--------------- TO GET NO. OF STOPS ------------------
   getNumberOfStops() {
-    this._setting.getStops().subscribe({
+    this._setting.get_setting_data().subscribe({
       next: (response: any) => {
         // console.log(response);
         this.stops = response.settingData[0].stop;
         // console.log(this.stops);
       },
-      error: (error) => {
+      error: (error: any) => {
         this.toaster.error(error.message);
       },
     });

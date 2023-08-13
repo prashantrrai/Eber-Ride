@@ -38,7 +38,8 @@
     margin: 15px auto;
     /* border: 2px solid #000000; */
     border-radius: 5px;
-    box-shadow: 8px 8px 16px #242424;
+    /* box-shadow: 8px 8px 16px #242424; */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   }
   
   

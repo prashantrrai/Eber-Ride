@@ -12,6 +12,7 @@ credentials.get('/env', (req, res) => {
     STRIPE_Publishable_key: process.env.STRIPE_Publishable_key
   };
   res.json(envData);
+  // console.log(envData)
 });
 
 module.exports = credentials;
