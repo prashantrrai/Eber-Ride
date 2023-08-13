@@ -79,7 +79,7 @@ export class RidehistoryComponent implements OnInit {
     this._socket.emitridehistory(filterdata)
 
     this._socket.listenridehistory().subscribe((data: any) => {
-      console.log(data);
+      console.log(data.myridehistory);
       this.ridesArray = data.myridehistory;
       this.totalPages = data.totalPages;
       this.count = data.totalCount;

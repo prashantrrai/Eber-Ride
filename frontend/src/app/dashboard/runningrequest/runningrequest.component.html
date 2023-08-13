@@ -13,7 +13,7 @@
                 <th>User Profile</th>
                 <th>User Name</th>
                 <th>User Phone</th>
-                <th>Ride ID</th> 
+                <!-- <th>Ride ID</th>  -->
                 <th>Driver Name</th>
                 <th>Driver Phone</th>
                 <th>Pick up Time</th>
@@ -30,8 +30,8 @@
               <tr *ngFor="let data of assignedArray">
                 <td><img src="http://localhost:4000/{{data.userDetails.profile}}" alt="driver-profile"></td>
                 <td>{{data.userDetails.username}}</td>
-                <td>{{data._id}}</td>
                 <td>{{data.userDetails.userphone}}</td>
+                <!-- <td>{{data._id}}</td> -->
                 <td>{{data.driverDetails.drivername}}</td>
                 <td>{{data.driverDetails.driverphone}}</td>
                 <td>{{data.rideDate + "    " +data.time }}</td>

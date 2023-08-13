@@ -60,3 +60,10 @@
   cursor: pointer;
 }
 
+.no-records-label {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: red;
+  margin-top: 20%; 
+}
