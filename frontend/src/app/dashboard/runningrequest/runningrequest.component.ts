@@ -38,9 +38,9 @@ export class RunningrequestComponent {
     this._socketservice.emitRunningData()
 
     this._socketservice.listenGetRunning().subscribe((data: any) => {
-      // console.log(data);
+      console.log(data);
       this.assignedArray = data.alldata;
-      // console.log(this.assignedArray);
+      console.log(this.assignedArray);
       
     });
   }
