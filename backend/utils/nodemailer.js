@@ -118,54 +118,32 @@ function sendInvoiceEmail(userEmail, tripDetails) {
       </div>
       <div class="company-info">
         <h2>Eber Ride</h2>
-        <p>Address: 123 Main Street, Rajkot, India</p>
-        <p>Email: support@eberride.com</p>
+        <p>Address: Nana Mava, Cosmoplex Cinema, Rajkot, India</p>
+        <p>Email: technicalsupport@eberride.com</p>
       </div>
       <div class="client-info">
         <h2>${tripDetails.userdata.username}</h2>
-        <p>Address: ${tripDetails.ridedata.endLocation}</p>
+        <p>Phone:+91 ${tripDetails.userdata.userphone}</p>
         <p>Email: ${tripDetails.userdata.useremail}</p>
+        <p>Address: ${tripDetails.ridedata.endLocation}</p>
       </div>
       <table class="invoice-items">
         <thead>
           <tr>
-            <th>Item</th>
-            <th>Description</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
+            <th>Sr. No</th>
+            <th>Ride Details</th>
+            <th>GST</th>
             <th>Total</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Item 1</td>
-            <td>Item 1 Description</td>
-            <td>2</td>
-            <td>$50.00</td>
-            <td>$100.00</td>
-          </tr>
-          <tr>
-            <td>Item 2</td>
-            <td>Item 2 Description</td>
-            <td>1</td>
-            <td>$75.00</td>
-            <td>$75.00</td>
+            <td>1.</td>
+            <td>Ride Id: ${tripDetails.ridedata._id}\n Start Location: ${tripDetails.ridedata.startLocation}\n End Location: ${tripDetails.ridedata.endLocation}</td>
+            <td>18%</td>
+            <td>$ ${tripDetails.ridedata.estimateFare.toFixed(2)}</td>
           </tr>
         </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="4" class="text-right">Subtotal:</td>
-            <td>$175.00</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="text-right">Tax (18%):</td>
-            <td>$17.50</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="text-right">Total:</td>
-            <td>$ ${tripDetails.ridedata.estimateFare}</td>
-          </tr>
-        </tfoot>
       </table>
     </div>
   </body>
