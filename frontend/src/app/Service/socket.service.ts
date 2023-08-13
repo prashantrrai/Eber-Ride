@@ -212,7 +212,7 @@ export class SocketService implements OnInit, OnDestroy{
     listeningnotification(): Observable<any> {
       return new Observable((observer) => {
         this.socket.on('pushnotification', (data: any) => {
-          // console.log(data);
+          console.log(data);
           this._notification.showDummyNotification(data)
           
           observer.next(data);

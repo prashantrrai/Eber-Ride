@@ -422,7 +422,12 @@ async function initializeSocket(server) {
         const ride = await createrideModel.findByIdAndUpdate(rideId, { driverId: driverId, ridestatus: 4 }, { new: true })
         const userdata = await userModel.findById(ride.userId)
         io.emit('rideupdates', ride);
-        // sendmessage(ride.status);
+
+        // notificationCounter--;
+        // io.emit("pushnotification", {
+        //   notificationCounter 
+        // });
+
       } catch (error) {
         console.log(error);
       }
@@ -595,38 +600,43 @@ async function initializeSocket(server) {
           const result = await createrideModel.findByIdAndUpdate(data.rideId, { $set: { assigningTime: Date.now(), driverId: newdata[0]._id}, $addToSet: { nearestArray: newdata[0]._id } }, { new: true });
           io.emit('runningrequestreject',result)
 
+          // notificationCounter--;
+          // io.emit("pushnotification", {
+          //   notificationCounter 
+          // });
+
           }else{
-          // console.log("479" , "Else");
-            //hold condition
-          let assigneddriverdata = await driverModel.aggregate([
-            {
-              $match: {
-                status: true,
-                city:  fetchridedata.cityId,
-                servicetype: fetchridedata.serviceId,
-                assign: "1",
-                _id: { $nin: fetchridedata.nearestArray}
+            // console.log("479" , "Else");
+              //hold condition
+            let assigneddriverdata = await driverModel.aggregate([
+              {
+                $match: {
+                  status: true,
+                  city:  fetchridedata.cityId,
+                  servicetype: fetchridedata.serviceId,
+                  assign: "1",
+                  _id: { $nin: fetchridedata.nearestArray}
+                },
               },
-            },
-          ]);
+            ]);
 
-          // const rejectdata = await assigneddriverdata.exec();
-          // console.log("485",assigneddriverdata);
-          // if(assigneddriverdata.length > 0){
-          //   const driverdata = await driverModel.findByIdAndUpdate(data.driverId, { $set: { assign: "0" } }, { new: true });
-            const result = await createrideModel.findByIdAndUpdate(data.rideId, {$set: { assigningTime: Date.now(), ridestatus: 8},  $unset: {driverId: ""}}, { new: true });
-            io.emit('runningrequestreject' ,result)
-          // }
-          // else{
-          //   console.log("492");
-          //  const driverdata =  await driverModel.findByIdAndUpdate(data.driverId,  { $set: { assign: "0" } }, { new: true });
-          //   const result = await createrideModel.findByIdAndUpdate(data.rideId, {$set: {ridestatus: 2},  $unset: {driverId: "", nearestArray: ""}}, { new: true })
-          //   io.emit('runningrequestreject', driverdata ,result)
-          // }
+            // const rejectdata = await assigneddriverdata.exec();
+            // console.log("485",assigneddriverdata);
+            // if(assigneddriverdata.length > 0){
+            //   const driverdata = await driverModel.findByIdAndUpdate(data.driverId, { $set: { assign: "0" } }, { new: true });
+              const result = await createrideModel.findByIdAndUpdate(data.rideId, {$set: { assigningTime: Date.now(), ridestatus: 8},  $unset: {driverId: ""}}, { new: true });
+              io.emit('runningrequestreject' ,result)
+            // }
+            // else{
+            //   console.log("492");
+            //  const driverdata =  await driverModel.findByIdAndUpdate(data.driverId,  { $set: { assign: "0" } }, { new: true });
+            //   const result = await createrideModel.findByIdAndUpdate(data.rideId, {$set: {ridestatus: 2},  $unset: {driverId: "", nearestArray: ""}}, { new: true })
+            //   io.emit('runningrequestreject', driverdata ,result)
+            // }
 
-          //  const driverdata =  await driverModel.findByIdAndUpdate(fetchridedata.driverId, { $set: { assign: "0" } }, { new: true });
-          //   const ridedata = await createrideModel.findByIdAndUpdate(fetchridedata._id, {$set: {nearest: false, ridestatus: 0 }, $unset: {driverId: "" , assigningTime: "", nearestArray: ""}}, { new: true })
-          //   io.emit('runningrequestreject', driverdata ,ridedata)
+            //  const driverdata =  await driverModel.findByIdAndUpdate(fetchridedata.driverId, { $set: { assign: "0" } }, { new: true });
+            //   const ridedata = await createrideModel.findByIdAndUpdate(fetchridedata._id, {$set: {nearest: false, ridestatus: 0 }, $unset: {driverId: "" , assigningTime: "", nearestArray: ""}}, { new: true })
+            //   io.emit('runningrequestreject', driverdata ,ridedata)
           }
 
         }
@@ -951,6 +961,11 @@ async function initializeSocket(server) {
                     ridestatus: 1
                   }
                 }, { new: true });
+
+                notificationCounter++;
+                io.emit("pushnotification", {
+                  notificationCounter 
+                });
                 
                 io.emit("whendriverisnearest", { success: true, olddriver, newdriver, finalresult});
                 //kaam baaki che add krvanu
@@ -978,7 +993,8 @@ async function initializeSocket(server) {
                   // console.log("910", assignedList);
                   // const driverdata = await driverModel.findByIdAndUpdate(data.driverId, {$set: { assign: "0" }}, { new: true });
                   const finalresult = await createrideModel.findByIdAndUpdate(data._id, { $set: { assigningTime: Date.now(), ridestatus: 8}, $unset: {driverId: ""} }, { new: true });
-                  // io.emit('timeoutdata',finalresult)
+
+
                   io.emit('crontimeoutdata',finalresult)
                 //kaam baaki che add krvanu
       
