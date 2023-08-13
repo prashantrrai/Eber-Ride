@@ -2,7 +2,7 @@ const socketio = require("socket.io");
 require("dotenv").config();
 const RideTimeOut = process.env.RIDETIMEOUT;
 // const RideTimeOut = 5;
-// console.log("5",RideTimeOut);
+// console.log(RideTimeOut);
 const mongoose = require("mongoose");
 const driverModel = require("../models/driver");
 const createrideModel = require("../models/createride");

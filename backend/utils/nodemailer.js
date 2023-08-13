@@ -42,7 +42,7 @@ function sendRideStatus(userEmail, tripDetails) {
         from: "info@ethereal.email",
         to: userEmail,
         subject : "Eber Ride Status",
-        text: `Hi ${tripDetails.userdata.username},\n \n Your Ride Order has been successfully placed! \n Driver ${tripDetails.driverdata.drivername} will reach at your location shortly \n\n Regards, \n Team Eber` 
+        text: `Dear ${tripDetails.userdata.username},\n \n Your Ride Order has been successfully placed! \n Driver ${tripDetails.driverdata.drivername} will reach at your location shortly \n\n Regards, \n Team Eber` 
     };
     
     transporter.sendMail(mailOptions, (error, info) => {
@@ -123,9 +123,9 @@ function sendInvoiceEmail(userEmail, tripDetails) {
       </div>
       <div class="client-info">
         <h2>${tripDetails.userdata.username}</h2>
-        <p>Phone:+91 ${tripDetails.userdata.userphone}</p>
-        <p>Email: ${tripDetails.userdata.useremail}</p>
-        <p>Address: ${tripDetails.ridedata.endLocation}</p>
+        <p>Phone:  +91 ${tripDetails.userdata.userphone}</p>
+        <p>Email:  ${tripDetails.userdata.useremail}</p>
+        <p>Address:  ${tripDetails.ridedata.endLocation}</p>
       </div>
       <table class="invoice-items">
         <thead>
@@ -139,9 +139,15 @@ function sendInvoiceEmail(userEmail, tripDetails) {
         <tbody>
           <tr>
             <td>1.</td>
-            <td>Ride Id: ${tripDetails.ridedata._id}\n Start Location: ${tripDetails.ridedata.startLocation}\n End Location: ${tripDetails.ridedata.endLocation}</td>
+            <td>
+              Ride Id: ${tripDetails.ridedata._id}<br> 
+              Start Location: ${tripDetails.ridedata.startLocation} <br>
+              End Location: ${tripDetails.ridedata.endLocation} <br>
+              Total Distance: ${tripDetails.ridedata.totalDistance} Km <br>
+              Total Time: ${tripDetails.ridedata.estimateTime}
+            </td>
             <td>18%</td>
-            <td>$ ${tripDetails.ridedata.estimateFare.toFixed(2)}</td>
+            <td>₹ ${tripDetails.ridedata.estimateFare.toFixed(2)}</td>
           </tr>
         </tbody>
       </table>
