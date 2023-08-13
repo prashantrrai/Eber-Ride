@@ -53,7 +53,7 @@ settingRouter.get('/settingdata', async (req, res) => {
   // console.log("51",envData)
     try {
         const settingData = await SettingModel.find();
-        console.log("54",settingData);
+        // console.log("54",settingData);
         
         res.status(200).json(settingData);
     } catch (error) {
@@ -126,7 +126,7 @@ settingRouter.put("/updatesetting", async (req, res) => {
       let settingdata = await SettingModel.findByIdAndUpdate(id ,data, { new: true });
 
       await settingdata.save()
-      console.log("72",settingdata)
+      // console.log("72",settingdata)
 
       if (settingdata) {
         const ridetimeout = settingdata.ridetimeout;

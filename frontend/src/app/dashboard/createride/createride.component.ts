@@ -167,7 +167,7 @@ export class CreaterideComponent {
     this._setting.get_setting_data().subscribe({
       next: (response: any) => {
         // console.log(response);
-        this.stops = response.settingData[0].stop;
+        this.stops = response[0].stop;
         // console.log(this.stops);
       },
       error: (error: any) => {

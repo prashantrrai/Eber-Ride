@@ -865,7 +865,7 @@ async function initializeSocket(server) {
               let currenttime = Date.now();
               let assignedTime = data.assigningTime;
               resulttimeout = Math.floor((currenttime - assignedTime) / 1000);
-              console.log(resulttimeout >= RideTimeOut);
+              console.log(`${resulttimeout} >= ${RideTimeOut}`, resulttimeout >= RideTimeOut);
               if (resulttimeout >= RideTimeOut) {
                 console.log("success");
                 const drivernewdata = await driverModel.findByIdAndUpdate(
@@ -906,7 +906,8 @@ async function initializeSocket(server) {
             let currenttime = Date.now()
             let assignedTime = data.assigningTime
             resulttimeout = Math.floor((currenttime - assignedTime)/1000)
-              console.log(RideTimeOut);
+            console.log(`${resulttimeout} >= ${RideTimeOut}`, resulttimeout >= RideTimeOut);
+            
             if (resulttimeout >= RideTimeOut) {
               // console.log("848", "If");
               const city_id = new mongoose.Types.ObjectId(data.cityId);

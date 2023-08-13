@@ -23,8 +23,8 @@ export class SettingService {
     return this.http.put<any>(`${this.serverUrl}/updatesetting`, formValues);
   }
 
-  getEnvData(): Observable<any> {
-    return this.http.get<any>(`${this.serverUrl}/env`);
-  }
+  // getEnvData(): Observable<any> {
+  //   return this.http.get<any>(`${this.serverUrl}/env`);
+  // }
 
 }
