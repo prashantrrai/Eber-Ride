@@ -65,6 +65,7 @@
                <!-- <th>Driver Name</th> -->
                <th>Service Type</th>
                <th>Payment</th>
+               <th>Feedback</th>
                <th>Status</th>
              </tr>
            </thead>
@@ -80,6 +81,9 @@
                  <!-- <td>{{ ride.driverDetails.drivername}}</td> -->
                  <td>{{ ride.serviceType }}</td>
                  <td>{{ ride.paymentOption }}</td>
+                 <td *ngIf="ride.feedback  !== undefined">{{ ride.feedback }}</td>
+                 <td *ngIf="ride.feedback === undefined">No feedback</td>
+                 
 
                  <td class="badge" [ngClass]="{'badge-success': ride.ridestatus === 7, 'badge-danger': ride.ridestatus === 3}">
                  {{ statusLabels[ride.ridestatus] || 'unknown' }}

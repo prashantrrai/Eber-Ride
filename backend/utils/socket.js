@@ -892,7 +892,7 @@ async function initializeSocket(server) {
                 });
                 
               }else{
-                console.log("failed to get inside if");
+                console.log("failed to get inside single if");
               }
             }
 
