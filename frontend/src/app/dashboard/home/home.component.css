@@ -48,12 +48,7 @@
     text-align: center;
     padding: 4rem 0;
   }
-  
-  .services h3 {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-  }
-  
+
   .service-container {
     display: flex;
     justify-content: center;
@@ -89,6 +84,10 @@
   .customers h3 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
+  }
+  #customer-count {
+    font-weight: bold;
+    color: #ffac33; /* Adjust color as needed */
   }
   
   .feedback {
@@ -200,7 +199,8 @@
   
   .map-container {
     text-align: center;
-    padding: 4rem 0;
+    padding: 3rem 0;
+    margin: 0 1rem;
   }
   .map-heading {
     font-size: 72px;
@@ -238,3 +238,168 @@
     color: #000000; 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   }
+
+
+
+  @keyframes bgScroll {
+    from {
+      background-position: -100% 0;
+    }
+    to {
+      background-position: 100% 0;
+    }
+  }
+
+@media screen and (max-width: 768px) {
+  .hero {
+    background-size: cover;
+    text-align: center;
+    padding: 6rem 0;
+    color: #fff;
+    height: 100vh;
+    position: relative;
+    animation: bgScroll 30s linear infinite; /* Adjust animation duration as needed */
+  }
+  .cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 3rem 0;
+  }
+  .card {
+    flex: 1;
+    max-width: 300px;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s; /* Transition added */
+    overflow: hidden;
+  }
+  
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  }
+  .map-container {
+    padding: 3rem 0;
+  }
+
+  .map-heading {
+    font-size: 36px;
+    margin-bottom: 2rem;
+  }
+
+/* Customers section */
+.customers {
+  text-align: center;
+  padding: 3rem 0; /* Adjust padding as needed */
+}
+
+/* Customers heading */
+.customers-heading {
+  font-family: 'Fasthand', cursive;
+  font-size: 36px; /* Adjust font size as needed */
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #000000;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  line-height: 1.2; /* Adjust line height as needed */
+  text-align: center; /* Center align text on mobile view */
+}
+
+
+/* Total Customers count */
+#customer-count {
+  font-weight: bold;
+  color: #ffac33; /* Adjust color as needed */
+}
+
+/* Feedback container */
+.feedback {
+  display: flex;
+  flex-direction: column; /* Change to column for mobile view */
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem; /* Add space between feedback items */
+}
+
+/* Individual feedback items */
+.feedback-item {
+  max-width: 300px;
+  padding: 1.5rem;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s; /* Transition added */
+  text-align: center;
+}
+
+/* Add hover effect to feedback items */
+.feedback-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the contents within the feedback items */
+.feedback-item p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.feedback-item p:last-child {
+  margin-bottom: 0; /* Remove margin for the last paragraph */
+}
+
+
+/* Services section */
+.services {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+/* Service heading */
+.service-heading {
+  font-size: 36px; /* Adjust font size as needed */
+  margin-bottom: 2rem;
+}
+.service-container {
+  display: block;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto; /* Center the container */
+}
+
+/* Individual service cards */
+.service {
+  max-width: 300px;
+  margin: 0 auto 2rem; /* Add space between cards */
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Add hover effect to cards */
+.service:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the contents within the service card */
+.service h4 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.service p {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+}
