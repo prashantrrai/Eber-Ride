@@ -2,10 +2,11 @@
   "name": "login-auth-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "vercel-build": "echo hello"
   },
   "author": "Prashant Rai",
@@ -19,6 +20,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0",
     "localstorage": "^1.0.1",
+    "mongodb": "^5.7.0",
     "mongoose": "^7.1.1",
     "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.2",

@@ -67,7 +67,7 @@ settingRouter.get('/settingdata', async (req, res) => {
 settingRouter.put("/updatesetting", async (req, res) => {
     try {
       // const {ridetimeout, stop} = req.body;
-      // console.log("68",req.body);
+      console.log("68",req.body);
       const id = req.body.id
       const STOP = +req.body.settingdata.stop
       const RIDE_TIMEOUT = +req.body.settingdata.ridetimeout

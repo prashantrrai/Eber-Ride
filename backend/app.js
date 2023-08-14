@@ -2,17 +2,10 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const PORT = process.env.PORT || 8080;
-
 const SettingModel = require('./models/setting');
 
 const http = require('http').Server(app);
 const initializeSocket = require("./utils/socket")
-
-// const cronJob = require('./utils/cron');
-// cronJob.start();
-
-// console.log(Date.now());
-// console.log(new Date().getTime());
 
 const cors = require("cors");
 app.use(cors());
@@ -84,16 +77,5 @@ app.get("/", async (req, res) => {
 
 initializeSocket(http)
 http.listen(PORT, () => {
-  // const today = new Date();
-  //   const yyyy = today.getFullYear();
-  //   let mm = today.getMonth() + 1; // Months start at 0!
-  //   let dd = today.getDate();
-
-  //   if (dd < 10) dd = '0' + dd;
-  //   if (mm < 10) mm = '0' + mm;
-
-  //   const formattedToday = dd + '/' + mm + '/' + yyyy;
-
-  //   console.log(`${formattedToday} is a Gift`)
   console.log(`Server is running on http://localhost:${PORT}`);
 });
