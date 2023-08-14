@@ -8,7 +8,9 @@ import { Observable } from 'rxjs';
 export class DriverService {
 
 
-  private serverUrl = 'http://localhost:4000';
+  // private serverUrl = 'http://localhost:4000';
+  private serverUrl = 'http://eberride-env.eba-83w3w3ik.ap-south-1.elasticbeanstalk.com';
+
   // private countryAPI = 'https://restcountries.com/v3.1/all'
 
 

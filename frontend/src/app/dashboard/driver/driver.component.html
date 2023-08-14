@@ -124,7 +124,8 @@
       </thead>
       <tbody>
       <tr *ngFor="let driver of driverArray| paginate: { itemsPerPage: limit, currentPage: currentPage, totalItems: count}; let i = index">
-        <td><img src="http://localhost:4000/{{ driver.profile}}" alt="driver-profile"></td>
+        <!-- <td><img src="http://localhost:4000/{{ driver.profile}}" alt="driver-profile"></td> -->
+        <td><img src="http://eberride-env.eba-83w3w3ik.ap-south-1.elasticbeanstalk.com/{{ driver.profile}}" alt="driver-profile"></td>
         <td>{{ driver.drivername }}</td>
         <td>{{ driver.driveremail }}</td>
         <td>{{driver.countrycode + " " + driver.driverphone}}</td>

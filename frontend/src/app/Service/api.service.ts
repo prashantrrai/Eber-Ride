@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
-  private serverUrl = 'http://localhost:4000';
+  // private serverUrl = 'http://localhost:4000';
+  private serverUrl = 'http://eberride-env.eba-83w3w3ik.ap-south-1.elasticbeanstalk.com';
 
 
   constructor(private http: HttpClient) { }

@@ -6,7 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RidehistoryService {
-  private url = 'http://localhost:4000'
+  // private url = 'http://localhost:4000'
+  private serverUrl = 'http://eberride-env.eba-83w3w3ik.ap-south-1.elasticbeanstalk.com';
+
 
   constructor(private http: HttpClient) {}
 
@@ -16,7 +18,7 @@ export class RidehistoryService {
   downlaodallData(alldataatonce: any): Observable<any>{
     // console.log(alldataatonce);
     
-    return this.http.post(`${this.url}/downloadridehistory`,{alldataatonce});
+    return this.http.post(`${this.serverUrl}/downloadridehistory`,{alldataatonce});
   }
 
 }

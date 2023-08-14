@@ -68,7 +68,8 @@ export class StripeComponent {
         console.log("Token:", token);
         
   
-        const response = await fetch(`http://localhost:4000/addcard/${id}`, {
+        // const response = await fetch(`http://localhost:4000/addcard/${id}`, {
+        const response = await fetch(`http://eberride-env.eba-83w3w3ik.ap-south-1.elasticbeanstalk.com/addcard/${id}`, {
           method: 'POST',
           headers: {
             'Content-type': 'Application/json'
@@ -121,7 +122,8 @@ export class StripeComponent {
       console.log(customerId);
       console.log(cardId);
       this.http
-        .patch(`http://localhost:4000/setdefaultcard/${customerId}`, { cardId })
+        // .patch(`http://localhost:4000/setdefaultcard/${customerId}`, { cardId })
+        .patch(`http://eberride-env.eba-83w3w3ik.ap-south-1.elasticbeanstalk.com/setdefaultcard/${customerId}`, { cardId })
         .subscribe(
           (data:any) => {
             console.log(data);

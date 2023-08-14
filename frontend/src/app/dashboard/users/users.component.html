@@ -32,7 +32,7 @@
     
   </div>
 </div>
-s
+
     <!-- ---------------------------------------------ADD FORM--------------------------------------------- -->
     <div class="parentFormContainer">
         <div id="formContainer" *ngIf="AddbuttonForm">
@@ -167,7 +167,8 @@ s
             </thead>
             <tbody>
               <tr *ngFor="let user of usersArray" >
-                <td><img src="http://localhost:4000/{{ user.profile}}" alt="user-profile"></td>
+                <!-- <td><img src="http://localhost:4000/{{ user.profile}}" alt="user-profile"></td> -->
+                <td><img src="http://eberride-env.eba-83w3w3ik.ap-south-1.elasticbeanstalk.com/{{ user.profile}}" alt="user-profile"></td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.useremail }}</td>
                 <td>{{user.countrycode + " " + user.userphone}}</td>

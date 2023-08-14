@@ -11,7 +11,9 @@ import { NotificationsService } from './notifications.service';
 })
 export class SocketService implements OnInit, OnDestroy{
   private socket: Socket;
-  url = 'http://localhost:4000'
+  // url = 'http://localhost:4000'
+  private url = 'http://eberride-env.eba-83w3w3ik.ap-south-1.elasticbeanstalk.com';
+
   // private errorSub: Subscription = new Subscription()
 
   constructor(private _notification: NotificationsService) {
