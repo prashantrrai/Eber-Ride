@@ -11,11 +11,16 @@ const cors = require("cors");
 app.use(cors());
 
 const path = require("path");
+
+app.use(express.static(path.join(__dirname, 'backend/dist/frontend')));
+
 const img_path = path.join(__dirname, "/Public/Vehicle");
 app.use(express.static(img_path));
 
 const profile_path = path.join(__dirname, "/Public/Profile");
 app.use(express.static(profile_path));
+
+
 
 require("./database/db");
 
@@ -66,6 +71,9 @@ app.use(credentials)
 app.use(feedbackRoutes)
 
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'backend/dist/frontend/index.html'));
+});
 
 app.get("/", async (req, res) => {
   res.json({

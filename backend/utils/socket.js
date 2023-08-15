@@ -18,7 +18,8 @@ const stripe = require('stripe')(process.env.STRIPE_Secret_key)
 
 async function initializeSocket(server) {
 
-  const io = socketio(server, { cors: { origin: ["http://localhost:4200"] } });
+  // const io = socketio(server, { cors: { origin: ["http://localhost:4200"] } });
+  const io = socketio(server, { cors: { origin: "*" } });
 
   io.on("connection", (socket) => {
     console.log("Socket is Running.");
