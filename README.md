@@ -57,3 +57,8 @@ This project is licensed under the [MIT License](LICENSE).
 - Any additional acknowledgments or credits.
 
 Feel free to update the sections as per your project requirements. Good luck with your Eber Ride project!
+
+## Deployment Links
+
+- The Backend is Hosted in AWS Elastic Beanstalk http://eberride-env.eba-83w3w3ik.ap-south-1.elasticbeanstalk.com/.
+- The Frontend is Hosted in Netlify https://eberride.netlify.app.
