@@ -16,7 +16,7 @@ registerRoutes.use(session({
 
 
 //  API to register data of user in database using Angular form.
-registerRoutes.post('/register', (req, res) => {
+registerRoutes.post('/register', async (req, res) => {
   console.log(req.body);
 
   // const { adminName, email, password, cnfpassword } = req.body;
@@ -27,7 +27,7 @@ registerRoutes.post('/register', (req, res) => {
     password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)), // Hashing the password
     cnfpassword: req.body.cnfpassword,
   })
-  user.save()
+  await user.save()
     .then(() => {
       // Generate a JWT token
       const token = jwt.sign({ email: user.email }, jwtSecret);

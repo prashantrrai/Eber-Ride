@@ -12,7 +12,7 @@ app.use(cors());
 
 const path = require("path");
 
-app.use(express.static(path.join(__dirname, 'backend/dist/frontend')));
+app.use(express.static(path.join(__dirname, 'dist/frontend')));
 
 const img_path = path.join(__dirname, "/Public/Vehicle");
 app.use(express.static(img_path));
@@ -72,16 +72,16 @@ app.use(feedbackRoutes)
 
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'backend/dist/frontend/index.html'));
+  res.sendFile(path.join(__dirname, 'dist/frontend/index.html'));
 });
 
-app.get("/", async (req, res) => {
-  res.json({
-    Message: "Hello Prashant, API is Working Fine!",
-    "Login Data": `http:localhost:4000/logindata`,
-    "Vehicle Data": `http:localhost:4000/vehicledata`,
-  });
-});
+// app.get("/", async (req, res) => {
+//   res.json({
+//     Message: "Hello Prashant, API is Working Fine!",
+//     "Login Data": `http:localhost:4000/logindata`,
+//     "Vehicle Data": `http:localhost:4000/vehicledata`,
+//   });
+// });
 
 initializeSocket(http)
 http.listen(PORT, () => {
