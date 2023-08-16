@@ -6,12 +6,12 @@ npm-debug.log*
 
 package-lock.json
 
-build/
-dist/
-tmp/
-*.log
-*.tmp
-*.pid
+# build/
+# dist/
+# tmp/
+# *.log
+# *.tmp
+# *.pid
 
 .vscode/
 
